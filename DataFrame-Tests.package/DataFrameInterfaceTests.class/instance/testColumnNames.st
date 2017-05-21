@@ -1,5 +1,7 @@
 tests
 testColumnNames
 
-	DataFrame new columnNames.
-	DataFrame new columnNames: #('Name' 'Gender').
+	self shouldnt: [ 
+		DataFrame new columnNames.
+		DataFrame new columnNames: #('Name' 'Gender').
+	] raise: MessageNotUnderstood.

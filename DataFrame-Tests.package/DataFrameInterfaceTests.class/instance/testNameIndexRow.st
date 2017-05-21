@@ -1,4 +1,6 @@
 tests
 testNameIndexRow
 
-	DataFrame new row: 'Jon Snow'.
+	self shouldnt: [
+		DataFrame new row: 'Jon Snow'.
+	] raise: MessageNotUnderstood.

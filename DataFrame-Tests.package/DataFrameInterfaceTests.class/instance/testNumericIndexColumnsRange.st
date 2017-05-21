@@ -1,4 +1,6 @@
 tests
 testNumericIndexColumnsRange
 
-	DataFrame new columnsFrom: 2 to: 4.
+	self shouldnt: [
+		DataFrame new columnsFrom: 2 to: 4.
+	] raise: MessageNotUnderstood.

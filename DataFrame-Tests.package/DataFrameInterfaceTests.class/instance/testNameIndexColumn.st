@@ -1,4 +1,6 @@
 tests
 testNameIndexColumn
 
-	DataFrame new column: 'Name'.
+	self shouldnt: [ 
+		DataFrame new column: 'Name'.
+	] raise: MessageNotUnderstood.

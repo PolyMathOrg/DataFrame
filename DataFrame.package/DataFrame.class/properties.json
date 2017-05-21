@@ -5,7 +5,10 @@
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],
-	"instvars" : [ ],
+	"instvars" : [
+		"rows",
+		"columnNames"
+	],
 	"name" : "DataFrame",
 	"type" : "normal"
 }

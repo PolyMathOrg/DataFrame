@@ -1,4 +1,6 @@
 tests
 testNumericIndexRow
 
-	DataFrame new rowAt: 1.
+	self shouldnt: [
+		DataFrame new rowAt: 1.
+	] raise: MessageNotUnderstood.

@@ -1,4 +1,6 @@
 tests
 testNameIndexColumns
 
-	DataFrame new columns: #('Name' 'Allegiances' 'Nobility').
+	self shouldnt: [ 
+		DataFrame new columns: #('Name' 'Allegiances' 'Nobility').
+	] raise: MessageNotUnderstood.
