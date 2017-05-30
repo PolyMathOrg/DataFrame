@@ -1,4 +1,9 @@
-not implemented
+accessing
 columnsAt: anArray
 
-	"I need to be implemented"
+	| names |
+	
+	names := anArray collect: [ :i |
+		columnNames at: i ].
+	
+	^ self columns: names.

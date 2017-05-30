@@ -1,4 +1,9 @@
-not implemented
+accessing
 column: nameIndex
 
-	"I need to be implemented"
+	columnNames detect: [ :name | name = nameIndex ]
+		ifFound: [ | k |
+			k := columnNames indexOf: nameIndex.
+			^ self columnAt: k ]
+		ifNone: [ 
+			NotFoundError signal ].

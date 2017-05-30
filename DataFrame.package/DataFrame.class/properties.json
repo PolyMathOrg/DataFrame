@@ -1,6 +1,6 @@
 {
 	"commentStamp" : "",
-	"super" : "Object",
+	"super" : "Collection",
 	"category" : "DataFrame",
 	"classinstvars" : [ ],
 	"pools" : [ ],

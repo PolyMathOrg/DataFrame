@@ -1,4 +1,4 @@
-not implemented
+accessing
 columnsFrom: begin to: end
 
-	"I need to be implemented"
+	^ self columnsAt: (begin to: end).

@@ -1,0 +1,11 @@
+{
+	"commentStamp" : "",
+	"super" : "Array",
+	"category" : "DataFrame",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [ ],
+	"name" : "DataSeries",
+	"type" : "variable"
+}

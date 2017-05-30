@@ -1,4 +1,4 @@
-not implemented
+accessing
 rowsFrom: begin to: end
 
-	"I need to be implemented"
+	^ self rowsAt: (begin to: end).

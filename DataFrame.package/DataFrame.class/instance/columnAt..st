@@ -1,4 +1,5 @@
-not implemented
+accessing
 columnAt: aNumber
 
-	"I need to be implemented"
+	^ (self collect: [ :row |
+			row at: aNumber ]) asDataSeries.

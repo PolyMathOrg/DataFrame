@@ -1,4 +1,11 @@
-not implemented
+accessing
 columns: anArray
-
-	"I need to be implemented"
+	
+	| df |
+	
+	df := self class columns:
+		(anArray collect: [ :name |
+			(self column: name) ]).
+		
+	df columnNames: anArray.
+	^ df

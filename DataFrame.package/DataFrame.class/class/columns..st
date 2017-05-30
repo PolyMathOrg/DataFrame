@@ -1,4 +1,4 @@
 instance creation
 columns: anArray
 
-	"I need to be implemented"
+	^ self new initializeColumns: anArray.

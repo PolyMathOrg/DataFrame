@@ -1,4 +1,4 @@
-not implemented
+accessing
 columnNames: anArray
 
-	"I need to be implemented"
+	columnNames := anArray asDataSeries.

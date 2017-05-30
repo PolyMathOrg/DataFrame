@@ -1,4 +1,4 @@
-not implemented
+accessing
 rowAt: aNumber
 
-	"I need to be implemented"
+	^ rows at: aNumber

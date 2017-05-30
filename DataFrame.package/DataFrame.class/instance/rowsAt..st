@@ -1,4 +1,5 @@
-not implemented
+accessing
 rowsAt: anArray
 
-	"I need to be implemented"
+	^ DataFrame rows: (anArray collect: [ :i | 
+		rows at: i ]).
