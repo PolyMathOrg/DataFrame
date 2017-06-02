@@ -1,0 +1,11 @@
+{
+	"commentStamp" : "",
+	"super" : "Point",
+	"category" : "DataFrame",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [ ],
+	"name" : "DataDimensions",
+	"type" : "normal"
+}
