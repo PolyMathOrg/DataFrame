@@ -1,5 +1,5 @@
 *DataFrame-Plots
-numericColumns
+numericColumnNames
 	"Returns the copy of a DataFrame containing only numeric columns. These columns can be visualized"
 	
 	"It may look ugly, but otherwise it would be very slow on large datasets"

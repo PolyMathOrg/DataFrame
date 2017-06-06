@@ -3,14 +3,14 @@ boxplot
 
 	| b ds n palette color |
 
-	n := self numericColumns size.
+	n := self numericColumnNames size.
 	
 	b := RTGrapher new.
 	b extent: (n * 70) @ 300.
 	
 	palette := DataColor palette: n.
 	
-	(self numericColumns) doWithIndex: [ :columnName :i |
+	(self numericColumnNames) doWithIndex: [ :columnName :i |
 		ds := RTBoxPlotDataSet new.
 		ds points: (self column: columnName).
 		
@@ -29,4 +29,4 @@ boxplot
 		noLabel;
 		noTick.
 	b build.
-	^ b view
+	^ b

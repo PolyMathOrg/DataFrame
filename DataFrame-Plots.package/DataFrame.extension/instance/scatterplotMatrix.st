@@ -1,18 +1,16 @@
 *DataFrame-Plots
 scatterplotMatrix
 
-	| n palette b label block lb d |
+	| b label block |
 	
-	n := self numericColumns size.
-	palette := DataColor palette: n.
-	
-	b := RTScatterplotMatrix new.
+	b := DataScatterplotMatrix new.
 
 	label := (RTLabel new)
 		height: 17;
 		color: (Color lightGray).
 
 	b labelShape: label.
+	b boxShape: (b boxShape borderWidth: 0.5).
 
 	b objects: self.
 
@@ -33,30 +31,12 @@ scatterplotMatrix
 		dashedLine;
 		width: 0.2; yourself).
 
-	palette := DataColor palette: 3.
-
-	d := Dictionary new
-		at: 'setosa' put: (palette at: 1);
-		at: 'versicolor' put: (palette at: 2);
-		at: 'virginica' put: (palette at: 3); yourself.
-
 	b shape circle
 		size: 3.5;
-		color: [ :a | d at: a fifth ].
+		color: DataColor purple.
 
-	b metrics
-		at: 'Sepal length' put: #first;
-		at: 'Sepal width' put: #second;
-		at: 'Petal length' put: #third;
-		at: 'Petal width' put: #fourth.
+	self numericColumnNames doWithIndex: [ :name :i |
+		b metrics at: name put: [ :row | row at: i ] ].
 
 	b build.
-
-	lb := RTLegendBuilder new.
-	lb right.
-	lb view: b view.
-	lb addText: 'Iris flower data set'.
-	d keys do: [ :k |lb addColor: (d at: k) text: 'Iris ', k ].
-	lb build.
-
-	^ b view
+	^ b

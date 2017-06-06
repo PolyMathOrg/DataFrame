@@ -3,7 +3,7 @@ barplotWithColor: color
 	| barWidth b ds |
 	
 	b := RTGrapher new.
-	b extent: 500 @ 300.
+	"b extent: 350 @ 300."
 	
 	barWidth := (b extent x) / (self size).
 	

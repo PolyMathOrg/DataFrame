@@ -1,4 +1,4 @@
 as yet unclassified
 unique
 
-	^ self asSet
+	^ self asSet asDataSeries
