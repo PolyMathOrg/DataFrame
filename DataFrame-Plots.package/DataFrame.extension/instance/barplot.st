@@ -1,7 +1,7 @@
 *DataFrame-Plots
 barplot
 
-	| composer b ds n palette color |
+	| n composer palette b |
 
 	n := self numericColumnNames size.
 	composer := RTComposer new.
@@ -14,7 +14,6 @@ barplot
 		b view: composer view.
 		b build.
 		composer group: 'b', i asString ].
-	
 	
 	2 to: n do: [ :i |
 		composer
