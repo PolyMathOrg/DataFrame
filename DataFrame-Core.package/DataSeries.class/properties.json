@@ -1,11 +1,13 @@
 {
-	"commentStamp" : "",
-	"super" : "Array",
-	"category" : "DataFrame-Core-DataFrame-Core",
-	"classinstvars" : [ ],
-	"pools" : [ ],
+	"classtraitcomposition" : "TDataSlicer classTrait",
 	"classvars" : [ ],
 	"instvars" : [ ],
 	"name" : "DataSeries",
-	"type" : "variable"
+	"commentStamp" : "",
+	"super" : "Array",
+	"traitcomposition" : "TDataSlicer",
+	"type" : "variable",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"category" : "DataFrame-Core"
 }

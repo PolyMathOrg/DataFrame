@@ -1,14 +1,16 @@
 {
-	"commentStamp" : "<historical>",
-	"super" : "OrderedCollection",
-	"category" : "DataFrame-Core-DataFrame-Core",
-	"classinstvars" : [ ],
-	"pools" : [ ],
+	"classtraitcomposition" : "TDataSlicer classTrait",
 	"classvars" : [ ],
 	"instvars" : [
 		"rows",
 		"columnNames"
 	],
 	"name" : "DataFrame",
-	"type" : "normal"
+	"commentStamp" : "<historical>",
+	"super" : "OrderedCollection",
+	"traitcomposition" : "TDataSlicer",
+	"type" : "normal",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"category" : "DataFrame-Core"
 }

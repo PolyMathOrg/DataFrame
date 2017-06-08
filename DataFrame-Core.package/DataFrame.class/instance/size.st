@@ -1,5 +1,4 @@
-initialization
+enumerating
 size
-	"The number of rows"
-	
+
 	^ rows size
