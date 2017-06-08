@@ -1,1 +1,1 @@
-I store the examples of how a DataFrame can be used
+I store the examples of  DataFrame usage

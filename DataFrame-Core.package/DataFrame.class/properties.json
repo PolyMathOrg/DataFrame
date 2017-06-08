@@ -1,6 +1,6 @@
 {
 	"commentStamp" : "<historical>",
-	"super" : "Collection",
+	"super" : "OrderedCollection",
 	"category" : "DataFrame-Core-DataFrame-Core",
 	"classinstvars" : [ ],
 	"pools" : [ ],
