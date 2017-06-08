@@ -17,4 +17,6 @@ baseline: spec
 			package: 'DataFrame-Tests' with: [ 
 				spec requires: 'DataFrame-Core' ];
 			package: 'DataFrame-Examples' with: [
+				spec requires: #('DataFrame-Core' 'DataFrame-Plots')];
+			package: 'DataFrame-DataSets' with: [
 				spec requires: 'DataFrame-Core']].
