@@ -1,0 +1,14 @@
+{
+	"commentStamp" : "<historical>",
+	"super" : "Collection",
+	"category" : "DataFrame-Core-DataFrame-Core",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"rows",
+		"columnNames"
+	],
+	"name" : "DataFrame",
+	"type" : "normal"
+}

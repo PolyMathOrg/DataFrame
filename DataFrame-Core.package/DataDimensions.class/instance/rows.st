@@ -1,0 +1,4 @@
+accessing vectorwise
+rows
+	
+	^ x

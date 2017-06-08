@@ -1,0 +1,4 @@
+testing
+isNumeric
+
+	^ false

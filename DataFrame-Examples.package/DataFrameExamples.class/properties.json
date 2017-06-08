@@ -1,0 +1,11 @@
+{
+	"commentStamp" : "<historical>",
+	"super" : "GTExample",
+	"category" : "DataFrame-Examples",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [ ],
+	"name" : "DataFrameExamples",
+	"type" : "normal"
+}
