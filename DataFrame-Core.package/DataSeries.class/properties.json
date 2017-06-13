@@ -3,7 +3,7 @@
 	"classvars" : [ ],
 	"instvars" : [ ],
 	"name" : "DataSeries",
-	"commentStamp" : "",
+	"commentStamp" : "<historical>",
 	"super" : "Array",
 	"traitcomposition" : "TDataSlicer",
 	"type" : "variable",

@@ -1,0 +1,1 @@
+I am a pair of values corresponding to the numbers of rows and columns in a DataFrame. Technically, I am a Point, but unlike it I respond to messages 'rows' and 'columns'. And the way I am printed is also more informative.
