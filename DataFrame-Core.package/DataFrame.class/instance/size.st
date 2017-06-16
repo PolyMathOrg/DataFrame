@@ -1,4 +1,0 @@
-enumerating
-size
-
-	^ rows size

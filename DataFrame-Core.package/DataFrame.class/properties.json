@@ -2,12 +2,11 @@
 	"classtraitcomposition" : "TDataSlicer classTrait",
 	"classvars" : [ ],
 	"instvars" : [
-		"rows",
 		"columnNames"
 	],
 	"name" : "DataFrame",
 	"commentStamp" : "<historical>",
-	"super" : "OrderedCollection",
+	"super" : "Dictionary",
 	"traitcomposition" : "TDataSlicer",
 	"type" : "normal",
 	"classinstvars" : [ ],

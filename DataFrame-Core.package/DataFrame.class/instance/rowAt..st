@@ -1,4 +1,4 @@
 accessing
 rowAt: aNumber
 
-	^ rows at: aNumber
+	^ self at: (self keys at: aNumber).

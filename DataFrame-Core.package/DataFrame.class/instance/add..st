@@ -1,4 +1,4 @@
 adding
 add: aRow
 
-	rows := rows copyWith: aRow.
+	self at: (self size + 1) put: aRow.

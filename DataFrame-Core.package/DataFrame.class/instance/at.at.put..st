@@ -1,4 +1,4 @@
 accessing
-at: rowNumber at: columnNumber put: val
+at: rowIndex at: columnIndex put: val
 
-	^ (rows at: rowNumber) at: columnNumber put: val.
+	^ (self at: rowIndex) at: columnIndex put: val.

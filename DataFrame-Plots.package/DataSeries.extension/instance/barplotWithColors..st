@@ -1,10 +1,11 @@
 *DataFrame-Plots
-barplotWithColor: color
+barplotWithColors: colors
+
 	| uniqueValues points barWidth padding b ds |
 	
-	uniqueValues := self unique.
-	points := uniqueValues collect: [ :v |
-		v @ (self occurrencesOf: v) ].
+	uniqueValues := self unique asArray.
+	points := uniqueValues collectWithIndex: [ :v :i |
+		i @ (self occurrencesOf: v) ].
 	
 	b := RTGrapher new.
 	"b extent: 350 @ 300."
@@ -15,7 +16,7 @@ barplotWithColor: color
 	barWidth := (b extent x) / (uniqueValues size).
 	
 	"Adding space between bars"
-	barWidth := barWidth - (barWidth / 3).
+	barWidth := barWidth - (barWidth / 2.5).
 
 	ds := RTData new.
 	
@@ -24,18 +25,27 @@ barplotWithColor: color
 	ds x: [ :point | point x ].
 	ds y: [ :point | point y ].
 
-	ds dotShape rectangle color: color.
+	ds dotShape rectangle color: [ :point | colors at: point x ].
 
 	ds barShape
-		color: color;
+		color: [ :point | colors at: point x ];
 		width: barWidth.
+		
+	"ds barChartWithBarTitle: [ :point | uniqueValues at: point x ]."
+	ds barChartWithBarCenteredTitle: [ :point | uniqueValues at: point x ].
+		
 	b add: ds.
 	
-	padding := uniqueValues range / uniqueValues size / 1.5.
-	b minX: self min - padding.
-	b maxX: self max + padding.
+	padding := 0.5.
+	b minX: 0 + padding.
+	b maxX: uniqueValues size + padding.
 	
 	b withoutOrigin.
+	
+	b axisX
+		"labelConversion: [ :i | uniqueValues at: i ];"
+		noTick;
+		noLabel.
 		
 	b axisY
 		numberOfTicks: 5.

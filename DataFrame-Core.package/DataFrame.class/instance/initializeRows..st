@@ -1,7 +1,7 @@
 initialization
 initializeRows: anArray
 
-	rows := anArray collect: [ :row | row asDataSeries ].
+	anArray do: [ :row | self add: row asDataSeries ].
 	
-	columnNames := ((1 to: (rows  at: 1) size)
+	columnNames := ((1 to: (anArray first) size)
 		collect: [ :i | i asString ]) asDataSeries.

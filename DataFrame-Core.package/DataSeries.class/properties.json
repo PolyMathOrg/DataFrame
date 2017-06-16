@@ -1,7 +1,9 @@
 {
 	"classtraitcomposition" : "TDataSlicer classTrait",
 	"classvars" : [ ],
-	"instvars" : [ ],
+	"instvars" : [
+		"name"
+	],
 	"name" : "DataSeries",
 	"commentStamp" : "<historical>",
 	"super" : "Array",

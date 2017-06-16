@@ -1,5 +1,9 @@
 accessing
 columnAt: aNumber
 
-	^ (self collect: [ :row |
+	| series |
+	
+	series := (self collect: [ :row |
 			row at: aNumber ]) asDataSeries.
+		
+	^ series name: (columnNames at: aNumber).

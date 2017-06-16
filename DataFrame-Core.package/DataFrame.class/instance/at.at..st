@@ -1,4 +1,4 @@
 accessing
 at: rowNumber at: columnNumber
 
-	^ (rows at: rowNumber) at: columnNumber.
+	^ (self at: rowNumber) at: columnNumber.

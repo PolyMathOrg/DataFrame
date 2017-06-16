@@ -1,6 +1,10 @@
 tests
 testNameIndexColumn
 
+	| df |
+	df := DataFrame rows: #(('Name1')('Name2')).
+	df columnNames: #('Name').
+	
 	self shouldnt: [ 
-		DataFrame new column: 'Name'.
+		df column: 'Name'.
 	] raise: MessageNotUnderstood.
