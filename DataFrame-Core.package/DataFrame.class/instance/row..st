@@ -1,4 +1,4 @@
-not implemented
+accessing
 row: nameIndex
 
-	"I need to be implemented"
+	^ self at: nameIndex
