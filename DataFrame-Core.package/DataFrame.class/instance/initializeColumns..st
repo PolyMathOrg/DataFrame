@@ -5,8 +5,10 @@ initializeColumns: anArray
 	nRows := (anArray at: 1) size.
 	nCols := anArray size.
 	
-	nRows timesRepeat: [
-		self add: (DataSeries new: nCols) ].
+	1 to: nRows do: [ :i |
+		| series |
+		series := DataSeries new: nCols named: i.
+		self add: series ].
 	
 	1 to: nCols do: [ :j |
 		1 to: nRows do: [ :i |

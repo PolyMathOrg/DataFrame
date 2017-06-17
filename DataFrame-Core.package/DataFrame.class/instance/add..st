@@ -1,4 +1,4 @@
 adding
-add: aRow
+add: aDataSeries
 
-	self at: (self size + 1) put: aRow.
+	self at: aDataSeries name put: aDataSeries.
