@@ -1,9 +1,8 @@
 printing
 printOn: aStream
-
-	aStream nextPutAll: '(' asString.
 	
-	self do: [ :v |
-		aStream nextPutAll: v asString, ' ' ].
-	
-	aStream nextPutAll: ')' asString.
+	self keysAndValuesDo: [ :key :value |
+		aStream nextPutAll: key asString.
+		aStream tab.
+		aStream nextPutAll: value asString.
+		aStream cr ].

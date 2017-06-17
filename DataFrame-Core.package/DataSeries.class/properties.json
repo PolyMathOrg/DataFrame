@@ -6,9 +6,9 @@
 	],
 	"name" : "DataSeries",
 	"commentStamp" : "<historical>",
-	"super" : "Array",
+	"super" : "Dictionary",
 	"traitcomposition" : "TDataSlicer",
-	"type" : "variable",
+	"type" : "normal",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"category" : "DataFrame-Core"

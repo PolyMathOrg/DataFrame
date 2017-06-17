@@ -1,14 +1,17 @@
 as yet unclassified
 deduceType
 
-	| convertedSeries |
+	| convertedSeries numSeries |
 	
 	[ convertedSeries := self collect: [ :v | v asNumber ].
 		"this will be executed if all the elements
 		can be converted to a number"
 		
-		convertedSeries doWithIndex: [ :v :i | 
-			self at: i put: v ].
+		numSeries := DataSeriesNumeric new: self size.
 		
+		convertedSeries keysAndValuesDo: [ :key :value | 
+			numSeries at: key put: value ].
+		
+		^ numSeries.
 	] ifError: [ "do nothing" ]
 		
