@@ -4,7 +4,6 @@ column: nameIndex
 	columnNames detect: [ :name | name = nameIndex ]
 		ifFound: [ 
 			| series |
-			
 			series := (self collect: [ :row |
 				row at: nameIndex ]) asDataSeries.
 			^ series name: nameIndex ]

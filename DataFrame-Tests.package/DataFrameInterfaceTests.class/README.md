@@ -1,1 +1,0 @@
-I am a test case for testing the public interface of a DataFrame. My tests make sure that the instance of DataFrame class, as well as the class itself, understand the messages they are supposed to understand. These tests don't check if the messages are implemented correctly. Only whether or not they are supported.

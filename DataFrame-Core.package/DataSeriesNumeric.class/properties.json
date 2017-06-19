@@ -7,5 +7,5 @@
 	"classvars" : [ ],
 	"instvars" : [ ],
 	"name" : "DataSeriesNumeric",
-	"type" : "variable"
+	"type" : "normal"
 }

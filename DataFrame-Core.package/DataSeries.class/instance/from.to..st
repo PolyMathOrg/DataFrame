@@ -1,5 +1,9 @@
 instance creation
 from: start to: end
 
-	^ ((start to: end) collect: [ :i |
-		self at: (self keys at: i) ]) asDataSeries.
+	| series |
+	series := ((start to: end) collect: [ :i |
+		self at: (self keyAtIndex: i) ]) asDataSeries.
+	
+	series keys: (self keys copyFrom: start to: end).
+	^ series.

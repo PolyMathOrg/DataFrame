@@ -6,4 +6,4 @@ initializeRows: anArray
 		series := row asDataSeries.
 		self add: (series name: i) ].
 	
-	self columnNames: (self at: 1) keys asDataSeries.
+	self columnNames: (self at: 1) keys.

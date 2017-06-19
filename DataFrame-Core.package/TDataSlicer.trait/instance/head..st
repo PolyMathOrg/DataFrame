@@ -8,4 +8,4 @@ head: aNumber
 		ifFalse: [ n := self size ].
 		
 	^ self class newFrom: (
-		(1 to: n) collect: [ :i | self at: i ]).
+		(1 to: n) collect: [ :i | self at: (self keyAtIndex: i)]).

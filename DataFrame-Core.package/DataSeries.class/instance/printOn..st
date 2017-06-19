@@ -1,7 +1,10 @@
 printing
 printOn: aStream
 
-	self name printOn: aStream.
+	self name isNil
+		ifTrue: [ aStream nextPutAll: '(unnamed)' ]
+		ifFalse: [ aStream nextPutAll: '[', self name asString, ']' ].
+		
 	aStream cr.
 	
 	self keysAndValuesDo: [ :key :value |

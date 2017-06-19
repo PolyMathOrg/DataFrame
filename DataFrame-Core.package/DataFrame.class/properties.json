@@ -1,13 +1,13 @@
 {
-	"classtraitcomposition" : "TDataSlicer classTrait",
+	"classtraitcomposition" : "TDataSlicer classTrait + TDataIndexer classTrait",
 	"classvars" : [ ],
 	"instvars" : [
 		"columnNames"
 	],
 	"name" : "DataFrame",
 	"commentStamp" : "<historical>",
-	"super" : "Dictionary",
-	"traitcomposition" : "TDataSlicer",
+	"super" : "OrderedDictionary",
+	"traitcomposition" : "TDataSlicer + TDataIndexer",
 	"type" : "normal",
 	"classinstvars" : [ ],
 	"pools" : [ ],

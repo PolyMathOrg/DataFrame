@@ -1,7 +1,7 @@
 accessing
 columnNames: anArray
 
-	columnNames := anArray asDataSeries.
+	columnNames := anArray.
 
 	self do: [ :rowSeries |
 		rowSeries keys: anArray ].

@@ -1,11 +1,11 @@
 {
-	"commentStamp" : "OleksandrZaytsev 5/20/2017 04:40",
+	"commentStamp" : "",
 	"super" : "TestCase",
 	"category" : "DataFrame-Tests",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [ ],
-	"name" : "DataFrameInterfaceTests",
+	"name" : "DataSlicerTests",
 	"type" : "normal"
 }
