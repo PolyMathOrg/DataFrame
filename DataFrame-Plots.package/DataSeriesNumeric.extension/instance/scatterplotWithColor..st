@@ -4,7 +4,7 @@ scatterplotWithColor: color
 	| b ds |
 	
 	b := RTGrapher new.
-	b extent: 300 @ 300.
+	b extent: 300 @ 200.
 	
 	ds := RTData new.
 	ds dotShape circle color: color.

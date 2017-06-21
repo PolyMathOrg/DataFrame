@@ -1,17 +1,19 @@
 *DataFrame-Plots
-scatterplotMatrixOn: categicalColName
+scatterplotMatrixOn: categoricalColName
 
-	| categories palette colorDict observedCols categoricalColIndex b label block lb |
+	| categories palette colorDict observedCols b label block lb |
 	
-	categories := (self column: categicalColName) unique.
+	categories := (self column: categoricalColName) unique.
 	palette := DataColor palette: categories size.
 	
 	colorDict := Dictionary new.
 	
-	categories doWithIndex: [ :category :i |
+	categories values doWithIndex: [ :category :i |
 		colorDict at: category put: (palette at: i) ].
 	
-	observedCols := self numericColumnNames copyWithout: categicalColName.
+	observedCols := self columnNames select: [ :name |
+		(self column: name) isNumeric and:
+		(name = categoricalColName) not ].
 	
 	b := DataScatterplotMatrix new.
 
@@ -40,15 +42,13 @@ scatterplotMatrixOn: categicalColName
 	b lineShape: (RTStyledMultiLine new
 		dashedLine;
 		width: 0.2; yourself).
-
-	categoricalColIndex := self columnNames indexOf: categicalColName.
 	
 	b shape circle
 		size: 3.5;
-		color: [ :a | colorDict at: (a at: categoricalColIndex) ].
+		color: [ :a | colorDict at: (a at: categoricalColName) ].
 
-	observedCols doWithIndex: [ :name :i |
-		b metrics at: name put: [ :row | row at: i ] ].
+	observedCols do: [ :name |
+		b metrics at: name put: [ :row | row at: name ] ].
 
 	b build.
 
@@ -57,7 +57,7 @@ scatterplotMatrixOn: categicalColName
 		lb := RTLegendBuilder new.
 		lb right.
 		lb view: b view.
-		lb addText: categicalColName asString.
+		lb addText: categoricalColName asString.
 	
 		categories do: [ :category |
 			lb addColor: (colorDict at: category )

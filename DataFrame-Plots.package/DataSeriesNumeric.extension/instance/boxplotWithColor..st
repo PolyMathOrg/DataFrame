@@ -4,10 +4,10 @@ boxplotWithColor: color
 	| b ds |
 	
 	b := RTGrapher new.
-	b extent: 70 @ 300.
+	b extent: 100 @ 300.
 	
 	ds := RTBoxPlotDataSet new.
-	ds points: self.
+	ds points: self values.
 		
 	ds boxShape
 		fillColor: color.
