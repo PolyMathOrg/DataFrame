@@ -14,5 +14,6 @@ testDataFrameTailN
 		((df size - 3 + 1 to: df size)
 			collect: [ :i |
 				{ i * 10 . i * 100 } ]).
+	dfExpected keys: #(18 19 20).
 			
 	self assert: slice equals: dfExpected.

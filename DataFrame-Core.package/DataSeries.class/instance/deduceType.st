@@ -3,7 +3,7 @@ deduceType
 
 	| convertedSeries numSeries |
 	
-	[ convertedSeries := self collect: [ :v | v asNumber ].
+	[ convertedSeries := self values collect: [ :v | v asNumber ].
 		"this will be executed if all the elements
 		can be converted to a number"
 		

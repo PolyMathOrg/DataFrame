@@ -10,7 +10,7 @@ fromCsv: pathToFile
 		collect: [:e | e findTokens: $,]. " split into fields "
 
 	df := self rows: (data copyFrom: 2 to: data size).	
-	df columnNames: (data at: 1).
+	df columnNames: (data at: 1) asArray.
 	
 	"Deduce types"
 	1 to: (df columnNames size) do: [ :i | | col convertedCol |

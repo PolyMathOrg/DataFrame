@@ -7,7 +7,7 @@ scatterplot
 	palette := DataColor palette: n.
 	
 	b := RTGrapher new.
-	b extent: 300 @ 300.
+	b extent: 300 @ 250.
 	
 	(self numericColumnNames) doWithIndex: [ :columnName :i |
 		ds := RTData new.

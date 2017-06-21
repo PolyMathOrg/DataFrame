@@ -1,11 +1,12 @@
 *DataFrame-Plots
-barplotWithColors: colors
+histogramWithColors: colors
 
 	| uniqueValues points barWidth padding b ds |
 	
-	uniqueValues := self unique asArray.
-	points := uniqueValues collectWithIndex: [ :v :i |
-		i @ (self occurrencesOf: v) ].
+	uniqueValues := self unique.
+	
+	points := uniqueValues collect: [ :v |
+		(uniqueValues indexOf: v) @ (self occurrencesOf: v) ].
 	
 	b := RTGrapher new.
 	"b extent: 350 @ 300."
@@ -31,7 +32,6 @@ barplotWithColors: colors
 		color: [ :point | colors at: point x ];
 		width: barWidth.
 		
-	"ds barChartWithBarTitle: [ :point | uniqueValues at: point x ]."
 	ds barChartWithBarCenteredTitle: [ :point | uniqueValues at: point x ].
 		
 	b add: ds.

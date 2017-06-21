@@ -1,5 +1,5 @@
 *DataFrame-Plots
-barplot
+histogram
 	
 	| uniqueValues colors |
 	
@@ -9,4 +9,4 @@ barplot
 		ifTrue: [ colors := DataColor palette: uniqueValues size ]
 	 	ifFalse: [ colors := uniqueValues collect: [ :v | DataColor blue ] ].
 		
-	^ self barplotWithColors: colors.
+	^ self histogramWithColors: colors.

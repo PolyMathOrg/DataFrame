@@ -1,4 +1,7 @@
 as yet unclassified
 unique
 
-	^ self asSet asDataSeries
+	| series |
+	series := self asSet asDataSeries.
+	series name: self name.
+	^ series

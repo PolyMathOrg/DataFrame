@@ -1,15 +1,22 @@
 instance creation
-newFrom: aDictOrCollection
+newFrom: aCollection
 	
 	| df |
 	
-	((aDictOrCollection isKindOf: Dictionary) or:
-	 (aDictOrCollection isKindOf: OrderedDictionary))
-		ifTrue: [ ^ super newFrom: aDictOrCollection ].
+	((aCollection isKindOf: Dictionary) or:
+	 (aCollection isKindOf: OrderedDictionary))
+		ifTrue: [ ^ super newFrom: aCollection ].
+		
+	"If all the values are associations"
+	aCollection
+		detect: [ :each |
+			(each isKindOf: Association) not ]
+		ifNone: [ ^ super newFrom: aCollection ].
+		
 		
 	df := self new.
 	
-	aDictOrCollection doWithIndex: [ :value :i |
+	aCollection doWithIndex: [ :value :i |
 		df at: i put: value ].
 	
 	^ df
