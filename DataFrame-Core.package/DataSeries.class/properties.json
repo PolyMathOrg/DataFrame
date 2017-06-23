@@ -1,5 +1,5 @@
 {
-	"classtraitcomposition" : "TDataSlicer classTrait + TDataIndexer classTrait",
+	"classtraitcomposition" : "TDataSlicer classTrait + TDataIndexer classTrait + TDataSequenceable classTrait",
 	"classvars" : [ ],
 	"instvars" : [
 		"name"
@@ -7,7 +7,7 @@
 	"name" : "DataSeries",
 	"commentStamp" : "<historical>",
 	"super" : "OrderedDictionary",
-	"traitcomposition" : "TDataSlicer + TDataIndexer",
+	"traitcomposition" : "TDataSlicer + TDataIndexer + TDataSequenceable",
 	"type" : "normal",
 	"classinstvars" : [ ],
 	"pools" : [ ],
