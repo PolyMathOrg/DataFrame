@@ -8,4 +8,5 @@ columns: anArray
 			(self column: name) ]).
 		
 	df columnNames: anArray.
+	df rowNames: self rowNames.
 	^ df

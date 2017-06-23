@@ -1,7 +1,7 @@
 tests
 testCrossTabulation
 
-	| df crossTab |
+	| df expected |
 	
 	df := DataFrame rows: #(
 		(Male Young)
@@ -11,7 +11,10 @@ testCrossTabulation
 		(Male Old)).
 	df columnNames: #(Gender Age).
 	
-	crossTab := df crossTabulate: #Gender with: #Age.
+	expected := DataFrame rows:
+		#((1 1)(2 1)).
+		
+	expected rowNames: #(Male Female).
+	expected columnNames: #(Young Old).	
 	
-	self assert: (crossTab isKindOf: DataFrame).
-	self assert: crossTab dimension equals: 2@2.
+	self assert: (df crossTabulate: #Gender with: #Age) equals: expected.

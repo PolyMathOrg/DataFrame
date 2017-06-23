@@ -1,7 +1,11 @@
 as yet unclassified
 unique
 
-	| series |
-	series := self asSet asDataSeries.
-	series name: self name.
-	^ series
+	| unique |
+	unique := LinkedList new.
+
+	self collect: [ :each |
+	(unique includes: each)
+		ifFalse: [ unique add: each ] ].
+	
+	^ unique asDataSeries.
