@@ -8,4 +8,6 @@ unique
 	(unique includes: each)
 		ifFalse: [ unique add: each ] ].
 	
-	^ unique asDataSeries.
+	unique := unique asDataSeries.
+	unique name: self name.
+	^ unique
