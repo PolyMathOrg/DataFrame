@@ -1,8 +1,9 @@
 # DataFrame in Pharo
-GSoC 2017 project of Oleksandr Zaytsev (Oleks)
+In Smalltalk despite the fact that many important analysis tools are already present (e.g., in the PolyMath library), we are still missing this essential part of the data science toolkit. These specialized data structures for tabular data sets can provide us with a simple and powerful API for summarizing, cleaning, and manipulating a wealth of data-sources that are currently cumbersome to use. In this paper we introduce the DataFrame and DataSeries collections - that are specifically designed for working with structured data.
 
-# Installation
-The following script installs DataFrame and its dependencies in Pharo 6:
+## Installation
+The following script installs DataFrame and its dependencies in Pharo 6
+
 ```smalltalk
 Metacello new
   baseline: 'DataFrame';
@@ -10,16 +11,17 @@ Metacello new
   load.
 ```
 
-# Tutorial
+## Tutorial
 There are two primary data structures in this package:
 * `DataSeries` can be seen as an Ordered Collection that combines the properties of an Array and a Dictionary, while extending the functionality of both. Every DataSeries has a name and contains an array of data mapped to a corresponding array of keys (that are used as index values).
 * `DataFrame` is a tabular data structure that can be seen as an ordered collection of columns. It works like a spreadsheet or a relational database with one row per subject and one column for each subject identifier, outcome variable, explanatory variable etc. A DataFrame has both row and column indices which can be changed if needed. The important feature of a DataFrame is that whenever we ask for a specific row or column, it responds with a DataSeries object that preserves the same indexing.
 
-## Creating a DataFrame
+### Creating a DataFrame
 There are four ways of creating a data frame
 
 #### 1. Creating an empty DataFrame
 You can create an empty instance of `DataFrame` using the `new` message
+
 ```smalltalk
 df := DataFrame new.
 ```
@@ -30,6 +32,7 @@ df add: #('Barcelona' 1.609 true).
 
 #### 2. Creating a DataFrame from an array of rows
 This way is the best for creating simple examples for testing since you can see how the data will be arranged in your data frame.
+
 ```smalltalk
 df := DataFrame rows: #(
    ('Barcelona' 1.609 true)
@@ -39,6 +42,7 @@ df := DataFrame rows: #(
 
 #### 3. Creating a DataFrame from an array of columns
 We can do the same by passing an array of columns
+
 ```smalltalk
 df := DataFrame rows: #(
    ('Barcelona' 'Dubai' 'London')
@@ -46,6 +50,7 @@ df := DataFrame rows: #(
    (true true false)).
 ```
 In both cases the created data frame will look like this
+
 ```
      1            2      3
 1    'Barcelona'  1.609  true
