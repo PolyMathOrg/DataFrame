@@ -18,7 +18,7 @@ There are two primary data structures in this package:
 ## Creating a DataFrame
 There are four ways of creating a data frame
 
-### 1. Creating an empty DataFrame
+#### 1. Creating an empty DataFrame
 You can create an empty instance of `DataFrame` using the `new` message
 ```smalltalk
 df := DataFrame new.
@@ -28,7 +28,7 @@ The data can be added later using the `add:` message.
 df add: #('Barcelona' 1.609 true).
 ```
 
-### 2. Creating a DataFrame from an array of rows
+#### 2. Creating a DataFrame from an array of rows
 This way is the best for creating simple examples for testing since you can see how the data will be arranged in your data frame.
 ```smalltalk
 df := DataFrame rows: #(
@@ -37,7 +37,7 @@ df := DataFrame rows: #(
    ('London' 8.788 false)).
 ```
 
-### 3. Creating a DataFrame from an array of columns
+#### 3. Creating a DataFrame from an array of columns
 We can do the same by passing an array of columns
 ```smalltalk
 df := DataFrame rows: #(
@@ -53,7 +53,7 @@ In both cases the created data frame will look like this
 3    'London'     8.788  false
 ```
 
-### 4. Reading the data from file
+#### 4. Reading the data from file
 This is the most common way of creating a data frame. You have some dataset in a file (CSV, Excel etc.) - just ask a `DataFrame` to read it. At this point only CSV files are supported, but very soon you will also be able to read the data from other formats.
 
 ```smalltalk
