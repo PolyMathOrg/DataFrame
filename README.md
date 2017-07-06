@@ -1,5 +1,5 @@
 # DataFrame in Pharo
-In Smalltalk despite the fact that many important analysis tools are already present (e.g., in the PolyMath library), we are still missing this essential part of the data science toolkit. These specialized data structures for tabular data sets can provide us with a simple and powerful API for summarizing, cleaning, and manipulating a wealth of data-sources that are currently cumbersome to use. In this paper we introduce the DataFrame and DataSeries collections - that are specifically designed for working with structured data.
+In Smalltalk despite the fact that many important analysis tools are already present (for example, in the PolyMath library), we are still missing this essential part of the data science toolkit. These specialized data structures for tabular data sets can provide us with a simple and powerful API for summarizing, cleaning, and manipulating a wealth of data sources that are currently cumbersome to use. The DataFrame and DataSeries collections, stored in this repository, are specifically designed for working with structured data.
 
 ## Installation
 The following script installs DataFrame and its dependencies in Pharo 6
