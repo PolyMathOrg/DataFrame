@@ -125,4 +125,18 @@ The first line will return an object of `DataDimensions` class. It is just a spe
 ```
 
 ### Accessing rows and columns
-The important feature of a DataFrame is that whenever we ask for a specific row or column, it responds with a DataSeries object that preserves the same indexing. 
+Rows and columns of a data frame can be accessed either by their names or their numeric indexes. Afrer changing the names of rows and columns to `#(A B C)` and `#(City Population SomeBool)`, as shown above, how we can now access row _'C'_ and the column _'Population'_ of a data frame
+
+```smalltalk
+df row: 'C'.
+df column: 'Population'.
+```
+
+We can also access them by their numeric indexes
+
+```smalltalk
+df rowAt: 3.
+df columnAt: 2.
+```
+
+The important feature of a DataFrame is that whenever we ask for a specific row or column, it responds with a DataSeries object that preserves the same indexing.
