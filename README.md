@@ -32,9 +32,9 @@ series keys: #(k1 k2 k3).
 
 ### Creating a DataFrame
 There are four ways of creating a data frame:
-1. Creating an empty DataFrame, then filling it with data
-2. Creating a DataFrame from an array of rows
-3. Creating a DataFrame from an array of columns
+1. Creating an empty data frame, then filling it with data
+2. Creating a data frame from an array of rows
+3. Creating a data frame from an array of columns
 4. Reading data from a file
 
 #### Creating an empty DataFrame
