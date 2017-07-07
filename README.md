@@ -76,6 +76,22 @@ In both cases the created data frame will look like this
 3    'London'     8.788  false
 ```
 
+As you can see, both row and column names were automatically set to numeric sequences. We can using change them by passing an array of new names. This array must be of the same size as the number of rows and columns.
+
+```smalltalk
+df columnNames: #(City Population SomeBool).
+df rowNames: #(A B C).
+```
+
+Now if we print the DataFrame, we will see this
+
+```
+     City         Population  SomeBool
+A    'Barcelona'  1.609       true
+B    'Dubai'      2.789       true
+C    'London'     8.788       false
+```
+
 #### Reading data from a file
 This is the most common way of creating a data frame. You have some dataset in a file (CSV, Excel etc.) - just ask a `DataFrame` to read it. At this point only CSV files are supported, but very soon you will also be able to read the data from other formats.
 
