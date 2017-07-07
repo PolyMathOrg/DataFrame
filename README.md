@@ -14,13 +14,20 @@ Metacello new
 ## Tutorial
 There are two primary data structures in this package:
 * `DataSeries` can be seen as an Ordered Collection that combines the properties of an Array and a Dictionary, while extending the functionality of both. Every DataSeries has a name and contains an array of data mapped to a corresponding array of keys (that are used as index values).
-* `DataFrame` is a tabular data structure that can be seen as an ordered collection of columns. It works like a spreadsheet or a relational database with one row per subject and one column for each subject identifier, outcome variable, explanatory variable etc. A DataFrame has both row and column indices which can be changed if needed. The important feature of a DataFrame is that whenever we ask for a specific row or column, it responds with a DataSeries object that preserves the same indexing.
+* `DataFrame` is a tabular data structure that can be seen as an ordered collection of columns. It works like a spreadsheet or a relational database with one row per subject and one column for each subject identifier, outcome variable, explanatory variable etc. A DataFrame has both row and column indices which can be changed if needed.
 
 ### Working with DataSeries
 The easiest way of creating a series is to convert another collection (for example, an Array) to DataSeries
 
 ```smalltalk
 series := #(a b c) asDataSeries.
+```
+
+The keys will be automatically set to the numeric sequence of the array indexes, which can be described as an interval (1 to: n), where n is the size of array. The name of the series at this point will remain empty. Both the name and the keys of a DataSeries can be changed later, as follows:
+
+```smalltalk
+series name: 'letters'.
+series keys: #(k1 k2 k3).
 ```
 
 ### Creating a DataFrame
@@ -75,3 +82,14 @@ This is the most common way of creating a data frame. You have some dataset in a
 ```smalltalk
 df := DataFrame fromCsv: 'path/to/your/file.csv'.
 ```
+
+### Loading the built-in datasets
+DataFrame provides several famous datasets for you to play with. They are compact and can be loaded with a simple message. At this only two datasets are supported - Iris and Boston Housing Data.
+
+```smalltalk
+df := DataFrame loadIris.
+df := DataFrame loadHousing.
+```
+
+### Accessing rows and columns
+The important feature of a DataFrame is that whenever we ask for a specific row or column, it responds with a DataSeries object that preserves the same indexing. 
