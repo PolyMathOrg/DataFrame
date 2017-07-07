@@ -1,0 +1,11 @@
+{
+	"commentStamp" : "",
+	"super" : "FTSimpleDataSource",
+	"category" : "DataFrame-FTable",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [ ],
+	"name" : "DataFrameFTData",
+	"type" : "normal"
+}
