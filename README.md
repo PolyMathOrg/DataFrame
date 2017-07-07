@@ -67,7 +67,24 @@ df := DataFrame rows: #(
    (1.609 2.789 8.788)
    (true true false)).
 ```
-In both cases the created data frame will look like this
+
+#### Reading data from a file
+This is the most common way of creating a data frame. You have some dataset in a file (CSV, Excel etc.) - just ask a `DataFrame` to read it. At this point only CSV files are supported, but very soon you will also be able to read the data from other formats.
+
+```smalltalk
+df := DataFrame fromCsv: 'path/to/your/file.csv'.
+```
+
+### Loading the built-in datasets
+DataFrame provides several famous datasets for you to play with. They are compact and can be loaded with a simple message. At this only two datasets are supported - Iris and Boston Housing Data.
+
+```smalltalk
+df := DataFrame loadIris.
+df := DataFrame loadHousing.
+```
+
+### Exploring the created DataFrame
+If we print (Ctrl+P) the data frame that was created from an array of rows or columns as described in previous sections, we will see the following table
 
 ```
      1            2      3
@@ -83,7 +100,7 @@ df columnNames: #(City Population SomeBool).
 df rowNames: #(A B C).
 ```
 
-Now if we print the DataFrame, we will see this
+Now if we print our data frame, it will look like this
 
 ```
      City         Population  SomeBool
@@ -92,19 +109,19 @@ B    'Dubai'      2.789       true
 C    'London'     8.788       false
 ```
 
-#### Reading data from a file
-This is the most common way of creating a data frame. You have some dataset in a file (CSV, Excel etc.) - just ask a `DataFrame` to read it. At this point only CSV files are supported, but very soon you will also be able to read the data from other formats.
+To get the dimensions of a data frame, its rows, and columns, we can say
 
 ```smalltalk
-df := DataFrame fromCsv: 'path/to/your/file.csv'.
+df dimensions.
+df dimensions rows.
+df dimensions columns.
 ```
 
-### Loading the built-in datasets
-DataFrame provides several famous datasets for you to play with. They are compact and can be loaded with a simple message. At this only two datasets are supported - Iris and Boston Housing Data.
+The first line will return an object of `DataDimensions` class. It is just a specialized `Point` which responds to `rows` and `columns` messages instead of `x` and `y`. It also reimplements the `printOn:` message, so if you press `Ctrl+P` on `df dimensions`, you will see something like this
 
-```smalltalk
-df := DataFrame loadIris.
-df := DataFrame loadHousing.
+```
+3 rows
+3 columns
 ```
 
 ### Accessing rows and columns
