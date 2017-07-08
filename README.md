@@ -139,11 +139,11 @@ df rowAt: 3.
 df columnAt: 2.
 ```
 
-The important feature of a `DataFrame` is that whenever we ask for a specific row or column, it responds with a `DataSeries` object that preserves the same indexing. So, for example, if you take the _'Population'_ column of the data frame described above, you will get a series named _'Population'_ with keys _'A'_, _'B'_, and _'C'_.
+The important feature of a `DataFrame` is that whenever we ask for a specific row or column, it responds with a `DataSeries` object that preserves the same indexing. So, for example, if you take row _'B'_ of a data frame described above, you will get a series named _'B'_ with keys _'City'_, _'Population'_, and _'SomeBool'_.
 
 ```
-[Population]
-A   1.609
-B   2.789
-C   8.788
+[B]
+City        Dubai
+Population  2.789
+SomeBool    true
 ```
