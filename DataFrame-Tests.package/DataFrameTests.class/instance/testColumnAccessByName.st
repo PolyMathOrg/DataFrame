@@ -1,13 +1,12 @@
 tests
 testColumnAccessByName
 
-	| df expectedColumn |
+	| actualSeries expectedSeries |
 	
-	df := DataFrame rows: #((1 2)(3 4)).
-	df columnNames: #(a b).
+	expectedSeries := #(Barcelona Dubai London) asDataSeries.
+	expectedSeries name: #City.
+	expectedSeries keys: df rowNames.
 	
-	expectedColumn := #(1 3) asDataSeries.
-	expectedColumn name: 'a'.
-		
-	self assert: (df isKindOf: DataFrame).
-	self assert: (df column: 'a') equals: expectedColumn.
+	actualSeries := df column: #City.
+	
+	self assert: actualSeries equals: expectedSeries.

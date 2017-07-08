@@ -11,8 +11,8 @@ printOn: aStream
 		separatedBy: [ aStream space ].
 	aStream nextPutAll: ']'; cr.
 				
-	self keysAndValuesDo: [ :key :value |
+	"self keysAndValuesDo: [ :key :value |
 		key printOn: aStream.
 		aStream tab.
 		value asArray printOn: aStream.
-		aStream cr ].
+		aStream cr ]."

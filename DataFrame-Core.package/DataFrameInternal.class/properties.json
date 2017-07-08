@@ -1,0 +1,13 @@
+{
+	"commentStamp" : "OleksandrZaytsev 7/8/2017 21:09",
+	"super" : "Collection",
+	"category" : "DataFrame-Core",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"matrix"
+	],
+	"name" : "DataFrameInternal",
+	"type" : "normal"
+}

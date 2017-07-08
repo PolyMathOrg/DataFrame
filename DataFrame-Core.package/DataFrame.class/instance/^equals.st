@@ -1,14 +1,17 @@
 comparing
 = aDataFrame
 
-	((aDataFrame species = self species)
-		and: [ self columnNames = aDataFrame columnNames
-		and: [ self keys = aDataFrame keys
-		and: [ self size = aDataFrame size ]]])
-	ifFalse: [ ^ false ].
+	"Most objects will fail here"
+	aDataFrame species = self species
+		ifFalse: [ ^ false ].
 	
-	1 to: self size do: [ :i |
-		((self rowAt: i) = (aDataFrame rowAt: i))
-			ifFalse: [ ^ false ] ].
+	"This is the fastest way for two data frames with different dimensions"
+	aDataFrame dimensions = self dimensions
+		ifFalse: [ ^ false ].
 	
-	^ true
+	"If the names are different we don't need to iterate through values"	
+	(aDataFrame rowNames = self rowNames
+		and: [ aDataFrame columnNames = self columnNames ])
+		ifFalse: [ ^ false ].
+		
+	^ aDataFrame contents = self contents.

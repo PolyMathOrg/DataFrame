@@ -5,7 +5,7 @@ testCrossTabulateWith
 	series1 := #(A B C A A B C A B B) asDataSeries.
 	series2 := #(1 2 1 2 1 1 2 1 2 2) asDataSeries.
 	
-	expected := DataFrame rows:
+	expected := DataFrame fromRows:
 		#((3 1)(1 3)(1 1)).
 		
 	expected rowNames: #(A B C).

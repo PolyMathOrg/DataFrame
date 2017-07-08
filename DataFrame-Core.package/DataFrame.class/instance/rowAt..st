@@ -1,4 +1,8 @@
 accessing
 rowAt: aNumber
 
-	^ self at: (self keys at: aNumber).
+	| series |
+	series := (contents rowAt: aNumber) asDataSeries.
+	series name: (self rowNames at: aNumber).
+	series keys: self columnNames.
+	^ series

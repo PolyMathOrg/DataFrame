@@ -1,11 +1,12 @@
 accessing
-rowsAt: anArray
+rowsAt: anArrayOfNumbers
 
-	| df |
-	df := DataFrame rows: (anArray collect: [ :i | 
-		self rowAt: i ]).
+	| newRowNames |
 	
-	df keys: (anArray collect: [ :i |
-		self keys at: i ]).
-	
-	^ df
+	newRowNames := (anArrayOfNumbers collect: [ :i |
+		self rowNames at: i ]).
+
+	^ DataFrame
+		fromContents: (self contents rowsAt: anArrayOfNumbers)
+		rowNames: newRowNames
+		columnNames: self columnNames.

@@ -2,5 +2,5 @@ accessing
 dimensions
 
 	^ DataDimensions
-		rows: (self size)
-		columns: (columnNames size)
+		rows: (self numberOfRows)
+		columns: (self numberOfColumns)

@@ -2,7 +2,7 @@ tests
 testDataFrameTailN
 
 	| df slice dfExpected |
-	df := DataFrame rows: 
+	df := DataFrame fromRows: 
 		((1 to: 20) collect: [ :i |
 			{ i * 10 . i * 100 } ]).
 	

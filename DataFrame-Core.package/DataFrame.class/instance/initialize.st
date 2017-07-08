@@ -2,4 +2,6 @@ initialization
 initialize
 
 	super initialize.
-	columnNames := Array new.
+	
+	contents := DataFrameInternal new.
+	self setDefaultRowColumnNames.

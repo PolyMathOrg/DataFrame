@@ -7,7 +7,7 @@ crossTabulateWith: aSeries
 		ifFalse: [ SizeMismatch signal ].
 	
 	"TODO: Rewrite it with DataFrame>>select:"
-	df := DataFrame rows: 
+	df := DataFrame fromRows: 
 		(self unique collect: [ :each1 |
 			aSeries unique collect: [ :each2 |
 				(1 to: self size) inject: 0 into: [ :accum :i |

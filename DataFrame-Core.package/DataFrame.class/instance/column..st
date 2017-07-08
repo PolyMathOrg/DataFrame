@@ -1,11 +1,11 @@
 accessing
-column: nameIndex
+column: colName
 
-	columnNames detect: [ :name | name = nameIndex ]
-		ifFound: [ 
-			| series |
-			series := (self values collect: [ :row |
-				row at: nameIndex ]) asDataSeries.
-			^ series name: nameIndex ]
-		ifNone: [ 
-			NotFoundError signal ].
+	| index |
+	index := self columnNames indexOf: colName.
+	
+	"If a column with that name does not exist"
+	index = 0
+		ifTrue: [ NotFoundError signal ].
+		
+	^ self columnAt: index

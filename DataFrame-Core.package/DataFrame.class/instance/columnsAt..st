@@ -1,9 +1,12 @@
 accessing
-columnsAt: anArray
+columnsAt: anArrayOfNumbers
 
-	| names |
+	| newColumnNames |
 	
-	names := anArray collect: [ :i |
-		columnNames at: i ].
-	
-	^ self columns: names.
+	newColumnNames := (anArrayOfNumbers collect: [ :i |
+		self columnNames at: i ]).
+
+	^ DataFrame
+		fromContents: (self contents columnsAt: anArrayOfNumbers)
+		rowNames: self rowNames
+		columnNames: newColumnNames.

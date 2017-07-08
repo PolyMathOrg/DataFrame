@@ -8,7 +8,7 @@ frequencyTable
 	
 	proportion := count / self size.
 	
-	df := DataFrame columns:
+	df := DataFrame fromColumns:
 		{ count . proportion }.
 		
 	df rowNames: self unique.

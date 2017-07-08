@@ -1,4 +1,4 @@
 accessing
 rowNames: anArray
 
-	self keys: anArray
+	rowNames := anArray
