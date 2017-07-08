@@ -16,7 +16,7 @@ There are two primary data structures in this package:
 * `DataSeries` can be seen as an Ordered Collection that combines the properties of an Array and a Dictionary, while extending the functionality of both. Every DataSeries has a name and contains an array of data mapped to a corresponding array of keys (that are used as index values).
 * `DataFrame` is a tabular data structure that can be seen as an ordered collection of columns. It works like a spreadsheet or a relational database with one row per subject and one column for each subject identifier, outcome variable, explanatory variable etc. A DataFrame has both row and column indices which can be changed if needed.
 
-### Working with DataSeries
+### Creating DataSeries
 The easiest way of creating a series is to convert another collection (for example, an Array) to DataSeries
 
 ```smalltalk
@@ -139,4 +139,11 @@ df rowAt: 3.
 df columnAt: 2.
 ```
 
-The important feature of a DataFrame is that whenever we ask for a specific row or column, it responds with a DataSeries object that preserves the same indexing.
+The important feature of a `DataFrame` is that whenever we ask for a specific row or column, it responds with a `DataSeries` object that preserves the same indexing. So, for example, if you take the _'Population'_ column of the data frame described above, you will get a series named _'Population'_ with keys _'A'_, _'B'_, and _'C'_.
+
+```
+[Population]
+A   1.609
+B   2.789
+C   8.788
+```
