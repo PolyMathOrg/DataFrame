@@ -1,5 +1,5 @@
 *DataFrame-FTable
-openInWindow
+showWithGlamour
 
 	| table |
 
