@@ -124,6 +124,48 @@ The first line will return an object of `DataDimensions` class. It is just a spe
 3 columns
 ```
 
+#### Head & tail
+Now let's take a look at some bigger dataset, for example, Boston Housing Data
+
+```smalltalk
+df := DataFrame loadHousing.
+```
+
+This dataset has 489 entries. Printing this many rows is unnecessary. On larger datasets it can also be time consuming. So in order to make sure that the data was loaded and to take a quick look on it, we can print its head (first 5 rows) or tail (last 5 rows)
+
+```smalltalk
+df head.
+df tail.
+```
+
+Data frame responds to these messages with another `DataFrame` object containing the requested rows. Here is the example output of the `df head` message
+
+```
+    RM      LSTAT   PTRATIO MDEV
+1   6.575   4.98    15.3    504000.0
+2   6.421   9.14    17.8    453600.0
+3   7.185   4.03    17.8    728700.0
+4   6.998   2.94    18.7    701400.0
+5   7.147   5.33    18.7    760200.0
+```
+
+It is also possible to specify the number of rows that must be printed
+
+```smalltalk
+df head: 10.
+df tail: 3.
+```
+
+The same messages are also supported by the objects of `DataSeries` class. This means that we can also look at a head or tail of a specific column
+
+```smalltalk
+(df column: #LSTAT) head: 2.
+
+"[LSTAT]
+1   4.98
+2   9.14"
+```
+
 ### Accessing rows and columns
 Rows and columns of a data frame can be accessed either by their names or their numeric indexes. Afrer changing the names of rows and columns to `#(A B C)` and `#(City Population SomeBool)`, as shown above, how we can now access row _'C'_ and the column _'Population'_ of a data frame
 
