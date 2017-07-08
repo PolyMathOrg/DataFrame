@@ -160,10 +160,14 @@ The same messages are also supported by the objects of `DataSeries` class. This 
 
 ```smalltalk
 (df column: #LSTAT) head: 2.
+```
 
-"[LSTAT]
+The result will be another series
+
+```
+[LSTAT]
 1   4.98
-2   9.14"
+2   9.14
 ```
 
 ### Accessing rows and columns
