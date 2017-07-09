@@ -11,7 +11,7 @@ frequencyTable
 	df := DataFrame fromColumns:
 		{ count . proportion }.
 		
-	df rowNames: self unique.
+	df rowNames: self unique asArray.
 	df columnNames: #(Count Proportion).
 	
 	^ df

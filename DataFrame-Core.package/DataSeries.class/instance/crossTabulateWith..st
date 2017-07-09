@@ -8,13 +8,13 @@ crossTabulateWith: aSeries
 	
 	"TODO: Rewrite it with DataFrame>>select:"
 	df := DataFrame fromRows: 
-		(self unique collect: [ :each1 |
-			aSeries unique collect: [ :each2 |
+		(self unique asArray collect: [ :each1 |
+			aSeries unique asArray collect: [ :each2 |
 				(1 to: self size) inject: 0 into: [ :accum :i |
 					(((self at: i) = each1) and: ((aSeries at: i) = each2))
 						ifTrue: [ accum + 1 ]
 						ifFalse: [ accum ] ] ] ]).
 		
-	df rowNames: self unique.
-	df columnNames: aSeries unique.
+	df rowNames: self unique asArray.
+	df columnNames: aSeries unique asArray.
 	^ df
