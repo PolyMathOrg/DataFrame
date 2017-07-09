@@ -11,16 +11,32 @@ printOn: aStream
 		separatedBy: [ aStream space ].
 	aStream nextPutAll: ']'; cr.
 				
-	1 to: self numberOfRows do: [ :i  |
+	1 to: self numberOfRows - 1 do: [ :i  |
 		(self rowNames at: i) printOn: aStream.
 		aStream tab.
-		'(' printOn: aStream.
 		
 		1 to: self numberOfColumns - 1 do: [ :j |
 			(self at: i at: j) printOn: aStream.
 			aStream space ].
 		
 		"Last one without a space"
-		(self at: i at: (self numberOfColumns)) printOn: aStream.
-		')' printOn: aStream.
+		(self at: i
+			at: self numberOfColumns)
+			printOn: aStream.
+		
 		aStream cr ].
+	
+	"Last one without new line"
+	(self rowNames at: self numberOfRows) printOn: aStream.
+	aStream tab.
+		
+	1 to: self numberOfColumns - 1 do: [ :j |
+		(self at: self numberOfRows at: j) printOn: aStream.
+		aStream space ].
+		
+	"Last one without a space"
+	(self
+		at: self numberOfRows
+		at: self numberOfColumns)
+		printOn: aStream.
+		aStream space.

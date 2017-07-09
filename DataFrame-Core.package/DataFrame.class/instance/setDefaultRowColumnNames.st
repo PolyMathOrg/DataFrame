@@ -1,4 +1,4 @@
-initialization
+private
 setDefaultRowColumnNames
 
 	self rowNames: (1 to: self numberOfRows) asArray.

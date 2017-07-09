@@ -1,10 +1,12 @@
 tests
 testDataSeriesHeadN
 
-	| series slice |
-	series := (10 to: 100 by: 10) asDataSeries.
+	| actual expected |
 	
-	slice := series head: 3.
+	expected := #(5.1 4.9 4.7) asDataSeries.
+	expected name: series name.
+	expected keys: (1 to: 3).
+	
+	actual := series head: 3.
 
-	self assert: (slice isKindOf: DataSeries).
-	self assert: slice equals: (10 to: 30 by: 10) asDataSeries.
+	self assert: actual equals: expected.

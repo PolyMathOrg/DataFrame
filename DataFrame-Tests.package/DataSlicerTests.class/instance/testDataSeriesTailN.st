@@ -1,10 +1,13 @@
 tests
 testDataSeriesTailN
 
-	| series slice |
-	series := (10 to: 100 by: 10) asDataSeries.
+	| actual expected |
 	
-	slice := series tail: 3.
+	expected := #(6.5 6.2 5.9) asDataSeries.
+	expected name: series name.
+	expected keys:
+		(series size - 3 + 1 to: series size).
+	
+	actual := series tail: 3.
 
-	self assert: (slice isKindOf: DataSeries).
-	self assert: slice equals: { 8->80 . 9->90 . 10->100 } asDataSeries.
+	self assert: actual equals: expected.

@@ -6,6 +6,6 @@
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [ ],
-	"name" : "DataFrameStatsTests",
+	"name" : "DataSetsTests",
 	"type" : "normal"
 }
