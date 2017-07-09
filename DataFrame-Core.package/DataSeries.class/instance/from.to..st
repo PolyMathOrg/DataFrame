@@ -3,7 +3,7 @@ from: start to: end
 
 	| series |
 	series := ((start to: end) collect: [ :i |
-		self at: (self keyAtIndex: i) ]) asDataSeries.
+		self at: i]) asDataSeries.
 	
 	series name: self name.
 	series keys: (self keys copyFrom: start to: end).

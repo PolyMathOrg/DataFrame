@@ -1,8 +1,12 @@
 accessing
-cellColumn: column row: rowIndex
+cellColumn: column row: rowNumber
+	
+	| columnNumber |
 	
 	column id = '#'
-		ifTrue: [ ^ FTCellMorph new addMorph: rowIndex asMorph ].
+		ifTrue: [ ^ FTCellMorph new addMorph: rowNumber asMorph ].
+		
+	columnNumber := elements columnNames indexOf: column id.
 	
 	^ FTCellMorph new
-		addMorph: ((self elementAt: rowIndex) at: column id) asMorph.
+		addMorph: (elements at: rowNumber at: columnNumber) asMorph.

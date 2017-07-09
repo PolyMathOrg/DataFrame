@@ -1,14 +1,15 @@
 {
-	"classtraitcomposition" : "TDataSlicer classTrait + TDataIndexer classTrait + TDataSequenceable classTrait + TSortable classTrait",
+	"classtraitcomposition" : "TDataSlicer classTrait",
 	"classvars" : [ ],
 	"instvars" : [
-		"name"
+		"name",
+		"keys"
 	],
 	"name" : "DataSeries",
 	"commentStamp" : "<historical>",
-	"super" : "OrderedDictionary",
-	"traitcomposition" : "TDataSlicer + TDataIndexer + TDataSequenceable + TSortable",
-	"type" : "normal",
+	"super" : "PMVector",
+	"traitcomposition" : "TDataSlicer",
+	"type" : "variable",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"category" : "DataFrame-Core"
