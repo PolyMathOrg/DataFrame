@@ -52,7 +52,7 @@ df add: #('Barcelona' 1.609 true).
 This way is the best for creating simple examples for testing since you can see how the data will be arranged in your data frame.
 
 ```smalltalk
-df := DataFrame rows: #(
+df := DataFrame fromRows: #(
    ('Barcelona' 1.609 true)
    ('Dubai' 2.789 true)
    ('London' 8.788 false)).
@@ -62,7 +62,7 @@ df := DataFrame rows: #(
 We can do the same by passing an array of columns
 
 ```smalltalk
-df := DataFrame rows: #(
+df := DataFrame fromColumns: #(
    ('Barcelona' 'Dubai' 'London')
    (1.609 2.789 8.788)
    (true true false)).
