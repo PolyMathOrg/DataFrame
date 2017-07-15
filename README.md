@@ -31,25 +31,7 @@ series keys: #(k1 k2 k3).
 ```
 
 ### Creating a DataFrame
-There are four ways of creating a data frame:
-1. Creating an empty data frame, then filling it with data
-2. Creating a data frame from an array of rows
-3. Creating a data frame from an array of columns
-4. Reading data from a file
-
-#### Creating an empty DataFrame
-You can create an empty instance of `DataFrame` using the `new` message
-
-```smalltalk
-df := DataFrame new.
-```
-The data can be added later using the `add:` message.
-```smalltalk
-df add: #('Barcelona' 1.609 true).
-```
-
-#### Creating a DataFrame from an array of rows
-This way is the best for creating simple examples for testing since you can see how the data will be arranged in your data frame.
+The easiest way to create an object of `DataFrame` class is by passing it an array of rows or columns (an array of arrays). Creating a DataFrame from rows allows us to see how the data will be arranged in a table. It's very readable and can be handy if we need to write some simple examples for testing
 
 ```smalltalk
 df := DataFrame fromRows: #(
@@ -58,7 +40,6 @@ df := DataFrame fromRows: #(
    ('London' 8.788 false)).
 ```
 
-#### Creating a DataFrame from an array of columns
 We can do the same by passing an array of columns
 
 ```smalltalk
