@@ -2,4 +2,4 @@ instance creation
 initialize
 
 	super initialize.
-	keys := Array new.
+	keys := (1 to: self size) asArray.

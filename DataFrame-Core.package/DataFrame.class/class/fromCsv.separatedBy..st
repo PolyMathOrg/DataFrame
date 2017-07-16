@@ -9,7 +9,7 @@ fromCsv: pathToFile separatedBy: separator
 		reject: [:e | e isEmpty]) " lose empty lines "
 		collect: [:e | e findTokens: separator]. " split into fields "
 
-	df := self rows: (data copyFrom: 2 to: data size).	
+	df := self fromRows: (data copyFrom: 2 to: data size).	
 	df columnNames: (data at: 1) asArray.
 	
 	"Deduce types"

@@ -1,0 +1,13 @@
+{
+	"commentStamp" : "",
+	"super" : "DataGrouped",
+	"category" : "DataFrame-Core",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"groups"
+	],
+	"name" : "DataSeriesGrouped",
+	"type" : "normal"
+}
