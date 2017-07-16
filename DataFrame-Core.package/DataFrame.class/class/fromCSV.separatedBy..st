@@ -1,5 +1,5 @@
 instance creation
-fromCsv: pathToFile separatedBy: separator
+fromCSV: pathToFile separatedBy: separator
 
 	| data df |
 	
