@@ -1,13 +1,13 @@
 {
 	"commentStamp" : "",
-	"super" : "Object",
-	"category" : "DataFrame-Core",
+	"super" : "TestCase",
+	"category" : "DataFrame-Tests",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [
-		"groups"
+		"df"
 	],
-	"name" : "DataGrouped",
+	"name" : "DataFrameAggrGroupTests",
 	"type" : "normal"
 }
