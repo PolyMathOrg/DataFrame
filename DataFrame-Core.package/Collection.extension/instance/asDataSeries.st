@@ -1,28 +1,22 @@
 *DataFrame-Core
 asDataSeries
 
-	| seriesClass series |
+	| allInstancesOf |
 	
-	"If all the values are associations, we convert it to DataSeries the same way as the array of associations is converted to dictionary with asDictionary"
-	self detect: [ :x |
-			(x class = Association) not ]
-		ifNone: [ | keys values |
-			keys := self collect: [ :assoc |
-				assoc key ].
-			values := self collect: [ :assoc |
-				assoc value ].
-			
-			series := values asDataSeries.
-			series keys: keys.
-			^ series ].
+	allInstancesOf := [ :aClass |
+		self detect: [ :x |
+			(x isKindOf: aClass) not ]
+			ifFound: [ false ]
+			ifNone: [ true ] ].
 
-	self
-		detect: [ :x | x isNumber not ]
-		ifFound: [ seriesClass := DataSeries ]
-		ifNone: [ seriesClass := DataSeriesNumeric ]. 
+	(allInstancesOf value: Number) ifTrue: [ 
+		^ DataSeriesNumeric newFrom: self ].
 	
-	series := seriesClass new: self size.
-	
-	self doWithIndex: [:each :i | series at: i put: each].
-	^ series
+	(allInstancesOf value: String) ifTrue: [ 
+		"Can we convert it to DataSeriesTime?"
+		[ ^ DataSeriesTime newFrom: self ]
+			on: Error do: [ "nothing" ] ].
+		
+	"Either everything is a String, or none of the above is satisfied. In any case, we convert everything to String"
+	^ DataSeriesText newFrom: self 
 
