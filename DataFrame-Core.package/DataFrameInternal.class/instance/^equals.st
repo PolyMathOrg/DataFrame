@@ -11,7 +11,7 @@ comparing
 		(self at: i at: j) = each
 			ifFalse: [ ^ false ] ].
 		
-	^ true
+	^ true.
 
 	
 	

@@ -1,5 +1,5 @@
 {
-	"commentStamp" : "OleksandrZaytsev 7/8/2017 21:09",
+	"commentStamp" : "OleksandrZaytsev 7/26/2017 14:32",
 	"super" : "Collection",
 	"category" : "DataFrame-Core",
 	"classinstvars" : [ ],
@@ -8,6 +8,6 @@
 	"instvars" : [
 		"contents"
 	],
-	"name" : "DataFrameInternal",
+	"name" : "DataSeriesInternal",
 	"type" : "normal"
 }

@@ -1,6 +1,6 @@
 initialization
 initialize
-	
+
 	super initialize.
-	contents := Matrix new.
+	contents := Array new.
 	^ self.

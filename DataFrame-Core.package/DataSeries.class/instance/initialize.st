@@ -1,5 +1,6 @@
-instance creation
+initialization
 initialize
 
 	super initialize.
-	keys := (1 to: self size) asArray.
+	contents := DataSeriesInternal new.
+	keys := Array new.

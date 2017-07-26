@@ -2,14 +2,15 @@
 	"classtraitcomposition" : "TDataSlicer classTrait",
 	"classvars" : [ ],
 	"instvars" : [
-		"name",
-		"keys"
+		"contents",
+		"keys",
+		"name"
 	],
 	"name" : "DataSeries",
 	"commentStamp" : "<historical>",
-	"super" : "PMVector",
+	"super" : "SequenceableCollection",
 	"traitcomposition" : "TDataSlicer",
-	"type" : "variable",
+	"type" : "normal",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"category" : "DataFrame-Core"

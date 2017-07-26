@@ -1,4 +1,4 @@
 enumerating
 withIndicesDo: aBlock
 
-	^ matrix withIndicesDo: aBlock
+	^ contents withIndicesDo: aBlock.

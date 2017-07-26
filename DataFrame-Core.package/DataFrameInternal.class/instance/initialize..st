@@ -1,10 +1,8 @@
 initialization
 initialize: aPoint
-
-	super initialize.
 	
-	matrix := Matrix
+	contents := Matrix
 		rows: aPoint x
 		columns: aPoint y.
 		
-	^ self
+	^ self.

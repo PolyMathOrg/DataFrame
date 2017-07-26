@@ -1,4 +1,4 @@
 copying
 deepCopy
 
-	^ DataFrameInternal fromMatrix: matrix
+	^ self class fromMatrix: contents.

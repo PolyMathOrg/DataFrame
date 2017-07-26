@@ -1,4 +1,5 @@
 enumerating
 withIndicesCollect: aBlock
 
-	^ matrix withIndicesCollect: aBlock
+	^ self class fromMatrix:
+		(contents withIndicesCollect: aBlock).

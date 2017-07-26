@@ -1,5 +1,5 @@
 enumerating
 collect: aBlock
 
-	^ self class fromMatrix:
+	^ self class fromArray: 
 		(contents collect: aBlock).

@@ -1,4 +1,4 @@
-instance creation
+accessing
 from: start to: end
 
 	| series |

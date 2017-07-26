@@ -1,7 +1,7 @@
 accessing
 numberOfRows
 
-	matrix numberOfRows isNil
+	contents numberOfRows isNil
 		ifTrue: [ ^ 0 ].
 		
-	^ matrix numberOfRows.
+	^ contents numberOfRows.

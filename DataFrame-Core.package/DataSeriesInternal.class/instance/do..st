@@ -1,4 +1,4 @@
 enumerating
 do: aBlock
 
-	^ contents do: aBlock.
+	contents do: aBlock.
