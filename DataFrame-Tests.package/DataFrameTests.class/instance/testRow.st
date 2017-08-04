@@ -1,9 +1,11 @@
 tests
-testRowAccessByName
+testRow
 
 	| actualSeries expectedSeries |
-	
-	expectedSeries := #('Dubai' 2.789 true) asDataSeries.
+
+	expectedSeries := DataSeries fromArray:
+		#('Dubai' 2.789 true).
+		
 	expectedSeries name: #B.
 	expectedSeries keys: df columnNames.
 	

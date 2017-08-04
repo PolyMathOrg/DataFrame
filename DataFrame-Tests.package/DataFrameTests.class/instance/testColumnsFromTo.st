@@ -1,5 +1,5 @@
 tests
-testColumnFromTo
+testColumnsFromTo
 
 	| actualDataFrame expectedDataFrame |
 		
