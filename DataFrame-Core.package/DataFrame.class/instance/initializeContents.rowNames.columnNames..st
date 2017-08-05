@@ -6,3 +6,4 @@ initializeContents: aDataFrameInternal rowNames: rows columnNames: columns
 	contents := aDataFrameInternal.
 	self rowNames: rows.
 	self columnNames: columns.
+	self induceColumnTypes.

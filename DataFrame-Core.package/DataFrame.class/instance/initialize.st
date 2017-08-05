@@ -5,3 +5,4 @@ initialize
 	
 	contents := DataFrameInternal new.
 	self setDefaultRowColumnNames.
+	self induceColumnTypes.

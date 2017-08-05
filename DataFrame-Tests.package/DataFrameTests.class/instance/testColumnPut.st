@@ -12,7 +12,7 @@ testColumnPut
 	expected columnNames: #(City Population SomeBool).
 	
 	actual := df.
-	actual column: #City put: #(X Y Z).
+	actual column: #City put: #('X' 'Y' 'Z').
 	actual column: #SomeBool put: #(0 1 0).
 	
 	self assert: actual equals: expected.

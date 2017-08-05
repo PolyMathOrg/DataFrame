@@ -5,3 +5,4 @@ initialize: aPoint
 	
 	contents := DataFrameInternal new: aPoint.
 	self setDefaultRowColumnNames.
+	self induceColumnTypes.

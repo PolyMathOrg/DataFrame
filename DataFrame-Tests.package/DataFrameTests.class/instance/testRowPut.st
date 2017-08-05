@@ -12,6 +12,6 @@ testRowPut
 	expected columnNames: #(City Population SomeBool).
 	
 	actual := df.
-	actual row: #B put: #(X Y Z).
+	actual row: #B put: #('X' 'Y' 'Z').
 	
 	self assert: actual equals: expected.
