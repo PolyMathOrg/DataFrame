@@ -4,7 +4,8 @@
 	"instvars" : [
 		"contents",
 		"rowNames",
-		"columnNames"
+		"columnNames",
+		"columnTypes"
 	],
 	"name" : "DataFrame",
 	"commentStamp" : "<historical>",

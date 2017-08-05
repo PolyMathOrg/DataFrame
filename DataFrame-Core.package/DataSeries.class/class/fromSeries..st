@@ -6,6 +6,7 @@ fromSeries: aSeries
 	
 	series keys: aSeries keys.
 	series name: aSeries name.
+	series type: aSeries type.
 	
 	^ series
 		

@@ -5,6 +5,9 @@ comparing
 	self name = otherSeries name
 		ifFalse: [ ^ false ].
 		
+	self type = otherSeries type
+		ifFalse: [ ^ false ].
+		
 	self keys = otherSeries keys
 		ifFalse: [ ^ false ].
 

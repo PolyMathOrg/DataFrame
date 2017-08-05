@@ -5,3 +5,5 @@ This method is private and should not be used in custom applications"
 
 	anArray doWithIndex: [ :each :i |
 		contents at: i put: each ].
+	
+	self induceType.

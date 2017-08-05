@@ -3,6 +3,10 @@ scatterplotWithColor: color
 	
 	| b ds |
 	
+	((self type == Number) or:
+	(self type inheritsFrom: Number))
+		ifFalse: [ Error signal: 'This operation is not permitted for non-numeric series' ].
+	
 	b := RTGrapher new.
 	b extent: 300 @ 200.
 	
