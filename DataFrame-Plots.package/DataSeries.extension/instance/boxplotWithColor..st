@@ -7,7 +7,7 @@ boxplotWithColor: color
 	b extent: 100 @ 300.
 	
 	ds := RTBoxPlotDataSet new.
-	ds points: self values.
+	ds points: self.
 		
 	ds boxShape
 		fillColor: color.

@@ -1,7 +1,7 @@
 {
 	"commentStamp" : "",
 	"super" : "Object",
-	"category" : "DataFrame-Core",
+	"category" : "DataFrame-Core-DataFrame-Core",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],

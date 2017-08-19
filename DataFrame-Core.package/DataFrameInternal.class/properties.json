@@ -1,7 +1,7 @@
 {
 	"commentStamp" : "OleksandrZaytsev 7/8/2017 21:09",
 	"super" : "Collection",
-	"category" : "DataFrame-Core",
+	"category" : "DataFrame-Core-DataFrame-Core",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],

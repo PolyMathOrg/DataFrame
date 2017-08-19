@@ -1,7 +1,7 @@
 {
 	"commentStamp" : "OleksandrZaytsev 7/26/2017 14:32",
 	"super" : "SequenceableCollection",
-	"category" : "DataFrame-Core",
+	"category" : "DataFrame-Core-DataFrame-Core",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],

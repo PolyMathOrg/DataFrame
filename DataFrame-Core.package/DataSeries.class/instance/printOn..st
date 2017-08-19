@@ -7,13 +7,16 @@ printOn: aStream
 
 	self name isNil
 		ifFalse: [
-			aStream nextPutAll: '''', self name asString, ''''.
-			aStream cr ].
+			aStream
+				nextPutAll: '''';
+				nextPutAll: self name asString;
+				nextPutAll: '''';
+				cr ].
 	
-	self withIndexDo: [ :each :i |
-		aStream nextPutAll: (self keys at: i) asString.
+	self withKeyDo: [ :each :key |
+		aStream nextPutAll: key asString.
 		aStream tab.
 		each printOn: aStream.
 		
-		i = self size 
+		key = keys last
 			ifFalse: [ aStream cr ] ].

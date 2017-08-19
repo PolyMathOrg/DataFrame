@@ -1,7 +1,9 @@
 printing
 printOn: aStream
 
-	( self numberOfRows = 0 )
+	DataPrettyPrinter new print: self on: aStream.
+
+	"( self numberOfRows = 0 )
 		ifTrue: [ super printOn: aStream. 
 					aStream nextPutAll:' uninitialized'. ^ self ].
 	
@@ -17,26 +19,26 @@ printOn: aStream
 		
 		1 to: self numberOfColumns - 1 do: [ :j |
 			(self at: i at: j) printOn: aStream.
-			aStream space ].
+			aStream space ]."
 		
 		"Last one without a space"
-		(self at: i
+		"(self at: i
 			at: self numberOfColumns)
 			printOn: aStream.
 		
-		aStream cr ].
+		aStream cr ]."
 	
 	"Last one without new line"
-	(self rowNames at: self numberOfRows) printOn: aStream.
+	"(self rowNames at: self numberOfRows) printOn: aStream.
 	aStream tab.
 		
 	1 to: self numberOfColumns - 1 do: [ :j |
 		(self at: self numberOfRows at: j) printOn: aStream.
-		aStream space ].
+		aStream space ]."
 		
 	"Last one without a space"
-	(self
+	"(self
 		at: self numberOfRows
 		at: self numberOfColumns)
 		printOn: aStream.
-		aStream space.
+		aStream space."

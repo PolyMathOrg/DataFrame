@@ -1,16 +1,16 @@
-testing
+statistics
 summary
 
 	| summary |
 	summary := self class new.
 	
 	summary
-		at: 'Min' put: self min;
-		at: '1st Qu.' put: Float nan;
-		at: 'Median' put: self median;
-		at: 'Mean' put: self average;
-		at: '3rd Qu.' put: Float nan;
-		at: 'Max' put: self max.
+		atKey: 'Min' put: self min;
+		atKey: '1st Qu.' put: Float nan;
+		atKey: 'Median' put: self median;
+		atKey: 'Mean' put: self average;
+		atKey: '3rd Qu.' put: Float nan;
+		atKey: 'Max' put: self max.
 		
 	^ summary
 	

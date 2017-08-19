@@ -11,4 +11,5 @@ comparing
 	self keys = otherSeries keys
 		ifFalse: [ ^ false ].
 
-	^ super = otherSeries
+	^ (1 to: self size) inject: true into: [ :allEqual :i |
+		allEqual and: ((self at: i) = (otherSeries at: i)) ].

@@ -8,8 +8,7 @@ leastCommonSuperclassOf: firstClass and: secondClass
 	
 	[ classA = Object or: (classB = Object) ]
 		whileFalse: [ 
-			((classA inheritsFrom: classB) or:
-			(classA == classB)) 
+			(classA inheritsFromOrEqualTo: classB)
 				ifTrue: [ ^ classB ].
 				
 			(classB inheritsFrom: classA)

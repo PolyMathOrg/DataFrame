@@ -1,11 +1,9 @@
-as yet unclassified
+statistics
 frequencyTable
 
 	| df count proportion |
 	
-	count := self unique collect: [ :each |
-		self occurrencesOf: each ].
-	
+	count := (self groupBy: self) count.
 	proportion := count / self size.
 	
 	df := DataFrame fromColumns:

@@ -1,4 +1,4 @@
-*DataFrame-FTable
+as yet unclassified
 show
 
 	self showWithGlamour
