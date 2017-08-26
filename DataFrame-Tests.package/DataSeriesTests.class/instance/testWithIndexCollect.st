@@ -1,5 +1,5 @@
 tests
-testCollectWithIndex
+testWithIndexCollect
 
 	| actual expected |
 	
