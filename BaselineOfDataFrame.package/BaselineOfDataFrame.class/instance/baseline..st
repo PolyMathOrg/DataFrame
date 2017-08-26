@@ -19,4 +19,5 @@ baseline: spec
 			package: 'DataFrame-Examples' with: [
 				spec requires: #('DataFrame-Core' 'DataFrame-Plots')];
 			package: 'DataFrame-DataSets' with: [
-				spec requires: 'DataFrame-Core']].
+				spec requires: 'DataFrame-Core'];
+			package: 'DataFrame-PrettyPrint'].
