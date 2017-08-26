@@ -20,4 +20,5 @@ baseline: spec
 				spec requires: #('DataFrame-Core' 'DataFrame-Plots')];
 			package: 'DataFrame-DataSets' with: [
 				spec requires: 'DataFrame-Core'];
-			package: 'DataFrame-PrettyPrint'].
+			package: 'DataFrame-PrettyPrint';
+			package: 'DataFrame-FTable'].
