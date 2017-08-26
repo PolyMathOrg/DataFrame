@@ -1,4 +1,4 @@
-as yet unclassified
+accessing
 show
 
-	self showWithGlamour
+	self showWithGlamour openInWindowLabeled: 'a DataFrame'

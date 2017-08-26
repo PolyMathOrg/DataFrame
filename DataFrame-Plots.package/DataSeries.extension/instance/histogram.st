@@ -1,12 +1,14 @@
 *DataFrame-Plots
 histogram
+
+	| numberOfUnique |
 	
-	| uniqueValues colors |
-	
-	uniqueValues := self unique.
-	
-	uniqueValues size <= 4
-		ifTrue: [ colors := DataColor palette: uniqueValues size ]
-	 	ifFalse: [ colors := uniqueValues collect: [ :v | DataColor blue ] ].
-		
-	^ self histogramWithColors: colors.
+	numberOfUnique := self unique size.
+
+	^ numberOfUnique <= 4
+		ifTrue: [
+			self histogramWithColors:
+				(DataColor palette: numberOfUnique) ]
+	 	ifFalse: [
+			self histogramWithColor:
+				DataColor blue ]

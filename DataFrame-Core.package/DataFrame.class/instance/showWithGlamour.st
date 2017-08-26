@@ -4,7 +4,7 @@ showWithGlamour
 	| table |
 
 	table := FTTableMorph new
-		extent: 650@500.
+		"extent: 650@500".
 		
 	table addColumn: ((FTColumn id: '#') width: 40).
 	
@@ -23,4 +23,4 @@ showWithGlamour
 		beMultipleSelection;
 		yourself.
 		
-	^ table openInWindowLabeled: 'a DataFrame'.
+	^ table
