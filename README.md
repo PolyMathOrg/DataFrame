@@ -88,10 +88,11 @@ df := DataFrame loadHousing.
 If we print (Ctrl+P) the data frame that was created from an array of rows or columns as described in previous sections, we will see the following table
 
 ```
-     1            2      3
-1    'Barcelona'  1.609  true
-2    'Dubai'      2.789  true
-3    'London'     8.788  false
+   |  1              2      3  
+---+-------------------------
+1  |  Barcelona  1.609   true  
+2  |  Dubai      2.789   true  
+3  |  London     8.788  false 
 ```
 
 As you can see, both row and column names were automatically set to numeric sequences. We can using change them by passing an array of new names. This array must be of the same size as the number of rows and columns.
@@ -104,10 +105,11 @@ df rowNames: #(A B C).
 Now if we print our data frame, it will look like this
 
 ```
-     City         Population  SomeBool
-A    'Barcelona'  1.609       true
-B    'Dubai'      2.789       true
-C    'London'     8.788       false
+   |  City       Population  SomeBool  
+---+---------------------------------
+A  |  Barcelona       1.609      true  
+B  |  Dubai           2.789      true  
+C  |  London          8.788     false
 ```
 
 To get the dimensions of a data frame, its rows, and columns, we can say
@@ -142,12 +144,13 @@ df tail.
 Data frame responds to these messages with another `DataFrame` object containing the requested rows. Here is the example output of the `df head` message
 
 ```
-    RM      LSTAT   PTRATIO MDEV
-1   6.575   4.98    15.3    504000.0
-2   6.421   9.14    17.8    453600.0
-3   7.185   4.03    17.8    728700.0
-4   6.998   2.94    18.7    701400.0
-5   7.147   5.33    18.7    760200.0
+   |     RM  LSTAT  PTRATIO      MDEV  
+---+---------------------------------
+1  |  6.575   4.98     15.3  504000.0  
+2  |  6.421   9.14     17.8  453600.0  
+3  |  7.185   4.03     17.8  728700.0  
+4  |  6.998   2.94     18.7  701400.0  
+5  |  7.147   5.33     18.7  760200.0  
 ```
 
 It is also possible to specify the number of rows that must be printed
@@ -166,9 +169,10 @@ The same messages are also supported by the objects of `DataSeries` class. This 
 The result will be another series
 
 ```
-[LSTAT]
-1   4.98
-2   9.14
+   |  LSTAT  
+---+-------
+1  |   4.98  
+2  |   9.14
 ```
 
 ### Accessing rows and columns
@@ -189,8 +193,9 @@ df columnAt: 2.
 The important feature of a `DataFrame` is that whenever we ask for a specific row or column, it responds with a `DataSeries` object that preserves the same indexing. So, for example, if you take row _'B'_ of a data frame described above, you will get a series named _'B'_ with keys _'City'_, _'Population'_, and _'SomeBool'_.
 
 ```
-[B]
-City        Dubai
-Population  2.789
-SomeBool    true
+            |      B  
+------------+-------
+      City  |  Dubai  
+Population  |  2.789  
+  SomeBool  |   true 
 ```
