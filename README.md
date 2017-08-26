@@ -1,4 +1,7 @@
-# DataFrame for Pharo ![Build Status][https://travis-ci.org/PolyMathOrg/DataFrame.svg?branch=master]
+# DataFrame for Pharo
+
+[![Build Status](https://travis-ci.org/PolyMathOrg/DataFrame.svg?branch=master)](https://travis-ci.org/PolyMathOrg/DataFrame)
+
 In Smalltalk despite the fact that many important analysis tools are already present (for example, in the [PolyMath](https://github.com/PolyMathOrg/PolyMath) library), we are still missing this essential part of the data science toolkit. These specialized data structures for tabular data sets can provide us with a simple and powerful API for summarizing, cleaning, and manipulating a wealth of data sources that are currently cumbersome to use. The DataFrame and DataSeries collections, stored in this repository, are specifically designed for working with structured data.
 
 ## Installation
