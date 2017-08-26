@@ -12,7 +12,7 @@ boxplot
 	
 	(self numericColumnNames) doWithIndex: [ :columnName :i |
 		ds := RTBoxPlotDataSet new.
-		ds points: (self column: columnName).
+		ds points: (self column: columnName) asArray.
 		
 		color := palette at: i.
 		

@@ -1,7 +1,13 @@
 printing
 printOn: aStream
 
-	aStream nextPutAll: 'a '.
+	| df |
+	df := DataFrame fromColumns: { self }.
+	df columnNames: { self name }.
+	df rowNames: self keys.
+	df printOn: aStream.
+
+	"aStream nextPutAll: 'a '.
 	self class printOn: aStream.
 	aStream cr.
 
@@ -19,4 +25,4 @@ printOn: aStream
 		each printOn: aStream.
 		
 		key = keys last
-			ifFalse: [ aStream cr ] ].
+			ifFalse: [ aStream cr ] ]."
