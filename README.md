@@ -80,12 +80,12 @@ series atKey: #k4 put: 'x'.
 
 Keep in mind that both `add:atKey:` and `atKey:put:` messages don't create a new series, but modify the existing one. So use them with caution.
 
-### Creating a DataFrame
+### Creating DataFrame
 There are four ways of creating a data frame:
-1. from an array of rows or columns
-2. from matrix
-3. from file
-4. loading a built-in dataset
+1. [from an array of rows or columns](#1-creating-dataframe-from-an-array-of-rows-or-columns)
+2. [from matrix](#2-creating-dataframe-from-a-matrix)
+3. [from file](#3-reading-data-from-file)
+4. [loading a built-in dataset](#4-loading-the-built-in-datasets)
 
 #### 1. Creating DataFrame from an array of rows or columns
 The easiest and most straightforward way of creating a DataFrame is by passing all data in an array of arrays to `fromRows:` or `fromColumns:` message. Here is an example of initializing a DataFrame with rows:
