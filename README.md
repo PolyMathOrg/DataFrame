@@ -82,10 +82,10 @@ Keep in mind that both `add:atKey:` and `atKey:put:` messages don't create a new
 
 ### Creating DataFrame
 There are four ways of creating a data frame:
-1. [from an array of rows or columns](#1-creating-dataframe-from-an-array-of-rows-or-columns)
-2. [from matrix](#2-creating-dataframe-from-a-matrix)
-3. [from file](#3-reading-data-from-file)
-4. [loading a built-in dataset](#4-loading-the-built-in-datasets)
+[1. from an array of rows or columns](#1-creating-dataframe-from-an-array-of-rows-or-columns)
+[2. from matrix](#2-creating-dataframe-from-a-matrix)
+[3. from file](#3-reading-data-from-file)
+[4. loading a built-in dataset](#4-loading-the-built-in-datasets)
 
 #### 1. Creating DataFrame from an array of rows or columns
 The easiest and most straightforward way of creating a DataFrame is by passing all data in an array of arrays to `fromRows:` or `fromColumns:` message. Here is an example of initializing a DataFrame with rows:
@@ -193,6 +193,34 @@ df rowsFrom: 3 to: 1.
 ```
 
 The result will be a data frame with requested rows and columns in a given order. For example, the last line will give you a data frame "flipped upside-down" (with row indexes going in the descending order).
+
+You can change the values of a specific row or column by passing an array or series of the same size to one of the messages: `row:put:`, `column:put:`, `rowAt:put:`, `columnAt:put:`. Be careful though, because these messages modify the data frame and may result in the loss of data.
+
+```smalltalk
+df column: #BeenThere put: #(false true false).
+```
+
+As it was mentioned above, single cell of a data frame can be accessed with `at:at:` and `at:at:put:` messages
+
+```smalltalk
+df at: 3 at: 2.
+df at: 3 at: 2 put: true.
+```
+
+### Adding new rows and columns to DataFrame
+New rows and columns can be appended to the data frame using messages `addRow:named` and `addColumn:named`. Like in the case of DataSeries, you must provide a name for these new elements, since it can not continue the existing sequence of names.
+
+```smalltalk
+df addRow: #('Lviv' 0.724 true) named: #D.
+df addColumn: #(4 3 4) named: #Rating.
+```
+
+The same can be done using messages `row:put:` and `column:put:` with non-existing keys. DataFrame will append the new key and associate it with a given row or column
+
+```smalltalk
+df at: #D put: #('Lviv' 0.724 true).
+df at: #Rating put: #(4 3 4).
+```
 
 #### Head & tail
 Now let's take a look at some bigger dataset, for example, Boston Housing Data
