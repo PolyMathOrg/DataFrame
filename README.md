@@ -63,6 +63,23 @@ newSeries name.         "letters"
 newSeries atKey: 'k1'.  "ax"
 ```
 
+### Adding new elements to DataSeries
+Since all the elements of DataSeries are expected to have keys, in order to add a new element you must specify a key that should be associated with it
+
+```smalltalk
+series add: 'x' atKey: #k4.
+``` 
+
+In future there will also be an `add:` message that will choose a default key value or even predict the next element of a sequence of keys. For example, if keys are `#(1 2 3 4 5)`, the new element will be associated with key `6`, if the sequence of keys is `#(2 4 6)`, the next key will be `8`. Perhaps, it will even be possible to predict the next key in symbolic sequences, such as `#(a b c d)` or `#(k1 k2 k3)`. Such functionality is not easy to implement, so we leave it for future releases of DataFrame library.
+
+Another way of adding an element to DataSeries is by using the `atKey:put:` message with a non-existing key. Inspired by Pandas, `atKey:put:` modifies an element at a given key if such key exists in a DataSeries, or adds a new element associeted with that key, if it wasn't found.
+
+```smalltalk
+series atKey: #k4 put: 'x'.
+```
+
+Keep in mind that both `add:atKey:` and `atKey:put:` messages don't create a new series, but modify the existing one. So use them with caution.
+
 ### Creating a DataFrame
 There are four ways of creating a data frame:
 1. Creating an empty data frame, then filling it with data
