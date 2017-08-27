@@ -1,21 +1,18 @@
 enumerating
-select: aBlock with: anArray
+select: aBlock with: testedColumnNames
 	
-	( anArray size = 1 ) ifTrue: [ 
-		^ self select: [ :row | 
-			aBlock value: (row atKey: (anArray at: 1)) ] ].
+	| blockStr |
+	blockStr := aBlock asString.
 	
-	( anArray size = 2 ) ifTrue: [ 
-		^ self select: [ :row | 
-			aBlock
-				value: (row atKey: (anArray at: 1)) 
-				value: (row atKey: (anArray at: 2)) ] ].
+	"Remove parameters: '[ :x | x > 3 ]' to '[ x > 3 ]'"
+	blockStr := (blockStr
+		copyFrom: (blockStr findString: '|')
+		to: blockStr size).
 		
-	( anArray size = 3 ) ifTrue: [ 
-		^ self select: [ :row | 
-			aBlock
-				value: (row atKey: (anArray at: 1)) 
-				value: (row atKey: (anArray at: 2))
-				value: (row atKey: (anArray at: 3)) ] ].
+	testedColumnNames do: [ :eachColName |
+		blockStr := blockStr
+			copyReplaceAll: eachColName
+			with: ('(row atKey: #', eachColName, ')') ].
 		
-	Error signal: 'Too many arguments'.
+	blockStr := '[ :row ', blockStr.
+	^ self select: (Compiler evaluate: blockStr)

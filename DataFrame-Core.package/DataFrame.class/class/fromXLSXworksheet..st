@@ -5,3 +5,4 @@ fromXLSXworksheet: sheet
 	
 	matrix := sheet cellValuesAsMatrix.
 	df := self new initializeMatrix: matrix.
+	^ df
