@@ -87,7 +87,7 @@ There are four ways of creating a data frame:
 3. from file
 4. loading a built-in dataset
 
-#### 1. Creating a DataFrame from an array of rows or columns
+#### 1. Creating DataFrame from an array of rows or columns
 The easiest and most straightforward way of creating a DataFrame is by passing all data in an array of arrays to `fromRows:` or `fromColumns:` message. Here is an example of initializing a DataFrame with rows:
 
 ```smalltalk
@@ -123,15 +123,34 @@ B  |  Dubai           2.789       true
 C  |  London          8.788      false
 ```
 
-#### 3. Reading data from file
-This is the most common way of creating a data frame. You have some dataset in a file (CSV, Excel etc.) - just ask a DataFrame to read it. At this point only CSV files are supported, but very soon you will also be able to read the data from other formats.
+#### 2. Creating DataFrame from a Matrix
+By it's nature DataFrame is similar to a matrix. It works like a table of values, supports matrix accessors, such as `at:at:` or `at:at:put:` and in some cases can be treated like a matrix. Some classes provide tabular data in matrix format. For example TabularWorksheet class of [Tabular]() package that is used for reading XLSX files. To initialize a DataFrame from a maxtrix of values, use `fromMatrix:` method
 
 ```smalltalk
-df := DataFrame fromCSV: 'path/to/your/file.csv'.
+matrix := Matrix
+   rows: 3 columns: 3
+   contents:
+      #('Barcelona' 1.609 true
+        'Dubai' 2.789 true
+        'London' 8.788 false).
+         
+df := DataFrame fromMatrix: matrix.
 ```
 
-### 4. Loading the built-in datasets
-DataFrame provides several famous datasets for you to play with. They are compact and can be loaded with a simple message. An this point there are three datasets that can be loaded in this way - [Iris flower dataset](https://en.wikipedia.org/wiki/Iris_flower_data_set), a simplified [Boston Housing dataset](https://www.kaggle.com/c/house-prices-advanced-regression-techniques/data), and a tipping dataset.
+Once again, the names of rows and columns are set to their default values.
+
+#### 3. Reading data from file
+In most real-world scenarios the data is located in a file or database. The support for database connections will be added in future releases. Right now DataFrame provides you the methods for loading data from two most commot file formats: CSV and XLSX
+
+```smalltalk
+DataFrame fromCSV: 'path/to/your/file.csv'.
+DataFrame fromXLSX: 'path/to/your/file.xlsx'.
+```
+
+Since JSON does not store data as a table, it is not possible to read such file directly into a DataFrame. However, you can parse JSON using [NeoJSON](https://ci.inria.fr/pharo-contribution/job/EnterprisePharoBook/lastSuccessfulBuild/artifact/book-result/NeoJSON/NeoJSON.html) or any other library, construct an array of rows and pass it to `fromRows:` message, as described in previous sections.
+
+#### 4. Loading the built-in datasets
+DataFrame provides several famous datasets for you to play with. They are compact and can be loaded with a simple message. An this point there are three datasets that can be loaded in this way - [Iris flower dataset](https://en.wikipedia.org/wiki/Iris_flower_data_set), a simplified [Boston Housing dataset](https://www.kaggle.com/c/house-prices-advanced-regression-techniques/data), and [Restaurant tipping dataset](https://vincentarelbundock.github.io/Rdatasets/doc/reshape2/tips.html).
 
 ```smalltalk
 DataFrame loadIris.
