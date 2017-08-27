@@ -16,7 +16,7 @@ select: aBlock
 		(selectedRowNumbers size @ self numberOfColumns).
 		
 	df rowNames: (selectedRowNumbers collect: [ :i |
-		self rowNames at: i ]).
+		self rowNames at: i ]) asArray.
 	
 	df columnNames: self columnNames.
 		
