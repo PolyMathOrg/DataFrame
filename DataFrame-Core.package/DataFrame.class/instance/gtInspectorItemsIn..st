@@ -1,6 +1,6 @@
 gt-inspector-extension
 gtInspectorItemsIn: composite
-"Hiding Items tab from inspector"
+"Hide Items from inspector"
 
-	^ (composite fastList)
+	composite fastTable
 		when: [ false ].

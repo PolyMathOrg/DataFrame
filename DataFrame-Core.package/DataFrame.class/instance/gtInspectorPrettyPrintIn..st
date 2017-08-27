@@ -1,10 +1,10 @@
-as yet unclassified
+gt-inspector-extension
 gtInspectorPrettyPrintIn: composite
-	<gtInspectorPresentationOrder: 1>
+	<gtInspectorPresentationOrder: 10>
 	<gtInspectorTag: #basic>
 	
 	composite text
-		title: 'PrettyPrint';
+		title: 'Pretty Print';
 		display: [ 
 			| stream |
 			stream := String new writeStream.
