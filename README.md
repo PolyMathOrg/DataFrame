@@ -4,10 +4,10 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/1wdnjvmlxfbml8qo?svg=true)](https://ci.appveyor.com/project/olekscode/dataframe)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/PolyMathOrg/DataFrame/master/LICENSE)
 
-In Smalltalk despite the fact that many important analysis tools are already present (for example, in the [PolyMath](https://github.com/PolyMathOrg/PolyMath) library), we are still missing this essential part of the data science toolkit. These specialized data structures for tabular data sets can provide us with a simple and powerful API for summarizing, cleaning, and manipulating a wealth of data sources that are currently cumbersome to use. The DataFrame and DataSeries collections, stored in this repository, are specifically designed for working with structured data.
+Data frames are the essential part of the data science toolkit. They are the specialized data structures for tabular data sets that provide us with a simple and powerful API for summarizing, cleaning, and manipulating a wealth of data sources that are currently cumbersome to use. The DataFrame and DataSeries collections, stored in this repository, are specifically designed for working with structured data.
 
 ## Installation
-The following script installs DataFrame and its dependencies in Pharo 6
+The following script installs DataFrame and its dependencies into a Pharo image. Along with all the other code blocks in this tutorial, this script has been tested on Pharo-6.0 and Pharo64-6.0 for both Linux and OSX, and Pharo-6.0 for Windows.
 
 ```smalltalk
 Metacello new
@@ -17,22 +17,51 @@ Metacello new
 ```
 
 ## Tutorial
-There are two primary data structures in this package:
-* `DataSeries` can be seen as an Ordered Collection that combines the properties of an Array and a Dictionary, while extending the functionality of both. Every DataSeries has a name and contains an array of data mapped to a corresponding array of keys (that are used as index values).
-* `DataFrame` is a tabular data structure that can be seen as an ordered collection of columns. It works like a spreadsheet or a relational database with one row per subject and one column for each subject identifier, outcome variable, explanatory variable etc. A DataFrame has both row and column indices which can be changed if needed.
+DataFrame library consists of two primary data structures:
+* `DataFrame` is a spreadsheet-like tabular data structure that works like a relational database by providing simple and powerful API for querying the data. Each row represents an observation, and every column is a feature. Rows and columns of a DataFrame have names (keys) by which they can be accessed.
+* `DataSeries` is an array-like data structure used for working with specific rows or columns of a DataFrame. It has a name and contains an array of data mapped to a corresponding array of keys. DataSeries is a SequenceableCollection that combines the properties of an Array and a Dictionary, while extending the functionality of both by providing advanced messages for working with data, such as statistical summaries, visualizations etc.
 
 ### Creating DataSeries
-The easiest way of creating a series is to convert another collection (for example, an Array) to DataSeries
+DataSeries can be created from an array of values
+
+```smalltalk
+series := DataSeries fromArray: #(a b c).
+```
+
+By extending the Collection class DataFrame library provides us with a handy shortcut for converting any collection (e.g. an Array) to DataSeries
 
 ```smalltalk
 series := #(a b c) asDataSeries.
 ```
 
-The keys will be automatically set to the numeric sequence of the array indexes, which can be described as an interval (1 to: n), where n is the size of array. The name of the series at this point will remain empty. Both the name and the keys of a DataSeries can be changed later, as follows:
+By default the keys will be initialized with an interval `(1 to: self size)`. The name of a newly created series is considered empty and set by default to `nil`. You can always change the name and keys of your series using these messages
 
 ```smalltalk
 series name: 'letters'.
 series keys: #(k1 k2 k3).
+```
+
+### Accessing elements of DataSeries
+When accessing the elements of a DataSeries, you can think of is as an Array. `at:` message allows you to access elements by their index, with `at:put:` you can modify the given element.
+
+```smalltalk
+series at: 2.    "b"
+series at: 3 put: 'x'.
+``` 
+
+Besides the standard Array accessors, DataSeries provides additional operations for accessing elements by their keys
+
+```smalltalk
+series atKey: #k2.    "b"
+series atKey: #k3 put: 'x'.
+``` 
+
+Messages for enumerating, such as `do:` or `withIndexDo:` work the same as in Array, and the `collect:` message creates a new DataSerie preserving the name and keys of the receiver.
+
+```smalltalk
+newSeries := series collect: [ :each | each, 'x' ].
+newSeries name.         "letters"
+newSeries atKey: 'k1'.  "ax"
 ```
 
 ### Creating a DataFrame
