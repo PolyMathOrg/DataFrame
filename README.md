@@ -82,24 +82,13 @@ Keep in mind that both `add:atKey:` and `atKey:put:` messages don't create a new
 
 ### Creating a DataFrame
 There are four ways of creating a data frame:
-1. Creating an empty data frame, then filling it with data
-2. Creating a data frame from an array of rows
-3. Creating a data frame from an array of columns
-4. Reading data from a file
+1. from an array of rows or columns
+2. from matrix
+3. from file
+4. loading a built-in dataset
 
-#### Creating an empty DataFrame
-You can create an empty instance of `DataFrame` using the `new` message
-
-```smalltalk
-df := DataFrame new.
-```
-The data can be added later using the `add:` message.
-```smalltalk
-df add: #('Barcelona' 1.609 true).
-```
-
-#### Creating a DataFrame from an array of rows
-This way is the best for creating simple examples for testing since you can see how the data will be arranged in your data frame.
+#### 1. Creating a DataFrame from an array of rows or columns
+The easiest and most straightforward way of creating a DataFrame is by passing all data in an array of arrays to `fromRows:` or `fromColumns:` message. Here is an example of initializing a DataFrame with rows:
 
 ```smalltalk
 df := DataFrame fromRows: #(
@@ -108,8 +97,7 @@ df := DataFrame fromRows: #(
    ('London' 8.788 false)).
 ```
 
-#### Creating a DataFrame from an array of columns
-We can do the same by passing an array of columns
+The same data frame can be created from the array of columns
 
 ```smalltalk
 df := DataFrame fromColumns: #(
@@ -118,49 +106,40 @@ df := DataFrame fromColumns: #(
    (true true false)).
 ```
 
-#### Reading data from a file
-This is the most common way of creating a data frame. You have some dataset in a file (CSV, Excel etc.) - just ask a `DataFrame` to read it. At this point only CSV files are supported, but very soon you will also be able to read the data from other formats.
+Since the names of rows and columns are not provided, they are initialized with their default values: `(1 to: self numberOfRows)` and `(1 to: self numberOfColumns)`. Both `rowNames` and `columnNames` can always be changed by passing an array of new names to a corresponding accessor. This array must be of the same size as the number of rows and columns.
+
+```smalltalk
+df columnNames: #(City Population BeenThere).
+df rowNames: #(A B C).
+```
+
+If you print (Ctrl+P) this data frame, you will this pretty-printed table that can be coppied and pasted into letters, blog posts, and tutorials (such as this one)
+
+```
+   |  City       Population  BeenThere  
+---+----------------------------------
+A  |  Barcelona       1.609       true  
+B  |  Dubai           2.789       true  
+C  |  London          8.788      false
+```
+
+#### 3. Reading data from file
+This is the most common way of creating a data frame. You have some dataset in a file (CSV, Excel etc.) - just ask a DataFrame to read it. At this point only CSV files are supported, but very soon you will also be able to read the data from other formats.
 
 ```smalltalk
 df := DataFrame fromCSV: 'path/to/your/file.csv'.
 ```
 
-### Loading the built-in datasets
-DataFrame provides several famous datasets for you to play with. They are compact and can be loaded with a simple message. At this only two datasets are supported - [Iris flower dataset](https://en.wikipedia.org/wiki/Iris_flower_data_set) and a simplified [Boston Housing dataset](https://www.kaggle.com/c/house-prices-advanced-regression-techniques/data).
+### 4. Loading the built-in datasets
+DataFrame provides several famous datasets for you to play with. They are compact and can be loaded with a simple message. An this point there are three datasets that can be loaded in this way - [Iris flower dataset](https://en.wikipedia.org/wiki/Iris_flower_data_set), a simplified [Boston Housing dataset](https://www.kaggle.com/c/house-prices-advanced-regression-techniques/data), and a tipping dataset.
 
 ```smalltalk
-df := DataFrame loadIris.
-df := DataFrame loadHousing.
+DataFrame loadIris.
+DataFrame loadHousing.
+DataFrame loadTips.
 ```
 
 ### Exploring the created DataFrame
-If we print (Ctrl+P) the data frame that was created from an array of rows or columns as described in previous sections, we will see the following table
-
-```
-   |  1              2      3  
----+-------------------------
-1  |  Barcelona  1.609   true  
-2  |  Dubai      2.789   true  
-3  |  London     8.788  false 
-```
-
-As you can see, both row and column names were automatically set to numeric sequences. We can using change them by passing an array of new names. This array must be of the same size as the number of rows and columns.
-
-```smalltalk
-df columnNames: #(City Population SomeBool).
-df rowNames: #(A B C).
-```
-
-Now if we print our data frame, it will look like this
-
-```
-   |  City       Population  SomeBool  
----+---------------------------------
-A  |  Barcelona       1.609      true  
-B  |  Dubai           2.789      true  
-C  |  London          8.788     false
-```
-
 To get the dimensions of a data frame, its rows, and columns, we can say
 
 ```smalltalk
