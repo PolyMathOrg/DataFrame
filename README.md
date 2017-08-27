@@ -82,10 +82,10 @@ Keep in mind that both `add:atKey:` and `atKey:put:` messages don't create a new
 
 ### Creating DataFrame
 There are four ways of creating a data frame:
-[1. from an array of rows or columns](#1-creating-dataframe-from-an-array-of-rows-or-columns)
-[2. from matrix](#2-creating-dataframe-from-a-matrix)
-[3. from file](#3-reading-data-from-file)
-[4. loading a built-in dataset](#4-loading-the-built-in-datasets)
+1. [from an array of rows or columns](#1-creating-dataframe-from-an-array-of-rows-or-columns)
+2. [from matrix](#2-creating-dataframe-from-a-matrix)
+3. [from file](#3-reading-data-from-file)
+4. [loading a built-in dataset](#4-loading-the-built-in-datasets)
 
 #### 1. Creating DataFrame from an array of rows or columns
 The easiest and most straightforward way of creating a DataFrame is by passing all data in an array of arrays to `fromRows:` or `fromColumns:` message. Here is an example of initializing a DataFrame with rows:
@@ -207,6 +207,47 @@ df at: 3 at: 2.
 df at: 3 at: 2 put: true.
 ```
 
+#### Head & tail
+When working with bigger datasets it's often useful to access only the first or the last 5 rows. This can be done using `head` and `tail` messages. To see how they work let's load the Housing dataset.
+
+```smalltalk
+df := DataFrame loadHousing.
+```
+
+This dataset has 489 entries. Printing all these rows in order to understand how this data looks like is unnecessary. On larger datasets it can also be time consuming. To take a quick look on your data, use `df head` or `df tail`
+
+```
+   |     RM  LSTAT  PTRATIO      MDEV  
+---+---------------------------------
+1  |  6.575   4.98     15.3  504000.0  
+2  |  6.421   9.14     17.8  453600.0  
+3  |  7.185   4.03     17.8  728700.0  
+4  |  6.998   2.94     18.7  701400.0  
+5  |  7.147   5.33     18.7  760200.0  
+```
+
+The resuld will be another data frame. `head` and `tail` messages are just shortcuts for `df rowsFrom: 1 to: 5` and `df rowsFrom: (df size - 5) to: df size`. But what if you want a different number of rows? You can do that using parametrized messages `head:` and `tail:` with a given number of rows.
+
+```smalltalk
+df head: 10.
+df tail: 3.
+```
+
+You can also look at the head or tail of a specific column, since all these messages are also supported by DataSeries
+
+```smalltalk
+(df column: #LSTAT) head: 2.
+```
+
+The result will be another series
+
+```
+   |  LSTAT  
+---+-------
+1  |   4.98  
+2  |   9.14
+```
+
 ### Adding new rows and columns to DataFrame
 New rows and columns can be appended to the data frame using messages `addRow:named` and `addColumn:named`. Like in the case of DataSeries, you must provide a name for these new elements, since it can not continue the existing sequence of names.
 
@@ -220,52 +261,4 @@ The same can be done using messages `row:put:` and `column:put:` with non-existi
 ```smalltalk
 df at: #D put: #('Lviv' 0.724 true).
 df at: #Rating put: #(4 3 4).
-```
-
-#### Head & tail
-Now let's take a look at some bigger dataset, for example, Boston Housing Data
-
-```smalltalk
-df := DataFrame loadHousing.
-```
-
-This dataset has 489 entries. Printing this many rows is unnecessary. On larger datasets it can also be time consuming. So in order to make sure that the data was loaded and to take a quick look on it, we can print its head (first 5 rows) or tail (last 5 rows)
-
-```smalltalk
-df head.
-df tail.
-```
-
-Data frame responds to these messages with another `DataFrame` object containing the requested rows. Here is the example output of the `df head` message
-
-```
-   |     RM  LSTAT  PTRATIO      MDEV  
----+---------------------------------
-1  |  6.575   4.98     15.3  504000.0  
-2  |  6.421   9.14     17.8  453600.0  
-3  |  7.185   4.03     17.8  728700.0  
-4  |  6.998   2.94     18.7  701400.0  
-5  |  7.147   5.33     18.7  760200.0  
-```
-
-It is also possible to specify the number of rows that must be printed
-
-```smalltalk
-df head: 10.
-df tail: 3.
-```
-
-The same messages are also supported by the objects of `DataSeries` class. This means that we can also look at a head or tail of a specific column
-
-```smalltalk
-(df column: #LSTAT) head: 2.
-```
-
-The result will be another series
-
-```
-   |  LSTAT  
----+-------
-1  |   4.98  
-2  |   9.14
 ```
