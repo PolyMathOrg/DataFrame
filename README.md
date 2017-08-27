@@ -158,21 +158,41 @@ DataFrame loadHousing.
 DataFrame loadTips.
 ```
 
-### Exploring the created DataFrame
-To get the dimensions of a data frame, its rows, and columns, we can say
+### Accessing rows and columns
+Rows and columns of a data frame can be accessed either by their names or their numeric indexes. You can access row _'C'_ and the column _'Population'_ of a data frame created in the previous sections by writing
 
 ```smalltalk
-df dimensions.
-df dimensions rows.
-df dimensions columns.
+df row: 'C'.
+df column: 'Population'.
 ```
 
-The first line will return an object of `DataDimensions` class. It is just a specialized `Point` which responds to `rows` and `columns` messages instead of `x` and `y`. It also reimplements the `printOn:` message, so if you press `Ctrl+P` on `df dimensions`, you will see something like this
+Alternatively, you can use numeric indexes. Here is how you can ask a data frame for a third row or a second column:
+
+```smalltalk
+df rowAt: 3.
+df columnAt: 2.
+```
+
+The important feature of a `DataFrame` is that when asked for a specific row or column, it responds with a `DataSeries` object that preserves the same indexing. This way, if you extract row _'B'_ from a data frame, it will still remember that _'Dubai'_ is a city with a population of 2.789 million people
 
 ```
-3 rows
-3 columns
+            |      B  
+------------+-------
+      City  |  Dubai  
+Population  |  2.789  
+ BeenThere  |   true 
 ```
+
+You can access multiple columns at a same time by providing an array of column names or indexes, or by specifying the numeric range. For this purpose DataFrame provides messages `rows:`, `columns:`, `rowsAt:`, `columnsAt:`, `rowsFrom:to:`, and `columnsFrom:to:`
+
+```smalltalk
+df columns: #(City BeenThere).
+df rowsAt: #(3 1).
+df columnsFrom: 2 to: 3.
+df rowsFrom: 3 to: 1.
+```
+
+The result will be a data frame with requested rows and columns in a given order. For example, the last line will give you a data frame "flipped upside-down" (with row indexes going in the descending order).
 
 #### Head & tail
 Now let's take a look at some bigger dataset, for example, Boston Housing Data
@@ -220,29 +240,4 @@ The result will be another series
 ---+-------
 1  |   4.98  
 2  |   9.14
-```
-
-### Accessing rows and columns
-Rows and columns of a data frame can be accessed either by their names or their numeric indexes. Afrer changing the names of rows and columns to `#(A B C)` and `#(City Population SomeBool)`, as shown above, how we can now access row _'C'_ and the column _'Population'_ of a data frame
-
-```smalltalk
-df row: 'C'.
-df column: 'Population'.
-```
-
-We can also access them by their numeric indexes
-
-```smalltalk
-df rowAt: 3.
-df columnAt: 2.
-```
-
-The important feature of a `DataFrame` is that whenever we ask for a specific row or column, it responds with a `DataSeries` object that preserves the same indexing. So, for example, if you take row _'B'_ of a data frame described above, you will get a series named _'B'_ with keys _'City'_, _'Population'_, and _'SomeBool'_.
-
-```
-            |      B  
-------------+-------
-      City  |  Dubai  
-Population  |  2.789  
-  SomeBool  |   true 
 ```
