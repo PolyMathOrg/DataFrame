@@ -226,7 +226,7 @@ This dataset has 489 entries. Printing all these rows in order to understand how
 5  |  7.147   5.33     18.7  760200.0  
 ```
 
-The resuld will be another data frame. `head` and `tail` messages are just shortcuts for `df rowsFrom: 1 to: 5` and `df rowsFrom: (df size - 5) to: df size`. But what if you want a different number of rows? You can do that using parametrized messages `head:` and `tail:` with a given number of rows.
+The resuld will be another data frame. `head` and `tail` messages are just shortcuts for `df rowsFrom: 1 to: 5` and `df rowsFrom: (df numberOfRows - 5) to: df numberOfRows.`. But what if you want a different number of rows? You can do that using parametrized messages `head:` and `tail:` with a given number of rows.
 
 ```smalltalk
 df head: 10.
