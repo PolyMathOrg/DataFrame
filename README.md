@@ -6,7 +6,11 @@
 
 Data frames are the essential part of the data science toolkit. They are the specialized data structures for tabular data sets that provide us with a simple and powerful API for summarizing, cleaning, and manipulating a wealth of data sources that are currently cumbersome to use. The DataFrame and DataSeries collections, stored in this repository, are specifically designed for working with structured data.
 
-## Installation
+DataFrame library consists of two primary data structures:
+* `DataFrame` is a spreadsheet-like tabular data structure that works like a relational database by providing the API for querying the data. Each row represents an observation, and every column is a feature. Both rows and columns of a data frame have names (keys) by which they can be accessed.
+* `DataSeries` is an array-like data structure used for working with specific rows or columns of a data frame. It has a name and contains an array of data mapped to a corresponding array of keys. DataSeries is a SequenceableCollection that combines the properties of an Array and a Dictionary, while extending the functionality of both by providing advanced messages for working with data, such as statistical summaries, visualizations etc.
+
+## Tutorial
 The following script installs DataFrame and its dependencies into a Pharo image. Along with all the other code blocks in this tutorial, this script has been tested on Pharo-6.0 and Pharo64-6.0 for both Linux and OSX, and Pharo-6.0 for Windows.
 
 ```smalltalk
@@ -15,11 +19,6 @@ Metacello new
   repository: 'github://PolyMathOrg/DataFrame';
   load.
 ```
-
-## Tutorial
-DataFrame library consists of two primary data structures:
-* `DataFrame` is a spreadsheet-like tabular data structure that works like a relational database by providing simple and powerful API for querying the data. Each row represents an observation, and every column is a feature. Rows and columns of a DataFrame have names (keys) by which they can be accessed.
-* `DataSeries` is an array-like data structure used for working with specific rows or columns of a DataFrame. It has a name and contains an array of data mapped to a corresponding array of keys. DataSeries is a SequenceableCollection that combines the properties of an Array and a Dictionary, while extending the functionality of both by providing advanced messages for working with data, such as statistical summaries, visualizations etc.
 
 ### Creating DataSeries
 DataSeries can be created from an array of values
