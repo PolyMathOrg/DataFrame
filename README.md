@@ -20,6 +20,8 @@ Metacello new
   load.
 ```
 
+If you want to contribute to DataFrame library, you will need create a local DataFrame repository and add it to your Iceberg. This can be done automatically by the Metacello script provided above, but first you have to enable Metacello integration for Iceberg. To do that open the Settings Browser using _Ctrl+O+S_ or _World Menu -> System -> Settings_, then click on _Tools -> Software Configuration Management -> Iceberg_, and check the _Enable Metacello integration..._ checkbox. Now all you have to do is run a Metacello script - it will set up the DataFrame repository for you.
+ 
 ### Creating DataSeries
 DataSeries can be created from an array of values
 
