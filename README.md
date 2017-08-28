@@ -262,3 +262,26 @@ The same can be done using messages `row:put:` and `column:put:` with non-existi
 df at: #D put: #('Lviv' 0.724 true).
 df at: #Rating put: #(4 3 4).
 ```
+
+### The select:where: queries
+[SELECT](https://www.w3schools.com/sql/sql_select.asp) is the most commonly used SQL statement that allows you to subset your data by applying filters to it using [WHERE](https://www.w3schools.com/sql/sql_where.asp) clause. The query language of DataFrame is designed to resemble SQL, so if you have some experience with relational databases, you should "feel like home".
+
+The examples in this section will be using Iris dataset
+
+```smalltalk
+df := DataFrame loadIris.
+```
+
+There are two things you need to specify in order to subset your data with `select:where:` message:
+1. What features (columns) do you want to get
+2. What conditions should the observations (rows) satisfy in order to be selected
+
+First argument of the `select:where:` message should be an array of column names. They will not affect the selection of rows, but the resulting data frame will contain only these columns. Second argument should be a block with boolean conditions that will be applied to each row of data frame. Only those rows that make a block return `true` will be selected. In your conditions you will be referencing the features of your observations. For example, in Iris dataset you might want to select those flowers that belong to `#setosa` species and have the width of sepal equal to `3`. To make queries more readable, DataFrame provides a querying language that allows you to specify the columns which you are using in your conditions as arguments of the where-block, and use these arguments in your conditions. So, for example, a block `[ :species | species = #setosa ]` passed to `select:where:` message will be translated to `[ :row | (row atKey: #species) = #setosa ]` and applied to every row of data frame. This means that all the arguments of the block you pass must correspond to the column names of your data frame.
+
+Here is a query that selects `petal_width` and `petal_length` columns, and all the rows that satisfy the condition described above
+
+```smalltalk
+df select: #(petal_width petal_length)
+   where: [ :species :sepal_width |
+      species = #setosa and: sepal_width = 3 ].
+```
