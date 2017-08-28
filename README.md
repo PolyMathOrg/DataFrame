@@ -307,3 +307,23 @@ This query will return a data frame will all 5 columns of Iris dataset and 6 row
 ```
 
 The previous query will return you only the `petal_width` and `petal_length` columns of this data frame. Try it yourself!
+
+### Aggregation and Grouping
+```smalltalk
+df select: #(sepal_length species)
+   where: [ :petal_length :petal_width |
+      (petal_length < 4.9 and: petal_length > 1.6) and:
+      (petal_width < 0.4 or: petal_width > 1.5) ]
+   groupBy: #species
+   aggregate: #sum.
+```
+
+The result of this query will be a data frame with a single column
+
+```
+            |  sepal_length  
+------------+--------------
+    setosa  |          15.9  
+versicolor  |          18.2  
+ virginica  |          17.1
+```
