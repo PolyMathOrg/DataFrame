@@ -295,7 +295,7 @@ df selectAllWhere: [ :species :sepal_width |
 
 This query will return a data frame will all 5 columns of Iris dataset and 6 rows that satisfy the given condition.
 
-```smalltalk
+```
     |  sepal_length  sepal_width  petal_length  petal_width  species  
 ----+---------------------------------------------------------------
  2  |           4.9            3           1.4          0.2  setosa   
@@ -305,3 +305,5 @@ This query will return a data frame will all 5 columns of Iris dataset and 6 row
 39  |           4.4            3           1.3          0.2  setosa   
 46  |           4.8            3           1.4          0.3  setosa
 ```
+
+The previous query will return you only the `petal_width` and `petal_length` columns of this data frame. Try it yourself!
