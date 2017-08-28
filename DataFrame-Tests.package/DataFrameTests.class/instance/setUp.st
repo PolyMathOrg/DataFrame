@@ -7,4 +7,4 @@ setUp
    		('London' 8.788 false)).
 		
 	df rowNames: #(A B C).
-	df columnNames: #(City Population SomeBool).
+	df columnNames: #(City Population BeenThere).

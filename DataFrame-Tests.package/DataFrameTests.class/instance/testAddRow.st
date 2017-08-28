@@ -10,7 +10,7 @@ testAddRow
 		('Lviv' 0.724 true)).
 		
 	expected rowNames: #(A B C D).
-	expected columnNames: #(City Population SomeBool).
+	expected columnNames: #(City Population BeenThere).
 		
 	df addRow: #('Lviv' 0.724 true) named: #D.
 	

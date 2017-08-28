@@ -9,7 +9,7 @@ testRowPut
    		('London' 8.788 false)).
 		
 	expected rowNames: #(A B C).
-	expected columnNames: #(City Population SomeBool).
+	expected columnNames: #(City Population BeenThere).
 	
 	actual := df.
 	actual row: #B put: #('X' 'Y' 'Z').

@@ -1,5 +1,6 @@
-as yet unclassified
+queries
 select: colNames where: aBlock groupBy: aColName aggregate: selector
 	
-	^ ((self select: colNames where: aBlock)
-		groupBy: aColName) perform: selector.
+	^ (self select: colNames where: aBlock)
+		groupBy: aColName
+		aggregate: selector.

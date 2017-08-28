@@ -1,4 +1,4 @@
-as yet unclassified
+queries
 group: colNameOrArray by: colName
 
 	| left right |

@@ -1,4 +1,4 @@
-as yet unclassified
+queries
 groupBy: colName
 
 	| groupedColNames |

@@ -3,7 +3,7 @@ testColumns
 
 	| columnNames actualDataFrame expectedDataFrame |
 	
-	columnNames := #(City SomeBool).
+	columnNames := #(City BeenThere).
 	
 	expectedDataFrame := DataFrame fromRows: #(
 		('Barcelona' true)

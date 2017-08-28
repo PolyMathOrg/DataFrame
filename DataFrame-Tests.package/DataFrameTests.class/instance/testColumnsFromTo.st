@@ -9,7 +9,7 @@ testColumnsFromTo
    		(8.788 false)).
 		
 	expectedDataFrame rowNames: df rowNames.
-	expectedDataFrame columnNames: #(Population SomeBool).
+	expectedDataFrame columnNames: #(Population BeenThere).
 	
 	actualDataFrame := df columnsFrom: 2 to: 3.
 	
