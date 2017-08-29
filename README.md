@@ -309,6 +309,31 @@ This query will return a data frame will all 5 columns of Iris dataset and 6 row
 The previous query will return you only the `petal_width` and `petal_length` columns of this data frame. Try it yourself!
 
 ### Aggregation and Grouping
+All code in this section will be based on Tipping dataset
+
+```smalltalk
+df := DataFrame loadTips.
+```
+
+The simplest example of applying a `groupBy:` operator is grouping the values of a series by the values of another one of the same size.
+
+```smalltalk
+bill := tips column: #total_bill.
+sex := tips column: #sex.
+
+bill groupBy: sex.
+```
+
+The result of this query will be an object of DataSeriesGrouped, which splits the bill into two series, mapped to the unique `'Male'` and `'Female'` values of sex series.
+
+Since most of the time the series that are grouped are both columns of a same data frame, there is a handy shortcut
+
+```smalltalk
+tips group: #total_bill by: #sex.
+```
+
+The result of `groupBy:` operator is rather useless unless combined with 
+
 ```smalltalk
 df select: #(sepal_length species)
    where: [ :petal_length :petal_width |

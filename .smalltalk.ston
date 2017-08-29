@@ -4,5 +4,10 @@ SmalltalkCISpec {
       #baseline : 'DataFrame',
       #platforms : [ #pharo ]
     }
-  ]
+  ],
+  #testing : {
+    #coverage : {
+      #packages : [ 'DataFrame-Core.*' ]
+    }
+  }
 }
