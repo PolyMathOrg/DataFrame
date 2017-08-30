@@ -1,6 +1,6 @@
-gt-inspector-extension
+*DataFrame-GTInspector
 gtInspectorBoxplotIn: composite
-	<gtInspectorPresentationOrder: 1>
+	<gtInspectorPresentationOrder: 0>
 	<gtInspectorTag: #basic>
 	
 	composite roassal2

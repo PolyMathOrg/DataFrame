@@ -1,4 +1,4 @@
-as yet unclassified
+*DataFrame-GTInspector
 gtInspectorScatterplotIn: composite
 	<gtInspectorPresentationOrder: 1>
 	<gtInspectorTag: #basic>

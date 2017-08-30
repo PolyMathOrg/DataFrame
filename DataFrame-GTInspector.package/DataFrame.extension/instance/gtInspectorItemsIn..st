@@ -1,4 +1,4 @@
-gt-inspector-extension
+*DataFrame-GTInspector
 gtInspectorItemsIn: composite
 "Hide Items from inspector"
 

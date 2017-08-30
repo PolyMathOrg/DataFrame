@@ -1,4 +1,4 @@
-as yet unclassified
+*DataFrame-Plots
 histogram: barSize color: color
 
 	| aggregationKeys aggregatedSeries |

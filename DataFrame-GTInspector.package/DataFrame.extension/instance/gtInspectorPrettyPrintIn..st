@@ -1,4 +1,4 @@
-gt-inspector-extension
+*DataFrame-GTInspector
 gtInspectorPrettyPrintIn: composite
 	<gtInspectorPresentationOrder: 10>
 	<gtInspectorTag: #basic>

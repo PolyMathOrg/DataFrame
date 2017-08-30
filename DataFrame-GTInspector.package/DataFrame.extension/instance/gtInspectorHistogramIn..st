@@ -1,4 +1,4 @@
-gt-inspector-extension
+*DataFrame-GTInspector
 gtInspectorHistogramIn: composite
 	<gtInspectorPresentationOrder: 2>
 	<gtInspectorTag: #basic>

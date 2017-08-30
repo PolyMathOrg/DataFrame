@@ -11,4 +11,4 @@ testGroupSeriesBySeries
 	
 	actualSeries := (df group: #total_bill by: #sex) groups.
 	
-	self assert: actualSeries equals: expectedSeries.
+self assert: actualSeries equals: expectedSeries.
