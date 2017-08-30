@@ -1,6 +1,4 @@
 accessing
 dimensions
 
-	^ DataDimensions
-		rows: (self numberOfRows)
-		columns: (self numberOfColumns)
+	^ (self numberOfRows) @ (self numberOfColumns)

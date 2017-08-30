@@ -1,10 +1,11 @@
 statistics
 quantile: number
 	
-	| sortedSeries |
+	| sortedSeries index |
 	sortedSeries := self asArray sort asDataSeries.
 	
-	sortedSeries size < 4
-		ifTrue: [ ^ sortedSeries last ].
+	number = 0
+		ifTrue: [ ^ sortedSeries first ].
 	
-	^ sortedSeries at: (sortedSeries size * (number / 100)).
+	index := (sortedSeries size * (number / 100)) ceiling.
+	^ sortedSeries at: index.

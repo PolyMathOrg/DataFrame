@@ -1,4 +1,0 @@
-accessing vectorwise
-columns
-	
-	^ y

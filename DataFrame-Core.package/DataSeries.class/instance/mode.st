@@ -6,4 +6,4 @@ mode
 	valueCounts := (self groupBy: self) count.
 	maxCount := valueCounts max.
 	
-	^ valueCounts indexOf: maxCount.
+	^ valueCounts keyAtValue: maxCount.
