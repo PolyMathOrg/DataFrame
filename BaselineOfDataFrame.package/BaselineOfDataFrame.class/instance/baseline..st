@@ -14,6 +14,8 @@ baseline: spec
 			package: 'DataFrame-Core';
 			package: 'DataFrame-Plots' with: [ 
 				spec requires: 'DataFrame-Core' ];
+			package: 'DataFrame-GTInspector' with: [ 
+				spec requires: 'DataFrame-Core' ];
 			package: 'DataFrame-Tests' with: [ 
 				spec requires: 'DataFrame-Core' ];
 			package: 'DataFrame-Examples' with: [
