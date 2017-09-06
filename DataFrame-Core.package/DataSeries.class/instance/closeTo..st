@@ -1,5 +1,5 @@
 comparing
-= otherSeries
+closeTo: otherSeries
 
 	(otherSeries isKindOf: DataSeries)
 		ifFalse: [ ^ false ].
@@ -19,9 +19,6 @@ comparing
 		selfCell := self at: i.
 		otherCell := otherSeries at: i.
 		
-		(allEqual and: (selfCell = otherCell))
-			ifTrue: [ true ]
-			ifFalse: [ 
-				(selfCell isNumber and: otherCell isNumber)
-					ifFalse: [ false ]
-					ifTrue: [ (selfCell isNaN and: otherCell isNaN) ] ] ].
+		allEqual and: ((selfCell closeTo: otherCell) or:
+			((selfCell isNumber and: otherCell isNumber) and:
+			(selfCell isNaN and: otherCell isNaN))) ].

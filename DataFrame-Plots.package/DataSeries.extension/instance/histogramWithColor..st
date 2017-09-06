@@ -1,4 +1,4 @@
 *DataFrame-Plots
 histogramWithColor: aColor
 	
-	^ self histogramWithColors: (self unique collect: [ :v | aColor ]).
+	^ self histogramWithColors: (self collect: [ :v | aColor ]).

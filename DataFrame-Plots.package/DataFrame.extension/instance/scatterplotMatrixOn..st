@@ -8,11 +8,11 @@ scatterplotMatrixOn: categoricalColName
 	
 	colorDict := Dictionary new.
 	
-	categories values doWithIndex: [ :category :i |
+	categories doWithIndex: [ :category :i |
 		colorDict at: category put: (palette at: i) ].
 	
 	observedCols := self columnNames select: [ :name |
-		(self column: name) isNumeric and:
+		(self column: name) isQuantitative and:
 		(name = categoricalColName) not ].
 	
 	b := DataScatterplotMatrix new.
@@ -45,10 +45,10 @@ scatterplotMatrixOn: categoricalColName
 	
 	b shape circle
 		size: 3.5;
-		color: [ :a | colorDict at: (a at: categoricalColName) ].
+		color: [ :a | colorDict at: (a atKey: categoricalColName) ].
 
 	observedCols do: [ :name |
-		b metrics at: name put: [ :row | row at: name ] ].
+		b metrics at: name put: [ :row | row atKey: name ] ].
 
 	b build.
 

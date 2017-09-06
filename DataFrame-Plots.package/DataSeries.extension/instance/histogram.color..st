@@ -1,9 +1,13 @@
 *DataFrame-Plots
-histogram: barSize color: color
+histogram: binSize color: color
 
-	| aggregationKeys aggregatedSeries |
+	| sortedSeries aggregationKeys aggregatedSeries |
 	
-	aggregationKeys := self keys asDataSeries % (self size / barSize).
-	aggregatedSeries := (self groupBy: aggregationKeys) sum.
+	sortedSeries := self asArray sort asDataSeries.
+	
+	aggregationKeys := (sortedSeries keys asDataSeries + (binSize - 1)) // binSize.
+	aggregatedSeries := (sortedSeries groupBy: aggregationKeys) sum.
+	
+	aggregatedSeries keys: (((aggregatedSeries keys - 1) * binSize) + 1).
 	
 	^ aggregatedSeries histogramWithColor: color
