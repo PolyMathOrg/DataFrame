@@ -1,6 +1,6 @@
-accessing
-row: rowName
+removing
+removeRow: rowName
 
 	| index |
 	index := self indexOfRowNamed: rowName.
-	^ self rowAt: index
+	self removeRowAt: index.

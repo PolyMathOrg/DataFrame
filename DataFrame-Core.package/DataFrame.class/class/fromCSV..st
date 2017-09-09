@@ -1,4 +1,6 @@
 instance creation
 fromCSV: pathToFile
 
-	^ self fromCSV: pathToFile separatedBy: $,.
+	^ self
+		fromCSV: pathToFile
+		separator: $,.

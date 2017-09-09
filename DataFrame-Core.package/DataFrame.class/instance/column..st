@@ -1,11 +1,6 @@
 accessing
-column: colName
+column: columnName
 
 	| index |
-	index := self columnNames indexOf: colName.
-	
-	"If a column with that name does not exist"
-	index = 0
-		ifTrue: [ NotFoundError signal ].
-		
+	index := self indexOfColumnNamed: columnName.
 	^ self columnAt: index

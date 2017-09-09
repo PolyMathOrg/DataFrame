@@ -1,7 +1,7 @@
 statistics
-interquartileRange
+max
 
 	self isQuantitative not
 		ifTrue: [ Error signal: 'Variable ', name asString, ' is not quantitative. Arythmetic and statistical operations can only be applied to quantitative variables' ].
-
-	^ self thirdQuartile - self firstQuartile
+		
+	^ super max
