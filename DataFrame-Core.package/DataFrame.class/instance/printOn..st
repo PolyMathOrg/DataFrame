@@ -1,4 +1,10 @@
 printing
 printOn: aStream
 
-	DataPrettyPrinter new print: self on: aStream.
+	| title |
+	title := self class name.
+	aStream
+		nextPutAll: (title first isVowel ifTrue: ['an '] ifFalse: ['a ']);
+		nextPutAll: title;
+		space;
+		nextPutAll: self dimensions asString.

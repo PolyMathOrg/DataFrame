@@ -6,14 +6,7 @@ testPrintOn
 	population keys: #(Barcelona Dubai London).
 	population name: #Population.
 	
-	expected := String new writeStream.
-	expected
-		nextPutAll: '           |  Population  '; cr;
-		nextPutAll: '-----------+--------------'; cr;
-		nextPutAll: 'Barcelona  |       1.609  '; cr;
-    	nextPutAll: '    Dubai  |       2.789  '; cr;
-		nextPutAll: '   London  |       8.788  '; cr.
-	expected := expected contents.
+	expected := 'a DataSeries [3 items]: ', 1.609 class name.
 	
 	actual := String new writeStream.
 	population printOn: actual.

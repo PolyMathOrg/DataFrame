@@ -6,8 +6,8 @@ testDataSeriesGroupedPrintOn
 	expected := String new writeStream.
 	expected
 		nextPutAll: 'a DataSeriesGrouped'; cr;
-		nextPutAll: 'Female	(16.99 24.59)'; cr;
-		nextPutAll: 'Male	(10.34 21.01 23.68)'.
+		nextPutAll: ('Female: a DataSeries [2 items]: ', 21.01 class name); cr;
+		nextPutAll: ('Male: a DataSeries [3 items]: ', 21.01 class name).
 	expected := expected contents.
 	
 	actual := String new writeStream.

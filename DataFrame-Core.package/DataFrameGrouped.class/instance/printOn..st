@@ -5,9 +5,10 @@ printOn: aStream
 	aStream cr.
 	
 	groups doWithIndex: [ :eachDataFrame :i |
-		(groups keys at: i) printOn: aStream.
-		aStream cr.
+		aStream
+			nextPutAll: (groups keys at: i) asString;
+			nextPutAll: ': '.
 		eachDataFrame printOn: aStream.
 		
 		i = groups size
-			ifFalse: [ aStream cr; cr ] ] 
+			ifFalse: [ aStream cr ] ] 
