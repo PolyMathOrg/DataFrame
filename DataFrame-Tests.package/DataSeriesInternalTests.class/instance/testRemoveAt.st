@@ -1,11 +1,11 @@
 initialization
-testAdd
+testRemoveAt
 
 	| expected |
 	
 	expected := DataSeriesInternal fromArray:
-		#(10 20 30 40 50 60 70 80 90 100 -1).
+		#(10 30 40 50 60 70 80 90 100).
 		
-	series add: -1.
+	series removeAt: 2.
 		
 	self assert: series equals: expected.
