@@ -114,7 +114,7 @@ df columnNames: #(City Population BeenThere).
 df rowNames: #(A B C).
 ```
 
-If you print (Ctrl+P) this data frame, you will this pretty-printed table that can be coppied and pasted into letters, blog posts, and tutorials (such as this one)
+You can convert this data frame to a pretty-printed table that can be coppied and pasted into letters, blog posts, and tutorials (such as this one) using `df asStringTable` message
 
 ```
    |  City       Population  BeenThere  
