@@ -6,9 +6,8 @@
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [
-		"series",
-		"keyArray"
+		"series"
 	],
-	"name" : "DataSeriesTests",
+	"name" : "DataSeriesSortableTests",
 	"type" : "normal"
 }

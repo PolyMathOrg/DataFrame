@@ -1,4 +1,4 @@
 accessing
 keys: anArray
 
-	keys := anArray
+	keys := anArray copy.
