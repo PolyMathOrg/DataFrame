@@ -1,9 +1,7 @@
 *DataFrame-Plots
 barplotWithColor: color
+
 	| uniqueValues points barWidth padding b ds |
-	
-	self isQuantitative not
-		ifTrue: [ Error signal: 'Variable ', name asString, ' is not quantitative. Only quantitative variables can be plotted' ].
 	
 	uniqueValues := self unique.
 	points := uniqueValues collect: [ :v |

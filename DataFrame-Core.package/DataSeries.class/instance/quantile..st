@@ -3,8 +3,7 @@ quantile: number
 	
 	| sortedSeries index |
 	
-	self isQuantitative not
-		ifTrue: [ Error signal: 'Variable ', name asString, ' is not quantitative. Arythmetic and statistical operations can only be applied to quantitative variables' ].
+	self signalErrorIfNotQuantitative.
 	
 	sortedSeries := self asArray sort asDataSeries.
 	
