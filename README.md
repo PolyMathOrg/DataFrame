@@ -12,6 +12,24 @@ DataFrame library consists of two primary data structures:
 * `DataSeries` is an array-like data structure used for working with specific rows or columns of a data frame. It has a name and contains an array of data mapped to a corresponding array of keys. DataSeries is a SequenceableCollection that combines the properties of an Array and a Dictionary, while extending the functionality of both by providing advanced messages for working with data, such as statistical summaries, visualizations etc.
 
 ## Tutorial
+
+1. [Installation](#installation)
+2. [Creating DataSeries](#creating-dataseries)
+3. [Accessing elements of DataSeries](#accessing-elements-of-dataseries)
+4. [Adding new elements to DataSeries](#adding-new-elements-to-dataseries)
+5. [Creating DataFrame](#creating-dataframe)
+    1. [Creating DataFrame from an array of rows or columns](#1-creating-dataframe-from-an-array-of-rows-or-columns)
+    2. [Creating DataFrame from a Matrix](#2-creating-dataframe-from-a-matrix)
+    3. [Reading data from file](#3-reading-data-from-file)
+    4. [Loading the built-in datasets](#4-loading-the-built-in-datasets)
+6. [Accessing rows and columns](#accessing-rows-and-columns)
+    1. [Head & tail](#head--tail)
+7. [Adding new rows and columns to DataFrame](#adding-new-rows-and-columns-to-dataframe)
+8. [The select:where: queries](#the-selectwhere-queries)
+9. [Aggregation and Grouping](#aggregation-and-grouping)
+
+
+### Installation
 The following script installs DataFrame and its dependencies into a Pharo image. Along with all the other code blocks in this tutorial, this script has been tested on Pharo-6.0 and Pharo64-6.0 for both Linux and OSX, and Pharo-6.0 for Windows.
 
 ```smalltalk
