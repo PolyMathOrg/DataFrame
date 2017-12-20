@@ -10,8 +10,7 @@ baseline: spec
 						version: #development;
 						file: 'ConfigurationOfRoassal2';
 						repository: 'http://smalltalkhub.com/mc/ObjectProfile/Roassal2/main/' ];
-				baseline: 'GToolkitExamples' with: [ spec repository: 'github://feenkcom/gtoolkit-examples/src' ];
-				package: 'DataFrame-Core';
+				package: 'DataFrame-Core' with: [ spec requires: 'Roassal2' ];
 				package: 'DataFrame-Plots' with: [ spec requires: 'DataFrame-Core' ];
 				package: 'DataFrame-GTInspector' with: [ spec requires: 'DataFrame-Core' ];
 				package: 'DataFrame-Tests' with: [ spec requires: 'DataFrame-Core' ];
