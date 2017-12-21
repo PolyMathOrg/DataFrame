@@ -13,7 +13,7 @@ baseline: spec
 						repository: 'http://smalltalkhub.com/mc/ObjectProfile/Roassal2/main/' ];	"		
 				spec 
 				package: 'DataFrame-Core';
-				package: 'DataFrame-Plots' with: [ spec requires: #('DataFrame-Core') ];
+				"package: 'DataFrame-Plots' with: [ spec requires: #('DataFrame-Core') ];"
 				package: 'DataFrame-GTInspector' with: [ spec requires: 'DataFrame-Core' ];
 				package: 'DataFrame-Tests' with: [ spec requires: 'DataFrame-Core' ];
 				package: 'DataFrame-Examples' with: [ spec requires: #('GToolkitExamples' 'DataFrame-Core' 'DataFrame-Plots') ];
