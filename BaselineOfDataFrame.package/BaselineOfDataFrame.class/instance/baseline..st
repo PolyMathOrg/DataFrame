@@ -16,7 +16,7 @@ baseline: spec
 				"package: 'DataFrame-Plots' with: [ spec requires: #('DataFrame-Core') ];"
 				package: 'DataFrame-GTInspector' with: [ spec requires: 'DataFrame-Core' ];
 				package: 'DataFrame-Tests' with: [ spec requires: 'DataFrame-Core' ];
-				package: 'DataFrame-Examples' with: [ spec requires: #('GToolkitExamples' 'DataFrame-Core' 'DataFrame-Plots') ];
+				package: 'DataFrame-Examples' with: [ spec requires: #('GToolkitExamples' 'DataFrame-Core' "'DataFrame-Plots'") ];
 				package: 'DataFrame-DataSets' with: [ spec requires: 'DataFrame-Core' ];
 				package: 'DataFrame-PrettyPrint';
 				package: 'DataFrame-FTable'.]
