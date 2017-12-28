@@ -4,15 +4,15 @@ baseline: spec
 	spec
 		for: #common
 		do: [
-				"spec project: 'Roassal2'
+				spec project: 'Roassal2'
 					with: [ spec
 						className: 'ConfigurationOfRoassal2';
 						version: #development;
 						file: 'ConfigurationOfRoassal2';
-						repository: 'http://smalltalkhub.com/mc/ObjectProfile/Roassal2/main/' ];	"		
+						repository: 'http://smalltalkhub.com/mc/ObjectProfile/Roassal2/main/' ].		
 				spec 
 				package: 'DataFrame-Core';
-				"package: 'DataFrame-Plots' with: [ spec requires: #('DataFrame-Core') ];"
+				package: 'DataFrame-Plots' with: [ spec requires: #('Roassal2' 'DataFrame-Core') ];
 				package: 'DataFrame-GTInspector' with: [ spec requires: 'DataFrame-Core' ];
 				package: 'DataFrame-Tests' with: [ spec requires: 'DataFrame-Core' ];
 				package: 'DataFrame-DataSets' with: [ spec requires: 'DataFrame-Core' ];
