@@ -4,7 +4,7 @@ baseline: spec
 	spec
 		for: #common
 		do: [spec
-				baseline: 'GToolkitExamples' with: [ spec repository: 'github://feenkcom/gtoolkit-examples/src' ].
+				baseline: 'GToolkitExamplesEngine' with: [ spec repository: 'github://feenkcom/gtoolkit-examples/src' ].
 				"project: 'Roassal2'
 					with: [ spec
 						className: 'ConfigurationOfRoassal2';
