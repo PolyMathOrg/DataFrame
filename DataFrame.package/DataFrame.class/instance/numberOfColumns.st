@@ -1,0 +1,4 @@
+accessing
+numberOfColumns
+
+	^ contents numberOfColumns

@@ -1,0 +1,11 @@
+{
+	"commentStamp" : "",
+	"super" : "Color",
+	"category" : "DFTools-Plots",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [ ],
+	"name" : "DataColor",
+	"type" : "normal"
+}
