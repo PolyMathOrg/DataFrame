@@ -11,10 +11,5 @@ baseline: spec
 						file: 'ConfigurationOfRoassal2';
 						repository: 'http://smalltalkhub.com/mc/ObjectProfile/Roassal2/main/' ].		
 				spec 
-				package: 'DataFrame-Core';
-				package: 'DataFrame-Plots' with: [ spec requires: #('Roassal2' 'DataFrame-Core') ];
-				package: 'DataFrame-GTInspector' with: [ spec requires: 'DataFrame-Core' ];
-				package: 'DataFrame-Tests' with: [ spec requires: 'DataFrame-Core' ];
-				package: 'DataFrame-DataSets' with: [ spec requires: 'DataFrame-Core' ];
-				package: 'DataFrame-PrettyPrint';
-				package: 'DataFrame-FTable'.]
+				package: 'DataFrame';
+				package: 'DFTools' with: [ spec requires: #('DataFrame' 'Roassal2') ]].
