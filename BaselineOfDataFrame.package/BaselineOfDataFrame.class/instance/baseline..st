@@ -11,4 +11,5 @@ baseline: spec
 						file: 'ConfigurationOfRoassal2';
 						repository: 'http://smalltalkhub.com/mc/ObjectProfile/Roassal2/main/' ].		
 				spec 
-				package: 'DataFrame' ].
+				package: 'DataFrame';
+				package: 'DFTools' with: [ spec requires: #('DataFrame' 'Roassal2') ]].
