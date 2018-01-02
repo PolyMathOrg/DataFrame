@@ -20,9 +20,9 @@ baseline: spec
 			
 				"Groups"
 				spec
-					group: 'core' with: #('DataFrame-Core');
-					group: 'tools' with: #('DataFrame-Tools');
-					group: 'coretests' with: #('DataFrame-Core-Tests');
-					group: 'tests' with: #('coretests' 'DataFrame-Tools-Tests');
-					group: 'all' with: #('tests');
+					group: 'Core' with: #('DataFrame-Core');
+					group: 'Tools' with: #('DataFrame-Tools');
+					group: 'CoreTests' with: #('DataFrame-Core-Tests');
+					group: 'Tests' with: #('CoreTests' 'DataFrame-Tools-Tests');
+					group: 'all' with: #('Tests');
 					group: 'default' with: #('all') ].

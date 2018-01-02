@@ -13,9 +13,9 @@ Installs:
 - DataFrame-Tools-Tests
 
 Groups:
-- core (DataFrame-Core)
-- coretests (DataFrame-Core, DataFrame-Core-Tests)
-- tools (DataFrame-Core, DataFrame-Tools)
-- tests (DataFrame-Core, DataFrame-Core-Tests, DataFrame-Tools, DataFrame-Tools-Tests)
-- all (= tests)
+- Core (DataFrame-Core)
+- CoreTests (DataFrame-Core, DataFrame-Core-Tests)
+- Tools (DataFrame-Core, DataFrame-Tools)
+- Tests (DataFrame-Core, DataFrame-Core-Tests, DataFrame-Tools, DataFrame-Tools-Tests)
+- all (= Tests)
 - default (= all)
