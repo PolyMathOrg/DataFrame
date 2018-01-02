@@ -3,13 +3,6 @@ baseline: spec
 	<baseline>
 	spec
 		for: #common
-		do: [
-				spec project: 'Roassal2'
-					with: [ spec
-						className: 'ConfigurationOfRoassal2';
-						version: #development;
-						file: 'ConfigurationOfRoassal2';
-						repository: 'http://smalltalkhub.com/mc/ObjectProfile/Roassal2/main/' ].		
+		do: [		
 				spec 
-				package: 'DataFrame';
-				package: 'DFTools' with: [ spec requires: #('DataFrame' 'Roassal2') ]].
+				package: 'DataFrame' ].
