@@ -1,1 +1,0 @@
-I am a data series, suitable for data analysis.

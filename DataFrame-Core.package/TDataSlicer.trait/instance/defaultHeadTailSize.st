@@ -1,4 +1,0 @@
-accessing
-defaultHeadTailSize
-
-	^ 5
