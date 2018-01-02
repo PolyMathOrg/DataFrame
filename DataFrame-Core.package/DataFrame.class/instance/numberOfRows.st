@@ -1,4 +1,0 @@
-accessing
-numberOfRows
-
-	^ contents numberOfRows
