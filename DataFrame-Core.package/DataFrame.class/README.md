@@ -1,0 +1,1 @@
+I am a collection for datasets that can be stored and processed in tables. I am suitable for data analysis.

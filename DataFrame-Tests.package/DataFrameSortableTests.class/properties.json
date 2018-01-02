@@ -1,0 +1,14 @@
+{
+	"commentStamp" : "",
+	"super" : "TestCase",
+	"category" : "DataFrame-Tests",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"df",
+		"columnNames"
+	],
+	"name" : "DataFrameSortableTests",
+	"type" : "normal"
+}

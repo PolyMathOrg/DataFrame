@@ -1,0 +1,18 @@
+{
+	"classtraitcomposition" : "TDataSlicer classTrait",
+	"classvars" : [ ],
+	"instvars" : [
+		"contents",
+		"rowNames",
+		"columnNames",
+		"columnTypes"
+	],
+	"name" : "DataFrame",
+	"commentStamp" : "<historical>",
+	"super" : "Collection",
+	"traitcomposition" : "TDataSlicer",
+	"type" : "normal",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"category" : "DataFrame-Core-Base"
+}

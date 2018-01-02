@@ -1,0 +1,15 @@
+{
+	"commentStamp" : "",
+	"super" : "Object",
+	"category" : "DataFrame-Core-PrettyPrint",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"columnLengths",
+		"columnAligns",
+		"separator"
+	],
+	"name" : "DataPrettyPrinter",
+	"type" : "normal"
+}

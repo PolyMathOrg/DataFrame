@@ -1,0 +1,11 @@
+{
+	"commentStamp" : "",
+	"super" : "RTScatterplotMatrix",
+	"category" : "DataFrame-Tools-Plots",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [ ],
+	"name" : "DataScatterplotMatrix",
+	"type" : "normal"
+}
