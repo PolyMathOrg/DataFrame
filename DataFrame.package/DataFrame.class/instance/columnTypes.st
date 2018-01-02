@@ -1,4 +1,0 @@
-accessing
-columnTypes
-
-	^ columnTypes.
