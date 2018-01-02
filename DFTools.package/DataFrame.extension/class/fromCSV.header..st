@@ -1,4 +1,4 @@
-instance creation
+*DFTools-NeoCSV
 fromCSV: pathToFile header: containsHeader
 
 	^ self

@@ -1,4 +1,4 @@
-instance creation
+*DFTools-NeoCSV
 fromCSV: pathToFile separator: separator
 
 	^ self
