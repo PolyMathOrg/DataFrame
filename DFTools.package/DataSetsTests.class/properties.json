@@ -1,7 +1,7 @@
 {
 	"commentStamp" : "",
 	"super" : "TestCase",
-	"category" : "DataFrame-Tests",
+	"category" : "DFTools-Tests",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],
