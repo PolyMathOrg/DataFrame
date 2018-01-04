@@ -4,7 +4,7 @@ We need your help to make it better.
 Every contribution counts - should it be a fixed typo in documentation or the implementation of a faster algorithm.
 > There is no such thing as small contribution
 
-1. [What can you do?](#what-can-you-do)
+1. [Working with issues](#working-with-issues)
 2. [Setting up the environment](#setting-up-the-environment)
     1. [Download a fresh Pharo 6.1 image](#download-a-fresh-pharo-61-image)
     2. [Update Iceberg](#update-iceberg)
@@ -13,8 +13,12 @@ Every contribution counts - should it be a fixed typo in documentation or the im
     5. [Load DataFrame](#load-dataframe)
 3. [Making changes to DataFrame](#making-changes-to-dataframe)
 
-## What can you do?
-The best way to find out how you can help make DataFrame better is to look at the [list of open issues](https://github.com/PolyMathOrg/DataFrame/issues). 
+## Working with issues
+The best way to find out how you can help make DataFrame better is to look at the [list of open issues](https://github.com/PolyMathOrg/DataFrame/issues). Pay attention to the labels on these issues. If you are new to Pharo or don't have a good understanding how DataFrame works inside - consider taking issues that are marked with [good first issue](https://github.com/PolyMathOrg/DataFrame/labels/good%20first%20issue) label. They can be easily resolved and don't require digging deep inside DataFrame. Issues that are marked with [bug](https://github.com/PolyMathOrg/DataFrame/labels/bug) label are the ones that need to be resolved as soon as possible. On the other hand, [enhancement](https://github.com/PolyMathOrg/DataFrame/labels/enhancement) issues are not so urgent, but working on them might be more interesting for you because you will be introducing new features to DataFrame.
+
+If you decide to take a certain issue, please assign it to yoursef to let others know that someone is working on it. Once you've made a pull request (in the following sections we describe in details how to commit your changes and make pull requests), don't forget to describe your solution in a comment under the corresponding issue. If you are stuck and can't solve the problem, you can still leave a comment explaining what you tried and why it didn't work. It is also a valuable contribution that will be very useful for people who will be working on that issue later.
+
+Should you encounter any problems with DataFrame while working on your selected issue, don't hesitate to open new ones. Just give it a meaningful title and try to describe the problem as clearly as possible.
 
 ## Setting up the environment
 In order to make your conributions you need to set up the environment that will allow you to have a local version of DataFrame repository and push your changes directly from your Pharo image.
@@ -25,7 +29,7 @@ You can download it from the [official website](https://pharo.org/download).
 Just follow the instructions for your OS.
 
 ### Update Iceberg
-[Iceberg](https://github.com/pharo-vcs/iceberg) Iceberg is a set of tools that allow one to handle git repositories directly from a Pharo image.
+[Iceberg](https://github.com/pharo-vcs/iceberg) is a set of tools that allow one to handle git repositories directly from a Pharo image.
 Since Pharo 6.0, iceberg is included in the image, so you don't need to install it.
 However, there are some bugs that will produce an LGit error if you try to enable Metacello integration
 (we will be doing it in the next steps).
