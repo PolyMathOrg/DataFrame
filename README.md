@@ -25,8 +25,9 @@ DataFrame library consists of two primary data structures:
 6. [Accessing rows and columns](#accessing-rows-and-columns)
     1. [Head & tail](#head--tail)
 7. [Adding new rows and columns to DataFrame](#adding-new-rows-and-columns-to-dataframe)
-8. [The select:where: queries](#the-selectwhere-queries)
-9. [Aggregation and Grouping](#aggregation-and-grouping)
+8. [Transposed DataFrame](#transposed-dataframe)
+9. [The select:where: queries](#the-selectwhere-queries)
+10. [Aggregation and Grouping](#aggregation-and-grouping)
 
 
 ### Installation
@@ -281,6 +282,17 @@ The same can be done using messages `row:put:` and `column:put:` with non-existi
 df at: #D put: #('Lviv' 0.724 true).
 df at: #Rating put: #(4 3 4).
 ```
+
+### Transposed DataFrame
+Sometimes it is useful to transpose a data frame made out of columns and rows into rows and columns. For example, if you want to transpose the data frame created in section [Creating DataFrame from an array of rows or columns](#1-creating-dataframe-from-an-array-of-rows-or-columns), you can simply write `df transposed` and it will return you a new data frame which looks like this
+
+```
+            |          A      B       C  
+------------+----------------------------
+      City  |  Barcelona  Dubai  London  
+Population  |      1.609  2.789   8.788  
+ BeenThere  |       true   true   false
+ ```
 
 ### The select:where: queries
 [SELECT](https://www.w3schools.com/sql/sql_select.asp) is the most commonly used SQL statement that allows you to subset your data by applying filters to it using [WHERE](https://www.w3schools.com/sql/sql_where.asp) clause. The query language of DataFrame is designed to resemble SQL, so if you have some experience with relational databases, you should "feel like home".
