@@ -4,6 +4,15 @@ We need your help to make it better.
 Every contribution counts - should it be a fixed typo in documentation or the implementation of a faster algorithm.
 > There is no such thing as small contribution
 
+1. [What can you do?](#what-can-you-do)
+2. [Setting up the environment](#setting-up-the-environment)
+    1. [Download a fresh Pharo 6.1 image](#download-a-fresh-pharo-61-image)
+    2. [Update Iceberg](#update-iceberg)
+    3. [Connect to GitHub with SSH](#connect-to-github-with-ssh)
+    4. [Settings](#settings)
+    5. [Load DataFrame](#load-dataframe)
+3. [Making changes to DataFrame](#making-changes-to-dataframe)
+
 ## What can you do?
 The best way to find out how you can help make DataFrame better is to look at the [list of open issues](https://github.com/PolyMathOrg/DataFrame/issues). 
 
