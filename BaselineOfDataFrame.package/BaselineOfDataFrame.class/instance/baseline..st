@@ -14,14 +14,14 @@ baseline: spec
 						repository: 'http://smalltalkhub.com/mc/ObjectProfile/Roassal2/main/' ];
 				project: 'Tabular' with: [
 				spec
-					className: #ConfigurationOfTabular;
-					versionString: #'development';
+					className: 'ConfigurationOfTabular';
+					versionString: #development;
 					repository: 'http://ss3.gemtalksystems.com/ss/Tabular' ].				
 				"Packages"
 				spec 
 					package: 'DataFrame-Core';
 					package: 'DataFrame-Core-Tests' with: [ spec requires: #('DataFrame-Core') ];
-					package: 'DataFrame-Tools' with: [ spec requires: #('DataFrame-Core' 'Roassal2') ];
+					package: 'DataFrame-Tools' with: [ spec requires: #('DataFrame-Core' 'Roassal2' 'Tabular') ];
 					package: 'DataFrame-Tools-Tests' with: [ spec requires: #('DataFrame-Tools') ].
 			
 				"Groups"
