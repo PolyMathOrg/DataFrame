@@ -9,7 +9,7 @@ environment:
     # Currently, only Squeak and Pharo images are supported on AppVeyor.
 #    - SMALLTALK: Squeak-trunk
 #    - SMALLTALK: Squeak-5.0
-    - SMALLTALK: Pharo-6.0
+    - SMALLTALK: Pharo-6.1
 #    - SMALLTALK: Pharo-5.0
     # ...
 
