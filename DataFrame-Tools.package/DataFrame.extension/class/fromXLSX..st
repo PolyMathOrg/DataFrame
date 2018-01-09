@@ -1,10 +1,10 @@
-instance creation
-fromXLSX: pathToFile worksheetNamed: sheetName
+*DataFrame-Tools-Tabular
+fromXLSX: pathToFile
 
 	| file workbook sheet |
 	
 	file := FileStream readOnlyFileNamed: pathToFile.
 	workbook := XLSXImporter import: file.
-	sheet := workbook worksheetNamed: sheetName.
+	sheet := workbook worksheets first.
 	
 	^ self fromXLSXworksheet: sheet.
