@@ -4,13 +4,19 @@ baseline: spec
 	spec
 		for: #common
 		do: [
-				spec project: 'Roassal2'
-					with: [ spec
+				spec
+				project: 'Roassal2'
+					with: [
+					spec
 						className: 'ConfigurationOfRoassal2';
 						version: #development;
 						file: 'ConfigurationOfRoassal2';
-						repository: 'http://smalltalkhub.com/mc/ObjectProfile/Roassal2/main/' ].		
-				
+						repository: 'http://smalltalkhub.com/mc/ObjectProfile/Roassal2/main/' ];
+				project: 'Tabular' with: [
+				spec
+					className: #ConfigurationOfTabular;
+					versionString: #'development';
+					repository: 'http://ss3.gemtalksystems.com/ss/Tabular' ].				
 				"Packages"
 				spec 
 					package: 'DataFrame-Core';
