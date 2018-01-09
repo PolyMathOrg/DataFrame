@@ -31,7 +31,7 @@ DataFrame library consists of two primary data structures:
 
 
 ### Installation
-The following script installs DataFrame and its dependencies into a Pharo image. Along with all the other code blocks in this tutorial, this script has been tested on Pharo-6.0 and Pharo64-6.0 for both Linux and OSX, and Pharo-6.0 for Windows.
+The following script installs DataFrame and its dependencies into a Pharo image. Along with all the other code blocks in this tutorial, this script has been tested on Pharo-6.1 and Pharo64-6.1 for both Linux and OSX, and Pharo-6.1 for Windows.
 
 ```smalltalk
 Metacello new
