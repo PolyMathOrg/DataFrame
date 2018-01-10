@@ -1,0 +1,11 @@
+/* Move down content because we have a fixed navbar that is 3.5rem tall */
+body {
+  padding-top: 3.5rem;
+}
+
+#forkme {
+	position: fixed;
+	top: 3.5rem;
+	right: 0;
+	border: 0;
+}
