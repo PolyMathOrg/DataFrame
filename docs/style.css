@@ -18,3 +18,7 @@ body {
 .code-block {
 	padding: 1.5rem 4.5rem 0.5rem 2rem;
 }
+
+.page-container {
+	padding: 2.5rem;
+}

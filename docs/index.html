@@ -44,13 +44,17 @@
         <li class="nav-item">
           <a class="nav-link" id="community-tab" data-toggle="tab" href="#community" role="tab" aria-controls="community" aria-selected="false">Community</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" id="blog-tab" data-toggle="tab" href="#blog" role="tab" aria-controls="blog" aria-selected="false">Blog</a>
+        </li>
       </ul>
     </div>
   </nav>
 
-  <main role="main">
+  <main role="main" id="main">
 
     <div class="tab-content">
+
       <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 
         <!-- Main jumbotron for a primary marketing message or call to action -->
@@ -107,24 +111,117 @@
       </div> <!-- home -->
 
       <div class="tab-pane fade" id="installation" role="tabpanel" aria-labelledby="installation-tab">
-        <h1>How to install DataFrame?</h1>
+        <div class="container page-container">
+          <h1>How to install DataFrame?</h1>
+          <p>The following script installs DataFrame and its dependencies into a Pharo image. Along with all the other code blocks in this tutorial, this script has been tested on Pharo-6.1 and Pharo64-6.1 for both Linux and OSX, and Pharo-6.1 for Windows.</p>
+
+          <!-- TODO: Do it with a single div -->
+
+          <!-- <div class="card">
+            <div class="card-block code-block"> -->
+<pre><code class="smalltalk">Metacello new
+  baseline: 'DataFrame';
+  repository: 'github://PolyMathOrg/DataFrame';
+  load: #Core.</code></pre>
+
+        </div>
       </div> <!-- installation -->
 
       <div class="tab-pane fade" id="userguide" role="tabpanel" aria-labelledby="userguide-tab">
-        <h1>User guide</h1>
+        <div class="container page-container">
+          <div class="row">
+            <div class="col-md-3">
+              <div class="list-group" role="tablist">
+                <a class="list-group-item list-group-item-action" id="userguide-about-tab" data-toggle="tab" href="#userguide-about" role="tab" aria-controls="userguide-about" aria-selected="true">About</a>
+                <a class="list-group-item list-group-item-action" id="userguide-creatingds-tab" data-toggle="tab" href="#userguide-creatingds" role="tab" aria-controls="userguide-creatingds" aria-selected="false">Creating DataSeries</a>
+              </div>
+            </div> <!-- col -->
+
+            <div class="col-md-9">
+              <div class="tab-pane fade show active" id="userguide-about" role="tabpanel" aria-labelledby="userguide-about-tab">
+                <p>Data frames are the essential part of the data science toolkit. They are the specialized data structures for tabular data sets that provide us with a simple and powerful API for summarizing, cleaning, and manipulating a wealth of data sources that are currently cumbersome to use. The DataFrame and DataSeries collections, stored in this repository, are specifically designed for working with structured data.</p>
+
+                <p>DataFrame library consists of two primary data structures:</p>
+
+                <ul>
+                  <li>
+                    <b>DataFrame</b> is a spreadsheet-like tabular data structure that works like a relational database by providing the API for querying the data. Each row represents an observation, and every column is a feature. Both rows and columns of a data frame have names (keys) by which they can be accessed.
+                  </li>
+                  <li>
+                    <b>DataSeries</b> is an array-like data structure used for working with specific rows or columns of a data frame. It has a name and contains an array of data mapped to a corresponding array of keys. DataSeries is a SequenceableCollection that combines the properties of an Array and a Dictionary, while extending the functionality of both by providing advanced messages for working with data, such as statistical summaries, visualizations etc.
+                  </li>
+                </ul>
+              </div> <!-- userguide-about -->
+
+              <div class="tab-pane fade" id="userguide-creatingds" role="tabpanel" aria-labelledby="userguide-creatingds-tab">
+                <p>DataSeries can be created from an array of values</p>
+
+                <pre><code class="smalltalk">series := DataSeries fromArray: #(a b c).</code></pre>
+
+                <p>By extending the Collection class DataFrame library provides us with a handy shortcut for converting any collection (e.g. an Array) to DataSeries</p>
+
+                <pre><code class="smalltalk">series := #(a b c) asDataSeries.</code></pre>
+                
+                <p>By default the keys will be initialized with an interval (1 to: self size). The name of a newly created series is considered empty and set by default to nil. You can always change the name and keys of your series using these messages</p>
+
+                <pre><code class="smalltalk">series name: 'letters'.
+series keys: #(k1 k2 k3).</code></pre>
+
+              </div> <!-- userguide-creatingds -->
+
+            </div> <!-- col -->
+          </div> <!-- row -->
+        </div>
       </div> <!-- userguide -->
 
       <div class="tab-pane fade" id="examples" role="tabpanel" aria-labelledby="examples-tab">
-        <h1>Examples</h1>
+        <div class="container page-container">
+          <h1>Examples</h1>
+        </div>
       </div> <!-- examples -->
 
       <div class="tab-pane fade" id="contributing" role="tabpanel" aria-labelledby="contributing-tab">
-        <h1>Contributing</h1>
+        <div class="container page-container">
+          <h1>Contributing</h1>
+        </div>
       </div> <!-- contributing -->
 
       <div class="tab-pane fade" id="community" role="tabpanel" aria-labelledby="community-tab">
-        <h1>Community</h1>
+        <div class="container page-container">
+          <h1>Community</h1>
+        </div>
       </div> <!-- community -->
+
+      <div class="tab-pane fade" id="blog" role="tabpanel" aria-labelledby="blog-tab">
+        <div class="container page-container">
+          <h1>Blog posts related to DataFrame</h1>
+          <br/>
+
+          <div class="list-group">
+
+            <a href="https://medium.com/@i.oleks/the-mess-inside-a-dataframe-932b1e30b1cd" class="list-group-item list-group-item-action flex-column align-items-start">
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">The Mess inside a DataFrame</h5>
+                <small class="text-muted">Jul 4, 2017</small>
+              </div>
+              <p class="mb-1">At this point DataFrame supports most of the basic functionality. You can find the code and the instructions for loading it into your image here https://github.com/PolyMathOrg/DataFrame ...</p>
+              <small class="text-muted">Oleksandr Zaytsev</small>
+            </a>
+
+            <a href="https://medium.com/@i.oleks/interface-for-selecting-data-from-a-dataset-d7c6b5fb378f" target="blanc_" class="list-group-item list-group-item-action flex-column align-items-start">
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">Public Interface for DataFrame class</h5>
+                <small>May 15, 2017</small>
+              </div>
+              <p class="mb-1">Data frames (tabular datasets) are probably the most important and powerful tools for data analysis that a programming language can offer. As part of my GSoC project this year I am implementing the data frame functionality in Pharo ...</p>
+              <small>Olekszndr Zaytsev</small>
+            </a>
+
+          </div> <!-- list-group -->
+
+        </div> <!-- container -->
+
+      </div> <!-- blog -->
 
     </div> <!-- /tab-content -->
 
