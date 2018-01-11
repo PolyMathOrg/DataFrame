@@ -9,3 +9,12 @@ body {
 	right: 0;
 	border: 0;
 }
+
+.v-center {
+   display: flex;
+   align-items: center;
+}
+
+.code-block {
+	padding: 1.5rem 4.5rem 0.5rem 2rem;
+}
