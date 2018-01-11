@@ -10,6 +10,7 @@
 
   <!-- Bootstrap core CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+ <!--  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
 
   <!-- Custom styles -->
   <link href="style.css" rel="stylesheet">
@@ -22,23 +23,23 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      <ul class="navbar-nav nav" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Installation</a>
+          <a class="nav-link" id="installation-tab" data-toggle="tab" href="#installation" role="tab" aria-controls="installation" aria-selected="false">Installation</a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Documentation</a>
+          <a class="nav-link dropdown-toggle" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Documentation</a>
           <div class="dropdown-menu" aria-labelledby="dropdown01">
-            <a class="dropdown-item" href="#">User guide</a>
-            <a class="dropdown-item" href="#">Examples</a>
-            <a class="dropdown-item" href="#">Contributing</a>
+            <a class="dropdown-item" id="userguide-tab" data-toggle="tab" href="#userguide" role="tab" aria-controls="userguide" aria-selected="false">User guide</a>
+            <a class="dropdown-item" id="examples-tab" data-toggle="tab" href="#examples" role="tab" aria-controls="examples" aria-selected="false">Examples</a>
+            <a class="dropdown-item" id="contributing-tab" data-toggle="tab" href="#contributing" role="tab" aria-controls="contributing" aria-selected="false">Contributing</a>
           </div>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Community</a>
+          <a class="nav-link" id="community-tab" data-toggle="tab" href="#community" role="tab" aria-controls="community" aria-selected="false">Community</a>
         </li>
       </ul>
     </div>
@@ -46,48 +47,75 @@
 
   <main role="main">
 
-    <!-- Main jumbotron for a primary marketing message or call to action -->
-    <div class="jumbotron">
-      <div class="container">
-        <a href="https://github.com/PolyMathOrg/DataFrame">
-          <img id="forkme" src="img/forkme.png" alt="Fork me on GitHub">
-        </a>
+    <div class="tab-content">
+      <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 
-        <h1 class="display-3">DataFrame</h1>
-        <p>Data frames are the essential part of the data science toolkit. They are the specialized data structures for tabular data sets that provide us with a simple and powerful API for summarizing, cleaning, and manipulating a wealth of data sources that are currently cumbersome to use. The DataFrame and DataSeries collections, stored in this repository, are specifically designed for working with structured data.</p>
-        <p><a class="btn btn-primary btn-lg" href="https://github.com/PolyMathOrg/DataFrame" role="button">Get Started &raquo;</a></p>
-      </div>
-    </div>
+        <!-- Main jumbotron for a primary marketing message or call to action -->
+        <div class="jumbotron">
+          <div class="container">
+            <a href="https://github.com/PolyMathOrg/DataFrame">
+              <img id="forkme" src="img/forkme.png" alt="Fork me on GitHub">
+            </a>
 
-    <div class="container">
-      <!-- Example row of columns -->
-      <div class="row">
-        <div class="col-md-4">
-          <h2>Heading</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+            <h1 class="display-3">DataFrame</h1>
+            <p>Data frames are the essential part of the data science toolkit. They are the specialized data structures for tabular data sets that provide us with a simple and powerful API for summarizing, cleaning, and manipulating a wealth of data sources that are currently cumbersome to use. The DataFrame and DataSeries collections, stored in this repository, are specifically designed for working with structured data.</p>
+            <p><a class="btn btn-primary btn-lg" href="https://github.com/PolyMathOrg/DataFrame" role="button">Get Started &raquo;</a></p>
+          </div>
         </div>
-        <div class="col-md-4">
-          <h2>Heading</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
-        </div>
-        <div class="col-md-4">
-          <h2>Heading</h2>
-          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-          <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
-        </div>
-      </div>
 
-      <hr>
+        <div class="container">
+          <!-- Example row of columns -->
+          <div class="row">
+            <div class="col-md-4">
+              <h2>Heading</h2>
+              <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+              <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+            </div>
+            <div class="col-md-4">
+              <h2>Heading</h2>
+              <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+              <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+            </div>
+            <div class="col-md-4">
+              <h2>Heading</h2>
+              ...
+            </div>
+          </div>
 
-    </div> <!-- /container -->
+          <hr>
+
+        </div> <!-- /container -->
+      </div> <!-- home -->
+
+      <div class="tab-pane fade" id="installation" role="tabpanel" aria-labelledby="installation-tab">
+        <h1>How to install DataFrame?</h1>
+      </div> <!-- installation -->
+
+      <div class="tab-pane fade" id="userguide" role="tabpanel" aria-labelledby="userguide-tab">
+        <h1>User guide</h1>
+      </div> <!-- userguide -->
+
+      <div class="tab-pane fade" id="examples" role="tabpanel" aria-labelledby="examples-tab">
+        <h1>Examples</h1>
+      </div> <!-- examples -->
+
+      <div class="tab-pane fade" id="contributing" role="tabpanel" aria-labelledby="contributing-tab">
+        <h1>Contributing</h1>
+      </div> <!-- contributing -->
+
+      <div class="tab-pane fade" id="community" role="tabpanel" aria-labelledby="community-tab">
+        <h1>Community</h1>
+      </div> <!-- community -->
+
+    </div> <!-- /tab-content -->
 
   </main>
 
   <footer class="container">
-    <p>&copy; Pharo Project</p>
+    <!-- <p>&copy; Pharo Project</p> -->
   </footer>
+
+
 
   <!-- Bootstrap core JavaScript
   ================================================== -->
