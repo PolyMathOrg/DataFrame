@@ -70,6 +70,8 @@ Otherwise you can just continue to the next section.
 ### Settings
 Make sure that "Enable Metacello Integration" is checked. Now you should also check "Use custom SSH keys".
 
+![Enable Metacello Integration](docs/img/settings.png)
+
 ### Load DataFrame
 Execute the following Metacello script in your Pharo playground. It will load all packages of DataFrame, including DataFrame-Core, DataFrame-Tools, and all the tests.
 
