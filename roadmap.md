@@ -1,5 +1,7 @@
+# DataFrame Roadmap
+
 ## DataFrame-Core
-This package should implement the basic functionality of DataFrame as a collection. It should provide all the basic functionality of  data frames in pandas and R. Some of this functionality is still missing, for example:
+This package should implement the basic functionality of DataFrame as a collection. It should provide all the basic functionality of data frames in that you can find usually in tools like Pandas and R. Some of this functionality is still missing, for example:
 * Handling missing values
 * Time series
 
