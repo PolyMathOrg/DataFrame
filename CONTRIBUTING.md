@@ -70,7 +70,7 @@ Otherwise you can just continue to the next section.
 ### Settings
 Make sure that "Enable Metacello Integration" is checked. Now you should also check "Use custom SSH keys".
 
-![Enable Metacello Integration](docs/img/settings.png)
+![Enable Metacello Integration](docs/img/settings.jpg)
 
 ### Load DataFrame
 Execute the following Metacello script in your Pharo playground. It will load all packages of DataFrame, including DataFrame-Core, DataFrame-Tools, and all the tests.
@@ -93,7 +93,11 @@ Assuming that you loaded DataFrame using the script from the previous section, y
 ## Committing your changes
 Open Iceberg from _World Menu > Iceberg_ or simply by pressing `Ctrl+O+I` (or `Cmd+O+I` on Mac). You will see the list of repositories. If you followed the instructions of the previous sections, you should see DataFrame in that list. If you made some changes, repository name will be highlighted with green.
 
+![Iceberg Repositories](docs/img/iceberg-repos.jpg)
+
 Double click on DataFrame in the list of repositories and and you will see the change log. Write a meaningful commit message and press **Commit onto master**.
+
+![Iceberg Change Log](docs/img/iceberg-changes.jpg)
 
 It is highly recommended to reference the issue that you were working on. To do that simply add anywhere in your message a `#` sign followed by the issue number. For example, to reference issue 7, you should write `#7`.
 
