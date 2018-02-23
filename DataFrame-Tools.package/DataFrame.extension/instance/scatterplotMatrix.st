@@ -1,4 +1,4 @@
-*DataFrame-Tools-Plots
+*DataFrame-Tools
 scatterplotMatrix
 
 	| b label block |

@@ -1,4 +1,4 @@
-*DataFrame-Tools-FTable
+*DataFrame-Tools
 show
 
 	self showWithGlamour openInWindowLabeled: 'a DataFrame'

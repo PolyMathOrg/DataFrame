@@ -1,4 +1,4 @@
-*DataFrame-Tools-Plots
+*DataFrame-Tools
 scatterplot
 
 	| n palette b ds |

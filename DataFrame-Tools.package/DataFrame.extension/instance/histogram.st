@@ -1,4 +1,4 @@
-*DataFrame-Tools-Plots
+*DataFrame-Tools
 histogram
 
 	| n composer palette b |

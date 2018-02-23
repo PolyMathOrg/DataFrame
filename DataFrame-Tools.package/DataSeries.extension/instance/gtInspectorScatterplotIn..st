@@ -1,4 +1,4 @@
-*DataFrame-Tools-GTInspector
+*DataFrame-Tools
 gtInspectorScatterplotIn: composite
 	<gtInspectorPresentationOrder: 1>
 	<gtInspectorTag: #basic>

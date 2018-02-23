@@ -1,7 +1,7 @@
 {
 	"commentStamp" : "",
 	"super" : "RTScatterplotMatrix",
-	"category" : "DataFrame-Tools-Plots",
+	"category" : "DataFrame-Tools",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],

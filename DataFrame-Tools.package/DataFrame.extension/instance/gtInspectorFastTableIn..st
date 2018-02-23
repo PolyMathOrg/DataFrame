@@ -1,4 +1,4 @@
-*DataFrame-Tools-GTInspector
+*DataFrame-Tools
 gtInspectorFastTableIn: composite
 	<gtInspectorPresentationOrder: 0>
 	<gtInspectorTag: #basic>

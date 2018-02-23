@@ -1,4 +1,4 @@
-*DataFrame-Tools-Plots
+*DataFrame-Tools
 scatterplotMatrixOn: categoricalColName
 
 	| categories palette colorDict observedCols b label block lb |

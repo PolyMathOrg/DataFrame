@@ -1,7 +1,7 @@
 {
 	"commentStamp" : "",
 	"super" : "FTSimpleDataSource",
-	"category" : "DataFrame-Tools-FTable",
+	"category" : "DataFrame-Tools",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],

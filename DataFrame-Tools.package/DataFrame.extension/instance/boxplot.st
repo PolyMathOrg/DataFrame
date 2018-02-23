@@ -1,4 +1,4 @@
-*DataFrame-Tools-Plots
+*DataFrame-Tools
 boxplot
 
 	| b ds n palette color |

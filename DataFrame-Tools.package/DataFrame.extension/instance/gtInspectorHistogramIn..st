@@ -1,4 +1,4 @@
-*DataFrame-Tools-GTInspector
+*DataFrame-Tools
 gtInspectorHistogramIn: composite
 	<gtInspectorPresentationOrder: 2>
 	<gtInspectorTag: #basic>

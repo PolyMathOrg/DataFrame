@@ -1,4 +1,4 @@
-*DataFrame-Tools-FTable
+*DataFrame-Tools
 showWithGlamour
 
 	| table |
