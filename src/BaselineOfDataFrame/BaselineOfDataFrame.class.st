@@ -30,28 +30,9 @@ Class {
 { #category : #baselines }
 BaselineOfDataFrame >> baseline: spec [
 	<baseline>
-	spec
-		for: #common
-		do: [
-				spec
-				project: 'Tabular' with: [
-				spec
-					className: 'ConfigurationOfTabular';
-					versionString: #development;
-					repository: 'http://ss3.gemtalksystems.com/ss/Tabular' ].				
-				"Packages"
-				spec 
-					package: 'DataFrame-Core';
-					package: 'DataFrame-Core-Tests' with: [ spec requires: #('DataFrame-Core') ];
-					package: 'DataFrame-Tools' with: [ spec requires: #('DataFrame-Core' 'Tabular') ];
-					package: 'DataFrame-Tools-Tests' with: [ spec requires: #('DataFrame-Tools') ].
-			
-				"Groups"
-				spec
-					group: 'Core' with: #('DataFrame-Core');
-					group: 'Tools' with: #('DataFrame-Tools');
-					group: 'CoreTests' with: #('DataFrame-Core-Tests');
-					group: 'Tests' with: #('CoreTests' 'DataFrame-Tools-Tests');
-					group: 'all' with: #('Tests');
-					group: 'default' with: #('all') ].
+	spec for: #common do: [			
+		"Packages"
+		spec 
+			package: 'DataFrame';
+			package: 'DataFrame-Tests' with: [ spec requires: #('DataFrame') ] ].
 ]
