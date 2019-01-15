@@ -112,17 +112,18 @@ DataFrameInternalTests >> testAtAt [
 { #category : #tests }
 DataFrameInternalTests >> testAtAtPut [
 
-	| matrix dfActual |
+	| matrix expected actual |
 	
 	matrix := Matrix rows: 3 columns: 2
 		contents: #(1 2 3 4 5 6).
 		
-	dfActual := DataFrameInternal fromMatrix: matrix.
+	actual := DataFrameInternal fromMatrix: matrix.
+	actual at: 2 at: 2 put: 10.
 	
 	matrix at: 2 at: 2 put: 10.
-	dfActual at: 2 at: 2 put: 10.
+	expected := DataFrameInternal fromMatrix: matrix.
 	
-	self assert: matrix equals: dfActual.
+	self assert: actual equals: expected.
 ]
 
 { #category : #tests }
@@ -230,14 +231,14 @@ DataFrameInternalTests >> testFromColumns [
 { #category : #tests }
 DataFrameInternalTests >> testFromMatrix [
 
-	| matrix dfActual |
+	| dfi matrix |
 	
 	matrix := Matrix rows: 3 columns: 2
 		contents: #(1 2 3 4 5 6).
 		
-	dfActual := DataFrameInternal fromMatrix: matrix.
+	dfi := DataFrameInternal fromMatrix: matrix.
 	
-	self assert: matrix equals: dfActual.
+	self assert: dfi asMatrix equals: matrix.
 ]
 
 { #category : #tests }

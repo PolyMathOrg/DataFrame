@@ -10,7 +10,14 @@ Class {
 { #category : #initialization }
 DataFrameQueriesTests >> setUp [
 
-	df := DataFrame loadIris
+	df := DataFrame fromRows: #(
+		(x 10 0.25 0.1)
+		(y 20 0.75 0.4)
+		(x 40 0.3 0.2)
+		(y 35 0.15 0.1)
+		(x 10 0 0)).
+		
+	df columnNames: #(a b c d).
 ]
 
 { #category : #initialization }
@@ -18,15 +25,14 @@ DataFrameQueriesTests >> testGroupbyAggregate [
 
 	| actual expected |
 	
-	actual := df groupBy: #species aggregate: #sum.
+	actual := df groupBy: #a aggregate: #sum.
 	
 	expected := DataFrame fromRows: #(
-		(250.3 170.9 73.2 12.2)
-		(296.8 138.5 213.0 66.3)
-		(329.4 148.7 277.6 101.3)).
+		(60 0.55 0.3)
+		(55 0.9 0.5)).
 		
-	expected columnNames: #(sepal_length sepal_width petal_length petal_width).
-	expected rowNames: #(setosa versicolor virginica).
+	expected columnNames: #(b c d).
+	expected rowNames: #(x y).
 	
 	self assert: actual closeTo: expected.
 ]
@@ -36,11 +42,11 @@ DataFrameQueriesTests >> testSelectAllWhere [
 
 	| actual |
 	
-	actual := df selectAllWhere: [ :species :sepal_width |
-		species = #setosa and: sepal_width = 3 ].
+	actual := df selectAllWhere: [ :a :b |
+		a = #x and: b = 10 ].
 	
 	self assert: actual columnNames equals: df columnNames.
-	self assert: actual rowNames equals: #(2 13 14 26 39 46).
+	self assert: actual rowNames equals: #(1 5).
 ]
 
 { #category : #initialization }

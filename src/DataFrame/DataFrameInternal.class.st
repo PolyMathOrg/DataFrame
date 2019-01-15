@@ -68,8 +68,7 @@ DataFrameInternal class >> new: aPoint [
 { #category : #comparing }
 DataFrameInternal >> = other [
 
-	((other class == self class
-		or: [other isKindOf: Matrix])
+	((other class == self class)
 		and: [ other numberOfRows = self numberOfRows 
 		and: [ other numberOfColumns = self numberOfColumns]])
 		ifFalse: [ ^ false ].
@@ -148,6 +147,11 @@ DataFrameInternal >> asArrayOfRows [
 	^ (1 to: self numberOfRows) collect: [ :i |
 		(1 to: self numberOfColumns) collect: [ :j |
 			self at: i at: j ] ].
+]
+
+{ #category : #converting }
+DataFrameInternal >> asMatrix [
+	^ contents
 ]
 
 { #category : #accessing }
