@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'series'
 	],
-	#category : 'DataFrame-Core-Tests'
+	#category : 'DataFrame-Tests'
 }
 
 { #category : #tests }

@@ -5,7 +5,7 @@ Class {
 		'df',
 		'columnNames'
 	],
-	#category : 'DataFrame-Core-Tests'
+	#category : 'DataFrame-Tests'
 }
 
 { #category : #initialization }
