@@ -1,1 +1,0 @@
-I am  the internal representation of a DataFrame. I store the data very efficiently and allow you to access it very quickly. 
