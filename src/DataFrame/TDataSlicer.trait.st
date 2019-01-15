@@ -5,7 +5,7 @@ A trait for DataFrame and DataSet slices:
 "
 Trait {
 	#name : #TDataSlicer,
-	#category : 'DataFrame-Core-Base'
+	#category : #'DataFrame-Core'
 }
 
 { #category : #accessing }

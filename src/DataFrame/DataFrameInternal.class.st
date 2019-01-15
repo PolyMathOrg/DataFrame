@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'contents'
 	],
-	#category : 'DataFrame-Core-Base'
+	#category : #'DataFrame-Core'
 }
 
 { #category : #'instance creation' }

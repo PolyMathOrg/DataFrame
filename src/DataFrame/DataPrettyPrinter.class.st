@@ -6,7 +6,7 @@ Class {
 		'columnAligns',
 		'separator'
 	],
-	#category : 'DataFrame-Core-PrettyPrint'
+	#category : #'DataFrame-PrettyPrint'
 }
 
 { #category : #'as yet unclassified' }

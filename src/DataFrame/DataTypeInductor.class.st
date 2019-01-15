@@ -4,7 +4,7 @@ I induce the type of all the values inside DataSeries or DataFrame
 Class {
 	#name : #DataTypeInductor,
 	#superclass : #Object,
-	#category : 'DataFrame-Core-Base'
+	#category : #'DataFrame-Core'
 }
 
 { #category : #'as yet unclassified' }

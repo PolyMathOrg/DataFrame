@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'groups'
 	],
-	#category : 'DataFrame-Core-Base'
+	#category : #'DataFrame-Core'
 }
 
 { #category : #private }

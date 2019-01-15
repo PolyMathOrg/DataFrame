@@ -1,7 +1,7 @@
 Class {
 	#name : #DataFrameGrouped,
 	#superclass : #DataGrouped,
-	#category : 'DataFrame-Core-Base'
+	#category : #'DataFrame-Core'
 }
 
 { #category : #'as yet unclassified' }

@@ -12,7 +12,7 @@ Class {
 		'name',
 		'type'
 	],
-	#category : 'DataFrame-Core-Base'
+	#category : #'DataFrame-Core'
 }
 
 { #category : #'instance creation' }

@@ -12,7 +12,7 @@ Class {
 		'columnNames',
 		'columnTypes'
 	],
-	#category : 'DataFrame-Core-Base'
+	#category : #'DataFrame-Core'
 }
 
 { #category : #'instance creation' }
