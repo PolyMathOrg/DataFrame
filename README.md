@@ -38,7 +38,7 @@ The following script installs DataFrame and its dependencies into a Pharo image.
 ```smalltalk
 Metacello new
   baseline: 'DataFrame';
-  repository: 'github://PolyMathOrg/DataFrame';
+  repository: 'github://PolyMathOrg/DataFrame/src';
   load.
 ```
 
