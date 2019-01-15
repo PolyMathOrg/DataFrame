@@ -372,6 +372,24 @@ DataFrame >> groupBy: colName aggregate: selector [
 	^ (self groupBy: colName) perform: selector.
 ]
 
+{ #category : #inspector }
+DataFrame >> gtInspectorFastTableIn: composite [
+	<gtInspectorPresentationOrder: 0>
+	<gtInspectorTag: #basic>
+	
+	composite morph
+		title: 'Fast Table';
+		display: [ self showWithGlamour ]
+]
+
+{ #category : #inspector }
+DataFrame >> gtInspectorItemsIn: composite [
+"Hide Items from inspector"
+
+	composite fastTable
+		when: [ false ].
+]
+
 { #category : #accessing }
 DataFrame >> head: aNumber [
 
@@ -806,6 +824,39 @@ DataFrame >> setDefaultRowColumnNames [
 
 	self rowNames: (1 to: self numberOfRows) asArray.
 	self columnNames: (1 to: self numberOfColumns) asArray.
+]
+
+{ #category : #inspector }
+DataFrame >> show [
+
+	self showWithGlamour openInWindowLabeled: 'a DataFrame'
+]
+
+{ #category : #inspector }
+DataFrame >> showWithGlamour [
+	| table |
+
+	table := FTTableMorph new
+		"extent: 650@500".
+		
+	table addColumn: ((FTColumn id: '#') width: 40).
+	
+	self columnNames do: [ :colName |
+		table addColumn: (FTColumn id: colName) ].
+	
+	table
+		intercellSpacing: 1;
+		dataSource: (DataFrameFTData elements: self);
+		selectRowIndex: 1;
+		showFirstRowSelection;
+		onAnnouncement: FTSelectionChanged 
+			do: [ :ann | ('rows selected: ', (ann newSelectedRowIndexes asString)) crLog ];
+		onAnnouncement: FTStrongSelectionChanged 
+			do: [ :ann | ('double-click on row: ', (ann selectedRowIndex asString)) crLog ];
+		beMultipleSelection;
+		yourself.
+		
+	^ table
 ]
 
 { #category : #statistics }
