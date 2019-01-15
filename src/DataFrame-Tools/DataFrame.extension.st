@@ -1,64 +1,5 @@
 Extension { #name : #DataFrame }
 
-{ #category : #'*DataFrame-Tools' }
-DataFrame >> barplot [
-
-	| n composer palette b |
-
-	n := self numericColumnNames size.
-	composer := RTComposer new.
-	
-	palette := DataColor palette: n.
-	
-	(self numericColumnNames) doWithIndex: [ :columnName :i |
-		b := (self column: columnName) barplotWithColor: (palette at: i).
-		b extent: 500 @ (300 / n).
-		b view: composer view.
-		b build.
-		composer group: 'b', i asString ].
-	
-	2 to: n do: [ :i |
-		composer
-			move: ('b', i asString)
-			below: ('b', (i - 1) asString) ].
-		
-	^ composer view
-]
-
-{ #category : #'*DataFrame-Tools' }
-DataFrame >> boxplot [
-
-	| b ds n palette color |
-
-	n := self numericColumnNames size.
-	
-	b := RTGrapher new.
-	b extent: (n * 70) @ 300.
-	
-	palette := DataColor palette: n.
-	
-	(self numericColumnNames) doWithIndex: [ :columnName :i |
-		ds := RTBoxPlotDataSet new.
-		ds points: (self column: columnName) asArray.
-		
-		color := palette at: i.
-		
-		ds boxShape
-			fillColor: color.
-			
-		ds outlierShape
-			size: 5;
-			fillColor: (color alpha: 0.5).
-			
-		b add: ds ].
-	
-	b axisX
-		noLabel;
-		noTick.
-	b build.
-	^ b
-]
-
 { #category : #'*DataFrame-Tools-NeoCSV' }
 DataFrame class >> fromCSV: pathToFile [
 
@@ -141,16 +82,6 @@ DataFrame class >> fromXLSXworksheet: sheet [
 ]
 
 { #category : #'*DataFrame-Tools' }
-DataFrame >> gtInspectorBoxplotIn: composite [
-	<gtInspectorPresentationOrder: 1>
-	<gtInspectorTag: #basic>
-	
-	composite roassal2
-		title: 'Boxplot';
-		initializeView: [ self boxplot ]
-]
-
-{ #category : #'*DataFrame-Tools' }
 DataFrame >> gtInspectorFastTableIn: composite [
 	<gtInspectorPresentationOrder: 0>
 	<gtInspectorTag: #basic>
@@ -161,57 +92,11 @@ DataFrame >> gtInspectorFastTableIn: composite [
 ]
 
 { #category : #'*DataFrame-Tools' }
-DataFrame >> gtInspectorHistogramIn: composite [
-	<gtInspectorPresentationOrder: 2>
-	<gtInspectorTag: #basic>
-	
-	composite roassal2
-		title: 'Histogram';
-		initializeView: [ self histogram ]
-]
-
-{ #category : #'*DataFrame-Tools' }
 DataFrame >> gtInspectorItemsIn: composite [
 "Hide Items from inspector"
 
 	composite fastTable
 		when: [ false ].
-]
-
-{ #category : #'*DataFrame-Tools' }
-DataFrame >> gtInspectorScatterplotMatrixIn: composite [
-	<gtInspectorPresentationOrder: 2>
-	<gtInspectorTag: #basic>
-	
-	composite roassal2
-		title: 'Scatterplot Matrix';
-		initializeView: [ self scatterplotMatrix ];
-		when: [ false "When fixed" ]
-]
-
-{ #category : #'*DataFrame-Tools' }
-DataFrame >> histogram [
-
-	| n composer palette b |
-
-	n := self numericColumnNames size.
-	composer := RTComposer new.
-	
-	palette := DataColor palette: n.
-	
-	(self numericColumnNames) doWithIndex: [ :columnName :i |
-		b := (self column: columnName) histogramWithColor: (palette at: i).
-		b extent: 500 @ (300 / n).
-		b view: composer view.
-		b build.
-		composer group: 'b', i asString ].
-	
-	2 to: n do: [ :i |
-		composer
-			move: ('b', i asString)
-			below: ('b', (i - 1) asString) ].
-		
-	^ composer view
 ]
 
 { #category : #'*DataFrame-Tools-Datasets' }
@@ -1125,148 +1010,6 @@ DataFrame class >> loadTips [
 
 	df columnNames: #(total_bill tip sex smoker day time size).
 	^ df 
-]
-
-{ #category : #'*DataFrame-Tools' }
-DataFrame >> numericColumnNames [
-	"Returns the copy of a DataFrame containing only numeric columns. These columns can be visualized"
-	
-	^ self columnNames select: [ :name |
-		(self column: name) type inheritsFromOrEqualTo: Number ].
-]
-
-{ #category : #'*DataFrame-Tools' }
-DataFrame >> scatterplot [
-
-	| n palette b ds |
-	
-	n := self numericColumnNames size.
-	palette := DataColor palette: n.
-	
-	b := RTGrapher new.
-	b extent: 300 @ 250.
-	
-	(self numericColumnNames) doWithIndex: [ :columnName :i |
-		ds := RTData new.
-		ds dotShape circle color: ((palette at: i) alpha: 0.8).
-		ds points: (self column: columnName).
-		b add: ds ].
-	
-	^ b
-]
-
-{ #category : #'*DataFrame-Tools' }
-DataFrame >> scatterplotMatrix [
-
-	| b label block |
-	
-	b := DataScatterplotMatrix new.
-
-	label := (RTLabel new)
-		height: 17;
-		color: (Color lightGray).
-
-	b labelShape: label.
-	b boxShape: (b boxShape borderWidth: 0.5).
-
-	b objects: self.
-
-	block := [ :k | k == k asInteger 
-   		ifTrue: [ k asInteger ] 
-		ifFalse: [ k asFloat ] ].
-	
-	b axisX 
-		numberOfTicks: 5;
-		rotateLabels;
-		labelConversion: block.
-		
-	b axisY
-		numberOfTicks: 5;
-		labelConversion: block.
-
-	b lineShape: (RTStyledMultiLine new
-		dashedLine;
-		width: 0.2; yourself).
-
-	b shape circle
-		size: 3.5;
-		color: DataColor purple.
-
-	self numericColumnNames doWithIndex: [ :name :i |
-		b metrics at: name put: [ :row | row at: i ] ].
-
-	b build.
-	^ b
-]
-
-{ #category : #'*DataFrame-Tools' }
-DataFrame >> scatterplotMatrixOn: categoricalColName [
-
-	| categories palette colorDict observedCols b label block lb |
-	
-	categories := (self column: categoricalColName) unique.
-	palette := DataColor palette: categories size.
-	
-	colorDict := Dictionary new.
-	
-	categories doWithIndex: [ :category :i |
-		colorDict at: category put: (palette at: i) ].
-	
-	observedCols := self columnNames select: [ :name |
-		(self column: name) isQuantitative and:
-		(name = categoricalColName) not ].
-	
-	b := DataScatterplotMatrix new.
-
-	label := (RTLabel new)
-		height: 17;
-		color: (Color lightGray).
-
-	b labelShape: label.
-	b boxShape: (b boxShape borderWidth: 0.5).
-
-	b objects: self.
-
-	block := [ :k | k == k asInteger 
-   		ifTrue: [ k asInteger ] 
-		ifFalse: [ k asFloat ] ].
-	
-	b axisX 
-		numberOfTicks: 5;
-		rotateLabels;
-		labelConversion: block.
-		
-	b axisY
-		numberOfTicks: 5;
-		labelConversion: block.
-
-	b lineShape: (RTStyledMultiLine new
-		dashedLine;
-		width: 0.2; yourself).
-	
-	b shape circle
-		size: 3.5;
-		color: [ :a | colorDict at: (a atKey: categoricalColName) ].
-
-	observedCols do: [ :name |
-		b metrics at: name put: [ :row | row atKey: name ] ].
-
-	b build.
-
-	"If there are hundreds of categories, we don't want to include every single one into the legend"
-	(categories size <= 10) ifTrue: [
-		lb := RTLegendBuilder new.
-		lb right.
-		lb view: b view.
-		lb addText: categoricalColName asString.
-	
-		categories do: [ :category |
-			lb addColor: (colorDict at: category )
-				text: category ].
-	
-		lb build ].
-	
-	^ b
 ]
 
 { #category : #'*DataFrame-Tools' }

@@ -34,13 +34,6 @@ BaselineOfDataFrame >> baseline: spec [
 		for: #common
 		do: [
 				spec
-				project: 'Roassal2'
-					with: [
-					spec
-						className: 'ConfigurationOfRoassal2';
-						version: #development;
-						file: 'ConfigurationOfRoassal2';
-						repository: 'http://smalltalkhub.com/mc/ObjectProfile/Roassal2/main/' ];
 				project: 'Tabular' with: [
 				spec
 					className: 'ConfigurationOfTabular';
@@ -50,7 +43,7 @@ BaselineOfDataFrame >> baseline: spec [
 				spec 
 					package: 'DataFrame-Core';
 					package: 'DataFrame-Core-Tests' with: [ spec requires: #('DataFrame-Core') ];
-					package: 'DataFrame-Tools' with: [ spec requires: #('DataFrame-Core' 'Roassal2' 'Tabular') ];
+					package: 'DataFrame-Tools' with: [ spec requires: #('DataFrame-Core' 'Tabular') ];
 					package: 'DataFrame-Tools-Tests' with: [ spec requires: #('DataFrame-Tools') ].
 			
 				"Groups"
