@@ -1,7 +1,7 @@
 Class {
 	#name : #DataFrameFTData,
 	#superclass : #FTSimpleDataSource,
-	#category : 'DataFrame-Tools'
+	#category : #'DataFrame-FastTable'
 }
 
 { #category : #accessing }
