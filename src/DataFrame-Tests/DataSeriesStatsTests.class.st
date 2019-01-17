@@ -40,7 +40,7 @@ DataSeriesStatsTests >> testMax [
 { #category : #tests }
 DataSeriesStatsTests >> testMean [
 
-	self assert: series mean equals: 10.45.
+	self assert: series mean asFloat equals: 10.45.
 ]
 
 { #category : #tests }
@@ -97,12 +97,13 @@ DataSeriesStatsTests >> testStdev [
 { #category : #tests }
 DataSeriesStatsTests >> testSummary [
 
-	| expected |
+	| expected actual |
 	
-	expected := #(3 7 9 10.45 15 20) asDataSeries.
+	expected := { 3 . 7 . 9 . 209/20 . 15 . 20 } asDataSeries.
 	expected keys: #(Min '1st Qu.' Median Mean '3rd Qu.' Max).
+	actual := series summary.
 	
-	self assert: series summary equals: expected.
+	self assert: actual equals: expected.
 ]
 
 { #category : #tests }

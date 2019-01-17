@@ -11,8 +11,19 @@ Class {
 { #category : #initialization }
 DataSlicerTests >> setUp [
 
-	df := DataFrame loadIris.
-	series := df column: #sepal_length.
+	df := DataFrame fromRows: #(
+		(5.1 3.5 1.4 0.2 setosa)
+		(4.9 3 1.4 0.2 setosa)
+		(4.7 3.2 1.3 0.2 setosa)
+		(7 3.2 4.7 1.4 versicolor)
+		(6.4 3.2 4.5 1.5 versicolor)
+		(6.9 3.1 4.9 1.5 versicolor)
+		(6.3 3.3 6 2.5 virginica)
+		(5.8 2.7 5.1 1.9 virginica)
+		(7.1 3 5.9 2.1 virginica)).
+		
+	df columnNames: #(sepalLength sepalWidth petalLength petalWidth species).
+	series := df column: #sepalLength.
 ]
 
 { #category : #tests }
@@ -24,8 +35,8 @@ DataSlicerTests >> testDataFrameHead [
 		(5.1 3.5 1.4 0.2 setosa)
 		(4.9 3 1.4 0.2 setosa)
 		(4.7 3.2 1.3 0.2 setosa)
-		(4.6 3.1 1.5 0.2 setosa)
-		(5 3.6 1.4 0.2 setosa)).
+		(7 3.2 4.7 1.4 versicolor)
+		(6.4 3.2 4.5 1.5 versicolor)).
 	expected columnNames: df columnNames.
 	expected rowNames: (1 to: df defaultHeadTailSize).
 	
@@ -57,11 +68,11 @@ DataSlicerTests >> testDataFrameTail [
 	| actual expected rows |
 	
 	expected := DataFrame fromRows: #(
-		(6.7 3 5.2 2.3 virginica)
-		(6.3 2.5 5 1.9 virginica)
-		(6.5 3 5.2 2 virginica)
-		(6.2 3.4 5.4 2.3 virginica)
-		(5.9 3 5.1 1.8 virginica)).
+		(6.4 3.2 4.5 1.5 versicolor)
+		(6.9 3.1 4.9 1.5 versicolor)
+		(6.3 3.3 6 2.5 virginica)
+		(5.8 2.7 5.1 1.9 virginica)
+		(7.1 3 5.9 2.1 virginica)).
 	expected columnNames: df columnNames.
 	
 	rows := df numberOfRows.
@@ -79,9 +90,9 @@ DataSlicerTests >> testDataFrameTailN [
 	| actual expected rows |
 	
 	expected := DataFrame fromRows: #(
-		(6.5 3 5.2 2 virginica)
-		(6.2 3.4 5.4 2.3 virginica)
-		(5.9 3 5.1 1.8 virginica)).
+		(6.3 3.3 6 2.5 virginica)
+		(5.8 2.7 5.1 1.9 virginica)
+		(7.1 3 5.9 2.1 virginica)).
 	expected columnNames: df columnNames.
 	
 	rows := df numberOfRows.
@@ -98,7 +109,7 @@ DataSlicerTests >> testDataSeriesHead [
 
 	| actual expected |
 	
-	expected := #(5.1 4.9 4.7 4.6 5) asDataSeries.
+	expected := #(5.1 4.9 4.7 7 6.4) asDataSeries.
 	expected name: series name.
 	expected keys: (1 to: series defaultHeadTailSize).
 	
@@ -126,7 +137,7 @@ DataSlicerTests >> testDataSeriesTail [
 
 	| actual expected |
 	
-	expected := #(6.7 6.3 6.5 6.2 5.9) asDataSeries.
+	expected := #(6.4 6.9 6.3 5.8 7.1) asDataSeries.
 	expected name: series name.
 	expected keys:
 		(series size - series defaultHeadTailSize + 1 to: series size).
@@ -141,7 +152,7 @@ DataSlicerTests >> testDataSeriesTailN [
 
 	| actual expected |
 	
-	expected := #(6.5 6.2 5.9) asDataSeries.
+	expected := #(6.3 5.8 7.1) asDataSeries.
 	expected name: series name.
 	expected keys:
 		(series size - 3 + 1 to: series size).
