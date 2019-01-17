@@ -379,7 +379,7 @@ DataFrame >> gtInspectorFastTableIn: composite [
 	
 	composite morph
 		title: 'Fast Table';
-		display: [ self showWithGlamour ]
+		display: [ self showWithGlamourIn: composite ].
 ]
 
 { #category : #inspector }
@@ -767,35 +767,23 @@ DataFrame >> setDefaultRowColumnNames [
 ]
 
 { #category : #inspector }
-DataFrame >> show [
-
-	self showWithGlamour openInWindowLabeled: 'a DataFrame'
-]
-
-{ #category : #inspector }
-DataFrame >> showWithGlamour [
-	| table |
+DataFrame >> showWithGlamourIn: composite [
+	| table headerNames |
 
 	table := FTTableMorph new
 		"extent: 650@500".
-		
-	table addColumn: ((FTColumn id: '#') width: 40).
-	
-	self columnNames do: [ :colName |
-		table addColumn: (FTColumn id: colName) ].
 	
 	table
 		intercellSpacing: 1;
-		dataSource: (DataFrameFTData elements: self);
-		selectRowIndex: 1;
-		showFirstRowSelection;
-		onAnnouncement: FTSelectionChanged 
-			do: [ :ann | ('rows selected: ', (ann newSelectedRowIndexes asString)) crLog ];
-		onAnnouncement: FTStrongSelectionChanged 
-			do: [ :ann | ('double-click on row: ', (ann selectedRowIndex asString)) crLog ];
-		beMultipleSelection;
-		yourself.
+		dataSource: (DataFrameFTData elements: self).
 		
+"		onAnnouncement: FTSelectionChanged 
+			do: [ :ann | (self rowsAt: ann newSelectedRowIndexes) gtInspectorItemsIn: composite ];"
+		
+	headerNames := #('#'), self columnNames.
+	table columns: (headerNames collect: [ :name |
+		(FTColumn id: name) width: 100 ]).
+	
 	^ table
 ]
 
