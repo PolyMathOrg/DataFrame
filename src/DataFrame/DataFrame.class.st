@@ -759,66 +759,6 @@ DataFrame >> select: aBlock [
 	^ df
 ]
 
-{ #category : #queries }
-DataFrame >> select: colNames groupBy: aColName aggregate: selector [
-	
-	| df |
-	
-	df := (colNames includes: aColName)
-		ifTrue: [ self columns: colNames ]
-		ifFalse: [ self columns: (colNames copyWith: aColName) ].
-	
-	^ df groupBy: aColName aggregate: selector.
-]
-
-{ #category : #queries }
-DataFrame >> select: colNames where: aBlock [
-	
-	^ (self selectAllWhere: aBlock) columns: colNames
-]
-
-{ #category : #queries }
-DataFrame >> select: colNames where: aBlock groupBy: aColName aggregate: selector [
-	
-	^ (self select: colNames where: aBlock)
-		groupBy: aColName
-		aggregate: selector.
-]
-
-{ #category : #enumerating }
-DataFrame >> select: aBlock with: testedColumnNames [
-	| blockStr |
-	blockStr := aBlock asString.
-
-	"Remove parameters: '[ :x | x > 3 ]' to '[ x > 3 ]'"
-	blockStr := blockStr
-		copyFrom: (blockStr findString: '|')
-		to: blockStr size.
-	testedColumnNames
-		do: [ :eachColName | 
-			blockStr := blockStr
-				copyReplaceAll: eachColName
-				with: '(row atKey: #' , eachColName , ')' ].
-	blockStr := '[ :row ' , blockStr.
-	^ self
-		select:
-			(OpalCompiler new
-				source: blockStr;
-				evaluate)
-]
-
-{ #category : #queries }
-DataFrame >> selectAllWhere: aBlock [
-
-	| testedColumnNames |
-	testedColumnNames := aBlock argumentNames.
-	
-	(self columnNames includesAll: testedColumnNames)
-		ifFalse: [ Error signal: 'All arguments of the where block must correspond to the column names of a data frame' ].
-		
-	^ self select: aBlock with: testedColumnNames
-]
-
 { #category : #private }
 DataFrame >> setDefaultRowColumnNames [
 
