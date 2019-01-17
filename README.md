@@ -5,7 +5,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/PolyMathOrg/DataFrame/badge.svg?branch=master)](https://coveralls.io/github/PolyMathOrg/DataFrame?branch=master)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/PolyMathOrg/DataFrame/master/LICENSE)
 
-DataFrame is a tabular data structure for data analysis in [Pharo](https://pharo.org/), similar to [pandas](https://pandas.pydata.org/) in Python or [data.frame](https://www.rdocumentation.org/packages/base/versions/3.5.2/topics/data.frame) in R. It is a spreadsheet-like data structure with an API specifically designed for data exploration and analysis.
+DataFrame is a tabular data structure for data analysis in [Pharo](https://pharo.org/), similar to [pandas](https://pandas.pydata.org/) in Python or [data.frame](https://www.rdocumentation.org/packages/base/versions/3.5.2/topics/data.frame) in R. It is a spreadsheet-like collection with an API specifically designed for data exploration and analysis.
 
 ## Installation
 The following script installs DataFrame into the Pharo image
