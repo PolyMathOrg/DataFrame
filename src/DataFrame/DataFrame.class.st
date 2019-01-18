@@ -774,8 +774,11 @@ DataFrame >> showWithGlamourIn: composite [
 		"extent: 650@500".
 	
 	table
+		beResizable;
 		intercellSpacing: 1;
-		dataSource: (DataFrameFTData elements: self).
+		dataSource: (DataFrameFTData elements: self);
+		onAnnouncement: FTSelectionChanged 
+			do: [ :ann | (self rowAt: ann newSelectedRowIndexes first) inspect ].
 		
 "		onAnnouncement: FTSelectionChanged 
 			do: [ :ann | (self rowsAt: ann newSelectedRowIndexes) gtInspectorItemsIn: composite ];"
