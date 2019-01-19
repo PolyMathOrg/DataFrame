@@ -99,9 +99,9 @@ DataSeriesStatsTests >> testSummary [
 
 	| expected actual |
 	
-	expected := { 3 . 7 . 9 . 209/20 . 15 . 20 } asDataSeries.
+	expected := { 3.0 . 7.0 . 9.0 . 10.45 . 15.0 . 20.0 } asDataSeries.
 	expected keys: #(Min '1st Qu.' Median Mean '3rd Qu.' Max).
-	actual := series summary.
+	actual := series summary collect: #asFloat.
 	
 	self assert: actual equals: expected.
 ]
