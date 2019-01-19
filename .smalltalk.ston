@@ -2,12 +2,13 @@ SmalltalkCISpec {
   #loading : [
     SCIMetacelloLoadSpec {
       #baseline : 'DataFrame',
+      #directory : 'src',
       #platforms : [ #pharo ]
     }
   ],
   #testing : {
     #coverage : {
-      #packages : [ 'src/DataFrame-Core.*' ]
+      #packages : [ 'DataFrame-Core.*' ]
     }
   }
 }
