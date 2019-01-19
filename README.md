@@ -8,7 +8,7 @@
 
 DataFrame is a tabular data structure for data analysis in [Pharo](https://pharo.org/), similar to [pandas](https://pandas.pydata.org/) in Python or [data.frame](https://www.rdocumentation.org/packages/base/versions/3.5.2/topics/data.frame) in R. It is a spreadsheet-like collection with an API specifically designed for data exploration and analysis.
 
-![Screenshot](img/example.png)
+[![Screenshot](img/example.png)](https://raw.githubusercontent.com/PolyMathOrg/DataFrame/master/img/example.png)
 
 ## Installation
 The following script installs DataFrame into the Pharo image
