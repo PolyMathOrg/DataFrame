@@ -17,3 +17,7 @@ Metacello new
   repository: 'github://PolyMathOrg/DataFrame/src';
   load.
 ```
+
+## Tutorial
+
+This is a short tutorial that will teach you to use DataFrame. For more detailed information read the [DataFrame booklet](https://github.com/SquareBracketAssociates/Booklet-DataFrame).
