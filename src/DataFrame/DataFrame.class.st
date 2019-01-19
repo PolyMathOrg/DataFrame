@@ -578,6 +578,12 @@ DataFrame >> orderBy: columnName using: aBlock [
 	self rowNames: sortedKeys.
 ]
 
+{ #category : #sorting }
+DataFrame >> orderDescendingBy: columnName [
+
+	self orderBy: columnName using: [ :a :b | a >= b ].
+]
+
 { #category : #printing }
 DataFrame >> printOn: aStream [
 
