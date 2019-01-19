@@ -78,22 +78,12 @@ DataFrame >> = aDataFrame [
 ]
 
 { #category : #adding }
-DataFrame >> addColumn: anArray named: columnName [
-
-	contents addColumn: anArray.
-	columnNames := columnNames copyWith: columnName.
-	
-	columnTypes := columnTypes copyWith: nil. "Extend an array"
-	self induceColumnTypeAt: (self numberOfColumns).
-]
-
-{ #category : #adding }
-DataFrame >> addEmptyColumnNamed: columnName [
+DataFrame >> addEmptyColumnNamed: aColumnName [
 "Create an empty column with a given name at the end of DataFrame. The values of a new column will be set equal to nil"
 
 	self
-		addColumn: (Array new: self numberOfRows)
-		named: columnName.
+		atColumn: aColumnName
+		put: (Array new: self numberOfRows).
 ]
 
 { #category : #adding }
@@ -141,8 +131,9 @@ DataFrame >> asArrayOfColumns [
 { #category : #converting }
 DataFrame >> asArrayOfRows [
 	"Converts DataFrame to the array of rows"
-
-	^ contents asArrayOfRows.
+	
+	^ (1 to: self numberOfRows) collect: [ :i |
+		self at: i ]
 ]
 
 { #category : #printing }
@@ -171,6 +162,15 @@ DataFrame >> at: rowNumber at: columnNumber put: value [
 
 	contents at: rowNumber at: columnNumber put: value.
 	self induceColumnTypeAt: columnNumber.
+]
+
+{ #category : #adding }
+DataFrame >> atColumn: aColumnName put: anArray [
+	contents addColumn: anArray.
+	columnNames := columnNames copyWith: aColumnName.
+	
+	columnTypes := columnTypes copyWith: nil. "Extend an array"
+	self induceColumnTypeAt: (self numberOfColumns).
 ]
 
 { #category : #statistics }
@@ -737,24 +737,14 @@ DataFrame >> select: aBlock [
 	Collect into a new collection like the receiver, only those elements for 
 	which aBlock evaluates to true. Answer the new collection."
 
-	| selectedRowNumbers df |
+	| rows selectedRows df |
 	
-	selectedRowNumbers := LinkedList new.
+	rows := self asArrayOfRows.
+	selectedRows := rows select: aBlock.
 	
-	1 to: self numberOfRows do: [ :i | 
-		(aBlock value: (self rowAt: i)) 
-			ifTrue: [ selectedRowNumbers add: i ] ].
-	
-	df := self class new:
-		(selectedRowNumbers size @ self numberOfColumns).
-		
-	df rowNames: (selectedRowNumbers collect: [ :i |
-		self rowNames at: i ]) asArray.
-	
+	df := self class fromRows: selectedRows.
 	df columnNames: self columnNames.
-		
-	selectedRowNumbers doWithIndex: [ :rowNumber :i |
-		df rowAt: i put: (self rowAt: rowNumber) ].
+	df rowNames: (selectedRows collect: #name).
 	
 	^ df
 ]

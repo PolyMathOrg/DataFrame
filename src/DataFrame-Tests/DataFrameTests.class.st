@@ -20,33 +20,6 @@ DataFrameTests >> setUp [
 ]
 
 { #category : #tests }
-DataFrameTests >> testAddColumn [
-
-	| expected |
-	
-	expected := DataFrame fromRows: #(
-		('Barcelona' 1.609 true 4)
-   		('Dubai' 2.789 true 3)
-   		('London' 8.788 false 4)).
-		
-	expected rowNames: #(A B C).
-	expected columnNames: #(City Population BeenThere Rating).
-		
-	df addColumn: #(4 3 4) named: #Rating.
-	
-	self assert: df equals: expected.
-]
-
-{ #category : #tests }
-DataFrameTests >> testAddColumnSizeMismatch [
-
-	| aBlock |
-	aBlock := [ df addColumn: #(1 2 3 4) named: #TooBig ].
-	
-	self should: aBlock raise: SizeMismatch.
-]
-
-{ #category : #tests }
 DataFrameTests >> testAddEmptyColumnNamed [
 
 	| expected |
@@ -112,10 +85,11 @@ DataFrameTests >> testAsArrayOfRows [
 
 	| expected |
 	
-	expected := #(
-		('Barcelona' 1.609 true)
-   		('Dubai' 2.789 true)
-   		('London' 8.788 false)).
+	expected := {
+		#('Barcelona' 1.609 true) asDataSeries name: 'A'; keys: df columnNames; yourself .
+   		#('Dubai' 2.789 true) asDataSeries name: 'B'; keys: df columnNames; yourself .
+   		#('London' 8.788 false) asDataSeries name: 'C'; keys: df columnNames; yourself
+	}.
 	
 	self assert: df asArrayOfRows equals: expected.
 	
@@ -179,6 +153,33 @@ DataFrameTests >> testAtAtPut [
 	df at: 3 at: 2 put: 1000.
 			
 	self assert: df equals: expectedDataFrame. 
+]
+
+{ #category : #tests }
+DataFrameTests >> testAtColumnPut [
+
+	| expected |
+	
+	expected := DataFrame fromRows: #(
+		('Barcelona' 1.609 true 4)
+   		('Dubai' 2.789 true 3)
+   		('London' 8.788 false 4)).
+		
+	expected rowNames: #(A B C).
+	expected columnNames: #(City Population BeenThere Rating).
+		
+	df atColumn: #Rating put: #(4 3 4).
+	
+	self assert: df equals: expected.
+]
+
+{ #category : #tests }
+DataFrameTests >> testAtColumnPutSizeMismatch [
+
+	| aBlock |
+	aBlock := [ df atColumn: #TooBig put: #(1 2 3 4) ].
+	
+	self should: aBlock raise: SizeMismatch.
 ]
 
 { #category : #tests }
