@@ -8,7 +8,7 @@ SmalltalkCISpec {
   ],
   #testing : {
     #coverage : {
-      #packages : [ 'DataFrame-Core.*' ]
+      #packages : [ 'DataFrame*' ]
     }
   }
 }
