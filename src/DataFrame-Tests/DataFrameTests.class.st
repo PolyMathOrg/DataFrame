@@ -335,6 +335,41 @@ DataFrameTests >> testColumnsFromTo [
 ]
 
 { #category : #tests }
+DataFrameTests >> testCreateDataFrameWith3ColumnsAndNoRows [
+	| dataFrame |
+	dataFrame := DataFrame new: 0@3.
+	
+	self assert: dataFrame class equals: DataFrame.
+	self assert: dataFrame dimensions equals: 0@3.
+	self assert: dataFrame rowNames equals: #().
+	self assert: dataFrame columnNames equals: #(1 2 3).
+]
+
+{ #category : #tests }
+DataFrameTests >> testCreateEmptyDataFrame [
+	| dataFrame |
+	dataFrame := DataFrame new.
+	
+	self assert: dataFrame class equals: DataFrame.
+	self assert: dataFrame dimensions equals: 0@0.
+	self assert: dataFrame rowNames equals: #().
+	self assert: dataFrame columnNames equals: #().
+]
+
+{ #category : #tests }
+DataFrameTests >> testCreateEmptyDataFrameWithColumnNames [
+	| columns dataFrame |
+	
+	columns := #(Name Age Nationality).
+	dataFrame := DataFrame emptyWithColumnNames: columns.
+	
+	self assert: dataFrame class equals: DataFrame.
+	self assert: dataFrame dimensions equals: 0@3.
+	self assert: dataFrame rowNames equals: #().
+	self assert: dataFrame columnNames equals: columns.
+]
+
+{ #category : #tests }
 DataFrameTests >> testCrossTabulation [
 
 	| dataFrame expected |

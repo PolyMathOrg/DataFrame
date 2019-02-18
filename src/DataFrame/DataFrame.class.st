@@ -15,6 +15,14 @@ Class {
 	#category : #'DataFrame-Core'
 }
 
+{ #category : #'as yet unclassified' }
+DataFrame class >> emptyWithColumnNames: aCollection [ 
+	| df |
+	df := self new: 0@(aCollection size).
+	df columnNames: aCollection.
+	^ df
+]
+
 { #category : #'instance creation' }
 DataFrame class >> fromColumns: anArrayOfArrays [
 

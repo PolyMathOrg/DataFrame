@@ -27,6 +27,10 @@ DataTypeInductor >> leastCommonSuperclassOf: anArray [
 "Determines the closest element of class hierarchy which is the common ancestor of all the classes in the array"
 
 	| commonSuperclass |
+	
+	anArray ifEmpty: [ 
+		^ Object ].
+	
 	commonSuperclass := anArray first.
 	
 	2 to: anArray size do: [ :i |
