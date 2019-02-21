@@ -39,7 +39,7 @@ DataSeriesTests >> testAsDataSeries [
 	
 	self assert: aSeries size equals: 3.
 	self assert: aSeries asArray equals: #(a b c).
-	self assert: aSeries keys equals: #(1 2 3).
+	self assert: aSeries keys equals: #(1 2 3) asOrderedCollection.
 ]
 
 { #category : #tests }
@@ -375,6 +375,20 @@ DataSeriesTests >> testReplaceFromToWithStartingAtSeries [
 	series replaceFrom: 3 to: 5 with: replacement startingAt: 2.
 	
 	self assert: series equals: expected.
+]
+
+{ #category : #tests }
+DataSeriesTests >> testSort [
+	| cities expected |
+	
+	cities := #(London Dubai Paris Berlin) asDataSeries.
+	cities keys: #(A B C D).
+	
+	expected := #(Berlin Dubai London Paris) asDataSeries.
+	expected keys: #(D B A C).
+	
+	cities sort: [ :a :b | a <= b ].
+	self assert: cities equals: expected.
 ]
 
 { #category : #tests }

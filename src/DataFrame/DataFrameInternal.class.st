@@ -84,49 +84,65 @@ DataFrameInternal >> = other [
 ]
 
 { #category : #adding }
-DataFrameInternal >> addColumn: anArray [
+DataFrameInternal >> addColumn: anArray atPosition: aNumber [
 
-	| newContents |
+	| rows cols newContents |
 	
-	anArray size = self numberOfRows
+	rows := self numberOfRows.
+	cols := self numberOfColumns + 1.
+	
+	anArray size = rows
 		ifFalse: [ SizeMismatch signal ].
 	
 	newContents := Matrix
-		rows: (self numberOfRows)
-		columns: (self numberOfColumns + 1).
+		rows: rows
+		columns: cols.
 	
-	1 to: self numberOfRows do: [ :i |
-		1 to: self numberOfColumns do: [ :j |
+	1 to: rows do: [ :i |
+		1 to: aNumber - 1 do: [ :j |
 			newContents at: i at: j put:
 				(self at: i at: j) ] ].
 	
-	1 to: self numberOfRows do: [ :i |
-		newContents at: i at: (self numberOfColumns + 1)
+	1 to: rows do: [ :i |
+		newContents at: i at: aNumber
 			put: (anArray at: i) ].
+		
+	1 to: rows do: [ :i |
+		aNumber + 1 to: cols do: [ :j |
+			newContents at: i at: j put:
+				(self at: i at: j - 1) ] ].
 	
 	contents := newContents.
 ]
 
 { #category : #adding }
-DataFrameInternal >> addRow: anArray [
+DataFrameInternal >> addRow: anArray atPosition: aNumber [
 
-	| newContents |
+	| rows cols newContents |
 	
-	anArray size = self numberOfColumns
+	rows := self numberOfRows + 1.
+	cols := self numberOfColumns.
+	
+	anArray size = cols
 		ifFalse: [ SizeMismatch signal ].
 	
 	newContents := Matrix
-		rows: (self numberOfRows + 1)
-		columns: (self numberOfColumns).
+		rows: rows
+		columns: cols.
 	
-	1 to: self numberOfRows do: [ :i |
-		1 to: self numberOfColumns do: [ :j |
+	1 to: aNumber - 1 do: [ :i |
+		1 to: cols do: [ :j |
 			newContents at: i at: j put:
 				(self at: i at: j) ] ].
 	
-	1 to: self numberOfColumns do: [ :j |
-		newContents at: (self numberOfRows + 1) at: j
+	1 to: cols do: [ :j |
+		newContents at: aNumber at: j
 			put: (anArray at: j) ].
+		
+	aNumber + 1 to: rows do: [ :i |
+		1 to: cols do: [ :j |
+			newContents at: i at: j put:
+				(self at: i - 1 at: j) ] ].
 	
 	contents := newContents.
 ]

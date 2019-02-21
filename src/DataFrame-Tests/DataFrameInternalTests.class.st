@@ -17,16 +17,16 @@ DataFrameInternalTests >> setUp [
 ]
 
 { #category : #tests }
-DataFrameInternalTests >> testAddColumn [
+DataFrameInternalTests >> testAddColumnAtPosition [
 
 	| expected |
 	
 	expected := DataFrameInternal fromRows: #(
-		('Barcelona' 1.609 true 4)
-   		('Dubai' 2.789 true 3)
-   		('London' 8.788 false 4)).
+		('Barcelona' 1.609 4 true)
+   		('Dubai' 2.789 3 true)
+   		('London' 8.788 4 false)).
 		
-	df addColumn: #(4 3 4).
+	df addColumn: #(4 3 4) atPosition: 3.
 	
 	self assert: df equals: expected.
 	
@@ -34,10 +34,10 @@ DataFrameInternalTests >> testAddColumn [
 ]
 
 { #category : #tests }
-DataFrameInternalTests >> testAddColumnSizeMismatch [
+DataFrameInternalTests >> testAddColumnAtPositionSizeMismatch [
 	
 	| aBlock |
-	aBlock := [ df addColumn: #(1 2 3 4) ].
+	aBlock := [ df addColumn: #(1 2 3 4) atPosition: 3 ].
 	
 	self should: aBlock raise: SizeMismatch.
 	
@@ -45,17 +45,17 @@ DataFrameInternalTests >> testAddColumnSizeMismatch [
 ]
 
 { #category : #tests }
-DataFrameInternalTests >> testAddRow [
+DataFrameInternalTests >> testAddRowAtPosition [
 
 	| expected |
 	
 	expected := DataFrameInternal fromRows: #(
 		('Barcelona' 1.609 true)
    		('Dubai' 2.789 true)
-   		('London' 8.788 false)
-		('Lviv' 0.724 true)).
+		('Lviv' 0.724 true)
+   		('London' 8.788 false)).
 		
-	df addRow: #('Lviv' 0.724 true).
+	df addRow: #('Lviv' 0.724 true) atPosition: 3.
 	
 	self assert: df equals: expected.
 	
@@ -63,10 +63,10 @@ DataFrameInternalTests >> testAddRow [
 ]
 
 { #category : #tests }
-DataFrameInternalTests >> testAddRowSizeMismatch [
+DataFrameInternalTests >> testAddRowAtPositionSizeMismatch [
 	
 	| aBlock |
-	aBlock := [ df addRow: #(1 2) ].
+	aBlock := [ df addRow: #(1 2) atPosition: 3 ].
 	
 	self should: aBlock raise: SizeMismatch.
 	

@@ -372,7 +372,7 @@ DataSeries >> initialize [
 
 	super initialize.
 	contents := DataSeriesInternal new.
-	keys := Array new.
+	keys := OrderedCollection new.
 ]
 
 { #category : #initialization }
@@ -429,7 +429,7 @@ DataSeries >> keys [
 { #category : #accessing }
 DataSeries >> keys: anArray [
 
-	keys := anArray copy.
+	keys := anArray asOrderedCollection.
 ]
 
 { #category : #statistics }
@@ -620,7 +620,7 @@ DataSeries >> replaceFrom: start to: stop with: replacement startingAt: repStart
 DataSeries >> setDefaultKeys [
 "Sets the keys of a series to their default values - to an array of numbers from 1 to self size. This method can be reimplemented by a subclass to provide different default keys"
 
-	keys := (1 to: self size) asArray.
+	keys := (1 to: self size) asOrderedCollection.
 ]
 
 { #category : #'error signalling' }

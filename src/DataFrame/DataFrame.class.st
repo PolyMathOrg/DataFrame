@@ -86,19 +86,84 @@ DataFrame >> = aDataFrame [
 ]
 
 { #category : #adding }
-DataFrame >> addEmptyColumnNamed: aColumnName [
-"Create an empty column with a given name at the end of DataFrame. The values of a new column will be set equal to nil"
-
-	self
-		atColumn: aColumnName
-		put: (Array new: self numberOfRows).
+DataFrame >> add: aDataSeries [
+	"Add DataSeries as a new row at the end"
+	self addRow: aDataSeries.
 ]
 
 { #category : #adding }
-DataFrame >> addRow: anArray named: rowName [
+DataFrame >> addColumn: aDataSeries [
+	"Add DataSeries as a new column at the end"
+	self addColumn: aDataSeries named: aDataSeries name.
+]
 
-	contents addRow: anArray.
-	rowNames := rowNames copyWith: rowName.
+{ #category : #adding }
+DataFrame >> addColumn: aDataSeries atPosition: aNumber [
+	"Add DataSeries as a new column at the given position"
+	self addColumn: aDataSeries named: aDataSeries name atPosition: aNumber.
+]
+
+{ #category : #adding }
+DataFrame >> addColumn: anArray named: aString [
+	"Add a new column at the end"
+	self addColumn: anArray named: aString atPosition: self numberOfColumns + 1.
+]
+
+{ #category : #adding }
+DataFrame >> addColumn: anArray named: aString atPosition: aNumber [
+	"Add a new column at the given position"
+	contents addColumn: anArray atPosition: aNumber.
+	columnNames add: aString afterIndex: aNumber - 1.
+	self induceColumnTypes.
+]
+
+{ #category : #adding }
+DataFrame >> addEmptyColumnNamed: aString [
+	"Add an empty column at the end"
+	self addEmptyColumnNamed: aString atPosition: self numberOfColumns + 1
+]
+
+{ #category : #adding }
+DataFrame >> addEmptyColumnNamed: aString atPosition: aNumber [
+	"Add an empty column at the given position"
+	self addColumn: (Array new: self numberOfRows) named: aString atPosition: aNumber
+]
+
+{ #category : #adding }
+DataFrame >> addEmptyRowNamed: aString [
+	"Add an empty row at the end"
+	self addEmptyRowNamed: aString atPosition: self numberOfRows + 1
+]
+
+{ #category : #adding }
+DataFrame >> addEmptyRowNamed: aString atPosition: aNumber [
+	"Add an empty row at the given position"
+	self addRow: (Array new: self numberOfColumns) named: aString atPosition: aNumber
+]
+
+{ #category : #adding }
+DataFrame >> addRow: aDataSeries [
+	"Add DataSeries as a new row at the end"
+	self addRow: aDataSeries named: aDataSeries name.
+]
+
+{ #category : #adding }
+DataFrame >> addRow: aDataSeries atPosition: aNumber [
+	"Add DataSeries as a new row at the given position"
+	self addRow: aDataSeries named: aDataSeries name atPosition: aNumber.
+]
+
+{ #category : #adding }
+DataFrame >> addRow: anArray named: aString [
+	"Add a new row at the end"
+	self addRow: anArray named: aString atPosition: self numberOfRows + 1.
+]
+
+{ #category : #adding }
+DataFrame >> addRow: anArray named: aString atPosition: aNumber [
+	"Add a new row at the given position"
+	contents addRow: anArray atPosition: aNumber.
+	rowNames add: aString afterIndex: aNumber - 1.
 	self induceColumnTypes.
 ]
 
@@ -170,15 +235,6 @@ DataFrame >> at: rowNumber at: columnNumber put: value [
 
 	contents at: rowNumber at: columnNumber put: value.
 	self induceColumnTypeAt: columnNumber.
-]
-
-{ #category : #adding }
-DataFrame >> atColumn: aColumnName put: anArray [
-	contents addColumn: anArray.
-	columnNames := columnNames copyWith: aColumnName.
-	
-	columnTypes := columnTypes copyWith: nil. "Extend an array"
-	self induceColumnTypeAt: (self numberOfColumns).
 ]
 
 { #category : #statistics }
@@ -263,7 +319,7 @@ DataFrame >> columnNames [
 { #category : #accessing }
 DataFrame >> columnNames: anArray [
 
-	columnNames := anArray.
+	columnNames := anArray asOrderedCollection
 ]
 
 { #category : #accessing }
@@ -573,7 +629,7 @@ DataFrame >> orderBy: columnName using: aBlock [
 
 	| column sortedKeys newContents |
 	column := self column: columnName.
-	column sort: aBlock.
+	column := column sort: aBlock.
 	sortedKeys := column keys.
 	
 	newContents := DataFrameInternal new: self dimensions.
@@ -710,7 +766,7 @@ DataFrame >> rowNames [
 { #category : #accessing }
 DataFrame >> rowNames: anArray [
 
-	rowNames := anArray
+	rowNames := anArray asOrderedCollection
 ]
 
 { #category : #accessing }
@@ -766,8 +822,8 @@ DataFrame >> select: aBlock [
 { #category : #private }
 DataFrame >> setDefaultRowColumnNames [
 
-	self rowNames: (1 to: self numberOfRows) asArray.
-	self columnNames: (1 to: self numberOfColumns) asArray.
+	self rowNames: (1 to: self numberOfRows) asOrderedCollection.
+	self columnNames: (1 to: self numberOfColumns) asOrderedCollection.
 ]
 
 { #category : #inspector }
