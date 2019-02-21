@@ -419,6 +419,25 @@ DataFrameTests >> testColumnAtPut [
 ]
 
 { #category : #tests }
+DataFrameTests >> testColumnNames [
+	| newNames |
+	newNames := #(X Y Z).
+	df columnNames: newNames.
+	self assert: df columnNames equals: newNames asOrderedCollection
+]
+
+{ #category : #tests }
+DataFrameTests >> testColumnNamesSizeMismatch [
+	| tooManyNames notEnoughNames |
+	
+	tooManyNames := #(W X Y Z).
+	notEnoughNames := #(Y Z).
+	
+	self should: [ df columnNames: tooManyNames ] raise: SizeMismatch.
+	self should: [ df columnNames: notEnoughNames ] raise: SizeMismatch.
+]
+
+{ #category : #tests }
 DataFrameTests >> testColumnPut [
 
 	| actual expected |
@@ -688,7 +707,7 @@ DataFrameTests >> testInequality [
 	
 	"This one has different dimensions"
 	df4 := DataFrame fromRows: #((1 2)(3 4)(5 6)).
-	df4 rowNames: #(a b).
+	df4 rowNames: #(a b c).
 	df4 columnNames: #(x z).
 	
 	"This one has different values"
@@ -877,6 +896,25 @@ DataFrameTests >> testRowAtPut [
 	actual rowAt: 2 put: #(X Y Z).
 	
 	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+DataFrameTests >> testRowNames [
+	| newNames |
+	newNames := #(X Y Z).
+	df rowNames: newNames.
+	self assert: df rowNames equals: newNames asOrderedCollection
+]
+
+{ #category : #tests }
+DataFrameTests >> testRowNamesSizeMismatch [
+	| tooManyNames notEnoughNames |
+	
+	tooManyNames := #(W X Y Z).
+	notEnoughNames := #(Y Z).
+	
+	self should: [ df rowNames: tooManyNames ] raise: SizeMismatch.
+	self should: [ df rowNames: notEnoughNames ] raise: SizeMismatch.
 ]
 
 { #category : #tests }

@@ -318,7 +318,9 @@ DataFrame >> columnNames [
 
 { #category : #accessing }
 DataFrame >> columnNames: anArray [
-
+	anArray size = self numberOfColumns 
+		ifFalse: [ SizeMismatch signal: 'Wrong number of column names' ].
+		
 	columnNames := anArray asOrderedCollection
 ]
 
@@ -765,7 +767,9 @@ DataFrame >> rowNames [
 
 { #category : #accessing }
 DataFrame >> rowNames: anArray [
-
+	anArray size = self numberOfRows 
+		ifFalse: [ SizeMismatch signal: 'Wrong number of row names' ].
+		
 	rowNames := anArray asOrderedCollection
 ]
 
