@@ -850,6 +850,34 @@ DataFrame >> showWithGlamourIn: composite [
 	^ table
 ]
 
+{ #category : #sorting }
+DataFrame >> sortBy: columnName [
+	self sortBy: columnName using: [ :a :b | a <= b ]
+]
+
+{ #category : #sorting }
+DataFrame >> sortBy: columnName using: aBlock [
+
+	| column sortedKeys newContents |
+	column := self column: columnName.
+	column := column copy.
+	column sortUsing: aBlock.
+	sortedKeys := column keys.
+	
+	newContents := DataFrameInternal new: self dimensions.
+	
+	sortedKeys withIndexDo: [ :key :i |
+		newContents rowAt: i put: (self row: key) ].
+		
+	contents := newContents.
+	self rowNames: sortedKeys.
+]
+
+{ #category : #sorting }
+DataFrame >> sortDescendingBy: columnName [
+	self sortBy: columnName using: [ :a :b | a >= b ].
+]
+
 { #category : #statistics }
 DataFrame >> stdev [
 

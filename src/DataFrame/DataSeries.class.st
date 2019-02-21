@@ -640,6 +640,16 @@ DataSeries >> size [
 	^ contents size
 ]
 
+{ #category : #sorting }
+DataSeries >> sortDescending [
+	^ self sortUsing: [ :a :b | a >= b ]
+]
+
+{ #category : #sorting }
+DataSeries >> sortUsing: aBlock [
+	^ self sort: aBlock
+]
+
 { #category : #statistics }
 DataSeries >> stdev [
 

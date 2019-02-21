@@ -383,11 +383,45 @@ DataSeriesTests >> testSort [
 	
 	cities := #(London Dubai Paris Berlin) asDataSeries.
 	cities keys: #(A B C D).
+	cities name: #Cities.
 	
 	expected := #(Berlin Dubai London Paris) asDataSeries.
 	expected keys: #(D B A C).
+	expected name: #Cities.
 	
-	cities sort: [ :a :b | a <= b ].
+	cities sort.
+	self assert: cities equals: expected.
+]
+
+{ #category : #tests }
+DataSeriesTests >> testSortDescending [
+	| cities expected |
+	
+	cities := #(London Dubai Paris Berlin) asDataSeries.
+	cities keys: #(A B C D).
+	cities name: #Cities.
+	
+	expected := #(Paris London Dubai Berlin) asDataSeries.
+	expected keys: #(C A B D).
+	expected name: #Cities.
+	
+	cities sortDescending.
+	self assert: cities equals: expected.
+]
+
+{ #category : #tests }
+DataSeriesTests >> testSortUsing [
+	| cities expected |
+	
+	cities := #(London Dubai Paris Berlin) asDataSeries.
+	cities keys: #(A B C D).
+	cities name: #Cities.
+	
+	expected := #(Dubai London Berlin Paris) asDataSeries.
+	expected keys: #(B A D C).
+	expected name: #Cities.
+	
+	cities sortUsing: [ :a :b | a last <= b last ].
 	self assert: cities equals: expected.
 ]
 

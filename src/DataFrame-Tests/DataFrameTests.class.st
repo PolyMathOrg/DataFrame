@@ -703,59 +703,6 @@ DataFrameTests >> testInequality [
 ]
 
 { #category : #tests }
-DataFrameTests >> testOrderBy [
-
-	| actual expected |
-
-	expected := DataFrame fromRows: #(
-		(Barcelona 1.609 true)
-   		(Dubai 2.789 true)
-		(London 8.788 false)).
-		
-	expected rowNames: #(A B C).
-	expected columnNames: #(City Population BeenThere).
-	
-	actual := df orderBy: #Population.
-	self assert: actual equals: expected.
-]
-
-{ #category : #tests }
-DataFrameTests >> testOrderByUsing [
-	"Order by second letter of city name"
-	| actual expected |
-
-	expected := DataFrame fromRows: #(
-		(Barcelona 1.609 true)
-		(London 8.788 false)
-		(Dubai 2.789 true)).
-		
-	expected rowNames: #(A C B).
-	expected columnNames: #(City Population BeenThere).
-	
-	actual := df orderBy: #City using: [ :name1 :name2 |
-		name1 second <= name2 second ].
-	
-	self assert: actual equals: expected.
-]
-
-{ #category : #tests }
-DataFrameTests >> testOrderDescendingBy [
-
-	| actual expected |
-
-	expected := DataFrame fromRows: #(
-		(London 8.788 false)
-		(Dubai 2.789 true)
-		(Barcelona 1.609 true)).
-		
-	expected rowNames: #(C B A).
-	expected columnNames: #(City Population BeenThere).
-	
-	actual := df orderDescendingBy: #Population.
-	self assert: actual equals: expected.
-]
-
-{ #category : #tests }
 DataFrameTests >> testPrintOn [
 
 	| expected actual |
@@ -1006,6 +953,59 @@ DataFrameTests >> testRowsFromTo [
 	actualDataFrame := df rowsFrom: 2 to: 3.
 	
 	self assert: actualDataFrame equals: expectedDataFrame.
+]
+
+{ #category : #tests }
+DataFrameTests >> testSortBy [
+
+	| actual expected |
+
+	expected := DataFrame fromRows: #(
+		(Barcelona 1.609 true)
+   		(Dubai 2.789 true)
+		(London 8.788 false)).
+		
+	expected rowNames: #(A B C).
+	expected columnNames: #(City Population BeenThere).
+	
+	actual := df sortBy: #Population.
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+DataFrameTests >> testSortByUsing [
+	"Sort by second letter of city name"
+	| actual expected |
+
+	expected := DataFrame fromRows: #(
+		(Barcelona 1.609 true)
+		(London 8.788 false)
+		(Dubai 2.789 true)).
+		
+	expected rowNames: #(A C B).
+	expected columnNames: #(City Population BeenThere).
+	
+	actual := df sortBy: #City using: [ :name1 :name2 |
+		name1 second <= name2 second ].
+	
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+DataFrameTests >> testSortDescendingBy [
+
+	| actual expected |
+
+	expected := DataFrame fromRows: #(
+		(London 8.788 false)
+		(Dubai 2.789 true)
+		(Barcelona 1.609 true)).
+		
+	expected rowNames: #(C B A).
+	expected columnNames: #(City Population BeenThere).
+	
+	actual := df sortDescendingBy: #Population.
+	self assert: actual equals: expected.
 ]
 
 { #category : #tests }
