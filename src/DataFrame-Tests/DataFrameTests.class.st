@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'df'
 	],
-	#category : 'DataFrame-Tests'
+	#category : #'DataFrame-Tests'
 }
 
 { #category : #initialization }
@@ -364,6 +364,36 @@ DataFrameTests >> testCategoricalColumns [
 	self
 		assert: df categoricalColumns
 		equals: #(City BeenThere) asOrderedCollection.
+]
+
+{ #category : #tests }
+DataFrameTests >> testCollect [
+	| expectedDf expectedResult actualResult |
+	
+	expectedDf := DataFrame fromRows: #(
+		(Barcelona 1.609 true)
+   		(Dubai 2.789 true)
+   		(London 8.788 false)).
+		
+	expectedDf rowNames: #(A B C).
+	expectedDf columnNames: #(City Population BeenThere).
+	
+	expectedResult := DataFrame fromRows: #(
+		('BARCELONA' 1)
+   		('DUBAI' 2)
+   		('LONDON' 8)).
+		
+	expectedResult rowNames: #(A B C).
+	expectedResult columnNames: #(City Population).
+	
+	actualResult := df collect: [ :row |
+		row atKey: #City put: (row atKey: #City) asUppercase.
+		row atKey: #Population put: (row atKey: #Population) asInteger.
+		row removeAtKey: #BeenThere.
+		row ].
+	
+	self assert: actualResult equals: expectedResult.
+	self assert: df equals: expectedDf.
 ]
 
 { #category : #tests }

@@ -274,6 +274,19 @@ DataFrame >> closeTo: aDataFrame [
 	^ true
 ]
 
+{ #category : #enumerating }
+DataFrame >> collect: aBlock [ 
+	"Overrides the Collection>>collect to create DataFrame with the same numer of columns as values in the first row"
+	| firstRow newDataFrame |
+	
+	firstRow := (self rowAt: 1) copy.
+	newDataFrame := self class new: 0@(aBlock value: firstRow) size.
+	newDataFrame columnNames: firstRow keys.
+	
+	self do: [:each | newDataFrame add: (aBlock value: each copy)].
+	^ newDataFrame
+]
+
 { #category : #accessing }
 DataFrame >> column: columnName [
 
