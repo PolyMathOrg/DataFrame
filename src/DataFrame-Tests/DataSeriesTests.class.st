@@ -5,7 +5,7 @@ Class {
 		'series',
 		'keyArray'
 	],
-	#category : 'DataFrame-Tests'
+	#category : #'DataFrame-Tests'
 }
 
 { #category : #initialization }

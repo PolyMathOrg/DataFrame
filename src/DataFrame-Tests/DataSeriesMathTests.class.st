@@ -1,7 +1,7 @@
 Class {
 	#name : #DataSeriesMathTests,
 	#superclass : #TestCase,
-	#category : 'DataFrame-Tests'
+	#category : #'DataFrame-Tests'
 }
 
 { #category : #tests }

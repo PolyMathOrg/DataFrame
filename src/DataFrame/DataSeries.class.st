@@ -703,15 +703,8 @@ DataSeries >> type [
 
 { #category : #'as yet unclassified' }
 DataSeries >> unique [
-
 	| unique |
-	unique := LinkedList new.
-
-	self collect: [ :each |
-	(unique includes: each)
-		ifFalse: [ unique add: each ] ].
-	
-	unique := unique asDataSeries.
+	unique := self asSet asDataSeries.
 	unique name: self name.
 	^ unique
 ]

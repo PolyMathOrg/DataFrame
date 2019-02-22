@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'df'
 	],
-	#category : 'DataFrame-Tests'
+	#category : #'DataFrame-Tests'
 }
 
 { #category : #initialization }
@@ -25,8 +25,8 @@ DataFrameAggrGroupTests >> testAggregateAverage [
 
 	| expected actual |
 	
-	expected := #(20.79 18.3433) asDataSeries.
-	expected keys: #(Female Male).
+	expected := #(18.3433 20.79) asDataSeries.
+	expected keys: #(Male Female).
 	
 	actual := (df group: #total_bill by: #sex) average.
 	
@@ -38,8 +38,8 @@ DataFrameAggrGroupTests >> testAggregateMax [
 
 	| expected actual |
 	
-	expected := #(24.59 23.68) asDataSeries.
-	expected keys: #(Female Male).
+	expected := #(23.68 24.59) asDataSeries.
+	expected keys: #(Male Female).
 	
 	actual := (df group: #total_bill by: #sex) max.
 	
@@ -51,8 +51,8 @@ DataFrameAggrGroupTests >> testAggregateMin [
 
 	| expected actual |
 	
-	expected := #(16.99 10.34) asDataSeries.
-	expected keys: #(Female Male).
+	expected := #(10.34 16.99) asDataSeries.
+	expected keys: #(Male Female).
 	
 	actual := (df group: #total_bill by: #sex) min.
 	
@@ -67,8 +67,8 @@ DataFrameAggrGroupTests >> testDataFrameGroupedPrintOn [
 	expected := String new writeStream.
 	expected
 		nextPutAll: 'a DataFrameGrouped'; cr;
-		nextPutAll: 'Female: a DataFrame (2@6)'; cr;
-		nextPutAll: 'Male: a DataFrame (3@6)'.
+		nextPutAll: 'Male: a DataFrame (3@6)'; cr;
+		nextPutAll: 'Female: a DataFrame (2@6)'.
 	expected := expected contents.
 	
 	actual := String new writeStream.
@@ -86,8 +86,8 @@ DataFrameAggrGroupTests >> testDataSeriesGroupedPrintOn [
 	expected := String new writeStream.
 	expected
 		nextPutAll: 'a DataSeriesGrouped'; cr;
-		nextPutAll: ('Female: a DataSeries [2 items]: ', 21.01 class name); cr;
-		nextPutAll: ('Male: a DataSeries [3 items]: ', 21.01 class name).
+		nextPutAll: ('Male: a DataSeries [3 items]: ', 21.01 class name); cr;
+		nextPutAll: ('Female: a DataSeries [2 items]: ', 21.01 class name).
 	expected := expected contents.
 	
 	actual := String new writeStream.
@@ -105,8 +105,8 @@ DataFrameAggrGroupTests >> testGroupSeriesBySeries [
 	femaleGroup := #(16.99 24.59) asDataSeries.
 	maleGroup := #(10.34 21.01 23.68) asDataSeries.
 	
-	expectedSeries := { femaleGroup . maleGroup } asDataSeries.
-	expectedSeries keys: #('Female' 'Male').
+	expectedSeries := { maleGroup . femaleGroup } asDataSeries.
+	expectedSeries keys: #(Male Female).
 	
 	actualSeries := (df group: #total_bill by: #sex) groups.
 	

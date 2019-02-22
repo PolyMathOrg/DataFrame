@@ -608,9 +608,9 @@ DataFrameTests >> testCrossTabulation [
 	dataFrame columnNames: #(Gender Age).
 	
 	expected := DataFrame fromRows:
-		#((1 1)(2 1)).
+		#((2 1)(1 1)).
 		
-	expected rowNames: #(Male Female).
+	expected rowNames: #(Female Male).
 	expected columnNames: #(Young Old).	
 	
 	self assert: (dataFrame crossTabulate: #Gender with: #Age) equals: expected.
