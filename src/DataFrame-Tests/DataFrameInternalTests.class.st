@@ -112,16 +112,16 @@ DataFrameInternalTests >> testAtAt [
 { #category : #tests }
 DataFrameInternalTests >> testAtAtPut [
 
-	| matrix expected actual |
+	| array2D expected actual |
 	
-	matrix := Matrix rows: 3 columns: 2
+	array2D := Array2D rows: 3 columns: 2
 		contents: #(1 2 3 4 5 6).
 		
-	actual := DataFrameInternal fromMatrix: matrix.
+	actual := DataFrameInternal fromArray2D: array2D.
 	actual at: 2 at: 2 put: 10.
 	
-	matrix at: 2 at: 2 put: 10.
-	expected := DataFrameInternal fromMatrix: matrix.
+	array2D at: 2 at: 2 put: 10.
+	expected := DataFrameInternal fromArray2D: array2D.
 	
 	self assert: actual equals: expected.
 ]
@@ -192,25 +192,33 @@ DataFrameInternalTests >> testColumnsAt [
 { #category : #tests }
 DataFrameInternalTests >> testCreateDataFrameInternalWithColumns [
 
-	| dfActual dfExpected |
+	| array2D expected actual |
 	
-	dfExpected := DataFrameInternal fromMatrix: 		(Matrix rows: 3 columns: 2 contents: #(1 2 3 4 5 6)).
-		
-	dfActual := DataFrameInternal withColumns: #((1 3 5)(2 4 6)).
+	array2D := Array2D
+			rows: 3
+			columns: 2
+			contents: #(1 2 3 4 5 6).
 	
-	self assert: dfActual equals: dfExpected.
+	expected := DataFrameInternal fromArray2D: array2D.
+	actual := DataFrameInternal withColumns: #((1 3 5)(2 4 6)).
+	
+	self assert: actual equals: expected.
 ]
 
 { #category : #tests }
 DataFrameInternalTests >> testCreateDataFrameInternalWithRows [
 	
-	| dfActual dfExpected |
+	| array2D actual expected |
 	
-	dfExpected := DataFrameInternal fromMatrix: 		(Matrix rows: 3 columns: 2 contents: #(1 2 3 4 5 6)).
-		
-	dfActual := DataFrameInternal withRows: #((1 2)(3 4)(5 6)).
+	array2D := Array2D
+		rows: 3
+		columns: 2
+		contents: #(1 2 3 4 5 6).
 	
-	self assert: dfActual equals: dfExpected.
+	expected := DataFrameInternal fromArray2D: array2D.	
+	actual := DataFrameInternal withRows: #((1 2)(3 4)(5 6)).
+	
+	self assert: actual equals: expected.
 	
 	
 ]
@@ -222,8 +230,8 @@ DataFrameInternalTests >> testDeepCopy [
 	
 	dfCopy := df deepCopy.
 	
-	self assert: (df = dfCopy).
-	self assert: (df == dfCopy) not.
+	self assert: df equals: dfCopy.
+	self deny: df == dfCopy.
 ]
 
 { #category : #tests }
@@ -243,16 +251,18 @@ DataFrameInternalTests >> testDo [
 ]
 
 { #category : #tests }
-DataFrameInternalTests >> testFromMatrix [
+DataFrameInternalTests >> testFromArray2D [
 
-	| dfi matrix |
+	| dfi array2D |
 	
-	matrix := Matrix rows: 3 columns: 2
+	array2D := Array2D
+		rows: 3
+		columns: 2
 		contents: #(1 2 3 4 5 6).
 		
-	dfi := DataFrameInternal fromMatrix: matrix.
+	dfi := DataFrameInternal fromArray2D: array2D.
 	
-	self assert: dfi asMatrix equals: matrix.
+	self assert: dfi asArray2D equals: array2D.
 ]
 
 { #category : #tests }

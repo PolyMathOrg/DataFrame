@@ -11,15 +11,15 @@ Class {
 }
 
 { #category : #'instance creation' }
-DataFrameInternal class >> fromMatrix: aMatrix [
+DataFrameInternal class >> fromArray2D: anArray2D [
 
 	| dfInternal |
 	
-	"We can't use Matrix>>extent, because it gives us col@row instead of row@col"
+	"We can't use Array2D>>extent, because it gives us col@row instead of row@col"
 	dfInternal := self new:
-		(aMatrix rowCount @ aMatrix columnCount).
+		(anArray2D rowCount @ anArray2D columnCount).
 	
-	aMatrix withIndicesDo: [ :each :i :j |
+	anArray2D withIndicesDo: [ :each :i :j |
 		dfInternal at: i at: j put: each ].
 	
 	^ dfInternal
@@ -94,7 +94,7 @@ DataFrameInternal >> addColumn: anArray atPosition: aNumber [
 	anArray size = rows
 		ifFalse: [ SizeMismatch signal ].
 	
-	newContents := Matrix
+	newContents := Array2D
 		rows: rows
 		columns: cols.
 	
@@ -126,7 +126,7 @@ DataFrameInternal >> addRow: anArray atPosition: aNumber [
 	anArray size = cols
 		ifFalse: [ SizeMismatch signal ].
 	
-	newContents := Matrix
+	newContents := Array2D
 		rows: rows
 		columns: cols.
 	
@@ -148,6 +148,11 @@ DataFrameInternal >> addRow: anArray atPosition: aNumber [
 ]
 
 { #category : #converting }
+DataFrameInternal >> asArray2D [
+	^ contents
+]
+
+{ #category : #converting }
 DataFrameInternal >> asArrayOfColumns [
 	"Converts DataFrameInternal to the array of columns"
 
@@ -165,11 +170,6 @@ DataFrameInternal >> asArrayOfRows [
 			self at: i at: j ] ].
 ]
 
-{ #category : #converting }
-DataFrameInternal >> asMatrix [
-	^ contents
-]
-
 { #category : #accessing }
 DataFrameInternal >> at: rowIndex at: columnIndex [
 
@@ -185,7 +185,7 @@ DataFrameInternal >> at: rowIndex at: columnIndex put: value [
 { #category : #enumerating }
 DataFrameInternal >> collect: aBlock [
 
-	^ self class fromMatrix:
+	^ self class fromArray2D:
 		(contents collect: aBlock).
 ]
 
@@ -223,7 +223,7 @@ DataFrameInternal >> columnsAt: anArrayOfNumbers [
 { #category : #copying }
 DataFrameInternal >> deepCopy [
 
-	^ self class fromMatrix: contents.
+	^ self class fromArray2D: contents.
 ]
 
 { #category : #enumerating }
@@ -236,14 +236,14 @@ DataFrameInternal >> do: aBlock [
 DataFrameInternal >> initialize [
 	
 	super initialize.
-	contents := Matrix new.
+	contents := Array2D new.
 	^ self.
 ]
 
 { #category : #initialization }
 DataFrameInternal >> initialize: aPoint [
 	
-	contents := Matrix
+	contents := Array2D
 		rows: aPoint x
 		columns: aPoint y.
 		
@@ -278,7 +278,7 @@ DataFrameInternal >> printOn: aStream [
 DataFrameInternal >> removeColumnAt: columnNumber [
 
 	| newContents |
-	newContents := Matrix
+	newContents := Array2D
 		rows: (self numberOfRows)
 		columns: (self numberOfColumns - 1).
 		
@@ -298,7 +298,7 @@ DataFrameInternal >> removeColumnAt: columnNumber [
 DataFrameInternal >> removeRowAt: rowNumber [
 
 	| newContents |
-	newContents := Matrix
+	newContents := Array2D
 		rows: (self numberOfRows - 1)
 		columns: (self numberOfColumns).
 		
@@ -348,7 +348,7 @@ DataFrameInternal >> rowsAt: anArrayOfNumbers [
 { #category : #enumerating }
 DataFrameInternal >> withIndicesCollect: aBlock [
 
-	^ self class fromMatrix:
+	^ self class fromArray2D:
 		(contents withIndicesCollect: aBlock).
 ]
 
