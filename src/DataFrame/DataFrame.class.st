@@ -4,8 +4,6 @@ I am a collection for datasets that can be stored and processed in tables. I am 
 Class {
 	#name : #DataFrame,
 	#superclass : #Collection,
-	#traits : 'TDataSlicer',
-	#classTraits : 'TDataSlicer classTrait',
 	#instVars : [
 		'contents',
 		'rowNames',
@@ -481,6 +479,12 @@ DataFrame >> crossTabulate: colName1 with: colName2 [
 ]
 
 { #category : #accessing }
+DataFrame >> defaultHeadTailSize [
+
+	^ 5
+]
+
+{ #category : #accessing }
 DataFrame >> dimensions [
 
 	^ (self numberOfRows) @ (self numberOfColumns)
@@ -549,6 +553,12 @@ DataFrame >> gtInspectorItemsIn: composite [
 
 	composite fastTable
 		when: [ false ].
+]
+
+{ #category : #accessing }
+DataFrame >> head [ 
+
+	^ self head: self defaultHeadTailSize.
 ]
 
 { #category : #accessing }
@@ -973,6 +983,12 @@ DataFrame >> sortDescendingBy: columnName [
 DataFrame >> stdev [
 
 	^ self applyToQuantitativeColumns: #stdev
+]
+
+{ #category : #accessing }
+DataFrame >> tail [
+
+	^ self tail: self defaultHeadTailSize.
 ]
 
 { #category : #accessing }

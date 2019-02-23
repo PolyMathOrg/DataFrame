@@ -4,8 +4,6 @@ I am a data series, suitable for data analysis.
 Class {
 	#name : #DataSeries,
 	#superclass : #SequenceableCollection,
-	#traits : 'TDataSlicer',
-	#classTraits : 'TDataSlicer classTrait',
 	#instVars : [
 		'contents',
 		'keys',
@@ -272,6 +270,12 @@ DataSeries >> crossTabulateWith: aSeries [
 	^ df
 ]
 
+{ #category : #accessing }
+DataSeries >> defaultHeadTailSize [
+
+	^ 5
+]
+
 { #category : #'reflective operations' }
 DataSeries >> doesNotUnderstand: aMessage [
 
@@ -333,6 +337,12 @@ DataSeries >> from: start to: end [
 DataSeries >> groupBy: aSeries [
 
 	^ DataSeriesGrouped group: self by: aSeries
+]
+
+{ #category : #accessing }
+DataSeries >> head [
+
+	^ self head: self defaultHeadTailSize.
 ]
 
 { #category : #accessing }
@@ -702,6 +712,12 @@ DataSeries >> summary [
 		
 	^ summary
 	
+]
+
+{ #category : #accessing }
+DataSeries >> tail [
+
+	^ self tail: self defaultHeadTailSize.
 ]
 
 { #category : #accessing }

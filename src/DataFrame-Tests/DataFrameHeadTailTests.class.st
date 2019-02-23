@@ -1,5 +1,5 @@
 Class {
-	#name : #DataSlicerTests,
+	#name : #DataFrameHeadTailTests,
 	#superclass : #TestCase,
 	#instVars : [
 		'df',
@@ -9,7 +9,7 @@ Class {
 }
 
 { #category : #initialization }
-DataSlicerTests >> setUp [
+DataFrameHeadTailTests >> setUp [
 
 	df := DataFrame withRows: #(
 		(5.1 3.5 1.4 0.2 setosa)
@@ -27,7 +27,7 @@ DataSlicerTests >> setUp [
 ]
 
 { #category : #tests }
-DataSlicerTests >> testDataFrameHead [
+DataFrameHeadTailTests >> testDataFrameHead [
 
 	| actual expected |
 	
@@ -46,7 +46,7 @@ DataSlicerTests >> testDataFrameHead [
 ]
 
 { #category : #tests }
-DataSlicerTests >> testDataFrameHeadN [
+DataFrameHeadTailTests >> testDataFrameHeadN [
 
 	| actual expected |
 	
@@ -63,7 +63,7 @@ DataSlicerTests >> testDataFrameHeadN [
 ]
 
 { #category : #tests }
-DataSlicerTests >> testDataFrameTail [
+DataFrameHeadTailTests >> testDataFrameTail [
 
 	| actual expected rows |
 	
@@ -85,7 +85,7 @@ DataSlicerTests >> testDataFrameTail [
 ]
 
 { #category : #tests }
-DataSlicerTests >> testDataFrameTailN [
+DataFrameHeadTailTests >> testDataFrameTailN [
 
 	| actual expected rows |
 	
@@ -105,7 +105,7 @@ DataSlicerTests >> testDataFrameTailN [
 ]
 
 { #category : #tests }
-DataSlicerTests >> testDataSeriesHead [
+DataFrameHeadTailTests >> testDataSeriesHead [
 
 	| actual expected |
 	
@@ -119,7 +119,7 @@ DataSlicerTests >> testDataSeriesHead [
 ]
 
 { #category : #tests }
-DataSlicerTests >> testDataSeriesHeadN [
+DataFrameHeadTailTests >> testDataSeriesHeadN [
 
 	| actual expected |
 	
@@ -133,7 +133,7 @@ DataSlicerTests >> testDataSeriesHeadN [
 ]
 
 { #category : #tests }
-DataSlicerTests >> testDataSeriesTail [
+DataFrameHeadTailTests >> testDataSeriesTail [
 
 	| actual expected |
 	
@@ -148,7 +148,7 @@ DataSlicerTests >> testDataSeriesTail [
 ]
 
 { #category : #tests }
-DataSlicerTests >> testDataSeriesTailN [
+DataFrameHeadTailTests >> testDataSeriesTailN [
 
 	| actual expected |
 	
@@ -163,7 +163,7 @@ DataSlicerTests >> testDataSeriesTailN [
 ]
 
 { #category : #tests }
-DataSlicerTests >> testDefaultHeadTailSize [
+DataFrameHeadTailTests >> testDefaultHeadTailSize [
 
 	self assert: df defaultHeadTailSize equals: 5.
 ]
