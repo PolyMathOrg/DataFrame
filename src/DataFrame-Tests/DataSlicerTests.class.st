@@ -11,7 +11,7 @@ Class {
 { #category : #initialization }
 DataSlicerTests >> setUp [
 
-	df := DataFrame fromRows: #(
+	df := DataFrame withRows: #(
 		(5.1 3.5 1.4 0.2 setosa)
 		(4.9 3 1.4 0.2 setosa)
 		(4.7 3.2 1.3 0.2 setosa)
@@ -31,7 +31,7 @@ DataSlicerTests >> testDataFrameHead [
 
 	| actual expected |
 	
-	expected := DataFrame fromRows: #(
+	expected := DataFrame withRows: #(
 		(5.1 3.5 1.4 0.2 setosa)
 		(4.9 3 1.4 0.2 setosa)
 		(4.7 3.2 1.3 0.2 setosa)
@@ -50,7 +50,7 @@ DataSlicerTests >> testDataFrameHeadN [
 
 	| actual expected |
 	
-	expected := DataFrame fromRows: #(
+	expected := DataFrame withRows: #(
 		(5.1 3.5 1.4 0.2 setosa)
 		(4.9 3 1.4 0.2 setosa)
 		(4.7 3.2 1.3 0.2 setosa)).
@@ -67,7 +67,7 @@ DataSlicerTests >> testDataFrameTail [
 
 	| actual expected rows |
 	
-	expected := DataFrame fromRows: #(
+	expected := DataFrame withRows: #(
 		(6.4 3.2 4.5 1.5 versicolor)
 		(6.9 3.1 4.9 1.5 versicolor)
 		(6.3 3.3 6 2.5 virginica)
@@ -89,7 +89,7 @@ DataSlicerTests >> testDataFrameTailN [
 
 	| actual expected rows |
 	
-	expected := DataFrame fromRows: #(
+	expected := DataFrame withRows: #(
 		(6.3 3.3 6 2.5 virginica)
 		(5.8 2.7 5.1 1.9 virginica)
 		(7.1 3 5.9 2.1 virginica)).

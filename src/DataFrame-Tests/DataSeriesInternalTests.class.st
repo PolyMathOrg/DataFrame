@@ -11,7 +11,7 @@ Class {
 DataSeriesInternalTests >> setUp [
 
 	series := DataSeriesInternal
-		fromArray: (10 to: 100 by: 10) asArray.
+		withValues: (10 to: 100 by: 10) asArray.
 ]
 
 { #category : #initialization }
@@ -19,7 +19,7 @@ DataSeriesInternalTests >> testAdd [
 
 	| expected |
 	
-	expected := DataSeriesInternal fromArray:
+	expected := DataSeriesInternal withValues:
 		#(10 20 30 40 50 60 70 80 90 100 -1).
 		
 	series add: -1.
@@ -48,7 +48,7 @@ DataSeriesInternalTests >> testAtPut [
 	| expected |
 	
 	series at: 6 put: -2.	
-	expected := DataSeriesInternal fromArray:
+	expected := DataSeriesInternal withValues:
 		#(10 20 30 40 50 -2 70 80 90 100).
 	
 	self assert: series equals: expected.
@@ -59,7 +59,7 @@ DataSeriesInternalTests >> testCollect [
 
 	| expected actual |
 	
-	expected := DataSeriesInternal fromArray: (1 to: 10) asArray.
+	expected := DataSeriesInternal withValues: (1 to: 10) asArray.
 	actual := series collect: [ :each | each / 10 ].
 
 	self assert: actual equals: expected.
@@ -70,7 +70,7 @@ DataSeriesInternalTests >> testCollectWithIndex [
 
 	| expected actual |
 	
-	expected := DataSeriesInternal fromArray: ((1 to: 10) collect: [ :k | k * 2 ]).
+	expected := DataSeriesInternal withValues: ((1 to: 10) collect: [ :k | k * 2 ]).
 	actual := series collectWithIndex: [ :each :i |
 		each / 10 + i ].
 
@@ -105,7 +105,7 @@ DataSeriesInternalTests >> testDoWithIndex [
 DataSeriesInternalTests >> testPrintOn [
 
 	| population expected actual |
-	population := DataSeriesInternal fromArray: #(1.609 2.789 8.788).
+	population := DataSeriesInternal withValues: #(1.609 2.789 8.788).
 	
 	expected := '#(1.609 2.789 8.788)'.
 	
@@ -121,7 +121,7 @@ DataSeriesInternalTests >> testRemoveAt [
 
 	| expected |
 	
-	expected := DataSeriesInternal fromArray:
+	expected := DataSeriesInternal withValues:
 		#(10 30 40 50 60 70 80 90 100).
 		
 	series removeAt: 2.

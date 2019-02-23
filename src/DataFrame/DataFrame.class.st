@@ -15,41 +15,6 @@ Class {
 	#category : #'DataFrame-Core'
 }
 
-{ #category : #'as yet unclassified' }
-DataFrame class >> emptyWithColumnNames: aCollection [ 
-	| df |
-	df := self new: 0@(aCollection size).
-	df columnNames: aCollection.
-	^ df
-]
-
-{ #category : #'instance creation' }
-DataFrame class >> fromColumns: anArrayOfArrays [
-
-	^ self new initializeColumns: anArrayOfArrays.
-]
-
-{ #category : #'instance creation' }
-DataFrame class >> fromContents: aDataFrameIndernal rowNames: rows columnNames: columns [
-
-	^ self new
-		initializeContents: aDataFrameIndernal
-		rowNames: rows
-		columnNames: columns.
-]
-
-{ #category : #'instance creation' }
-DataFrame class >> fromMatrix: aMatrix [
-
-	^ self new initializeMatrix: aMatrix.
-]
-
-{ #category : #'instance creation' }
-DataFrame class >> fromRows: anArrayOfArrays [
-
-	^ self new initializeRows: anArrayOfArrays.
-]
-
 { #category : #'instance creation' }
 DataFrame class >> new [
 	
@@ -60,6 +25,123 @@ DataFrame class >> new [
 DataFrame class >> new: aPoint [
 	
 	^ super new initialize: aPoint.
+]
+
+{ #category : #'instance creation' }
+DataFrame class >> withColumnNames: anArrayOfColumnNames [
+	"Create an empty data frame with given column names"
+	| numberOfColumns df |
+	
+	numberOfColumns := anArrayOfColumnNames size.
+	df := self new: 0 @ numberOfColumns.
+	
+	df columnNames: anArrayOfColumnNames.
+	^ df
+]
+
+{ #category : #'instance creation' }
+DataFrame class >> withColumns: anArrayOfArrays [
+
+	^ self new initializeColumns: anArrayOfArrays.
+]
+
+{ #category : #'instance creation' }
+DataFrame class >> withColumns: anArrayOfArrays columnNames: anArrayOfColumnNames [
+
+	| df |
+	df := self withColumns: anArrayOfArrays.
+	df columnNames: anArrayOfColumnNames.
+	^ df
+]
+
+{ #category : #'instance creation' }
+DataFrame class >> withColumns: anArrayOfArrays rowNames: anArrayOfRowNames [
+
+	| df |
+	df := self withColumns: anArrayOfArrays.
+	df rowNames: anArrayOfRowNames.
+	^ df
+]
+
+{ #category : #'instance creation' }
+DataFrame class >> withColumns: anArrayOfArrays rowNames: anArrayOfRowNames columnNames: anArrayOfColumnNames [
+
+	| df |
+	df := self withColumns: anArrayOfArrays.
+	df rowNames: anArrayOfRowNames.
+	df columnNames: anArrayOfColumnNames.
+	^ df
+]
+
+{ #category : #'instance creation' }
+DataFrame class >> withDataFrameInternal: aDataFrameIndernal rowNames: rows columnNames: columns [
+
+	^ self new
+		initializeContents: aDataFrameIndernal
+		rowNames: rows
+		columnNames: columns.
+]
+
+{ #category : #'instance creation' }
+DataFrame class >> withRowNames: anArrayOfRowNames [
+	"Create an empty data frame with given row names"
+	| numberOfRows df |
+	
+	numberOfRows := anArrayOfRowNames size.
+	df := self new: numberOfRows @ 0.
+	
+	df rowNames: anArrayOfRowNames.
+	^ df
+]
+
+{ #category : #'instance creation' }
+DataFrame class >> withRowNames: anArrayOfRowNames columnNames: anArrayOfColumnNames [
+	"Create an empty data frame with given row and column names"
+	| numberOfRows numberOfColumns df |
+	
+	numberOfRows := anArrayOfRowNames size.
+	numberOfColumns := anArrayOfColumnNames size.
+	
+	df := self new: numberOfRows @ numberOfColumns.
+	
+	df rowNames: anArrayOfRowNames.
+	df columnNames: anArrayOfColumnNames.
+	
+	^ df
+]
+
+{ #category : #'instance creation' }
+DataFrame class >> withRows: anArrayOfArrays [
+
+	^ self new initializeRows: anArrayOfArrays.
+]
+
+{ #category : #'instance creation' }
+DataFrame class >> withRows: anArrayOfArrays columnNames: anArrayOfColumnNames [
+
+	| df |
+	df := self withRows: anArrayOfArrays.
+	df columnNames: anArrayOfColumnNames.
+	^ df
+]
+
+{ #category : #'instance creation' }
+DataFrame class >> withRows: anArrayOfArrays rowNames: anArrayOfRowNames [
+
+	| df |
+	df := self withRows: anArrayOfArrays.
+	df rowNames: anArrayOfRowNames.
+	^ df
+]
+
+{ #category : #'instance creation' }
+DataFrame class >> withRows: anArrayOfArrays rowNames: anArrayOfRowNames columnNames: anArrayOfColumnNames [
+
+	| df |
+	df := self withRows: anArrayOfArrays.
+	df rowNames: anArrayOfRowNames.
+	df columnNames: anArrayOfColumnNames.
+	^ df
 ]
 
 { #category : #comparing }
@@ -180,7 +262,7 @@ DataFrame >> applyToQuantitativeColumns: aSymbol [
 
 	| series column |
 	
-	series := DataSeries fromArray:
+	series := DataSeries withValues:
 		(self columnNames collect: [ :colName |
 			column := self column: colName.
 			
@@ -364,7 +446,7 @@ DataFrame >> columnsAt: anArrayOfNumbers [
 		self columnNames at: i ]).
 
 	^ DataFrame
-		fromContents: (self contents columnsAt: anArrayOfNumbers)
+		withDataFrameInternal: (self contents columnsAt: anArrayOfNumbers)
 		rowNames: self rowNames
 		columnNames: newColumnNames.
 ]
@@ -553,7 +635,7 @@ DataFrame >> initialize: aPoint [
 { #category : #initialization }
 DataFrame >> initializeColumns: anArrayOfArrays [
 
-	contents := DataFrameInternal fromColumns: anArrayOfArrays.
+	contents := DataFrameInternal withColumns: anArrayOfArrays.
 	self setDefaultRowColumnNames.
 	self induceColumnTypes.
 ]
@@ -570,17 +652,9 @@ DataFrame >> initializeContents: aDataFrameInternal rowNames: rows columnNames: 
 ]
 
 { #category : #initialization }
-DataFrame >> initializeMatrix: aMatrix [
-
-	contents := DataFrameInternal fromMatrix: aMatrix.
-	self setDefaultRowColumnNames.
-	self induceColumnTypes.
-]
-
-{ #category : #initialization }
 DataFrame >> initializeRows: anArrayOfArrays [
 
-	contents := DataFrameInternal fromRows: anArrayOfArrays.
+	contents := DataFrameInternal withRows: anArrayOfArrays.
 	self setDefaultRowColumnNames.
 	self induceColumnTypes.
 ]
@@ -807,7 +881,7 @@ DataFrame >> rowsAt: anArrayOfNumbers [
 		self rowNames at: i ]).
 
 	^ DataFrame
-		fromContents: (self contents rowsAt: anArrayOfNumbers)
+		withDataFrameInternal: (self contents rowsAt: anArrayOfNumbers)
 		rowNames: newRowNames
 		columnNames: self columnNames.
 ]
@@ -829,7 +903,7 @@ DataFrame >> select: aBlock [
 	rows := self asArrayOfRows.
 	selectedRows := rows select: aBlock.
 	
-	df := self class fromRows: selectedRows.
+	df := self class withRows: selectedRows.
 	df columnNames: self columnNames.
 	df rowNames: (selectedRows collect: #name).
 	
@@ -997,7 +1071,7 @@ DataFrame >> transposed [
 	"Returs a transposed DataFrame. Columns become rows and rows become columns."
 
 	| transposedDf |
-	transposedDf := DataFrame fromRows: (self asArrayOfColumns).
+	transposedDf := DataFrame withRows: (self asArrayOfColumns).
 	transposedDf rowNames: self columnNames.
 	transposedDf columnNames: self rowNames.
 	^ transposedDf

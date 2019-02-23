@@ -10,7 +10,7 @@ Class {
 { #category : #initialization }
 DataFrameInternalTests >> setUp [
 
-	df := DataFrameInternal fromRows: #(
+	df := DataFrameInternal withRows: #(
 		('Barcelona' 1.609 true)
    		('Dubai' 2.789 true)
    		('London' 8.788 false)).
@@ -21,7 +21,7 @@ DataFrameInternalTests >> testAddColumnAtPosition [
 
 	| expected |
 	
-	expected := DataFrameInternal fromRows: #(
+	expected := DataFrameInternal withRows: #(
 		('Barcelona' 1.609 4 true)
    		('Dubai' 2.789 3 true)
    		('London' 8.788 4 false)).
@@ -49,7 +49,7 @@ DataFrameInternalTests >> testAddRowAtPosition [
 
 	| expected |
 	
-	expected := DataFrameInternal fromRows: #(
+	expected := DataFrameInternal withRows: #(
 		('Barcelona' 1.609 true)
    		('Dubai' 2.789 true)
 		('Lviv' 0.724 true)
@@ -131,10 +131,10 @@ DataFrameInternalTests >> testCollect [
 
 	| dfInternal dfActual dfExpected |
 	
-	dfInternal := DataFrameInternal fromRows:
+	dfInternal := DataFrameInternal withRows:
 		#((1 2)(3 4)(5 6)).
 		
-	dfExpected := DataFrameInternal fromRows:
+	dfExpected := DataFrameInternal withRows:
 		#((10 20)(30 40)(50 60)).
 		
 	dfActual := dfInternal
@@ -160,7 +160,7 @@ DataFrameInternalTests >> testColumnAtPut [
 
 	| actual expected |
 
-	expected := DataFrameInternal fromRows: #(
+	expected := DataFrameInternal withRows: #(
 		('X' 1.609 0)
    		('Y' 2.789 1)
    		('Z' 8.788 0)).
@@ -179,7 +179,7 @@ DataFrameInternalTests >> testColumnsAt [
 	
 	columnNumbers := #(1 3).
 	
-	dfExpected := DataFrameInternal fromRows: #(
+	dfExpected := DataFrameInternal withRows: #(
 		('Barcelona' true)
    		('Dubai' true)
    		('London' false)).
@@ -187,6 +187,32 @@ DataFrameInternalTests >> testColumnsAt [
 	dfActual := df columnsAt: columnNumbers.
 	
 	self assert: dfActual equals: dfExpected.
+]
+
+{ #category : #tests }
+DataFrameInternalTests >> testCreateDataFrameInternalWithColumns [
+
+	| dfActual dfExpected |
+	
+	dfExpected := DataFrameInternal fromMatrix: 		(Matrix rows: 3 columns: 2 contents: #(1 2 3 4 5 6)).
+		
+	dfActual := DataFrameInternal withColumns: #((1 3 5)(2 4 6)).
+	
+	self assert: dfActual equals: dfExpected.
+]
+
+{ #category : #tests }
+DataFrameInternalTests >> testCreateDataFrameInternalWithRows [
+	
+	| dfActual dfExpected |
+	
+	dfExpected := DataFrameInternal fromMatrix: 		(Matrix rows: 3 columns: 2 contents: #(1 2 3 4 5 6)).
+		
+	dfActual := DataFrameInternal withRows: #((1 2)(3 4)(5 6)).
+	
+	self assert: dfActual equals: dfExpected.
+	
+	
 ]
 
 { #category : #tests }
@@ -205,7 +231,7 @@ DataFrameInternalTests >> testDo [
 
 	| dfInternal sum |
 	
-	dfInternal := DataFrameInternal fromRows:
+	dfInternal := DataFrameInternal withRows:
 		#((1 2)(3 4)(5 6)).
 		
 	sum := 0.
@@ -214,18 +240,6 @@ DataFrameInternalTests >> testDo [
 		sum := sum + each ].
 	
 	self assert: sum equals: 21.
-]
-
-{ #category : #tests }
-DataFrameInternalTests >> testFromColumns [
-
-	| dfActual dfExpected |
-	
-	dfExpected := DataFrameInternal fromMatrix: 		(Matrix rows: 3 columns: 2 contents: #(1 2 3 4 5 6)).
-		
-	dfActual := DataFrameInternal fromColumns: #((1 3 5)(2 4 6)).
-	
-	self assert: dfActual equals: dfExpected.
 ]
 
 { #category : #tests }
@@ -239,20 +253,6 @@ DataFrameInternalTests >> testFromMatrix [
 	dfi := DataFrameInternal fromMatrix: matrix.
 	
 	self assert: dfi asMatrix equals: matrix.
-]
-
-{ #category : #tests }
-DataFrameInternalTests >> testFromRows [
-	
-	| dfActual dfExpected |
-	
-	dfExpected := DataFrameInternal fromMatrix: 		(Matrix rows: 3 columns: 2 contents: #(1 2 3 4 5 6)).
-		
-	dfActual := DataFrameInternal fromRows: #((1 2)(3 4)(5 6)).
-	
-	self assert: dfActual equals: dfExpected.
-	
-	
 ]
 
 { #category : #tests }
@@ -279,7 +279,7 @@ DataFrameInternalTests >> testRemoveColumnAt [
 
 	| expected |
 	
-	expected := DataFrameInternal fromRows: #(
+	expected := DataFrameInternal withRows: #(
 		('Barcelona' true)
    		('Dubai' true)
    		('London' false)).
@@ -296,7 +296,7 @@ DataFrameInternalTests >> testRemoveRowAt [
 
 	| expected |
 	
-	expected := DataFrameInternal fromRows: #(
+	expected := DataFrameInternal withRows: #(
 		('Barcelona' 1.609 true)
    		('London' 8.788 false)).
 		
@@ -323,7 +323,7 @@ DataFrameInternalTests >> testRowAtPut [
 
 	| actual expected |
 
-	expected := DataFrameInternal fromRows: #(
+	expected := DataFrameInternal withRows: #(
 		('Barcelona' 1.609 true)
    		('X' 'Y' 'Z')
    		('London' 8.788 false)).
@@ -341,7 +341,7 @@ DataFrameInternalTests >> testRowsAt [
 	
 	rowNumbers := #(1 3).
 	
-	dfExpected := DataFrameInternal fromRows: #(
+	dfExpected := DataFrameInternal withRows: #(
 		('Barcelona' 1.609 true)
    		('London' 8.788 false)).
 		
@@ -365,10 +365,10 @@ DataFrameInternalTests >> testWithIndicesCollect [
 
 	| dfInternal actual expected |
 	
-	dfInternal := DataFrameInternal fromRows:
+	dfInternal := DataFrameInternal withRows:
 		#((1 2)(3 4)(5 6)).
 		
-	expected := DataFrameInternal fromRows:
+	expected := DataFrameInternal withRows:
 		#((true true)(true true)(true true)).
 		
 	actual := dfInternal
@@ -383,7 +383,7 @@ DataFrameInternalTests >> testWithIndicesDo [
 
 	| dfInternal |
 	
-	dfInternal := DataFrameInternal fromRows:
+	dfInternal := DataFrameInternal withRows:
 		#((1 2)(3 4)(5 6)).
 		
 	dfInternal withIndicesDo: [ :each :i :j |

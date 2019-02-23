@@ -10,7 +10,7 @@ Class {
 { #category : #initialization }
 DataFrameQueriesTests >> setUp [
 
-	df := DataFrame fromRows: #(
+	df := DataFrame withRows: #(
 		(x 10 0.25 0.1)
 		(y 20 0.75 0.4)
 		(x 40 0.3 0.2)
@@ -27,7 +27,7 @@ DataFrameQueriesTests >> testGroupbyAggregate [
 	
 	actual := df groupBy: #a aggregate: #sum.
 	
-	expected := DataFrame fromRows: #(
+	expected := DataFrame withRows: #(
 		(60 0.55 0.3)
 		(55 0.9 0.5)).
 		
@@ -46,7 +46,7 @@ DataFrameQueriesTests >> testSelect [
 		select: [ :row |
 			(row atKey: #a) = 'x' and: (row atKey: #b) < 30 ].
 		
-	expected := DataFrame fromRows: #(
+	expected := DataFrame withRows: #(
 		(x 10 0.25 0.1)
 		(x 10 0 0)).
 	expected columnNames: #(a b c d).

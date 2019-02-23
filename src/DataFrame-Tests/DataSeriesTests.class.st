@@ -32,17 +32,6 @@ DataSeriesTests >> testAddAtKey [
 ]
 
 { #category : #tests }
-DataSeriesTests >> testAsDataSeries [
-
-	| aSeries |
-	aSeries := #(a b c) asDataSeries.
-	
-	self assert: aSeries size equals: 3.
-	self assert: aSeries asArray equals: #(a b c).
-	self assert: aSeries keys equals: #(1 2 3) asOrderedCollection.
-]
-
-{ #category : #tests }
 DataSeriesTests >> testAsStringTable [
 
 	| population expected actual |
@@ -157,13 +146,164 @@ DataSeriesTests >> testCopy [
 ]
 
 { #category : #tests }
+DataSeriesTests >> testCreateDataSeriesAsDataSeries [
+
+	| dataSeries |
+	dataSeries := #(a b c) asDataSeries.
+	
+	self assert: dataSeries size equals: 3.
+	self assert: dataSeries asArray equals: #(a b c).
+	self assert: dataSeries keys equals: #(1 2 3) asOrderedCollection.
+	self assert: dataSeries name isNil.
+]
+
+{ #category : #tests }
+DataSeriesTests >> testCreateDataSeriesWithValues [
+
+	| values dataSeries |
+	
+	values := #(a b c).
+	dataSeries := DataSeries withValues: values.
+	
+	self assert: dataSeries size equals: 3.
+	self assert: dataSeries asArray equals: values.
+	self assert: dataSeries keys equals: #(1 2 3) asOrderedCollection.
+	self assert: dataSeries name isNil.
+]
+
+{ #category : #tests }
+DataSeriesTests >> testCreateDataSeriesWithValuesKeys [
+
+	| values keys dataSeries |
+	
+	values := #(a b c).
+	keys := #(x y z) asOrderedCollection.
+	
+	dataSeries := DataSeries
+		withValues: values
+		keys: keys.
+	
+	self assert: dataSeries size equals: 3.
+	self assert: dataSeries asArray equals: values.
+	self assert: dataSeries keys equals: keys.
+	self assert: dataSeries name isNil.
+]
+
+{ #category : #tests }
+DataSeriesTests >> testCreateDataSeriesWithValuesKeysName [
+
+	| values keys name dataSeries |
+	
+	values := #(a b c).
+	keys := #(x y z) asOrderedCollection.
+	name := 'Some data'.
+	
+	dataSeries := DataSeries
+		withValues: values
+		keys: keys
+		name: name.
+	
+	self assert: dataSeries size equals: 3.
+	self assert: dataSeries asArray equals: values.
+	self assert: dataSeries keys equals: keys.
+	self assert: dataSeries name equals: name.
+]
+
+{ #category : #tests }
+DataSeriesTests >> testCreateDataSeriesWithValuesName [
+
+	| values name dataSeries |
+	
+	values := #(a b c).
+	name := 'Some data'.
+	
+	dataSeries := DataSeries
+		withValues: values
+		name: name.
+	
+	self assert: dataSeries size equals: 3.
+	self assert: dataSeries asArray equals: values.
+	self assert: dataSeries keys equals: #(1 2 3) asOrderedCollection.
+	self assert: dataSeries name equals: name.
+]
+
+{ #category : #tests }
+DataSeriesTests >> testCreateEmptyDataSeries [
+
+	| dataSeries |
+	dataSeries := DataSeries new.
+	
+	self assert: dataSeries size equals: 0.
+	self assert: dataSeries asArray equals: #().
+	self assert: dataSeries keys equals: #() asOrderedCollection.
+	self assert: dataSeries name isNil.
+]
+
+{ #category : #tests }
+DataSeriesTests >> testCreateEmptyDataSeriesWithGivenSize [
+
+	| size dataSeries |
+	
+	size := 4.
+	dataSeries := DataSeries new: size.
+	
+	self assert: dataSeries size equals: size.
+	self assert: dataSeries asArray equals: #(nil nil nil nil).
+	self assert: dataSeries keys equals: #(1 2 3 4) asOrderedCollection.
+	self assert: dataSeries name isNil.
+]
+
+{ #category : #tests }
+DataSeriesTests >> testCreateEmptyDataSeriesWithKeys [
+
+	| keys dataSeries |
+	
+	keys := #(x y z) asOrderedCollection.
+	dataSeries := DataSeries withKeys: keys.
+	
+	self assert: dataSeries size equals: 3.
+	self assert: dataSeries asArray equals: #(nil nil nil).
+	self assert: dataSeries keys equals: keys.
+	self assert: dataSeries name isNil.
+]
+
+{ #category : #tests }
+DataSeriesTests >> testCreateEmptyDataSeriesWithKeysName [
+
+	| keys name dataSeries |
+	
+	keys := #(x y z) asOrderedCollection.
+	name := 'Some data'.
+	dataSeries := DataSeries withKeys: keys name: name.
+	
+	self assert: dataSeries size equals: 3.
+	self assert: dataSeries asArray equals: #(nil nil nil).
+	self assert: dataSeries keys equals: keys.
+	self assert: dataSeries name equals: name.
+]
+
+{ #category : #tests }
+DataSeriesTests >> testCreateEmptyDataSeriesWithName [
+
+	| name dataSeries |
+	
+	name := 'Some data'.
+	dataSeries := DataSeries withName: name.
+	
+	self assert: dataSeries size equals: 0.
+	self assert: dataSeries asArray equals: #().
+	self assert: dataSeries keys equals: #() asOrderedCollection.
+	self assert: dataSeries name equals: name.
+]
+
+{ #category : #tests }
 DataSeriesTests >> testCrossTabulateWith [
 
 	| series1 series2 expected |
 	series1 := #(A B C A A B C A B B) asDataSeries.
 	series2 := #(1 2 1 2 1 1 2 1 2 2) asDataSeries.
 	
-	expected := DataFrame fromRows:
+	expected := DataFrame withRows:
 		#((3 1)(1 3)(1 1)).
 		
 	expected rowNames: #(A B C).
@@ -216,7 +356,7 @@ DataSeriesTests >> testFrequencyTable [
 	| aSeries expected |
 	aSeries := #(A B C A A B C A B B) asDataSeries.
 	
-	expected := DataFrame fromColumns: {
+	expected := DataFrame withColumns: {
 		{ 4 . 4 . 2 } .
 		{ 2/5 . 2/5 . 1/5 }}.
 		

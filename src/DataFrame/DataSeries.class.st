@@ -16,7 +16,47 @@ Class {
 }
 
 { #category : #'instance creation' }
-DataSeries class >> fromArray: anArray [
+DataSeries class >> new: aNumber [
+
+	^ self new initialize: aNumber.
+	
+]
+
+{ #category : #'instance creation' }
+DataSeries class >> withKeys: anArrayOfKeys [
+	
+	| series |
+	series := self new: anArrayOfKeys size.
+	series keys: anArrayOfKeys.
+	^ series.
+		
+	
+]
+
+{ #category : #'instance creation' }
+DataSeries class >> withKeys: anArrayOfKeys name: aName [
+	
+	| series |
+	series := self withKeys: anArrayOfKeys.
+	series name: aName.
+	^ series.
+		
+	
+]
+
+{ #category : #'instance creation' }
+DataSeries class >> withName: aName [
+	
+	| series |
+	series := self new.
+	series name: aName.
+	^ series.
+		
+	
+]
+
+{ #category : #'instance creation' }
+DataSeries class >> withValues: anArray [
 	
 	| series |
 	series := self new: anArray size.
@@ -27,48 +67,36 @@ DataSeries class >> fromArray: anArray [
 ]
 
 { #category : #'instance creation' }
-DataSeries class >> fromArray: anArray named: aName [
+DataSeries class >> withValues: anArray keys: anArrayOfKeys [
 	
 	| series |
-	series := self fromArray: anArray.
-	series name: aName.
+	series := self withValues: anArray.
+	series keys: anArrayOfKeys.
 	^ series.
 		
 	
 ]
 
 { #category : #'instance creation' }
-DataSeries class >> fromSeries: aSeries [
+DataSeries class >> withValues: anArray keys: anArrayOfKeys name: aName [
 	
 	| series |
-	series := self newFrom: aSeries.
-	
-	series keys: aSeries keys.
-	series name: aSeries name.
-	series type: aSeries type.
-	
-	^ series
+	series := self withValues: anArray name: aName.
+	series keys: anArrayOfKeys.
+	^ series.
 		
 	
 ]
 
 { #category : #'instance creation' }
-DataSeries class >> named: aString [
-
-	^ self new name: aString
-]
-
-{ #category : #'instance creation' }
-DataSeries class >> new: aNumber [
-
-	^ self new initialize: aNumber.
+DataSeries class >> withValues: anArray name: aName [
 	
-]
-
-{ #category : #'instance creation' }
-DataSeries class >> new: aNumber named: aString [
-
-	^ (self new: aNumber) name: aString
+	| series |
+	series := self withValues: anArray.
+	series name: aName.
+	^ series.
+		
+	
 ]
 
 { #category : #comparing }
@@ -112,7 +140,7 @@ DataSeries >> add: aValue atKey: aKey [
 DataSeries >> asDataFrame [
 
 	| df |
-	df := DataFrame fromColumns: { self }.
+	df := DataFrame withColumns: { self }.
 	df columnNames: { self name }.
 	df rowNames: self keys.
 	^ df
@@ -231,7 +259,7 @@ DataSeries >> crossTabulateWith: aSeries [
 		ifFalse: [ SizeMismatch signal ].
 	
 	"TODO: Rewrite it with DataFrame>>select:"
-	df := DataFrame fromRows: 
+	df := DataFrame withRows: 
 		(self unique asArray collect: [ :each1 |
 			aSeries unique asArray collect: [ :each2 |
 				(1 to: self size) inject: 0 into: [ :accum :i |
@@ -280,7 +308,7 @@ DataSeries >> frequencyTable [
 	count := (self groupBy: self) count.
 	proportion := count / self size.
 	
-	df := DataFrame fromColumns:
+	df := DataFrame withColumns:
 		{ count . proportion }.
 		
 	df rowNames: self unique asArray.

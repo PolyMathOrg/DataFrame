@@ -66,7 +66,7 @@ DataFrameGrouped >> split: aDataFrame by: aSeries [
 			each = eachUnique 
 				ifTrue: [ aList add: (aDataFrame rowAt: i) ] ].
 		
-		df := DataFrame fromRows: aList.
+		df := DataFrame withRows: aList.
 		df columnNames: aDataFrame columnNames.
 		df ].
 	

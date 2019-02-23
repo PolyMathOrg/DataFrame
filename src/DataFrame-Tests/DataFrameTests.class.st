@@ -10,7 +10,7 @@ Class {
 { #category : #initialization }
 DataFrameTests >> setUp [
 
-	df := DataFrame fromRows: #(
+	df := DataFrame withRows: #(
 		(Barcelona 1.609 true)
    		(Dubai 2.789 true)
    		(London 8.788 false)).
@@ -24,10 +24,10 @@ DataFrameTests >> testAdd [
 
 	| row expected |
 	
-	row := DataSeries fromArray: #(Paris 2.141 true) named: #X.
+	row := DataSeries withValues: #(Paris 2.141 true) name: #X.
 	df add: row.
 	
-	expected := DataFrame fromRows: #(
+	expected := DataFrame withRows: #(
 		(Barcelona 1.609 true)
    		(Dubai 2.789 true)
    		(London 8.788 false)
@@ -44,10 +44,10 @@ DataFrameTests >> testAddColumn [
 
 	| column expected |
 	
-	column := DataSeries fromArray: #(2015 2010 2017) named: #Year.
+	column := DataSeries withValues: #(2015 2010 2017) name: #Year.
 	df addColumn: column.
 	
-	expected := DataFrame fromRows: #(
+	expected := DataFrame withRows: #(
 		(Barcelona 1.609 true 2015)
    		(Dubai 2.789 true 2010)
    		(London 8.788 false 2017)).
@@ -62,10 +62,10 @@ DataFrameTests >> testAddColumn [
 DataFrameTests >> testAddColumnAtPosition [
 	| column expected |
 	
-	column := DataSeries fromArray: #(2015 2010 2017) named: #Year.
+	column := DataSeries withValues: #(2015 2010 2017) name: #Year.
 	df addColumn: column atPosition: 3.
 	
-	expected := DataFrame fromRows: #(
+	expected := DataFrame withRows: #(
 		(Barcelona 1.609 2015 true)
    		(Dubai 2.789 2010 true)
    		(London 8.788 2017 false)).
@@ -82,7 +82,7 @@ DataFrameTests >> testAddColumnNamed [
 	
 	df addColumn: #(2015 2010 2017) named: #Year.
 	
-	expected := DataFrame fromRows: #(
+	expected := DataFrame withRows: #(
 		(Barcelona 1.609 true 2015)
    		(Dubai 2.789 true 2010)
    		(London 8.788 false 2017)).
@@ -99,7 +99,7 @@ DataFrameTests >> testAddColumnNamedAtPosition [
 	
 	df addColumn: #(2015 2010 2017) named: #Year atPosition: 3.
 	
-	expected := DataFrame fromRows: #(
+	expected := DataFrame withRows: #(
 		(Barcelona 1.609 2015 true)
    		(Dubai 2.789 2010 true)
    		(London 8.788 2017 false)).
@@ -115,7 +115,7 @@ DataFrameTests >> testAddEmptyColumnNamed [
 
 	| expected |
 	
-	expected := DataFrame fromRows: #(
+	expected := DataFrame withRows: #(
 		(Barcelona 1.609 true nil)
    		(Dubai 2.789 true nil)
    		(London 8.788 false nil)).
@@ -133,7 +133,7 @@ DataFrameTests >> testAddEmptyColumnNamedAtPosition [
 
 	| expected |
 	
-	expected := DataFrame fromRows: #(
+	expected := DataFrame withRows: #(
 		(Barcelona 1.609 nil true)
    		(Dubai 2.789 nil true)
    		(London 8.788 nil false)).
@@ -151,7 +151,7 @@ DataFrameTests >> testAddEmptyRowNamed [
 
 	| expected |
 	
-	expected := DataFrame fromRows: #(
+	expected := DataFrame withRows: #(
 		(Barcelona 1.609 true)
    		(Dubai 2.789 true)
    		(London 8.788 false)
@@ -170,7 +170,7 @@ DataFrameTests >> testAddEmptyRowNamedAtPosition [
 
 	| expected |
 	
-	expected := DataFrame fromRows: #(
+	expected := DataFrame withRows: #(
 		(Barcelona 1.609 true)
    		(Dubai 2.789 true)
 		(nil nil nil)
@@ -189,10 +189,10 @@ DataFrameTests >> testAddRow [
 
 	| row expected |
 	
-	row := DataSeries fromArray: #(Paris 2.141 true) named: #X.
+	row := DataSeries withValues: #(Paris 2.141 true) name: #X.
 	df addRow: row.
 	
-	expected := DataFrame fromRows: #(
+	expected := DataFrame withRows: #(
 		(Barcelona 1.609 true)
    		(Dubai 2.789 true)
    		(London 8.788 false)
@@ -208,10 +208,10 @@ DataFrameTests >> testAddRow [
 DataFrameTests >> testAddRowAtPosition [
 	| row expected |
 	
-	row := DataSeries fromArray: #(Paris 2.141 true) named: #X.
+	row := DataSeries withValues: #(Paris 2.141 true) name: #X.
 	df addRow: row atPosition: 2.
 	
-	expected := DataFrame fromRows: #(
+	expected := DataFrame withRows: #(
 		(Barcelona 1.609 true)
 		(Paris 2.141 true)
    		(Dubai 2.789 true)
@@ -229,7 +229,7 @@ DataFrameTests >> testAddRowNamed [
 	
 	df addRow: #(Paris 2.141 true) named: #X.
 	
-	expected := DataFrame fromRows: #(
+	expected := DataFrame withRows: #(
 		(Barcelona 1.609 true)
    		(Dubai 2.789 true)
    		(London 8.788 false)
@@ -247,7 +247,7 @@ DataFrameTests >> testAddRowNamedAtPosition [
 	
 	df addRow: #(Paris 2.141 true) named: #X atPosition: 2.
 	
-	expected := DataFrame fromRows: #(
+	expected := DataFrame withRows: #(
 		(Barcelona 1.609 true)
 		(Paris 2.141 true)
    		(Dubai 2.789 true)
@@ -323,7 +323,7 @@ DataFrameTests >> testAt [
 
 	| actual expected |
 
-	expected := DataSeries fromArray:
+	expected := DataSeries withValues:
 		#('Dubai' 2.789 true).
 		
 	expected name: #B.
@@ -345,7 +345,7 @@ DataFrameTests >> testAtAtPut [
 
 	| expectedDataFrame |
 	
-	expectedDataFrame := DataFrame fromRows: #(
+	expectedDataFrame := DataFrame withRows: #(
 		(Barcelona 1.609 true)
    		(Dubai 2.789 true)
    		(London 1000 false)).
@@ -370,7 +370,7 @@ DataFrameTests >> testCategoricalColumns [
 DataFrameTests >> testCollect [
 	| expectedDf expectedResult actualResult |
 	
-	expectedDf := DataFrame fromRows: #(
+	expectedDf := DataFrame withRows: #(
 		(Barcelona 1.609 true)
    		(Dubai 2.789 true)
    		(London 8.788 false)).
@@ -378,7 +378,7 @@ DataFrameTests >> testCollect [
 	expectedDf rowNames: #(A B C).
 	expectedDf columnNames: #(City Population BeenThere).
 	
-	expectedResult := DataFrame fromRows: #(
+	expectedResult := DataFrame withRows: #(
 		('BARCELONA' 1)
    		('DUBAI' 2)
    		('LONDON' 8)).
@@ -401,7 +401,7 @@ DataFrameTests >> testColumn [
 
 	| actualSeries expectedSeries |
 
-	expectedSeries := DataSeries fromArray:
+	expectedSeries := DataSeries withValues:
 		#(Barcelona Dubai London).
 	
 	expectedSeries name: #City.
@@ -417,7 +417,7 @@ DataFrameTests >> testColumnAt [
 
 	| actualSeries expectedSeries |
 
-	expectedSeries := DataSeries fromArray:
+	expectedSeries := DataSeries withValues:
 		#(Barcelona Dubai London).
 	
 	expectedSeries name: #City.
@@ -433,7 +433,7 @@ DataFrameTests >> testColumnAtPut [
 
 	| actual expected |
 
-	expected := DataFrame fromRows: #(
+	expected := DataFrame withRows: #(
 		('X' 1.609 0)
    		('Y' 2.789 1)
    		('Z' 8.788 0)).
@@ -472,7 +472,7 @@ DataFrameTests >> testColumnPut [
 
 	| actual expected |
 
-	expected := DataFrame fromRows: #(
+	expected := DataFrame withRows: #(
 		('X' 1.609 0)
    		('Y' 2.789 1)
    		('Z' 8.788 0)).
@@ -506,7 +506,7 @@ DataFrameTests >> testColumns [
 	
 	columnNames := #(City BeenThere).
 	
-	expectedDataFrame := DataFrame fromRows: #(
+	expectedDataFrame := DataFrame withRows: #(
 		(Barcelona true)
    		(Dubai true)
    		(London false)).
@@ -526,7 +526,7 @@ DataFrameTests >> testColumnsAt [
 	
 	columnNumbers := #(1 3).
 	
-	expectedDataFrame := DataFrame fromRows: #(
+	expectedDataFrame := DataFrame withRows: #(
 		(Barcelona true)
    		(Dubai true)
    		(London false)).
@@ -546,7 +546,7 @@ DataFrameTests >> testColumnsFromTo [
 
 	| actualDataFrame expectedDataFrame |
 		
-	expectedDataFrame := DataFrame fromRows: #(
+	expectedDataFrame := DataFrame withRows: #(
 		(1.609 true)
    		(2.789 true)
    		(8.788 false)).
@@ -571,6 +571,229 @@ DataFrameTests >> testCreateDataFrameWith3ColumnsAndNoRows [
 ]
 
 { #category : #tests }
+DataFrameTests >> testCreateDataFrameWithColumns [
+
+	| columns dataFrame expectedValues |
+	
+	columns := #(
+		('Robb Stark' 'Jon Snow' 'Eddard Stark')
+    	(3 4 1)
+      	(true false true)).
+	
+	dataFrame := DataFrame withColumns: columns.
+	
+	self assert: dataFrame rowNames equals: #(1 2 3) asOrderedCollection.
+	self assert: dataFrame columnNames equals: #(1 2 3) asOrderedCollection.
+	
+	"We know that it works, because we have tests for it in DataFrameInternalTests"
+	expectedValues := DataFrameInternal withColumns: columns.
+	
+	self assert: dataFrame contents equals: expectedValues.
+]
+
+{ #category : #tests }
+DataFrameTests >> testCreateDataFrameWithColumnsColumnNames [
+
+	| columns columnNames dataFrame expectedValues |
+	
+	columns := #(
+		('Robb Stark' 'Jon Snow' 'Eddard Stark')
+    	(3 4 1)
+      	(true false true)).
+	
+	columnNames := #(Name Book IsAlive) asOrderedCollection.
+	dataFrame := DataFrame
+		withColumns: columns
+		columnNames: columnNames.
+	
+	self assert: dataFrame rowNames equals: #(1 2 3) asOrderedCollection.
+	self assert: dataFrame columnNames equals: columnNames.
+	
+	"We know that it works, because we have tests for it in DataFrameInternalTests"
+	expectedValues := DataFrameInternal withColumns: columns.
+	
+	self assert: dataFrame contents equals: expectedValues.
+]
+
+{ #category : #tests }
+DataFrameTests >> testCreateDataFrameWithColumnsRowNames [
+
+	| columns rowNames dataFrame expectedValues |
+	
+	columns := #(
+		('Robb Stark' 'Jon Snow' 'Eddard Stark')
+    	(3 4 1)
+      	(true false true)).
+	
+	rowNames := #(A B C) asOrderedCollection.
+	dataFrame := DataFrame
+		withColumns: columns
+		rowNames: rowNames.
+	
+	self assert: dataFrame rowNames equals: rowNames.
+	self assert: dataFrame columnNames equals: #(1 2 3) asOrderedCollection.
+	
+	"We know that it works, because we have tests for it in DataFrameInternalTests"
+	expectedValues := DataFrameInternal withColumns: columns.
+	
+	self assert: dataFrame contents equals: expectedValues.
+]
+
+{ #category : #tests }
+DataFrameTests >> testCreateDataFrameWithColumnsRowNamesColumnNames [
+
+	| columns rowNames columnNames dataFrame expectedValues |
+	
+	columns := #(
+		('Robb Stark' 'Jon Snow' 'Eddard Stark')
+    	(3 4 1)
+      	(true false true)).
+	
+	rowNames := #(A B C) asOrderedCollection.
+	columnNames := #(Name Book IsAlive) asOrderedCollection.
+	
+	dataFrame := DataFrame
+		withColumns: columns
+		rowNames: rowNames
+		columnNames: columnNames.
+	
+	self assert: dataFrame rowNames equals: rowNames.
+	self assert: dataFrame columnNames equals: columnNames.
+	
+	"We know that it works, because we have tests for it in DataFrameInternalTests"
+	expectedValues := DataFrameInternal withColumns: columns.
+	
+	self assert: dataFrame contents equals: expectedValues.
+]
+
+{ #category : #tests }
+DataFrameTests >> testCreateDataFrameWithDataFrameInternalRowNamesColumnNames [
+
+	| rows dataFrameInternal rowNames columnNames dataFrame expectedValues |
+	
+	rows := #(
+		('Robb Stark' 3 true)
+    	('Jon Snow' 4 false)
+      	('Eddard Stark' 1 true)).
+	
+	dataFrameInternal := DataFrameInternal withRows: rows.
+	rowNames := #(A B C) asOrderedCollection.
+	columnNames := #(Name Book IsAlive) asOrderedCollection.
+	
+	dataFrame := DataFrame
+		withDataFrameInternal: dataFrameInternal
+		rowNames: rowNames
+		columnNames: columnNames.
+	
+	self assert: dataFrame rowNames equals: rowNames.
+	self assert: dataFrame columnNames equals: columnNames.
+	
+	"We know that it works, because we have tests for it in DataFrameInternalTests"
+	expectedValues := DataFrameInternal withRows: rows.
+	
+	self assert: dataFrame contents equals: expectedValues.
+]
+
+{ #category : #tests }
+DataFrameTests >> testCreateDataFrameWithRows [
+
+	| rows dataFrame expectedValues |
+	
+	rows := #(
+		('Robb Stark' 3 true)
+    	('Jon Snow' 4 false)
+      	('Eddard Stark' 1 true)).
+	
+	dataFrame := DataFrame
+		withRows: rows.
+	
+	self assert: dataFrame rowNames equals: #(1 2 3) asOrderedCollection.
+	self assert: dataFrame columnNames equals: #(1 2 3) asOrderedCollection.
+	
+	"We know that it works, because we have tests for it in DataFrameInternalTests"
+	expectedValues := DataFrameInternal withRows: rows.
+	
+	self assert: dataFrame contents equals: expectedValues.
+]
+
+{ #category : #tests }
+DataFrameTests >> testCreateDataFrameWithRowsColumnNames [
+
+	| rows columnNames dataFrame expectedValues |
+	
+	rows := #(
+		('Robb Stark' 3 true)
+    	('Jon Snow' 4 false)
+      	('Eddard Stark' 1 true)).
+	
+	columnNames := #(Name Book IsAlive) asOrderedCollection.
+	
+	dataFrame := DataFrame
+		withRows: rows
+		columnNames: columnNames.
+	
+	self assert: dataFrame rowNames equals: #(1 2 3) asOrderedCollection.
+	self assert: dataFrame columnNames equals: columnNames.
+	
+	"We know that it works, because we have tests for it in DataFrameInternalTests"
+	expectedValues := DataFrameInternal withRows: rows.
+	
+	self assert: dataFrame contents equals: expectedValues.
+]
+
+{ #category : #tests }
+DataFrameTests >> testCreateDataFrameWithRowsRowNames [
+
+	| rows rowNames dataFrame expectedValues |
+	
+	rows := #(
+		('Robb Stark' 3 true)
+    	('Jon Snow' 4 false)
+      	('Eddard Stark' 1 true)).
+	
+	rowNames := #(A B C) asOrderedCollection.
+	
+	dataFrame := DataFrame
+		withRows: rows
+		rowNames: rowNames.
+	
+	self assert: dataFrame rowNames equals: rowNames.
+	self assert: dataFrame columnNames equals: #(1 2 3) asOrderedCollection.
+	
+	"We know that it works, because we have tests for it in DataFrameInternalTests"
+	expectedValues := DataFrameInternal withRows: rows.
+	
+	self assert: dataFrame contents equals: expectedValues.
+]
+
+{ #category : #tests }
+DataFrameTests >> testCreateDataFrameWithRowsRowNamesColumnNames [
+
+	| rows rowNames columnNames dataFrame expectedValues |
+	
+	rows := #(
+		('Robb Stark' 3 true)
+    	('Jon Snow' 4 false)
+      	('Eddard Stark' 1 true)).
+	
+	rowNames := #(A B C) asOrderedCollection.
+	columnNames := #(Name Book IsAlive) asOrderedCollection.
+	
+	dataFrame := DataFrame
+		withRows: rows
+		rowNames: rowNames
+		columnNames: columnNames.
+	
+	self assert: dataFrame rowNames equals: rowNames.
+	self assert: dataFrame columnNames equals: columnNames.
+	
+	"We know that it works, because we have tests for it in DataFrameInternalTests"
+	expectedValues := DataFrameInternal withRows: rows.
+	
+	self assert: dataFrame contents equals: expectedValues.
+]
+
+{ #category : #tests }
 DataFrameTests >> testCreateEmptyDataFrame [
 	| dataFrame |
 	dataFrame := DataFrame new.
@@ -583,15 +806,45 @@ DataFrameTests >> testCreateEmptyDataFrame [
 
 { #category : #tests }
 DataFrameTests >> testCreateEmptyDataFrameWithColumnNames [
-	| columns dataFrame |
+	| columnNames dataFrame |
 	
-	columns := #(Name Age Nationality) asOrderedCollection.
-	dataFrame := DataFrame emptyWithColumnNames: columns.
+	columnNames := #(Name Age Nationality) asOrderedCollection.
+	dataFrame := DataFrame withColumnNames: columnNames.
 	
 	self assert: dataFrame class equals: DataFrame.
 	self assert: dataFrame dimensions equals: 0@3.
 	self assert: dataFrame rowNames equals: #() asOrderedCollection.
-	self assert: dataFrame columnNames equals: columns.
+	self assert: dataFrame columnNames equals: columnNames.
+]
+
+{ #category : #tests }
+DataFrameTests >> testCreateEmptyDataFrameWithRowNames [
+	| rowNames dataFrame |
+	
+	rowNames := #(A B C) asOrderedCollection.
+	dataFrame := DataFrame withRowNames: rowNames.
+	
+	self assert: dataFrame class equals: DataFrame.
+	self assert: dataFrame dimensions equals: 3@0.
+	self assert: dataFrame rowNames equals: rowNames.
+	self assert: dataFrame columnNames equals: #() asOrderedCollection.
+]
+
+{ #category : #tests }
+DataFrameTests >> testCreateEmptyDataFrameWithRowNamesColumnNames [
+	| rowNames columnNames dataFrame |
+	
+	rowNames := #(A B C) asOrderedCollection.
+	columnNames := #(Name Age Nationality) asOrderedCollection.
+	
+	dataFrame := DataFrame
+		withRowNames: rowNames
+		columnNames: columnNames.
+	
+	self assert: dataFrame class equals: DataFrame.
+	self assert: dataFrame dimensions equals: 3@3.
+	self assert: dataFrame rowNames equals: rowNames.
+	self assert: dataFrame columnNames equals: columnNames.
 ]
 
 { #category : #tests }
@@ -599,7 +852,7 @@ DataFrameTests >> testCrossTabulation [
 
 	| dataFrame expected |
 	
-	dataFrame := DataFrame fromRows: #(
+	dataFrame := DataFrame withRows: #(
 		(Male Young)
 		(Female Old)
 		(Female Young)
@@ -607,7 +860,7 @@ DataFrameTests >> testCrossTabulation [
 		(Male Old)).
 	dataFrame columnNames: #(Gender Age).
 	
-	expected := DataFrame fromRows:
+	expected := DataFrame withRows:
 		#((2 1)(1 1)).
 		
 	expected rowNames: #(Female Male).
@@ -643,76 +896,11 @@ DataFrameTests >> testEquality [
 
 	| df1 df2 |
 	
-	df1 := DataFrame fromRows: #((1 2)(3 4)).
-	df2 := DataFrame fromRows: #((1 2)(3 4)).
+	df1 := DataFrame withRows: #((1 2)(3 4)).
+	df2 := DataFrame withRows: #((1 2)(3 4)).
 	
 	self assert: df1 equals: df2.
 	self assert: (df1 = df2).
-]
-
-{ #category : #tests }
-DataFrameTests >> testFromColumns [
-
-	| columns dataFrame expectedValues |
-	
-	columns := #(
-		('Robb Stark' 'Jon Snow' 'Eddard Stark')
-    	(3 4 1)
-      	(true false true)).
-	
-	dataFrame := DataFrame fromColumns: columns.
-	
-	self assert: dataFrame rowNames equals: #(1 2 3) asOrderedCollection.
-	self assert: dataFrame columnNames equals: #(1 2 3) asOrderedCollection.
-	
-	"We know that it works, because we have tests for it in DataFrameInternalTests"
-	expectedValues := DataFrameInternal fromColumns: columns.
-	
-	self assert: dataFrame contents equals: expectedValues.
-]
-
-{ #category : #tests }
-DataFrameTests >> testFromMatrix [
-
-	| matrix dataFrame expectedValues |
-	
-	matrix := Matrix
-		rows: 3 columns: 3
-		contents: #(
-			'Robb Stark' 3 true
-    		'Jon Snow' 4 false
-      		'Eddard Stark' 1 true).
-	
-	dataFrame := DataFrame fromMatrix: matrix.
-	
-	self assert: dataFrame rowNames equals: #(1 2 3) asOrderedCollection.
-	self assert: dataFrame columnNames equals: #(1 2 3) asOrderedCollection.
-	
-	"We know that it works, because we have tests for it in DataFrameInternalTests"
-	expectedValues := DataFrameInternal fromMatrix: matrix.
-	
-	self assert: dataFrame contents equals: expectedValues.
-]
-
-{ #category : #tests }
-DataFrameTests >> testFromRows [
-
-	| rows dataFrame expectedValues |
-	
-	rows := #(
-		('Robb Stark' 3 true)
-    	('Jon Snow' 4 false)
-      	('Eddard Stark' 1 true)).
-	
-	dataFrame := DataFrame fromRows: rows.
-	
-	self assert: dataFrame rowNames equals: #(1 2 3) asOrderedCollection.
-	self assert: dataFrame columnNames equals: #(1 2 3) asOrderedCollection.
-	
-	"We know that it works, because we have tests for it in DataFrameInternalTests"
-	expectedValues := DataFrameInternal fromRows: rows.
-	
-	self assert: dataFrame contents equals: expectedValues.
 ]
 
 { #category : #tests }
@@ -721,27 +909,27 @@ DataFrameTests >> testInequality [
 	| df1 df2 df3 df4 df5 |
 	
 	"Other data frames will be compared to this one"
-	df1 := DataFrame fromRows: #((1 2)(3 4)).
+	df1 := DataFrame withRows: #((1 2)(3 4)).
 	df1 rowNames: #(a b).
 	df1 columnNames: #(x y).
 	
 	"This one has different row names"
-	df2 := DataFrame fromRows: #((1 2)(3 4)).
+	df2 := DataFrame withRows: #((1 2)(3 4)).
 	df2 rowNames: #(c b).
 	df2 columnNames: #(x y).
 	
 	"This one has different column names"
-	df3 := DataFrame fromRows: #((1 2)(3 4)).
+	df3 := DataFrame withRows: #((1 2)(3 4)).
 	df3 rowNames: #(a b).
 	df3 columnNames: #(x z).
 	
 	"This one has different dimensions"
-	df4 := DataFrame fromRows: #((1 2)(3 4)(5 6)).
+	df4 := DataFrame withRows: #((1 2)(3 4)(5 6)).
 	df4 rowNames: #(a b c).
 	df4 columnNames: #(x z).
 	
 	"This one has different values"
-	df5 := DataFrame fromRows: #((1 2)(3 5)).
+	df5 := DataFrame withRows: #((1 2)(3 5)).
 	df5 rowNames: #(a b).
 	df5 columnNames: #(x z).
 
@@ -778,7 +966,7 @@ DataFrameTests >> testRemoveColumn [
 
 	| expected |
 	
-	expected := DataFrame fromRows: #(
+	expected := DataFrame withRows: #(
 		(Barcelona true)
    		(Dubai true)
    		(London false)).
@@ -796,7 +984,7 @@ DataFrameTests >> testRemoveColumnAt [
 
 	| expected |
 	
-	expected := DataFrame fromRows: #(
+	expected := DataFrame withRows: #(
 		(Barcelona true)
    		(Dubai true)
    		(London false)).
@@ -814,7 +1002,7 @@ DataFrameTests >> testRemoveFirstRow [
 
 	| expected |
 	
-	expected := DataFrame fromRows: #(
+	expected := DataFrame withRows: #(
    		(Dubai 2.789 true)
    		(London 8.788 false)).
 		
@@ -831,7 +1019,7 @@ DataFrameTests >> testRemoveLastRow [
 
 	| expected |
 	
-	expected := DataFrame fromRows: #(
+	expected := DataFrame withRows: #(
 		(Barcelona 1.609 true)
    		(Dubai 2.789 true)).
 		
@@ -848,7 +1036,7 @@ DataFrameTests >> testRemoveRow [
 
 	| expected |
 	
-	expected := DataFrame fromRows: #(
+	expected := DataFrame withRows: #(
 		(Barcelona 1.609 true)
    		(London 8.788 false)).
 		
@@ -865,7 +1053,7 @@ DataFrameTests >> testRemoveRowAt [
 
 	| expected |
 	
-	expected := DataFrame fromRows: #(
+	expected := DataFrame withRows: #(
 		(Barcelona 1.609 true)
    		(London 8.788 false)).
 		
@@ -882,7 +1070,7 @@ DataFrameTests >> testRow [
 
 	| actualSeries expectedSeries |
 
-	expectedSeries := DataSeries fromArray:
+	expectedSeries := DataSeries withValues:
 		#('Dubai' 2.789 true).
 		
 	expectedSeries name: #B.
@@ -898,7 +1086,7 @@ DataFrameTests >> testRowAt [
 
 	| actualSeries expectedSeries |
 
-	expectedSeries := DataSeries fromArray:
+	expectedSeries := DataSeries withValues:
 		#('Dubai' 2.789 true).
 		
 	expectedSeries name: #B.
@@ -914,7 +1102,7 @@ DataFrameTests >> testRowAtPut [
 
 	| actual expected |
 
-	expected := DataFrame fromRows: #(
+	expected := DataFrame withRows: #(
 		(Barcelona 1.609 true)
    		(X Y Z)
    		(London 8.788 false)).
@@ -952,7 +1140,7 @@ DataFrameTests >> testRowPut [
 
 	| actual expected |
 
-	expected := DataFrame fromRows: #(
+	expected := DataFrame withRows: #(
 		(Barcelona 1.609 true)
    		(X Y Z)
    		(London 8.788 false)).
@@ -973,7 +1161,7 @@ DataFrameTests >> testRows [
 	
 	rowNames := #(A C).
 	
-	expectedDataFrame := DataFrame fromRows: #(
+	expectedDataFrame := DataFrame withRows: #(
 		(Barcelona 1.609 true)
    		(London 8.788 false)).
 		
@@ -992,7 +1180,7 @@ DataFrameTests >> testRowsAt [
 	
 	rowNumbers := #(1 3).
 	
-	expectedDataFrame := DataFrame fromRows: #(
+	expectedDataFrame := DataFrame withRows: #(
 		(Barcelona 1.609 true)
    		(London 8.788 false)).
 		
@@ -1011,7 +1199,7 @@ DataFrameTests >> testRowsFromTo [
 
 	| actualDataFrame expectedDataFrame |
 		
-	expectedDataFrame := DataFrame fromRows: #(
+	expectedDataFrame := DataFrame withRows: #(
    		(Dubai 2.789 true)
    		(London 8.788 false)).
 		
@@ -1028,7 +1216,7 @@ DataFrameTests >> testSortBy [
 
 	| actual expected |
 
-	expected := DataFrame fromRows: #(
+	expected := DataFrame withRows: #(
 		(Barcelona 1.609 true)
    		(Dubai 2.789 true)
 		(London 8.788 false)).
@@ -1045,7 +1233,7 @@ DataFrameTests >> testSortByUsing [
 	"Sort by second letter of city name"
 	| actual expected |
 
-	expected := DataFrame fromRows: #(
+	expected := DataFrame withRows: #(
 		(Barcelona 1.609 true)
 		(London 8.788 false)
 		(Dubai 2.789 true)).
@@ -1064,7 +1252,7 @@ DataFrameTests >> testSortDescendingBy [
 
 	| actual expected |
 
-	expected := DataFrame fromRows: #(
+	expected := DataFrame withRows: #(
 		(London 8.788 false)
 		(Dubai 2.789 true)
 		(Barcelona 1.609 true)).
@@ -1081,7 +1269,7 @@ DataFrameTests >> testToColumnApplyElementwise [
 
 	| expected |
 	
-	expected := DataFrame fromRows: #(
+	expected := DataFrame withRows: #(
 		(Barcelona '1.609' true)
    		(Dubai '2.789' true)
    		(London '8.788' false)).
@@ -1100,7 +1288,7 @@ DataFrameTests >> testToColumnAtApplyElementwise [
 
 	| expected |
 	
-	expected := DataFrame fromRows: #(
+	expected := DataFrame withRows: #(
 		(Barcelona '1.609' true)
    		(Dubai '2.789' true)
    		(London '8.788' false)).
@@ -1119,7 +1307,7 @@ DataFrameTests >> testToColumnsApplyElementwise [
 
 	| expected |
 	
-	expected := DataFrame fromRows: #(
+	expected := DataFrame withRows: #(
 		(Barcelona '1.609' 'true')
    		(Dubai '2.789' 'true')
    		(London '8.788' 'false')).
@@ -1138,7 +1326,7 @@ DataFrameTests >> testToColumnsAtApplyElementwise [
 
 	| expected |
 	
-	expected := DataFrame fromRows: #(
+	expected := DataFrame withRows: #(
 		(Barcelona '1.609' 'true')
    		(Dubai '2.789' 'true')
    		(London '8.788' 'false')).
@@ -1157,7 +1345,7 @@ DataFrameTests >> testTransposed [
 
 	| expected |
 	
-	expected := DataFrame fromRows: #(
+	expected := DataFrame withRows: #(
 		('Barcelona' 'Dubai' 'London')
 		(1.609 2.789 8.788)
    		(true true false)).

@@ -11,16 +11,16 @@ Class {
 }
 
 { #category : #'instance creation' }
-DataSeriesInternal class >> fromArray: anArray [
-
-	^ self new initializeWithArray: anArray.
-]
-
-{ #category : #'instance creation' }
 DataSeriesInternal class >> new: aNumber [
 
 	^ self new initialize: aNumber.
 	
+]
+
+{ #category : #'instance creation' }
+DataSeriesInternal class >> withValues: anArray [
+
+	^ self new initializeWithArray: anArray.
 ]
 
 { #category : #comparing }

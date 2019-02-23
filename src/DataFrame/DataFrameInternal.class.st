@@ -11,7 +11,28 @@ Class {
 }
 
 { #category : #'instance creation' }
-DataFrameInternal class >> fromColumns: anArrayOfArrays [
+DataFrameInternal class >> fromMatrix: aMatrix [
+
+	| dfInternal |
+	
+	"We can't use Matrix>>extent, because it gives us col@row instead of row@col"
+	dfInternal := self new:
+		(aMatrix rowCount @ aMatrix columnCount).
+	
+	aMatrix withIndicesDo: [ :each :i :j |
+		dfInternal at: i at: j put: each ].
+	
+	^ dfInternal
+]
+
+{ #category : #'instance creation' }
+DataFrameInternal class >> new: aPoint [
+
+	^ self new initialize: aPoint
+]
+
+{ #category : #'instance creation' }
+DataFrameInternal class >> withColumns: anArrayOfArrays [
 	
 	| numberOfRows numberOfColumns dfInternal |
 	
@@ -28,22 +49,7 @@ DataFrameInternal class >> fromColumns: anArrayOfArrays [
 ]
 
 { #category : #'instance creation' }
-DataFrameInternal class >> fromMatrix: aMatrix [
-
-	| dfInternal |
-	
-	"We can't use Matrix>>extent, because it gives us col@row instead of row@col"
-	dfInternal := self new:
-		(aMatrix rowCount @ aMatrix columnCount).
-	
-	aMatrix withIndicesDo: [ :each :i :j |
-		dfInternal at: i at: j put: each ].
-	
-	^ dfInternal
-]
-
-{ #category : #'instance creation' }
-DataFrameInternal class >> fromRows: anArrayOfArrays [
+DataFrameInternal class >> withRows: anArrayOfArrays [
 
 	| numberOfRows numberOfColumns dfInternal |
 	
@@ -57,12 +63,6 @@ DataFrameInternal class >> fromRows: anArrayOfArrays [
 				((anArrayOfArrays at: i) at: j) ] ].
 		
 	^ dfInternal
-]
-
-{ #category : #'instance creation' }
-DataFrameInternal class >> new: aPoint [
-
-	^ self new initialize: aPoint
 ]
 
 { #category : #comparing }
