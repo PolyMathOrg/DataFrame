@@ -537,7 +537,7 @@ DataFrame >> groupBy: colName aggregate: selector [
 	^ (self groupBy: colName) perform: selector.
 ]
 
-{ #category : #inspector }
+{ #category : #'gt-inspector-extension' }
 DataFrame >> gtInspectorFastTableIn: composite [
 	<gtInspectorPresentationOrder: 0>
 	<gtInspectorTag: #basic>
@@ -547,7 +547,7 @@ DataFrame >> gtInspectorFastTableIn: composite [
 		display: [ self showWithGlamourIn: composite ].
 ]
 
-{ #category : #inspector }
+{ #category : #'gt-inspector-extension' }
 DataFrame >> gtInspectorItemsIn: composite [
 "Hide Items from inspector"
 
@@ -927,7 +927,7 @@ DataFrame >> setDefaultRowColumnNames [
 	self columnNames: (1 to: self numberOfColumns) asOrderedCollection.
 ]
 
-{ #category : #inspector }
+{ #category : #'gt-inspector-extension' }
 DataFrame >> showWithGlamourIn: composite [
 	| table headerNames |
 

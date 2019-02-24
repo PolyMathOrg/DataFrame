@@ -344,6 +344,11 @@ DataSeries >> groupBy: aSeries [
 	^ DataSeriesGrouped group: self by: aSeries
 ]
 
+{ #category : #'gt-inspector-extension' }
+DataSeries >> gtInspectorItemsIn: composite [
+	self asDictionary gtInspectorItemsIn: composite
+]
+
 { #category : #accessing }
 DataSeries >> head [
 
