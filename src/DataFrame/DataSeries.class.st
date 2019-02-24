@@ -150,6 +150,11 @@ DataSeries >> asDataSeries [
 	^ DataSeries newFrom: self.
 ]
 
+{ #category : #converting }
+DataSeries >> asDictionary [
+	^ Dictionary newFromKeys: keys andValues: contents
+]
+
 { #category : #printing }
 DataSeries >> asStringTable [
 
