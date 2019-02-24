@@ -35,4 +35,8 @@ BaselineOfDataFrame >> baseline: spec [
 		spec 
 			package: 'DataFrame';
 			package: 'DataFrame-Tests' with: [ spec requires: #('DataFrame') ] ].
+		
+		spec
+			for: #'pharo6.x'
+			do: [ spec package: 'DataFrame-Pharo6' ]
 ]
