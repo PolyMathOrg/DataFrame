@@ -1,5 +1,151 @@
 "
-I am a collection for datasets that can be stored and processed in tables. I am suitable for data analysis.
+I am a tabular data structure designed for data analysis.
+
+I store data in a table and provide an API for querying and modifying that data. I know row and column names associated with the table of data, which allows you to treat rows as observations and columns as features and reference them by their names. I also know the type of data stored in each column. In general, I am similar to spreadsheets such as Excel or to data frames in other languages, for example pandas (Python) or R.
+
+The efficient data structure that I use to store the data is defined by DataFrameInternal. However, you can think of me as a collection of rows. Every time you interact with one of my rows or columns it will be an instance of the DataSeries class. I use DataTypeInductor to induce types of my columns every time they are modified. DataPrettyPrinter allows you to print me as a beautiful string table, DataFrameFTData defines a data source based on myself that is used in FastTable to display me in the inspector. I provide aggregation and grouping fuctionality which is implemented using a helper class DataFrameGrouped.
+
+Public API and Key Messages
+
+	Creating empty data frame (class side):
+		- new (empty data frame)
+		- new: point (empty data frame with given dimensions)
+		- withColumnNames: arrayOfColumnNames (empty data frame with column names)
+		- withRowNames: arrayOfRowNames (empty data frame with row names)
+		
+	Creating data frame from an array of columns (class side):
+		- withColumns: arrayOfArrays
+		- withColumns: arrayOfArrays columnNames: arrayOfColumnNames
+		- withColumns: arrayOfArrays rowNames: arrayOfRowNames
+		- withColumns: arrayOfArrays rowNames: arrayOfRowNames columnNames: arrayOfColumnNames
+		
+	Creating data frame from an array of rows (class side):
+		- withRows: arrayOfArrays
+		- withRows: arrayOfArrays columnNames: arrayOfColumnNames
+		- withRows: arrayOfArrays rowNames: arrayOfRowNames
+		- withRows: arrayOfArrays rowNames: arrayOfRowNames columnNames: arrayOfColumnNames
+
+	Converting:
+		- asArrayOfColumns
+		- asArrayOfRows
+		- asStringTable (string formatted as a pretty table)
+
+	Dimensions
+		- numberOfColumns
+		- numberOfRows
+		- dimensions (a Point numberOfRows @ numberOfColumns)
+		
+	Column and row names:
+		- columnNames 
+		- columnNames: arrayOfNewNames
+		- rowNames
+		- rowNames: arrayOfNewNames
+		
+	Column types
+		- columnTypes (classes of values stored in each column)
+
+	Getting columns:
+		- column: columnName 
+		- columnAt: index
+		- columns: arrayOfColumnNames
+		- columnsAt: arrayOfIndices
+		- columnsFrom: firstIndex to: lastIndex
+		
+	Getting rows:
+		- row: rowName
+		- rowAt: index
+		- rows: arrayOfRowNames
+		- rowsAt: arrayOfIndices
+		- rowsFrom: firstIndex to: lastIndex
+		- at: index (same as rowAt:)
+		
+	Getting a cell value:
+		- at: rowIndex at: columnIndex
+		
+	Setting columns
+		- column: columnName put: arrayOrDataSeries
+		- columnAt: index put: arrayOrDataSeries
+		
+	Setting rows
+		- row: rowName put: arrayOrDataSeries
+		- rowAt: index put: arrayOrDataSeries
+
+	Setting a cell value:
+		- at: rowIndex at: columnIndex put: value
+		
+	Head and tail:
+		- head (first 5 rows)
+		- head: numberOfRows
+		- tail (last 5 rows)
+		- tail: numberOfRows
+		
+	Adding columns:
+		- addColumn: dataSeries
+		- addColumn: dataSeries atPosition: index
+		- addColumn: array named: columnName
+		- addColumn: array named: columnName atPosition: index
+		- addEmptyColumnNamed: columnName
+		- addEmptyColumnNamed: columnName atPosition: index
+		
+	Adding rows:
+		- addRow: dataSeries
+		- addRow: dataSeries atPosition: index
+		- addRow: array named: rowName
+		- addRow: array named: rowName atPosition: index
+		- addEmptyRowNamed: rowName
+		- addEmptyRowNamed: rowName atPosition: index
+		- add: dataSeries (same as addRow:)
+		
+	Removing columns:
+		- removeColumn: columnName
+		- removeColumnAt: index
+		
+	Removing rows: 
+		- removeRow: rowName
+		- removeRowAt: index
+		- removeFirstRow
+		- removeLastRow
+		
+	Enumerating (over rows):
+		- collect: block
+		- do: block 
+		- select: block
+		- withKeyDo: block
+		
+	Aggregating and grouping:
+		- groupBy: columnName (returns an instance of DataFrameGrouped)
+		- groupBy: columnName aggregate: selector (groups data and aggregates it with a given function)
+		- group: columnNameOrArrayOfColumnNames by: columnName (groups part of data frame)
+		
+	Applying:
+		- applyElementwise: block (to all columns)
+		- toColumn: columnName applyElementwise: block
+		- toColumnAt: index applyElementwise: block
+		- toColumns: arrayOfColumnNames applyElementwise: block
+		- toColumnsAt: arrayOfIndices applyElementwise: block
+		
+	Sorting:
+		- sortBy: columnName
+		- sortDescendingBy: columnName
+		- sortBy: columnName using: block
+		
+	Statistical functions (applied to quantitative columns):
+		- min
+		- max
+		- range (max minus min)
+		- average
+		- mean
+		- mode
+		- median (second quartile)
+		- first quartile
+		- third quartile
+		- interquartileRange (trird quartile minus first quartile)
+		- stdev (standard deviation)
+		- variance
+ 
+Internal Representation and Key Implementation Points.
+
+	DataFrameInternal defines how data is stored inside me.
 "
 Class {
 	#name : #DataFrame,
@@ -289,7 +435,7 @@ DataFrame >> asArrayOfRows [
 		self at: i ]
 ]
 
-{ #category : #printing }
+{ #category : #converting }
 DataFrame >> asStringTable [
 
 	| stream |
@@ -717,36 +863,6 @@ DataFrame >> numberOfRows [
 	^ contents numberOfRows
 ]
 
-{ #category : #sorting }
-DataFrame >> orderBy: columnName [
-
-	self orderBy: columnName using: [ :a :b | a <= b ].
-]
-
-{ #category : #sorting }
-DataFrame >> orderBy: columnName using: aBlock [
-
-	| column sortedKeys newContents |
-	column := self column: columnName.
-	column := column sort: aBlock.
-	sortedKeys := column keys.
-	
-	newContents := DataFrameInternal new: self dimensions.
-	
-	1 to: self numberOfRows do: [ :i |
-		newContents rowAt: i put:
-			(self row: (sortedKeys at: i)) ].
-		
-	contents := newContents.
-	self rowNames: sortedKeys.
-]
-
-{ #category : #sorting }
-DataFrame >> orderDescendingBy: columnName [
-
-	self orderBy: columnName using: [ :a :b | a >= b ].
-]
-
 { #category : #printing }
 DataFrame >> printOn: aStream [
 
@@ -1046,40 +1162,6 @@ DataFrame >> toColumnsAt: arrayOfColumnNumbers applyElementwise: aBlock [
 		
 	arrayOfColumnNumbers do: [ :each |
 		self toColumnAt: each applyElementwise: aBlock ].
-]
-
-{ #category : #'as yet unclassified' }
-DataFrame >> toCsv: path [
-
-	self toCsv: path separator: ','.
-]
-
-{ #category : #'as yet unclassified' }
-DataFrame >> toCsv: path separator: sep [
-
-	| stream |
-	
-	stream := FileStream newFileNamed: path. 
-	
-	1 to: (columnNames size - 1) do: [ :i |
-		stream
-			nextPutAll: (columnNames at: i) asString;
-		 	nextPutAll: sep ].
-	
-	stream
-		nextPutAll: columnNames last asString;
-		cr.
-	
-	self do: [ :row |
-		1 to: (row size - 1) do: [ :i |
-			stream
-				nextPutAll: (row at: i) asString;
-				nextPutAll: sep. ].
-			
-		stream
-			nextPutAll: row last asString;
-			cr ].
-	stream close. 
 ]
 
 { #category : #geometry }
