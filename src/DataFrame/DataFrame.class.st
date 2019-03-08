@@ -153,8 +153,7 @@ Class {
 	#instVars : [
 		'contents',
 		'rowNames',
-		'columnNames',
-		'columnTypes'
+		'columnNames'
 	],
 	#category : #'DataFrame-Core'
 }
@@ -298,10 +297,6 @@ DataFrame >> = aDataFrame [
 	"This is the fastest way for two data frames with different dimensions"
 	aDataFrame dimensions = self dimensions
 		ifFalse: [ ^ false ].
-		
-	"If column types are different, we don't need to iterate through row and column names"
-	aDataFrame columnTypes = self columnTypes
-		ifFalse: [ ^ false ].
 	
 	"If the names are different we don't need to iterate through values"	
 	(aDataFrame rowNames = self rowNames
@@ -340,7 +335,6 @@ DataFrame >> addColumn: anArray named: aString atPosition: aNumber [
 	"Add a new column at the given position"
 	contents addColumn: anArray atPosition: aNumber.
 	columnNames add: aString afterIndex: aNumber - 1.
-	self induceColumnTypes.
 ]
 
 { #category : #adding }
@@ -390,7 +384,6 @@ DataFrame >> addRow: anArray named: aString atPosition: aNumber [
 	"Add a new row at the given position"
 	contents addRow: anArray atPosition: aNumber.
 	rowNames add: aString afterIndex: aNumber - 1.
-	self induceColumnTypes.
 ]
 
 { #category : #applying }
@@ -401,18 +394,15 @@ DataFrame >> applyElementwise: aBlock [
 ]
 
 { #category : #private }
-DataFrame >> applyToQuantitativeColumns: aSymbol [
-"Sends the unary selector, aSymbol, to all the quantitative columns of DataFrame and collects the result into a DataSeries object. Used by statistical functions of DataFrame"
+DataFrame >> applyToAllColumns: aSymbol [
+"Sends the unary selector, aSymbol, to all columns of DataFrame and collects the result into a DataSeries object. Used by statistical functions of DataFrame"
 
 	| series column |
 	
 	series := DataSeries withValues:
 		(self columnNames collect: [ :colName |
 			column := self column: colName.
-			
-			column isQuantitative
-				ifTrue: [ column perform: aSymbol ]
-				ifFalse: [ Float nan ] ]).
+			column perform: aSymbol ]).
 	
 	series name: aSymbol.
 	series keys: self columnNames.
@@ -435,15 +425,6 @@ DataFrame >> asArrayOfRows [
 		self at: i ]
 ]
 
-{ #category : #converting }
-DataFrame >> asStringTable [
-
-	| stream |
-	stream := String new writeStream.
-	DataPrettyPrinter new print: self on: stream.
-	^ stream contents
-]
-
 { #category : #accessing }
 DataFrame >> at: aNumber [
 
@@ -460,20 +441,12 @@ DataFrame >> at: rowNumber at: columnNumber [
 DataFrame >> at: rowNumber at: columnNumber put: value [
 
 	contents at: rowNumber at: columnNumber put: value.
-	self induceColumnTypeAt: columnNumber.
 ]
 
 { #category : #statistics }
 DataFrame >> average [
 
-	^ self applyToQuantitativeColumns: #average
-]
-
-{ #category : #accessing }
-DataFrame >> categoricalColumns [
-
-	^ self columnNames select: [ :colName |
-		(self column: colName) isCategorical ]
+	^ self applyToAllColumns: #average
 ]
 
 { #category : #comparing }
@@ -483,9 +456,6 @@ DataFrame >> closeTo: aDataFrame [
 		ifFalse: [ ^ false ].
 	
 	aDataFrame dimensions = self dimensions
-		ifFalse: [ ^ false ].
-		
-	aDataFrame columnTypes = self columnTypes
 		ifFalse: [ ^ false ].
 		
 	(aDataFrame rowNames = self rowNames
@@ -546,7 +516,6 @@ DataFrame >> columnAt: aNumber put: anArray [
 		ifFalse: [ SizeMismatch signal ].	
 	
 	contents columnAt: aNumber put: anArray.
-	self induceColumnTypeAt: aNumber.
 ]
 
 { #category : #accessing }
@@ -561,12 +530,6 @@ DataFrame >> columnNames: anArray [
 		ifFalse: [ SizeMismatch signal: 'Wrong number of column names' ].
 		
 	columnNames := anArray asOrderedCollection
-]
-
-{ #category : #accessing }
-DataFrame >> columnTypes [
-
-	^ columnTypes.
 ]
 
 { #category : #accessing }
@@ -647,7 +610,7 @@ DataFrame >> do: aBlock [
 { #category : #statistics }
 DataFrame >> firstQuartile [
 
-	^ self applyToQuantitativeColumns: #firstQuartile
+	^ self applyToAllColumns: #firstQuartile
 ]
 
 { #category : #queries }
@@ -747,27 +710,6 @@ DataFrame >> indexOfRowNamed: rowName [
 	^ index
 ]
 
-{ #category : #accessing }
-DataFrame >> induceColumnTypeAt: aNumber [
-"Indeces the least common superclass for all values of a column of given by its number"
-
-	| inductor type |
-	inductor := DataTypeInductor new.
-	type := inductor typeOf: (self columnAt: aNumber).
-	
-	columnTypes at: aNumber put: type.
-]
-
-{ #category : #'as yet unclassified' }
-DataFrame >> induceColumnTypes [
-"Indeces the least common superclass for all the values in each column of a data frame"
-
-	| inductor |
-	inductor := DataTypeInductor new.
-	
-	columnTypes := inductor columnTypesOf: self.
-]
-
 { #category : #initialization }
 DataFrame >> initialize [
 
@@ -775,7 +717,6 @@ DataFrame >> initialize [
 	
 	contents := DataFrameInternal new.
 	self setDefaultRowColumnNames.
-	self induceColumnTypes.
 ]
 
 { #category : #initialization }
@@ -785,7 +726,6 @@ DataFrame >> initialize: aPoint [
 	
 	contents := DataFrameInternal new: aPoint.
 	self setDefaultRowColumnNames.
-	self induceColumnTypes.
 ]
 
 { #category : #initialization }
@@ -793,7 +733,6 @@ DataFrame >> initializeColumns: anArrayOfArrays [
 
 	contents := DataFrameInternal withColumns: anArrayOfArrays.
 	self setDefaultRowColumnNames.
-	self induceColumnTypes.
 ]
 
 { #category : #initialization }
@@ -804,7 +743,6 @@ DataFrame >> initializeContents: aDataFrameInternal rowNames: rows columnNames: 
 	contents := aDataFrameInternal.
 	self rowNames: rows.
 	self columnNames: columns.
-	self induceColumnTypes.
 ]
 
 { #category : #initialization }
@@ -812,43 +750,36 @@ DataFrame >> initializeRows: anArrayOfArrays [
 
 	contents := DataFrameInternal withRows: anArrayOfArrays.
 	self setDefaultRowColumnNames.
-	self induceColumnTypes.
 ]
 
 { #category : #statistics }
 DataFrame >> interquartileRange [
 
-	^ self applyToQuantitativeColumns: #interquartileRange
+	^ self applyToAllColumns: #interquartileRange
 ]
 
 { #category : #statistics }
 DataFrame >> max [
 
-	^ self applyToQuantitativeColumns: #max
-]
-
-{ #category : #statistics }
-DataFrame >> mean [
-
-	^ self applyToQuantitativeColumns: #mean
+	^ self applyToAllColumns: #max
 ]
 
 { #category : #statistics }
 DataFrame >> median [
 
-	^ self applyToQuantitativeColumns: #median
+	^ self applyToAllColumns: #median
 ]
 
 { #category : #statistics }
 DataFrame >> min [
 
-	^ self applyToQuantitativeColumns: #min
+	^ self applyToAllColumns: #min
 ]
 
 { #category : #statistics }
 DataFrame >> mode [
 
-	^ self applyToQuantitativeColumns: #mode
+	^ self applyToAllColumns: #mode
 ]
 
 { #category : #accessing }
@@ -875,17 +806,10 @@ DataFrame >> printOn: aStream [
 		nextPutAll: self dimensions asString.
 ]
 
-{ #category : #accessing }
-DataFrame >> quantitativeColumns [
-
-	^ self columnNames select: [ :colName |
-		(self column: colName) isQuantitative ]
-]
-
 { #category : #statistics }
 DataFrame >> range [
 
-	^ self applyToQuantitativeColumns: #range
+	^ self applyToAllColumns: #range
 ]
 
 { #category : #removing }
@@ -901,7 +825,6 @@ DataFrame >> removeColumnAt: columnNumber [
 
 	contents removeColumnAt: columnNumber.
 	columnNames := columnNames copyWithoutIndex: columnNumber.
-	columnTypes := columnTypes copyWithoutIndex: columnNumber.
 ]
 
 { #category : #removing }
@@ -933,7 +856,6 @@ DataFrame >> removeRowAt: rowNumber [
 
 	contents removeRowAt: rowNumber.
 	rowNames := rowNames copyWithoutIndex: rowNumber.
-	self induceColumnTypes.
 ]
 
 { #category : #accessing }
@@ -969,7 +891,6 @@ DataFrame >> rowAt: aNumber put: anArray [
 		ifFalse: [ SizeMismatch signal ].
 		
 	contents rowAt: aNumber put: anArray.
-	self induceColumnTypes.
 ]
 
 { #category : #accessing }
@@ -1098,7 +1019,7 @@ DataFrame >> sortDescendingBy: columnName [
 { #category : #statistics }
 DataFrame >> stdev [
 
-	^ self applyToQuantitativeColumns: #stdev
+	^ self applyToAllColumns: #stdev
 ]
 
 { #category : #accessing }
@@ -1124,7 +1045,7 @@ DataFrame >> tail: aNumber [
 { #category : #statistics }
 DataFrame >> thirdQuartile [
 
-	^ self applyToQuantitativeColumns: #thirdQuartile
+	^ self applyToAllColumns: #thirdQuartile
 ]
 
 { #category : #applying }
@@ -1146,8 +1067,6 @@ DataFrame >> toColumnAt: columnNumber applyElementwise: aBlock [
 	1 to: self numberOfRows do: [ :i |
 		contents at: i at: columnNumber put:
 			(aBlock value: (contents at: i at: columnNumber)) ].
-		
-	self induceColumnTypeAt: columnNumber.
 ]
 
 { #category : #applying }
@@ -1178,7 +1097,7 @@ DataFrame >> transposed [
 { #category : #statistics }
 DataFrame >> variance [
 
-	^ self applyToQuantitativeColumns: #variance
+	^ self applyToAllColumns: #variance
 ]
 
 { #category : #enumerating }

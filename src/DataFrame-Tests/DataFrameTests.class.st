@@ -300,25 +300,6 @@ DataFrameTests >> testAsArrayOfRows [
 ]
 
 { #category : #tests }
-DataFrameTests >> testAsStringTable [
-
-	| expected actual |
-	
-	expected := String new writeStream.
-	expected
-		nextPutAll: '   |  City       Population  BeenThere  '; cr;
-		nextPutAll: '---+------------------------------------'; cr;
-		nextPutAll: 'A  |  Barcelona       1.609       true  '; cr;
-    	nextPutAll: 'B  |  Dubai           2.789       true  '; cr;
-		nextPutAll: 'C  |  London          8.788      false  '; cr.
-	
-	expected := expected contents.
-	actual := df asStringTable.
-	
-	self assert: actual equals: expected.
-]
-
-{ #category : #tests }
 DataFrameTests >> testAt [
 
 	| actual expected |
@@ -356,14 +337,6 @@ DataFrameTests >> testAtAtPut [
 	df at: 3 at: 2 put: 1000.
 			
 	self assert: df equals: expectedDataFrame. 
-]
-
-{ #category : #tests }
-DataFrameTests >> testCategoricalColumns [
-
-	self
-		assert: df categoricalColumns
-		equals: #(City BeenThere) asOrderedCollection.
 ]
 
 { #category : #tests }
@@ -483,18 +456,6 @@ DataFrameTests >> testColumnPut [
 	actual := df.
 	actual column: #City put: #('X' 'Y' 'Z').
 	actual column: #BeenThere put: #(0 1 0).
-	
-	self assert: actual equals: expected.
-]
-
-{ #category : #tests }
-DataFrameTests >> testColumnTypes [
-
-	| expected actual |
-
-	"Note: 0.1 class will be BoxFloat64 on Pharo32 and SmallFloat64 on Pharo64"
-	expected := { ByteSymbol . 0.1 class . Boolean }.
-	actual := df columnTypes.
 	
 	self assert: actual equals: expected.
 ]
@@ -951,14 +912,6 @@ DataFrameTests >> testPrintOn [
 	actual := actual contents.
 	
 	self assert: actual equals: expected.
-]
-
-{ #category : #tests }
-DataFrameTests >> testQuantitativeColumns [
-
-	self
-		assert: df quantitativeColumns
-		equals: #(Population) asOrderedCollection.
 ]
 
 { #category : #tests }

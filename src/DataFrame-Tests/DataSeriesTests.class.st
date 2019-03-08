@@ -45,28 +45,6 @@ DataSeriesTests >> testAsDictionary [
 ]
 
 { #category : #tests }
-DataSeriesTests >> testAsStringTable [
-
-	| population expected actual |
-	population := #(1.609 2.789 8.788) asDataSeries.
-	population keys: #(Barcelona Dubai London).
-	population name: #Population.
-	
-	expected := String new writeStream.
-	expected
-		nextPutAll: '           |  Population  '; cr;
-		nextPutAll: '-----------+--------------'; cr;
-		nextPutAll: 'Barcelona  |       1.609  '; cr;
-    	nextPutAll: '    Dubai  |       2.789  '; cr;
-		nextPutAll: '   London  |       8.788  '; cr.
-	
-	expected := expected contents.
-	actual := population asStringTable.
-	
-	self assert: actual equals: expected.
-]
-
-{ #category : #tests }
 DataSeriesTests >> testAt [
 
 	self assert: (series at: 2) equals: 20.
@@ -394,30 +372,6 @@ DataSeriesTests >> testInequality [
 ]
 
 { #category : #tests }
-DataSeriesTests >> testIsCategorical [
-
-	| quantitative categorical |
-	
-	quantitative := #(1.609 2.789 8.788) asDataSeries.
-	categorical := #(Male Female) asDataSeries.
-	
-	self assert: quantitative isCategorical not.
-	self assert: categorical isCategorical.
-]
-
-{ #category : #tests }
-DataSeriesTests >> testIsQuantitative [
-
-	| quantitative categorical |
-	
-	quantitative := #(1.609 2.789 8.788) asDataSeries.
-	categorical := #(Male Female) asDataSeries.
-	
-	self assert: quantitative isQuantitative.
-	self assert: categorical isQuantitative not.
-]
-
-{ #category : #tests }
 DataSeriesTests >> testPrintOn [
 
 	| population expected actual |
@@ -425,7 +379,7 @@ DataSeriesTests >> testPrintOn [
 	population keys: #(Barcelona Dubai London).
 	population name: #Population.
 	
-	expected := 'a DataSeries [3 items]: ', 1.609 class name.
+	expected := 'a DataSeries [3 items]'.
 	
 	actual := String new writeStream.
 	population printOn: actual.

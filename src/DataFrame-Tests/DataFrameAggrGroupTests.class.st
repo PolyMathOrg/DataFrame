@@ -86,8 +86,8 @@ DataFrameAggrGroupTests >> testDataSeriesGroupedPrintOn [
 	expected := String new writeStream.
 	expected
 		nextPutAll: 'a DataSeriesGrouped'; cr;
-		nextPutAll: ('Male: a DataSeries [3 items]: ', 21.01 class name); cr;
-		nextPutAll: ('Female: a DataSeries [2 items]: ', 21.01 class name).
+		nextPutAll: ('Male: a DataSeries [3 items]'); cr;
+		nextPutAll: ('Female: a DataSeries [2 items]').
 	expected := expected contents.
 	
 	actual := String new writeStream.

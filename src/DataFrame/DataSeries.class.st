@@ -7,8 +7,7 @@ Class {
 	#instVars : [
 		'contents',
 		'keys',
-		'name',
-		'type'
+		'name'
 	],
 	#category : #'DataFrame-Core'
 }
@@ -107,9 +106,6 @@ DataSeries >> = otherSeries [
 	"self name = otherSeries name
 		ifFalse: [ ^ false ]."
 		
-	self type = otherSeries type
-		ifFalse: [ ^ false ].
-		
 	self keys = otherSeries keys
 		ifFalse: [ ^ false ].
 
@@ -131,7 +127,6 @@ DataSeries >> add: aValue atKey: aKey [
 
 	contents add: aValue.
 	keys := keys copyWith: aKey.
-	self induceTypeWithNewElement: aValue.
 ]
 
 { #category : #converting }
@@ -155,12 +150,6 @@ DataSeries >> asDictionary [
 	^ Dictionary newFromKeys: keys andValues: contents
 ]
 
-{ #category : #printing }
-DataSeries >> asStringTable [
-
-	^ self asDataFrame asStringTable
-]
-
 { #category : #accessing }
 DataSeries >> at: aNumber [
 
@@ -171,7 +160,6 @@ DataSeries >> at: aNumber [
 DataSeries >> at: aNumber put: aValue [
 
 	contents at: aNumber put: aValue.
-	self induceTypeWithNewElement: aValue.
 ]
 
 { #category : #accessing }
@@ -210,13 +198,6 @@ DataSeries >> atKey: aKey put: aValue [
 			self at: index put: aValue ].
 ]
 
-{ #category : #statistics }
-DataSeries >> average [
-
-	self signalErrorIfNotQuantitative.
-	^ super average
-]
-
 { #category : #comparing }
 DataSeries >> closeTo: otherSeries [
 
@@ -225,9 +206,6 @@ DataSeries >> closeTo: otherSeries [
 
 	"I'm not sure if names should be considered when testing for equality"
 	self name = otherSeries name
-		ifFalse: [ ^ false ].
-		
-	self type = otherSeries type
 		ifFalse: [ ^ false ].
 		
 	self keys = otherSeries keys
@@ -298,14 +276,11 @@ This method is private and should not be used in custom applications"
 
 	anArray doWithIndex: [ :each :i |
 		contents at: i put: each ].
-	
-	self induceType.
 ]
 
 { #category : #statistics }
 DataSeries >> firstQuartile [
 	
-	self signalErrorIfNotQuantitative.
 	^ self quartile: 1
 ]
 
@@ -390,31 +365,6 @@ DataSeries >> indexOfKey: aKey ifAbsent: aBlock [
 	^ index
 ]
 
-{ #category : #'as yet unclassified' }
-DataSeries >> induceType [
-"Determines the least common superclass of all the values inside self and stores this class in type instance variable"
-
-	| inductor |
-	inductor := DataTypeInductor new.
-	
-	type := inductor typeOf: self.
-]
-
-{ #category : #'as yet unclassified' }
-DataSeries >> induceTypeWithNewElement: aValue [
-"Induces type of series given that the new element was added to it"
-
-	self type isNil
-		"In case we fill the empty series with elements (e.g. collect)"
-		ifTrue: [ type := aValue class ]
-		
-		"In case we add an element to the existing series"
-		ifFalse: [ 
-			type := DataTypeInductor new
-				leastCommonSuperclassOf: aValue class
-				and: self type. ].
-]
-
 { #category : #initialization }
 DataSeries >> initialize [
 
@@ -435,20 +385,7 @@ DataSeries >> initialize: aNumber [
 { #category : #statistics }
 DataSeries >> interquartileRange [
 
-	self signalErrorIfNotQuantitative.
 	^ self thirdQuartile - self firstQuartile
-]
-
-{ #category : #testing }
-DataSeries >> isCategorical [
-
-	^ self isQuantitative not
-]
-
-{ #category : #testing }
-DataSeries >> isQuantitative [
-
-	^ self type inheritsFromOrEqualTo: Number
 ]
 
 { #category : #accessing }
@@ -478,20 +415,6 @@ DataSeries >> keys [
 DataSeries >> keys: anArray [
 
 	keys := anArray asOrderedCollection.
-]
-
-{ #category : #statistics }
-DataSeries >> max [
-
-	self signalErrorIfNotQuantitative.
-	^ super max
-]
-
-{ #category : #statistics }
-DataSeries >> mean [
-
-	self signalErrorIfNotQuantitative.
-	^ self average round: 2
 ]
 
 { #category : #sorting }
@@ -537,18 +460,9 @@ DataSeries >> mergeFirst: first middle: middle last: last into: dst by: aBlock [
 ]
 
 { #category : #statistics }
-DataSeries >> min [
-
-	self signalErrorIfNotQuantitative.
-	^ super min
-]
-
-{ #category : #statistics }
 DataSeries >> mode [
 
 	| valueCounts maxCount |
-	
-	self signalErrorIfNotQuantitative.
 	
 	valueCounts := (self groupBy: self) count.
 	maxCount := valueCounts max.
@@ -586,17 +500,13 @@ DataSeries >> printOn: aStream [
 		nextPutAll: title;
 		nextPutAll: ' [';
 		nextPutAll: self size asString;
-		nextPutAll: (self size % 10 = 1 ifTrue: [' item]'] ifFalse: [' items]']);
-		nextPutAll: ': ';
-		nextPutAll: self type name.
+		nextPutAll: (self size % 10 = 1 ifTrue: [' item]'] ifFalse: [' items]']).
 ]
 
 { #category : #statistics }
 DataSeries >> quantile: number [
 	
 	| sortedSeries index |
-	
-	self signalErrorIfNotQuantitative.
 	
 	sortedSeries := self asArray sort asDataSeries.
 	
@@ -610,15 +520,7 @@ DataSeries >> quantile: number [
 { #category : #statistics }
 DataSeries >> quartile: number [
 	
-	self signalErrorIfNotQuantitative.
 	^ self quantile: (25 * number)
-]
-
-{ #category : #statistics }
-DataSeries >> range [
-
-	self signalErrorIfNotQuantitative.
-	^ super range
 ]
 
 { #category : #removing }
@@ -626,7 +528,6 @@ DataSeries >> removeAt: aNumber [
 
 	contents removeAt: aNumber.
 	keys := keys copyWithoutIndex: aNumber.
-	self induceType.
 ]
 
 { #category : #removing }
@@ -671,17 +572,6 @@ DataSeries >> setDefaultKeys [
 	keys := (1 to: self size) asOrderedCollection.
 ]
 
-{ #category : #'error signalling' }
-DataSeries >> signalErrorIfNotQuantitative [
-
-	self isQuantitative not
-		ifTrue: [
-			Error signal:
-				'Variable ', self name asString, ' is not quantitative. ',
-				'Arithmetic and statistical operations can only be applied ',
-				'to quantitative variables' ].
-]
-
 { #category : #accessing }
 DataSeries >> size [
 
@@ -698,13 +588,6 @@ DataSeries >> sortUsing: aBlock [
 	^ self sort: aBlock
 ]
 
-{ #category : #statistics }
-DataSeries >> stdev [
-
-	self signalErrorIfNotQuantitative.
-	^ super stdev
-]
-
 { #category : #accessing }
 DataSeries >> summary [
 
@@ -716,7 +599,7 @@ DataSeries >> summary [
 		atKey: 'Min' put: self min;
 		atKey: '1st Qu.' put: self firstQuartile;
 		atKey: 'Median' put: self median;
-		atKey: 'Mean' put: self mean;
+		atKey: 'Average' put: self average;
 		atKey: '3rd Qu.' put: self thirdQuartile;
 		atKey: 'Max' put: self max.
 		
@@ -745,14 +628,7 @@ DataSeries >> tail: aNumber [
 { #category : #statistics }
 DataSeries >> thirdQuartile [
 	
-	self signalErrorIfNotQuantitative.
 	^ self quartile: 3
-]
-
-{ #category : #accessing }
-DataSeries >> type [
-
-	^ type.
 ]
 
 { #category : #'as yet unclassified' }
@@ -761,13 +637,6 @@ DataSeries >> unique [
 	unique := self asSet asDataSeries.
 	unique name: self name.
 	^ unique
-]
-
-{ #category : #statistics }
-DataSeries >> variance [
-
-	self signalErrorIfNotQuantitative.
-	^ super variance
 ]
 
 { #category : #enumerating }
