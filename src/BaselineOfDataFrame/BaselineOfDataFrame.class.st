@@ -30,11 +30,18 @@ Class {
 { #category : #baselines }
 BaselineOfDataFrame >> baseline: spec [
 	<baseline>
-	spec for: #common do: [			
+	spec for: #common do: [	
+		"External dependencies"
+		spec
+			baseline: 'NeoCSV'
+			with: [ spec repository: 'github://svenvc/NeoCSV/repository' ].
+				
 		"Packages"
 		spec 
 			package: 'DataFrame';
-			package: 'DataFrame-Tests' with: [ spec requires: #('DataFrame') ] ].
+			package: 'DataFrame-Tests' with: [ spec requires: #('DataFrame') ];
+			package: 'DataFrame-IO' with: [ spec requires: #('DataFrame' 'NeoCSV') ];
+			package: 'DataFrame-IO-Tests' with: [ spec requires: #('DataFrame-IO') ] ].
 		
 		spec
 			for: #'pharo6.x'
