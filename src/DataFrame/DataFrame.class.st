@@ -12,6 +12,7 @@ Public API and Key Messages
 		- new: point (empty data frame with given dimensions)
 		- withColumnNames: arrayOfColumnNames (empty data frame with column names)
 		- withRowNames: arrayOfRowNames (empty data frame with row names)
+		- withRowNames: arrayOfRowNames columnNames: arrayOfColumnNames (empty data frame with row and column names)
 		
 	Creating data frame from an array of columns (class side):
 		- withColumns: arrayOfArrays
@@ -28,7 +29,6 @@ Public API and Key Messages
 	Converting:
 		- asArrayOfColumns
 		- asArrayOfRows
-		- asStringTable (string formatted as a pretty table)
 
 	Dimensions
 		- numberOfColumns
