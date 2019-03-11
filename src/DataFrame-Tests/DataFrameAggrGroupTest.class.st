@@ -1,5 +1,5 @@
 Class {
-	#name : #DataFrameAggrGroupTests,
+	#name : #DataFrameAggrGroupTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'df'
@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #initialization }
-DataFrameAggrGroupTests >> setUp [
+DataFrameAggrGroupTest >> setUp [
 
 	df := DataFrame withRows:
 		#((16.99 1.01 'Female' 'No' 'Sun' 'Dinner' 2)
@@ -21,7 +21,7 @@ DataFrameAggrGroupTests >> setUp [
 ]
 
 { #category : #initialization }
-DataFrameAggrGroupTests >> testAggregateAverage [
+DataFrameAggrGroupTest >> testAggregateAverage [
 
 	| expected actual |
 	
@@ -34,7 +34,7 @@ DataFrameAggrGroupTests >> testAggregateAverage [
 ]
 
 { #category : #initialization }
-DataFrameAggrGroupTests >> testAggregateMax [
+DataFrameAggrGroupTest >> testAggregateMax [
 
 	| expected actual |
 	
@@ -47,7 +47,7 @@ DataFrameAggrGroupTests >> testAggregateMax [
 ]
 
 { #category : #initialization }
-DataFrameAggrGroupTests >> testAggregateMin [
+DataFrameAggrGroupTest >> testAggregateMin [
 
 	| expected actual |
 	
@@ -60,7 +60,7 @@ DataFrameAggrGroupTests >> testAggregateMin [
 ]
 
 { #category : #initialization }
-DataFrameAggrGroupTests >> testDataFrameGroupedPrintOn [
+DataFrameAggrGroupTest >> testDataFrameGroupedPrintOn [
 
 	| expected actual |
 	
@@ -79,7 +79,7 @@ DataFrameAggrGroupTests >> testDataFrameGroupedPrintOn [
 ]
 
 { #category : #initialization }
-DataFrameAggrGroupTests >> testDataSeriesGroupedPrintOn [
+DataFrameAggrGroupTest >> testDataSeriesGroupedPrintOn [
 
 	| expected actual |
 	
@@ -98,7 +98,7 @@ DataFrameAggrGroupTests >> testDataSeriesGroupedPrintOn [
 ]
 
 { #category : #tests }
-DataFrameAggrGroupTests >> testGroupSeriesBySeries [
+DataFrameAggrGroupTest >> testGroupSeriesBySeries [
 
 	| femaleGroup maleGroup expectedSeries actualSeries |
 	

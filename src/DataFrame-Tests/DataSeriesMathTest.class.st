@@ -1,11 +1,11 @@
 Class {
-	#name : #DataSeriesMathTests,
+	#name : #DataSeriesMathTest,
 	#superclass : #TestCase,
 	#category : #'DataFrame-Tests'
 }
 
 { #category : #tests }
-DataSeriesMathTests >> testAddElementwise [
+DataSeriesMathTest >> testAddElementwise [
 
 	| a b c |
 	
@@ -17,7 +17,7 @@ DataSeriesMathTests >> testAddElementwise [
 ]
 
 { #category : #tests }
-DataSeriesMathTests >> testCos [
+DataSeriesMathTest >> testCos [
 
 	| a b pi |
 	
@@ -29,7 +29,7 @@ DataSeriesMathTests >> testCos [
 ]
 
 { #category : #tests }
-DataSeriesMathTests >> testDivideByScalar [
+DataSeriesMathTest >> testDivideByScalar [
 
 	| a b |
 	
@@ -40,7 +40,7 @@ DataSeriesMathTests >> testDivideByScalar [
 ]
 
 { #category : #tests }
-DataSeriesMathTests >> testMultiplyScalar [
+DataSeriesMathTest >> testMultiplyScalar [
 
 	| a b |
 	
@@ -52,7 +52,7 @@ DataSeriesMathTests >> testMultiplyScalar [
 ]
 
 { #category : #tests }
-DataSeriesMathTests >> testPowerScalar [
+DataSeriesMathTest >> testPowerScalar [
 
 	| a b |
 	
@@ -63,7 +63,7 @@ DataSeriesMathTests >> testPowerScalar [
 ]
 
 { #category : #tests }
-DataSeriesMathTests >> testSin [
+DataSeriesMathTest >> testSin [
 
 	| a b pi |
 	
@@ -75,7 +75,7 @@ DataSeriesMathTests >> testSin [
 ]
 
 { #category : #tests }
-DataSeriesMathTests >> testSubtractElementwise [
+DataSeriesMathTest >> testSubtractElementwise [
 
 	| a b c d |
 	

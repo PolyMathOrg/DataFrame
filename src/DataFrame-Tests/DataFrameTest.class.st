@@ -1,5 +1,5 @@
 Class {
-	#name : #DataFrameTests,
+	#name : #DataFrameTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'df'
@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #initialization }
-DataFrameTests >> setUp [
+DataFrameTest >> setUp [
 
 	df := DataFrame withRows: #(
 		(Barcelona 1.609 true)
@@ -20,7 +20,7 @@ DataFrameTests >> setUp [
 ]
 
 { #category : #tests }
-DataFrameTests >> testAdd [
+DataFrameTest >> testAdd [
 
 	| row expected |
 	
@@ -40,7 +40,7 @@ DataFrameTests >> testAdd [
 ]
 
 { #category : #tests }
-DataFrameTests >> testAddColumn [
+DataFrameTest >> testAddColumn [
 
 	| column expected |
 	
@@ -59,7 +59,7 @@ DataFrameTests >> testAddColumn [
 ]
 
 { #category : #tests }
-DataFrameTests >> testAddColumnAtPosition [
+DataFrameTest >> testAddColumnAtPosition [
 	| column expected |
 	
 	column := DataSeries withValues: #(2015 2010 2017) name: #Year.
@@ -77,7 +77,7 @@ DataFrameTests >> testAddColumnAtPosition [
 ]
 
 { #category : #tests }
-DataFrameTests >> testAddColumnNamed [
+DataFrameTest >> testAddColumnNamed [
 	| expected |
 	
 	df addColumn: #(2015 2010 2017) named: #Year.
@@ -94,7 +94,7 @@ DataFrameTests >> testAddColumnNamed [
 ]
 
 { #category : #tests }
-DataFrameTests >> testAddColumnNamedAtPosition [
+DataFrameTest >> testAddColumnNamedAtPosition [
 	| expected |
 	
 	df addColumn: #(2015 2010 2017) named: #Year atPosition: 3.
@@ -111,7 +111,7 @@ DataFrameTests >> testAddColumnNamedAtPosition [
 ]
 
 { #category : #tests }
-DataFrameTests >> testAddEmptyColumnNamed [
+DataFrameTest >> testAddEmptyColumnNamed [
 
 	| expected |
 	
@@ -129,7 +129,7 @@ DataFrameTests >> testAddEmptyColumnNamed [
 ]
 
 { #category : #tests }
-DataFrameTests >> testAddEmptyColumnNamedAtPosition [
+DataFrameTest >> testAddEmptyColumnNamedAtPosition [
 
 	| expected |
 	
@@ -147,7 +147,7 @@ DataFrameTests >> testAddEmptyColumnNamedAtPosition [
 ]
 
 { #category : #tests }
-DataFrameTests >> testAddEmptyRowNamed [
+DataFrameTest >> testAddEmptyRowNamed [
 
 	| expected |
 	
@@ -166,7 +166,7 @@ DataFrameTests >> testAddEmptyRowNamed [
 ]
 
 { #category : #tests }
-DataFrameTests >> testAddEmptyRowNamedAtPosition [
+DataFrameTest >> testAddEmptyRowNamedAtPosition [
 
 	| expected |
 	
@@ -185,7 +185,7 @@ DataFrameTests >> testAddEmptyRowNamedAtPosition [
 ]
 
 { #category : #tests }
-DataFrameTests >> testAddRow [
+DataFrameTest >> testAddRow [
 
 	| row expected |
 	
@@ -205,7 +205,7 @@ DataFrameTests >> testAddRow [
 ]
 
 { #category : #tests }
-DataFrameTests >> testAddRowAtPosition [
+DataFrameTest >> testAddRowAtPosition [
 	| row expected |
 	
 	row := DataSeries withValues: #(Paris 2.141 true) name: #X.
@@ -224,7 +224,7 @@ DataFrameTests >> testAddRowAtPosition [
 ]
 
 { #category : #tests }
-DataFrameTests >> testAddRowNamed [
+DataFrameTest >> testAddRowNamed [
 	| expected |
 	
 	df addRow: #(Paris 2.141 true) named: #X.
@@ -242,7 +242,7 @@ DataFrameTests >> testAddRowNamed [
 ]
 
 { #category : #tests }
-DataFrameTests >> testAddRowNamedAtPosition [
+DataFrameTest >> testAddRowNamedAtPosition [
 	| expected |
 	
 	df addRow: #(Paris 2.141 true) named: #X atPosition: 2.
@@ -260,7 +260,7 @@ DataFrameTests >> testAddRowNamedAtPosition [
 ]
 
 { #category : #tests }
-DataFrameTests >> testAddRowSizeMismatch [
+DataFrameTest >> testAddRowSizeMismatch [
 
 	| aBlock |
 	aBlock := [ df addRow: #(1 2) named: #TooSmall ].
@@ -269,7 +269,7 @@ DataFrameTests >> testAddRowSizeMismatch [
 ]
 
 { #category : #tests }
-DataFrameTests >> testAsArrayOfColumns [
+DataFrameTest >> testAsArrayOfColumns [
 
 	| expected |
 	
@@ -284,7 +284,7 @@ DataFrameTests >> testAsArrayOfColumns [
 ]
 
 { #category : #tests }
-DataFrameTests >> testAsArrayOfRows [
+DataFrameTest >> testAsArrayOfRows [
 
 	| expected |
 	
@@ -300,7 +300,7 @@ DataFrameTests >> testAsArrayOfRows [
 ]
 
 { #category : #tests }
-DataFrameTests >> testAt [
+DataFrameTest >> testAt [
 
 	| actual expected |
 
@@ -316,13 +316,13 @@ DataFrameTests >> testAt [
 ]
 
 { #category : #tests }
-DataFrameTests >> testAtAt [
+DataFrameTest >> testAtAt [
 
 	self assert: (df at: 2 at: 1) equals: 'Dubai'.
 ]
 
 { #category : #tests }
-DataFrameTests >> testAtAtPut [
+DataFrameTest >> testAtAtPut [
 
 	| expectedDataFrame |
 	
@@ -340,7 +340,7 @@ DataFrameTests >> testAtAtPut [
 ]
 
 { #category : #tests }
-DataFrameTests >> testCollect [
+DataFrameTest >> testCollect [
 	| expectedDf expectedResult actualResult |
 	
 	expectedDf := DataFrame withRows: #(
@@ -370,7 +370,7 @@ DataFrameTests >> testCollect [
 ]
 
 { #category : #tests }
-DataFrameTests >> testColumn [
+DataFrameTest >> testColumn [
 
 	| actualSeries expectedSeries |
 
@@ -386,7 +386,7 @@ DataFrameTests >> testColumn [
 ]
 
 { #category : #tests }
-DataFrameTests >> testColumnAt [
+DataFrameTest >> testColumnAt [
 
 	| actualSeries expectedSeries |
 
@@ -402,7 +402,7 @@ DataFrameTests >> testColumnAt [
 ]
 
 { #category : #tests }
-DataFrameTests >> testColumnAtPut [
+DataFrameTest >> testColumnAtPut [
 
 	| actual expected |
 
@@ -422,7 +422,7 @@ DataFrameTests >> testColumnAtPut [
 ]
 
 { #category : #tests }
-DataFrameTests >> testColumnNames [
+DataFrameTest >> testColumnNames [
 	| newNames |
 	newNames := #(X Y Z).
 	df columnNames: newNames.
@@ -430,7 +430,7 @@ DataFrameTests >> testColumnNames [
 ]
 
 { #category : #tests }
-DataFrameTests >> testColumnNamesSizeMismatch [
+DataFrameTest >> testColumnNamesSizeMismatch [
 	| tooManyNames notEnoughNames |
 	
 	tooManyNames := #(W X Y Z).
@@ -441,7 +441,7 @@ DataFrameTests >> testColumnNamesSizeMismatch [
 ]
 
 { #category : #tests }
-DataFrameTests >> testColumnPut [
+DataFrameTest >> testColumnPut [
 
 	| actual expected |
 
@@ -461,7 +461,7 @@ DataFrameTests >> testColumnPut [
 ]
 
 { #category : #tests }
-DataFrameTests >> testColumns [
+DataFrameTest >> testColumns [
 
 	| columnNames actualDataFrame expectedDataFrame |
 	
@@ -481,7 +481,7 @@ DataFrameTests >> testColumns [
 ]
 
 { #category : #tests }
-DataFrameTests >> testColumnsAt [
+DataFrameTest >> testColumnsAt [
 
 	| columnNumbers actualDataFrame expectedDataFrame |
 	
@@ -503,7 +503,7 @@ DataFrameTests >> testColumnsAt [
 ]
 
 { #category : #tests }
-DataFrameTests >> testColumnsFromTo [
+DataFrameTest >> testColumnsFromTo [
 
 	| actualDataFrame expectedDataFrame |
 		
@@ -521,7 +521,7 @@ DataFrameTests >> testColumnsFromTo [
 ]
 
 { #category : #tests }
-DataFrameTests >> testCreateDataFrameWith3ColumnsAndNoRows [
+DataFrameTest >> testCreateDataFrameWith3ColumnsAndNoRows [
 	| dataFrame |
 	dataFrame := DataFrame new: 0@3.
 	
@@ -532,7 +532,7 @@ DataFrameTests >> testCreateDataFrameWith3ColumnsAndNoRows [
 ]
 
 { #category : #tests }
-DataFrameTests >> testCreateDataFrameWithColumns [
+DataFrameTest >> testCreateDataFrameWithColumns [
 
 	| columns dataFrame expectedValues |
 	
@@ -553,7 +553,7 @@ DataFrameTests >> testCreateDataFrameWithColumns [
 ]
 
 { #category : #tests }
-DataFrameTests >> testCreateDataFrameWithColumnsColumnNames [
+DataFrameTest >> testCreateDataFrameWithColumnsColumnNames [
 
 	| columns columnNames dataFrame expectedValues |
 	
@@ -577,7 +577,7 @@ DataFrameTests >> testCreateDataFrameWithColumnsColumnNames [
 ]
 
 { #category : #tests }
-DataFrameTests >> testCreateDataFrameWithColumnsRowNames [
+DataFrameTest >> testCreateDataFrameWithColumnsRowNames [
 
 	| columns rowNames dataFrame expectedValues |
 	
@@ -601,7 +601,7 @@ DataFrameTests >> testCreateDataFrameWithColumnsRowNames [
 ]
 
 { #category : #tests }
-DataFrameTests >> testCreateDataFrameWithColumnsRowNamesColumnNames [
+DataFrameTest >> testCreateDataFrameWithColumnsRowNamesColumnNames [
 
 	| columns rowNames columnNames dataFrame expectedValues |
 	
@@ -628,7 +628,7 @@ DataFrameTests >> testCreateDataFrameWithColumnsRowNamesColumnNames [
 ]
 
 { #category : #tests }
-DataFrameTests >> testCreateDataFrameWithDataFrameInternalRowNamesColumnNames [
+DataFrameTest >> testCreateDataFrameWithDataFrameInternalRowNamesColumnNames [
 
 	| rows dataFrameInternal rowNames columnNames dataFrame expectedValues |
 	
@@ -656,7 +656,7 @@ DataFrameTests >> testCreateDataFrameWithDataFrameInternalRowNamesColumnNames [
 ]
 
 { #category : #tests }
-DataFrameTests >> testCreateDataFrameWithRows [
+DataFrameTest >> testCreateDataFrameWithRows [
 
 	| rows dataFrame expectedValues |
 	
@@ -678,7 +678,7 @@ DataFrameTests >> testCreateDataFrameWithRows [
 ]
 
 { #category : #tests }
-DataFrameTests >> testCreateDataFrameWithRowsColumnNames [
+DataFrameTest >> testCreateDataFrameWithRowsColumnNames [
 
 	| rows columnNames dataFrame expectedValues |
 	
@@ -703,7 +703,7 @@ DataFrameTests >> testCreateDataFrameWithRowsColumnNames [
 ]
 
 { #category : #tests }
-DataFrameTests >> testCreateDataFrameWithRowsRowNames [
+DataFrameTest >> testCreateDataFrameWithRowsRowNames [
 
 	| rows rowNames dataFrame expectedValues |
 	
@@ -728,7 +728,7 @@ DataFrameTests >> testCreateDataFrameWithRowsRowNames [
 ]
 
 { #category : #tests }
-DataFrameTests >> testCreateDataFrameWithRowsRowNamesColumnNames [
+DataFrameTest >> testCreateDataFrameWithRowsRowNamesColumnNames [
 
 	| rows rowNames columnNames dataFrame expectedValues |
 	
@@ -755,7 +755,7 @@ DataFrameTests >> testCreateDataFrameWithRowsRowNamesColumnNames [
 ]
 
 { #category : #tests }
-DataFrameTests >> testCreateEmptyDataFrame [
+DataFrameTest >> testCreateEmptyDataFrame [
 	| dataFrame |
 	dataFrame := DataFrame new.
 	
@@ -766,7 +766,7 @@ DataFrameTests >> testCreateEmptyDataFrame [
 ]
 
 { #category : #tests }
-DataFrameTests >> testCreateEmptyDataFrameWithColumnNames [
+DataFrameTest >> testCreateEmptyDataFrameWithColumnNames [
 	| columnNames dataFrame |
 	
 	columnNames := #(Name Age Nationality) asOrderedCollection.
@@ -779,7 +779,7 @@ DataFrameTests >> testCreateEmptyDataFrameWithColumnNames [
 ]
 
 { #category : #tests }
-DataFrameTests >> testCreateEmptyDataFrameWithRowNames [
+DataFrameTest >> testCreateEmptyDataFrameWithRowNames [
 	| rowNames dataFrame |
 	
 	rowNames := #(A B C) asOrderedCollection.
@@ -792,7 +792,7 @@ DataFrameTests >> testCreateEmptyDataFrameWithRowNames [
 ]
 
 { #category : #tests }
-DataFrameTests >> testCreateEmptyDataFrameWithRowNamesColumnNames [
+DataFrameTest >> testCreateEmptyDataFrameWithRowNamesColumnNames [
 	| rowNames columnNames dataFrame |
 	
 	rowNames := #(A B C) asOrderedCollection.
@@ -809,7 +809,7 @@ DataFrameTests >> testCreateEmptyDataFrameWithRowNamesColumnNames [
 ]
 
 { #category : #tests }
-DataFrameTests >> testCrossTabulation [
+DataFrameTest >> testCrossTabulation [
 
 	| dataFrame expected |
 	
@@ -831,7 +831,7 @@ DataFrameTests >> testCrossTabulation [
 ]
 
 { #category : #tests }
-DataFrameTests >> testDo [
+DataFrameTest >> testDo [
 
 	| actual expected |
 
@@ -853,7 +853,7 @@ DataFrameTests >> testDo [
 ]
 
 { #category : #tests }
-DataFrameTests >> testEquality [
+DataFrameTest >> testEquality [
 
 	| df1 df2 |
 	
@@ -865,7 +865,7 @@ DataFrameTests >> testEquality [
 ]
 
 { #category : #tests }
-DataFrameTests >> testInequality [
+DataFrameTest >> testInequality [
 
 	| df1 df2 df3 df4 df5 |
 	
@@ -901,7 +901,7 @@ DataFrameTests >> testInequality [
 ]
 
 { #category : #tests }
-DataFrameTests >> testPrintOn [
+DataFrameTest >> testPrintOn [
 
 	| expected actual |
 	
@@ -915,7 +915,7 @@ DataFrameTests >> testPrintOn [
 ]
 
 { #category : #tests }
-DataFrameTests >> testRemoveColumn [
+DataFrameTest >> testRemoveColumn [
 
 	| expected |
 	
@@ -933,7 +933,7 @@ DataFrameTests >> testRemoveColumn [
 ]
 
 { #category : #tests }
-DataFrameTests >> testRemoveColumnAt [
+DataFrameTest >> testRemoveColumnAt [
 
 	| expected |
 	
@@ -951,7 +951,7 @@ DataFrameTests >> testRemoveColumnAt [
 ]
 
 { #category : #tests }
-DataFrameTests >> testRemoveFirstRow [
+DataFrameTest >> testRemoveFirstRow [
 
 	| expected |
 	
@@ -968,7 +968,7 @@ DataFrameTests >> testRemoveFirstRow [
 ]
 
 { #category : #tests }
-DataFrameTests >> testRemoveLastRow [
+DataFrameTest >> testRemoveLastRow [
 
 	| expected |
 	
@@ -985,7 +985,7 @@ DataFrameTests >> testRemoveLastRow [
 ]
 
 { #category : #tests }
-DataFrameTests >> testRemoveRow [
+DataFrameTest >> testRemoveRow [
 
 	| expected |
 	
@@ -1002,7 +1002,7 @@ DataFrameTests >> testRemoveRow [
 ]
 
 { #category : #tests }
-DataFrameTests >> testRemoveRowAt [
+DataFrameTest >> testRemoveRowAt [
 
 	| expected |
 	
@@ -1019,7 +1019,7 @@ DataFrameTests >> testRemoveRowAt [
 ]
 
 { #category : #tests }
-DataFrameTests >> testRow [
+DataFrameTest >> testRow [
 
 	| actualSeries expectedSeries |
 
@@ -1035,7 +1035,7 @@ DataFrameTests >> testRow [
 ]
 
 { #category : #tests }
-DataFrameTests >> testRowAt [
+DataFrameTest >> testRowAt [
 
 	| actualSeries expectedSeries |
 
@@ -1051,7 +1051,7 @@ DataFrameTests >> testRowAt [
 ]
 
 { #category : #tests }
-DataFrameTests >> testRowAtPut [
+DataFrameTest >> testRowAtPut [
 
 	| actual expected |
 
@@ -1070,7 +1070,7 @@ DataFrameTests >> testRowAtPut [
 ]
 
 { #category : #tests }
-DataFrameTests >> testRowNames [
+DataFrameTest >> testRowNames [
 	| newNames |
 	newNames := #(X Y Z).
 	df rowNames: newNames.
@@ -1078,7 +1078,7 @@ DataFrameTests >> testRowNames [
 ]
 
 { #category : #tests }
-DataFrameTests >> testRowNamesSizeMismatch [
+DataFrameTest >> testRowNamesSizeMismatch [
 	| tooManyNames notEnoughNames |
 	
 	tooManyNames := #(W X Y Z).
@@ -1089,7 +1089,7 @@ DataFrameTests >> testRowNamesSizeMismatch [
 ]
 
 { #category : #tests }
-DataFrameTests >> testRowPut [
+DataFrameTest >> testRowPut [
 
 	| actual expected |
 
@@ -1108,7 +1108,7 @@ DataFrameTests >> testRowPut [
 ]
 
 { #category : #tests }
-DataFrameTests >> testRows [
+DataFrameTest >> testRows [
 
 	| rowNames actualDataFrame expectedDataFrame |
 	
@@ -1127,7 +1127,7 @@ DataFrameTests >> testRows [
 ]
 
 { #category : #tests }
-DataFrameTests >> testRowsAt [
+DataFrameTest >> testRowsAt [
 
 	| rowNumbers actualDataFrame expectedDataFrame |
 	
@@ -1148,7 +1148,7 @@ DataFrameTests >> testRowsAt [
 ]
 
 { #category : #tests }
-DataFrameTests >> testRowsFromTo [
+DataFrameTest >> testRowsFromTo [
 
 	| actualDataFrame expectedDataFrame |
 		
@@ -1165,7 +1165,7 @@ DataFrameTests >> testRowsFromTo [
 ]
 
 { #category : #tests }
-DataFrameTests >> testSortBy [
+DataFrameTest >> testSortBy [
 
 	| actual expected |
 
@@ -1182,7 +1182,7 @@ DataFrameTests >> testSortBy [
 ]
 
 { #category : #tests }
-DataFrameTests >> testSortByUsing [
+DataFrameTest >> testSortByUsing [
 	"Sort by second letter of city name"
 	| actual expected |
 
@@ -1201,7 +1201,7 @@ DataFrameTests >> testSortByUsing [
 ]
 
 { #category : #tests }
-DataFrameTests >> testSortDescendingBy [
+DataFrameTest >> testSortDescendingBy [
 
 	| actual expected |
 
@@ -1218,7 +1218,7 @@ DataFrameTests >> testSortDescendingBy [
 ]
 
 { #category : #tests }
-DataFrameTests >> testToColumnApplyElementwise [
+DataFrameTest >> testToColumnApplyElementwise [
 
 	| expected |
 	
@@ -1237,7 +1237,7 @@ DataFrameTests >> testToColumnApplyElementwise [
 ]
 
 { #category : #tests }
-DataFrameTests >> testToColumnAtApplyElementwise [
+DataFrameTest >> testToColumnAtApplyElementwise [
 
 	| expected |
 	
@@ -1256,7 +1256,7 @@ DataFrameTests >> testToColumnAtApplyElementwise [
 ]
 
 { #category : #tests }
-DataFrameTests >> testToColumnsApplyElementwise [
+DataFrameTest >> testToColumnsApplyElementwise [
 
 	| expected |
 	
@@ -1275,7 +1275,7 @@ DataFrameTests >> testToColumnsApplyElementwise [
 ]
 
 { #category : #tests }
-DataFrameTests >> testToColumnsAtApplyElementwise [
+DataFrameTest >> testToColumnsAtApplyElementwise [
 
 	| expected |
 	
@@ -1294,7 +1294,7 @@ DataFrameTests >> testToColumnsAtApplyElementwise [
 ]
 
 { #category : #tests }
-DataFrameTests >> testTransposed [
+DataFrameTest >> testTransposed [
 
 	| expected |
 	
@@ -1312,7 +1312,7 @@ DataFrameTests >> testTransposed [
 ]
 
 { #category : #tests }
-DataFrameTests >> testVarSizeInstanceCreation [
+DataFrameTest >> testVarSizeInstanceCreation [
 
 	| dataFrame |
 	dataFrame := DataFrame new: 3@2.
@@ -1325,7 +1325,7 @@ DataFrameTests >> testVarSizeInstanceCreation [
 ]
 
 { #category : #tests }
-DataFrameTests >> testWithKeyDo [
+DataFrameTest >> testWithKeyDo [
 
 	| actual expected |
 

@@ -967,24 +967,20 @@ DataFrame >> setDefaultRowColumnNames [
 { #category : #'gt-inspector-extension' }
 DataFrame >> showWithGlamourIn: composite [
 	| table headerNames |
-
-	table := FTTableMorph new
-		"extent: 650@500".
-	
+	table := FTTableMorph new.
+	"extent: 650@500"
 	table
 		beResizable;
 		intercellSpacing: 1;
 		dataSource: (DataFrameFTData elements: self);
-		onAnnouncement: FTSelectionChanged 
-			do: [ :ann | (self rowAt: ann newSelectedRowIndexes first) inspect ].
-		
-"		onAnnouncement: FTSelectionChanged 
+		onAnnouncement: FTSelectionChanged
+			do: [ :ann | (self rowAt: ann newSelectedIndexes first) inspect ].
+
+	"		onAnnouncement: FTSelectionChanged 
 			do: [ :ann | (self rowsAt: ann newSelectedRowIndexes) gtInspectorItemsIn: composite ];"
-		
-	headerNames := #('#'), self columnNames.
-	table columns: (headerNames collect: [ :name |
-		(FTColumn id: name) width: 100 ]).
-	
+	headerNames := #('#') , self columnNames.
+	table
+		columns: (headerNames collect: [ :name | (FTColumn id: name) width: 100 ]).
 	^ table
 ]
 

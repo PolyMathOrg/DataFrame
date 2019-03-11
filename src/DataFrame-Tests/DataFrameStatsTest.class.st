@@ -1,5 +1,5 @@
 Class {
-	#name : #DataFrameStatsTests,
+	#name : #DataFrameStatsTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'df'
@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #initialization }
-DataFrameStatsTests >> setUp [
+DataFrameStatsTest >> setUp [
 
 	df := DataFrame withRows: #(
 		(5.1 3.5 1.4 0.2)
@@ -25,7 +25,7 @@ DataFrameStatsTests >> setUp [
 ]
 
 { #category : #initialization }
-DataFrameStatsTests >> testAverage [
+DataFrameStatsTest >> testAverage [
 
 	| expected actual |
 	
@@ -38,7 +38,7 @@ DataFrameStatsTests >> testAverage [
 ]
 
 { #category : #initialization }
-DataFrameStatsTests >> testFirstQuartile [
+DataFrameStatsTest >> testFirstQuartile [
 
 	| expected actual |
 	
@@ -51,7 +51,7 @@ DataFrameStatsTests >> testFirstQuartile [
 ]
 
 { #category : #initialization }
-DataFrameStatsTests >> testInterquartileRange [
+DataFrameStatsTest >> testInterquartileRange [
 
 	| expected actual |
 	
@@ -64,7 +64,7 @@ DataFrameStatsTests >> testInterquartileRange [
 ]
 
 { #category : #initialization }
-DataFrameStatsTests >> testMax [
+DataFrameStatsTest >> testMax [
 
 	| expected actual |
 	
@@ -77,7 +77,7 @@ DataFrameStatsTests >> testMax [
 ]
 
 { #category : #initialization }
-DataFrameStatsTests >> testMedian [
+DataFrameStatsTest >> testMedian [
 
 	| expected actual |
 	
@@ -90,7 +90,7 @@ DataFrameStatsTests >> testMedian [
 ]
 
 { #category : #initialization }
-DataFrameStatsTests >> testMin [
+DataFrameStatsTest >> testMin [
 
 	| expected actual |
 	
@@ -103,7 +103,7 @@ DataFrameStatsTests >> testMin [
 ]
 
 { #category : #initialization }
-DataFrameStatsTests >> testMode [
+DataFrameStatsTest >> testMode [
 
 	| expected actual |
 	
@@ -116,7 +116,7 @@ DataFrameStatsTests >> testMode [
 ]
 
 { #category : #initialization }
-DataFrameStatsTests >> testRange [
+DataFrameStatsTest >> testRange [
 
 	| expected actual |
 	
@@ -129,7 +129,7 @@ DataFrameStatsTests >> testRange [
 ]
 
 { #category : #initialization }
-DataFrameStatsTests >> testStdev [
+DataFrameStatsTest >> testStdev [
 
 	| expected actual |
 	
@@ -143,7 +143,7 @@ DataFrameStatsTests >> testStdev [
 ]
 
 { #category : #initialization }
-DataFrameStatsTests >> testThirdQuartile [
+DataFrameStatsTest >> testThirdQuartile [
 
 	| expected actual |
 	
@@ -156,7 +156,7 @@ DataFrameStatsTests >> testThirdQuartile [
 ]
 
 { #category : #initialization }
-DataFrameStatsTests >> testVariance [
+DataFrameStatsTest >> testVariance [
 
 	| expected actual |
 	

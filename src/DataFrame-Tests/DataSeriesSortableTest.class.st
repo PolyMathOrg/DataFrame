@@ -1,5 +1,5 @@
 Class {
-	#name : #DataSeriesSortableTests,
+	#name : #DataSeriesSortableTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'series'
@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #tests }
-DataSeriesSortableTests >> setUp [
+DataSeriesSortableTest >> setUp [
 
 	series := #(3 2 4 5 1 3 2 5 5 2 1) asDataSeries.
 	series keys: #(a b c d e f g h i j k).
@@ -16,7 +16,7 @@ DataSeriesSortableTests >> setUp [
 ]
 
 { #category : #tests }
-DataSeriesSortableTests >> testIsSorted [
+DataSeriesSortableTest >> testIsSorted [
 
 	| sorted notSorted |
 	
@@ -28,7 +28,7 @@ DataSeriesSortableTests >> testIsSorted [
 ]
 
 { #category : #tests }
-DataSeriesSortableTests >> testIsSortedBy [
+DataSeriesSortableTest >> testIsSortedBy [
 
 	| sortBlock sorted notSorted1 notSorted2 |
 	
@@ -44,7 +44,7 @@ DataSeriesSortableTests >> testIsSortedBy [
 ]
 
 { #category : #tests }
-DataSeriesSortableTests >> testSort [
+DataSeriesSortableTest >> testSort [
 "Should sort this series into ascending order using the '<=' operator. Keys should be reordered together with elements"
 
 	| expected |
@@ -59,7 +59,7 @@ DataSeriesSortableTests >> testSort [
 ]
 
 { #category : #tests }
-DataSeriesSortableTests >> testSortBy [
+DataSeriesSortableTest >> testSortBy [
 "Should sort this series using the given sortBlock. Keys should be reordered together with elements"
 
 	| expected |
@@ -74,7 +74,7 @@ DataSeriesSortableTests >> testSortBy [
 ]
 
 { #category : #tests }
-DataSeriesSortableTests >> testSorted [
+DataSeriesSortableTest >> testSorted [
 "Should return a new series which contains the same elements as self but its elements are sorted in ascending order using the #'<=' operator. Keys should be reordered together with elements. The initial series should not be affected"
 
 	| actual expected |
@@ -90,7 +90,7 @@ DataSeriesSortableTests >> testSorted [
 ]
 
 { #category : #tests }
-DataSeriesSortableTests >> testSortedBy [
+DataSeriesSortableTest >> testSortedBy [
 "Should return a new series which contains the same elements as self but its elements are sorted using the given sortBlock. Keys should be reordered together with elements. The initial series should not be affected"
 
 	| sortBlock actual expected |
