@@ -26,7 +26,7 @@ DataFrameTypeDetectorTest >> testBooleanColumn [
 DataFrameTypeDetectorTest >> testDateAndTimeColumn [
 	| column expected actual |
 	column := #('18 March 1996 1:10' '6 March 1996 2:30 am' '12 March 2019 14:24 am' '9 February 2019 00:00 am') asDataSeries.
-	expected := (#('1996-03-18T01:10:00+01:00' '1996-03-06T02:30:00+01:00' '2019-03-12T14:24:00+01:00' '2019-02-09T00:00:00+01:00') collect: #asDateAndTime) asDataSeries.
+	expected := (#('1996-03-18T01:10:00' '1996-03-06T02:30:00' '2019-03-12T14:24:00' '2019-02-09T00:00:00') collect: #asDateAndTime) asDataSeries.
 	actual := detector detectColumnTypeAndConvert: column.
 	self assert: actual equals: expected
 ]
