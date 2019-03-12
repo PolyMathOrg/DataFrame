@@ -73,6 +73,7 @@ DataFrameCsvReader >> readFrom: aFileReference [
 	reader close.
 	
 	df := self createDataFrame.
+	DataFrameTypeDetector new detectTypesAndConvert: df.
 	^ df
 	
 ]

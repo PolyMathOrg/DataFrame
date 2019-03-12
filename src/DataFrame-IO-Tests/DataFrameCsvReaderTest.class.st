@@ -52,7 +52,7 @@ DataFrameCsvReaderTest >> tearDown [
 { #category : #tests }
 DataFrameCsvReaderTest >> testReadCsv [
 	| actualDataFrame |
-	actualDataFrame := DataFrame readFromCsv: commaCsvFile.
+	actualDataFrame := DataFrame readFromCsvWithRowNames: commaCsvFile.
 	self assert: actualDataFrame equals: expectedDataFrame.
 	
 ]
@@ -60,7 +60,7 @@ DataFrameCsvReaderTest >> testReadCsv [
 { #category : #tests }
 DataFrameCsvReaderTest >> testReadCsvWithSeparatorTab [
 	| actualDataFrame |
-	actualDataFrame := DataFrame readFromCsv: tabCsvFile withSeparator: Character tab.
+	actualDataFrame := DataFrame readFromCsvWithRowNames: tabCsvFile separator: Character tab.
 	self assert: actualDataFrame equals: expectedDataFrame.
 	
 ]
