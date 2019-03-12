@@ -19,19 +19,6 @@ DataSeriesTest >> setUp [
 ]
 
 { #category : #tests }
-DataSeriesTest >> testAddAtKey [
-
-	| expected |
-	
-	series add: -2 atKey: #X.	
-	expected := #(10 20 30 40 50 60 70 80 90 100 -2) asDataSeries.
-	expected keys: (keyArray copyWith: #X).
-	expected name: series name.
-	
-	self assert: series equals: expected.
-]
-
-{ #category : #tests }
 DataSeriesTest >> testAsDictionary [
 	| expected actual |
 	
@@ -47,39 +34,31 @@ DataSeriesTest >> testAsDictionary [
 { #category : #tests }
 DataSeriesTest >> testAt [
 
-	self assert: (series at: 2) equals: 20.
+	self assert: (series at: #b) equals: 20.
 ]
 
 { #category : #tests }
-DataSeriesTest >> testAtIfAbsent [
+DataSeriesTest >> testAtIndex [
 
-	self assert: (series at: 2) equals: 20.
-	
-	self assert: (series at: 100 ifAbsent: [ 'Executing a block' ])
+	self assert: (series atIndex: 2) equals: 20.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testAtIndexIfAbsent [
+
+	self assert: (series atIndex: 2 ifAbsent: [ 'Executing a block' ]) equals: 20.
+	self assert: (series atIndex: 100 ifAbsent: [ 'Executing a block' ])
 		equals: 'Executing a block'.
 ]
 
 { #category : #tests }
-DataSeriesTest >> testAtKeyPut [
+DataSeriesTest >> testAtIndexPut [
 
 	| expected |
 	
-	series atKey: #f put: -2.	
+	series atIndex: 6 put: -2.	
 	expected := #(10 20 30 40 50 -2 70 80 90 100) asDataSeries.
 	expected keys: keyArray.
-	expected name: series name.
-	
-	self assert: series equals: expected.
-]
-
-{ #category : #tests }
-DataSeriesTest >> testAtKeyPutNewElement [
-
-	| expected |
-	
-	series atKey: #X put: -2.	
-	expected := #(10 20 30 40 50 60 70 80 90 100 -2) asDataSeries.
-	expected keys: (keyArray copyWith: #X).
 	expected name: series name.
 	
 	self assert: series equals: expected.
@@ -90,9 +69,22 @@ DataSeriesTest >> testAtPut [
 
 	| expected |
 	
-	series at: 6 put: -2.	
+	series at: #f put: -2.	
 	expected := #(10 20 30 40 50 -2 70 80 90 100) asDataSeries.
 	expected keys: keyArray.
+	expected name: series name.
+	
+	self assert: series equals: expected.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testAtPutNewElement [
+
+	| expected |
+	
+	series at: #X put: -2.	
+	expected := #(10 20 30 40 50 60 70 80 90 100 -2) asDataSeries.
+	expected keys: (keyArray copyWith: #X).
 	expected name: series name.
 	
 	self assert: series equals: expected.
@@ -128,8 +120,8 @@ DataSeriesTest >> testCopy [
 	
 	seriesCopy := series copy.
 	seriesCopy at: 6 put: -2.
-	seriesCopy removeAtKey: #i.
-	seriesCopy add: -3 atKey: #X.
+	seriesCopy removeAt: #i.
+	seriesCopy at: #X put: -3.
 	seriesCopy name: #ChangedName.
 	
 	self assert: series equals: expectedOriginal.
@@ -144,8 +136,46 @@ DataSeriesTest >> testCreateDataSeriesAsDataSeries [
 	
 	self assert: dataSeries size equals: 3.
 	self assert: dataSeries asArray equals: #(a b c).
-	self assert: dataSeries keys equals: #(1 2 3) asOrderedCollection.
+	self assert: dataSeries keys equals: #(1 2 3).
 	self assert: dataSeries name isNil.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testCreateDataSeriesWithKeysValues [
+
+	| values keys dataSeries |
+	
+	values := #(a b c).
+	keys := #(x y z).
+	
+	dataSeries := DataSeries
+		withKeys: keys
+		values: values.
+	
+	self assert: dataSeries size equals: 3.
+	self assert: dataSeries asArray equals: values.
+	self assert: dataSeries keys equals: keys.
+	self assert: dataSeries name isNil.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testCreateDataSeriesWithKeysValuesName [
+
+	| values keys name dataSeries |
+	
+	values := #(a b c).
+	keys := #(x y z).
+	name := 'Some data'.
+	
+	dataSeries := DataSeries
+		withKeys: keys
+		values: values
+		name: name.
+	
+	self assert: dataSeries size equals: 3.
+	self assert: dataSeries asArray equals: values.
+	self assert: dataSeries keys equals: keys.
+	self assert: dataSeries name equals: name.
 ]
 
 { #category : #tests }
@@ -158,46 +188,8 @@ DataSeriesTest >> testCreateDataSeriesWithValues [
 	
 	self assert: dataSeries size equals: 3.
 	self assert: dataSeries asArray equals: values.
-	self assert: dataSeries keys equals: #(1 2 3) asOrderedCollection.
+	self assert: dataSeries keys equals: #(1 2 3).
 	self assert: dataSeries name isNil.
-]
-
-{ #category : #tests }
-DataSeriesTest >> testCreateDataSeriesWithValuesKeys [
-
-	| values keys dataSeries |
-	
-	values := #(a b c).
-	keys := #(x y z) asOrderedCollection.
-	
-	dataSeries := DataSeries
-		withValues: values
-		keys: keys.
-	
-	self assert: dataSeries size equals: 3.
-	self assert: dataSeries asArray equals: values.
-	self assert: dataSeries keys equals: keys.
-	self assert: dataSeries name isNil.
-]
-
-{ #category : #tests }
-DataSeriesTest >> testCreateDataSeriesWithValuesKeysName [
-
-	| values keys name dataSeries |
-	
-	values := #(a b c).
-	keys := #(x y z) asOrderedCollection.
-	name := 'Some data'.
-	
-	dataSeries := DataSeries
-		withValues: values
-		keys: keys
-		name: name.
-	
-	self assert: dataSeries size equals: 3.
-	self assert: dataSeries asArray equals: values.
-	self assert: dataSeries keys equals: keys.
-	self assert: dataSeries name equals: name.
 ]
 
 { #category : #tests }
@@ -214,7 +206,7 @@ DataSeriesTest >> testCreateDataSeriesWithValuesName [
 	
 	self assert: dataSeries size equals: 3.
 	self assert: dataSeries asArray equals: values.
-	self assert: dataSeries keys equals: #(1 2 3) asOrderedCollection.
+	self assert: dataSeries keys equals: #(1 2 3).
 	self assert: dataSeries name equals: name.
 ]
 
@@ -226,21 +218,7 @@ DataSeriesTest >> testCreateEmptyDataSeries [
 	
 	self assert: dataSeries size equals: 0.
 	self assert: dataSeries asArray equals: #().
-	self assert: dataSeries keys equals: #() asOrderedCollection.
-	self assert: dataSeries name isNil.
-]
-
-{ #category : #tests }
-DataSeriesTest >> testCreateEmptyDataSeriesWithGivenSize [
-
-	| size dataSeries |
-	
-	size := 4.
-	dataSeries := DataSeries new: size.
-	
-	self assert: dataSeries size equals: size.
-	self assert: dataSeries asArray equals: #(nil nil nil nil).
-	self assert: dataSeries keys equals: #(1 2 3 4) asOrderedCollection.
+	self assert: dataSeries keys equals: #().
 	self assert: dataSeries name isNil.
 ]
 
@@ -316,18 +294,6 @@ DataSeriesTest >> testDo [
 ]
 
 { #category : #tests }
-DataSeriesTest >> testDoWithIndex [
-
-	| sum |
-	sum := 0.
-	
-	series doWithIndex: [ :each :i |
-		sum := sum + (each / i) ].
-	
-	self assert: sum equals: 100.
-]
-
-{ #category : #tests }
 DataSeriesTest >> testEquality [
 
 	| a b |
@@ -372,23 +338,6 @@ DataSeriesTest >> testInequality [
 ]
 
 { #category : #tests }
-DataSeriesTest >> testPrintOn [
-
-	| population expected actual |
-	population := #(1.609 2.789 8.788) asDataSeries.
-	population keys: #(Barcelona Dubai London).
-	population name: #Population.
-	
-	expected := 'a DataSeries [3 items]'.
-	
-	actual := String new writeStream.
-	population printOn: actual.
-	actual := actual contents.
-	
-	self assert: actual equals: expected.
-]
-
-{ #category : #tests }
 DataSeriesTest >> testRemoveAt [
 
 	| expected |
@@ -397,13 +346,13 @@ DataSeriesTest >> testRemoveAt [
 	expected keys: (keyArray copyWithout: #c).
 	expected name: series name.
 	
-	series removeAt: 3.
+	series removeAt: #c.
 	
 	self assert: series equals: expected.
 ]
 
 { #category : #tests }
-DataSeriesTest >> testRemoveAtKey [
+DataSeriesTest >> testRemoveAtIndex [
 
 	| expected |
 	
@@ -411,7 +360,7 @@ DataSeriesTest >> testRemoveAtKey [
 	expected keys: (keyArray copyWithout: #c).
 	expected name: series name.
 	
-	series removeAtKey: #c.
+	series removeAtIndex: 3.
 	
 	self assert: series equals: expected.
 ]
@@ -501,6 +450,22 @@ DataSeriesTest >> testSort [
 ]
 
 { #category : #tests }
+DataSeriesTest >> testSortBlock [
+	| cities expected |
+	
+	cities := #(London Dubai Paris Berlin) asDataSeries.
+	cities keys: #(A B C D).
+	cities name: #Cities.
+	
+	expected := #(Dubai London Berlin Paris) asDataSeries.
+	expected keys: #(B A D C).
+	expected name: #Cities.
+	
+	cities sort: [ :a :b | a value last <= b value last ].
+	self assert: cities equals: expected.
+]
+
+{ #category : #tests }
 DataSeriesTest >> testSortDescending [
 	| cities expected |
 	
@@ -517,38 +482,42 @@ DataSeriesTest >> testSortDescending [
 ]
 
 { #category : #tests }
-DataSeriesTest >> testSortUsing [
-	| cities expected |
-	
-	cities := #(London Dubai Paris Berlin) asDataSeries.
-	cities keys: #(A B C D).
-	cities name: #Cities.
-	
-	expected := #(Dubai London Berlin Paris) asDataSeries.
-	expected keys: #(B A D C).
-	expected name: #Cities.
-	
-	cities sortUsing: [ :a :b | a last <= b last ].
-	self assert: cities equals: expected.
-]
-
-{ #category : #tests }
-DataSeriesTest >> testVarSizeInstanceCreation [
-
-	| aSeries |
-	aSeries := DataSeries new: 10.
-	self assert: aSeries size equals: 10.
-]
-
-{ #category : #tests }
 DataSeriesTest >> testWithIndexCollect [
 
 	| actual expected |
 	
-	actual := series collectWithIndex: [ :each :i |
+	actual := series withIndexCollect: [ :each :i |
 		each / 10 + i ].
 	
 	expected := (2 to: 20 by: 2) asDataSeries.
+	expected keys: keyArray.
+	expected name: series name.
+	
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testWithIndexDo [
+
+	| sum |
+	sum := 0.
+	
+	series withIndexDo: [ :each :i |
+		sum := sum + (each / i) ].
+	
+	self assert: sum equals: 100.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testWithKeyCollect [
+
+	| actual expected |
+	
+	actual := series withKeyCollect: [ :each :key |
+		each / 10 + (keyArray indexOf: key) ].
+	
+	expected := (2 to: 20 by: 2) asDataSeries.
+	expected keys: keyArray.
 	expected name: series name.
 	
 	self assert: actual equals: expected.

@@ -16,34 +16,6 @@ DataSeriesSortableTest >> setUp [
 ]
 
 { #category : #tests }
-DataSeriesSortableTest >> testIsSorted [
-
-	| sorted notSorted |
-	
-	sorted := #(1 2 3 5 5) asDataSeries.
-	notSorted := #(3 2 5 1 5) asDataSeries.
-	
-	self assert: sorted isSorted.
-	self assert: notSorted isSorted not.
-]
-
-{ #category : #tests }
-DataSeriesSortableTest >> testIsSortedBy [
-
-	| sortBlock sorted notSorted1 notSorted2 |
-	
-	sortBlock := [ :a :b | a > b ].
-	
-	sorted := #(5 4 3 2 1) asDataSeries.
-	notSorted1 := #(5 5 3 2 1) asDataSeries.
-	notSorted2 := #(3 2 5 1 5) asDataSeries.
-	
-	self assert: (sorted isSortedBy: sortBlock).
-	self assert: (notSorted1 isSortedBy: sortBlock) not.
-	self assert: (notSorted2 isSortedBy: sortBlock) not.
-]
-
-{ #category : #tests }
 DataSeriesSortableTest >> testSort [
 "Should sort this series into ascending order using the '<=' operator. Keys should be reordered together with elements"
 

@@ -8,9 +8,8 @@ Collection >> ** arg [
 
 { #category : #'*DataFrame-Core-Base' }
 Collection >> asDataSeries [
-"Converts a collection to Array and constructs a DataSeries from its values"
 
-	^ DataSeries withValues: self asArray.
+	^ self as: DataSeries
 
 
 ]

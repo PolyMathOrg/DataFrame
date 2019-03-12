@@ -388,9 +388,9 @@ DataFrameTest >> testCollect [
 	expectedResult columnNames: #(City Population).
 	
 	actualResult := df collect: [ :row |
-		row atKey: #City put: (row atKey: #City) asUppercase.
-		row atKey: #Population put: (row atKey: #Population) asInteger.
-		row removeAtKey: #BeenThere.
+		row at: #City put: (row at: #City) asUppercase.
+		row at: #Population put: (row at: #Population) asInteger.
+		row removeAt: #BeenThere.
 		row ].
 	
 	self assert: actualResult equals: expectedResult.
