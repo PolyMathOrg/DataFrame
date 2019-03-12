@@ -11,7 +11,7 @@ Class {
 	#category : #'DataFrame-Type'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 DataFrameTypeDetector >> canAllBeBoolean: aDataSeries [
 	^ aDataSeries
 		detect: [ :each | (each ~= 'true') and: (each ~= 'false') ]
@@ -19,14 +19,14 @@ DataFrameTypeDetector >> canAllBeBoolean: aDataSeries [
 		ifNone: [ true ].
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 DataFrameTypeDetector >> canAllBeDateAndTime: aDataSeries [
 	[ aDataSeries do: #asDateAndTime ]
 		on: Error do: [ ^ false ].
 	^ true
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 DataFrameTypeDetector >> canAllBeNumber: aDataSeries [
 	| regex |
 	regex := '^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$' asRegex.
@@ -37,14 +37,14 @@ DataFrameTypeDetector >> canAllBeNumber: aDataSeries [
 		ifNone: [ true ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 DataFrameTypeDetector >> canAllBeTime: aDataSeries [
 	[ aDataSeries do: #asTime ]
 		on: Error do: [ ^ false ].
 	^ true
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 DataFrameTypeDetector >> canAnyBeFloat: aDataSeries [
 	^ aDataSeries
 		detect: [ :each | each asNumber isFloat ]
@@ -52,32 +52,32 @@ DataFrameTypeDetector >> canAnyBeFloat: aDataSeries [
 		ifNone: [ false ].
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #converting }
 DataFrameTypeDetector >> convertToBoolean: aDataSeries [
 	^ aDataSeries collect: [ :each | each = 'true' ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #converting }
 DataFrameTypeDetector >> convertToDateAndTime: aDataSeries [
 	^ aDataSeries collect: #asDateAndTime
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #converting }
 DataFrameTypeDetector >> convertToFloat: aDataSeries [
 	^ aDataSeries collect: [ :each | each asNumber asFloat ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #converting }
 DataFrameTypeDetector >> convertToInteger: aDataSeries [
 	^ aDataSeries collect: [ :each | each asNumber asInteger ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #converting }
 DataFrameTypeDetector >> convertToTime: aDataSeries [
 	^ aDataSeries collect: #asTime
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'public API' }
 DataFrameTypeDetector >> detectColumnTypeAndConvert: aDataSeries [
 	(self canAllBeNumber: aDataSeries) ifTrue: [ 
 		(self canAnyBeFloat: aDataSeries)
@@ -96,7 +96,7 @@ DataFrameTypeDetector >> detectColumnTypeAndConvert: aDataSeries [
 	^ aDataSeries
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'public API' }
 DataFrameTypeDetector >> detectTypesAndConvert: aDataFrame [
 	aDataFrame columnNames do: [ :columnName |
 		aDataFrame column: columnName put: (
