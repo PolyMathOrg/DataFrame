@@ -1,5 +1,5 @@
 Class {
-	#name : #DataSeriesInternalTests,
+	#name : #DataSeriesInternalTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'series'
@@ -8,14 +8,14 @@ Class {
 }
 
 { #category : #initialization }
-DataSeriesInternalTests >> setUp [
+DataSeriesInternalTest >> setUp [
 
 	series := DataSeriesInternal
 		withValues: (10 to: 100 by: 10) asArray.
 ]
 
 { #category : #initialization }
-DataSeriesInternalTests >> testAdd [
+DataSeriesInternalTest >> testAdd [
 
 	| expected |
 	
@@ -28,13 +28,13 @@ DataSeriesInternalTests >> testAdd [
 ]
 
 { #category : #initialization }
-DataSeriesInternalTests >> testAt [
+DataSeriesInternalTest >> testAt [
 
 	self assert: (series at: 2) equals: 20.
 ]
 
 { #category : #initialization }
-DataSeriesInternalTests >> testAtIfAbsent [
+DataSeriesInternalTest >> testAtIfAbsent [
 
 	self assert: (series at: 2) equals: 20.
 	
@@ -43,7 +43,7 @@ DataSeriesInternalTests >> testAtIfAbsent [
 ]
 
 { #category : #initialization }
-DataSeriesInternalTests >> testAtPut [
+DataSeriesInternalTest >> testAtPut [
 
 	| expected |
 	
@@ -55,7 +55,7 @@ DataSeriesInternalTests >> testAtPut [
 ]
 
 { #category : #initialization }
-DataSeriesInternalTests >> testCollect [
+DataSeriesInternalTest >> testCollect [
 
 	| expected actual |
 	
@@ -66,7 +66,7 @@ DataSeriesInternalTests >> testCollect [
 ]
 
 { #category : #initialization }
-DataSeriesInternalTests >> testCollectWithIndex [
+DataSeriesInternalTest >> testCollectWithIndex [
 
 	| expected actual |
 	
@@ -78,7 +78,7 @@ DataSeriesInternalTests >> testCollectWithIndex [
 ]
 
 { #category : #initialization }
-DataSeriesInternalTests >> testDo [
+DataSeriesInternalTest >> testDo [
 
 	| sum |
 	sum := 0.
@@ -90,7 +90,7 @@ DataSeriesInternalTests >> testDo [
 ]
 
 { #category : #initialization }
-DataSeriesInternalTests >> testDoWithIndex [
+DataSeriesInternalTest >> testDoWithIndex [
 
 	| sum |
 	sum := 0.
@@ -102,7 +102,7 @@ DataSeriesInternalTests >> testDoWithIndex [
 ]
 
 { #category : #initialization }
-DataSeriesInternalTests >> testPrintOn [
+DataSeriesInternalTest >> testPrintOn [
 
 	| population expected actual |
 	population := DataSeriesInternal withValues: #(1.609 2.789 8.788).
@@ -117,7 +117,7 @@ DataSeriesInternalTests >> testPrintOn [
 ]
 
 { #category : #initialization }
-DataSeriesInternalTests >> testRemoveAt [
+DataSeriesInternalTest >> testRemoveAt [
 
 	| expected |
 	
@@ -130,7 +130,7 @@ DataSeriesInternalTests >> testRemoveAt [
 ]
 
 { #category : #initialization }
-DataSeriesInternalTests >> testVarSizeInstanceCreation [
+DataSeriesInternalTest >> testVarSizeInstanceCreation [
 
 	| seriesInternal |
 	

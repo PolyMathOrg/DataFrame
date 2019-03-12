@@ -12,6 +12,7 @@ Public API and Key Messages
 		- new: point (empty data frame with given dimensions)
 		- withColumnNames: arrayOfColumnNames (empty data frame with column names)
 		- withRowNames: arrayOfRowNames (empty data frame with row names)
+		- withRowNames: arrayOfRowNames columnNames: arrayOfColumnNames (empty data frame with row and column names)
 		
 	Creating data frame from an array of columns (class side):
 		- withColumns: arrayOfArrays
@@ -28,7 +29,6 @@ Public API and Key Messages
 	Converting:
 		- asArrayOfColumns
 		- asArrayOfRows
-		- asStringTable (string formatted as a pretty table)
 
 	Dimensions
 		- numberOfColumns
@@ -967,24 +967,20 @@ DataFrame >> setDefaultRowColumnNames [
 { #category : #'gt-inspector-extension' }
 DataFrame >> showWithGlamourIn: composite [
 	| table headerNames |
-
-	table := FTTableMorph new
-		"extent: 650@500".
-	
+	table := FTTableMorph new.
+	"extent: 650@500"
 	table
 		beResizable;
 		intercellSpacing: 1;
 		dataSource: (DataFrameFTData elements: self);
-		onAnnouncement: FTSelectionChanged 
-			do: [ :ann | (self rowAt: ann newSelectedRowIndexes first) inspect ].
-		
-"		onAnnouncement: FTSelectionChanged 
+		onAnnouncement: FTSelectionChanged
+			do: [ :ann | (self rowAt: ann newSelectedIndexes first) inspect ].
+
+	"		onAnnouncement: FTSelectionChanged 
 			do: [ :ann | (self rowsAt: ann newSelectedRowIndexes) gtInspectorItemsIn: composite ];"
-		
-	headerNames := #('#'), self columnNames.
-	table columns: (headerNames collect: [ :name |
-		(FTColumn id: name) width: 100 ]).
-	
+	headerNames := #('#') , self columnNames.
+	table
+		columns: (headerNames collect: [ :name | (FTColumn id: name) width: 100 ]).
 	^ table
 ]
 

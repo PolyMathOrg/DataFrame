@@ -1,5 +1,5 @@
 Class {
-	#name : #DataFrameHeadTailTests,
+	#name : #DataFrameHeadTailTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'df',
@@ -9,7 +9,7 @@ Class {
 }
 
 { #category : #initialization }
-DataFrameHeadTailTests >> setUp [
+DataFrameHeadTailTest >> setUp [
 
 	df := DataFrame withRows: #(
 		(5.1 3.5 1.4 0.2 setosa)
@@ -27,7 +27,7 @@ DataFrameHeadTailTests >> setUp [
 ]
 
 { #category : #tests }
-DataFrameHeadTailTests >> testDataFrameHead [
+DataFrameHeadTailTest >> testDataFrameHead [
 
 	| actual expected |
 	
@@ -46,7 +46,7 @@ DataFrameHeadTailTests >> testDataFrameHead [
 ]
 
 { #category : #tests }
-DataFrameHeadTailTests >> testDataFrameHeadN [
+DataFrameHeadTailTest >> testDataFrameHeadN [
 
 	| actual expected |
 	
@@ -63,7 +63,7 @@ DataFrameHeadTailTests >> testDataFrameHeadN [
 ]
 
 { #category : #tests }
-DataFrameHeadTailTests >> testDataFrameTail [
+DataFrameHeadTailTest >> testDataFrameTail [
 
 	| actual expected rows |
 	
@@ -85,7 +85,7 @@ DataFrameHeadTailTests >> testDataFrameTail [
 ]
 
 { #category : #tests }
-DataFrameHeadTailTests >> testDataFrameTailN [
+DataFrameHeadTailTest >> testDataFrameTailN [
 
 	| actual expected rows |
 	
@@ -105,7 +105,7 @@ DataFrameHeadTailTests >> testDataFrameTailN [
 ]
 
 { #category : #tests }
-DataFrameHeadTailTests >> testDataSeriesHead [
+DataFrameHeadTailTest >> testDataSeriesHead [
 
 	| actual expected |
 	
@@ -119,7 +119,7 @@ DataFrameHeadTailTests >> testDataSeriesHead [
 ]
 
 { #category : #tests }
-DataFrameHeadTailTests >> testDataSeriesHeadN [
+DataFrameHeadTailTest >> testDataSeriesHeadN [
 
 	| actual expected |
 	
@@ -133,7 +133,7 @@ DataFrameHeadTailTests >> testDataSeriesHeadN [
 ]
 
 { #category : #tests }
-DataFrameHeadTailTests >> testDataSeriesTail [
+DataFrameHeadTailTest >> testDataSeriesTail [
 
 	| actual expected |
 	
@@ -148,7 +148,7 @@ DataFrameHeadTailTests >> testDataSeriesTail [
 ]
 
 { #category : #tests }
-DataFrameHeadTailTests >> testDataSeriesTailN [
+DataFrameHeadTailTest >> testDataSeriesTailN [
 
 	| actual expected |
 	
@@ -163,7 +163,7 @@ DataFrameHeadTailTests >> testDataSeriesTailN [
 ]
 
 { #category : #tests }
-DataFrameHeadTailTests >> testDefaultHeadTailSize [
+DataFrameHeadTailTest >> testDefaultHeadTailSize [
 
 	self assert: df defaultHeadTailSize equals: 5.
 ]

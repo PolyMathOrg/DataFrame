@@ -1,5 +1,5 @@
 Class {
-	#name : #DataSeriesTests,
+	#name : #DataSeriesTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'series',
@@ -9,7 +9,7 @@ Class {
 }
 
 { #category : #initialization }
-DataSeriesTests >> setUp [
+DataSeriesTest >> setUp [
 
 	series := (10 to: 100 by: 10) asDataSeries.
 	keyArray := #(a b c d e f g h i j).
@@ -19,7 +19,7 @@ DataSeriesTests >> setUp [
 ]
 
 { #category : #tests }
-DataSeriesTests >> testAddAtKey [
+DataSeriesTest >> testAddAtKey [
 
 	| expected |
 	
@@ -32,7 +32,7 @@ DataSeriesTests >> testAddAtKey [
 ]
 
 { #category : #tests }
-DataSeriesTests >> testAsDictionary [
+DataSeriesTest >> testAsDictionary [
 	| expected actual |
 	
 	expected := {
@@ -45,13 +45,13 @@ DataSeriesTests >> testAsDictionary [
 ]
 
 { #category : #tests }
-DataSeriesTests >> testAt [
+DataSeriesTest >> testAt [
 
 	self assert: (series at: 2) equals: 20.
 ]
 
 { #category : #tests }
-DataSeriesTests >> testAtIfAbsent [
+DataSeriesTest >> testAtIfAbsent [
 
 	self assert: (series at: 2) equals: 20.
 	
@@ -60,7 +60,7 @@ DataSeriesTests >> testAtIfAbsent [
 ]
 
 { #category : #tests }
-DataSeriesTests >> testAtKeyPut [
+DataSeriesTest >> testAtKeyPut [
 
 	| expected |
 	
@@ -73,7 +73,7 @@ DataSeriesTests >> testAtKeyPut [
 ]
 
 { #category : #tests }
-DataSeriesTests >> testAtKeyPutNewElement [
+DataSeriesTest >> testAtKeyPutNewElement [
 
 	| expected |
 	
@@ -86,7 +86,7 @@ DataSeriesTests >> testAtKeyPutNewElement [
 ]
 
 { #category : #tests }
-DataSeriesTests >> testAtPut [
+DataSeriesTest >> testAtPut [
 
 	| expected |
 	
@@ -99,7 +99,7 @@ DataSeriesTests >> testAtPut [
 ]
 
 { #category : #tests }
-DataSeriesTests >> testCollect [
+DataSeriesTest >> testCollect [
 
 	| actual expected |
 	
@@ -114,7 +114,7 @@ DataSeriesTests >> testCollect [
 ]
 
 { #category : #tests }
-DataSeriesTests >> testCopy [
+DataSeriesTest >> testCopy [
 
 	| seriesCopy expectedOriginal expectedCopy |
 	
@@ -137,7 +137,7 @@ DataSeriesTests >> testCopy [
 ]
 
 { #category : #tests }
-DataSeriesTests >> testCreateDataSeriesAsDataSeries [
+DataSeriesTest >> testCreateDataSeriesAsDataSeries [
 
 	| dataSeries |
 	dataSeries := #(a b c) asDataSeries.
@@ -149,7 +149,7 @@ DataSeriesTests >> testCreateDataSeriesAsDataSeries [
 ]
 
 { #category : #tests }
-DataSeriesTests >> testCreateDataSeriesWithValues [
+DataSeriesTest >> testCreateDataSeriesWithValues [
 
 	| values dataSeries |
 	
@@ -163,7 +163,7 @@ DataSeriesTests >> testCreateDataSeriesWithValues [
 ]
 
 { #category : #tests }
-DataSeriesTests >> testCreateDataSeriesWithValuesKeys [
+DataSeriesTest >> testCreateDataSeriesWithValuesKeys [
 
 	| values keys dataSeries |
 	
@@ -181,7 +181,7 @@ DataSeriesTests >> testCreateDataSeriesWithValuesKeys [
 ]
 
 { #category : #tests }
-DataSeriesTests >> testCreateDataSeriesWithValuesKeysName [
+DataSeriesTest >> testCreateDataSeriesWithValuesKeysName [
 
 	| values keys name dataSeries |
 	
@@ -201,7 +201,7 @@ DataSeriesTests >> testCreateDataSeriesWithValuesKeysName [
 ]
 
 { #category : #tests }
-DataSeriesTests >> testCreateDataSeriesWithValuesName [
+DataSeriesTest >> testCreateDataSeriesWithValuesName [
 
 	| values name dataSeries |
 	
@@ -219,7 +219,7 @@ DataSeriesTests >> testCreateDataSeriesWithValuesName [
 ]
 
 { #category : #tests }
-DataSeriesTests >> testCreateEmptyDataSeries [
+DataSeriesTest >> testCreateEmptyDataSeries [
 
 	| dataSeries |
 	dataSeries := DataSeries new.
@@ -231,7 +231,7 @@ DataSeriesTests >> testCreateEmptyDataSeries [
 ]
 
 { #category : #tests }
-DataSeriesTests >> testCreateEmptyDataSeriesWithGivenSize [
+DataSeriesTest >> testCreateEmptyDataSeriesWithGivenSize [
 
 	| size dataSeries |
 	
@@ -245,7 +245,7 @@ DataSeriesTests >> testCreateEmptyDataSeriesWithGivenSize [
 ]
 
 { #category : #tests }
-DataSeriesTests >> testCreateEmptyDataSeriesWithKeys [
+DataSeriesTest >> testCreateEmptyDataSeriesWithKeys [
 
 	| keys dataSeries |
 	
@@ -259,7 +259,7 @@ DataSeriesTests >> testCreateEmptyDataSeriesWithKeys [
 ]
 
 { #category : #tests }
-DataSeriesTests >> testCreateEmptyDataSeriesWithKeysName [
+DataSeriesTest >> testCreateEmptyDataSeriesWithKeysName [
 
 	| keys name dataSeries |
 	
@@ -274,7 +274,7 @@ DataSeriesTests >> testCreateEmptyDataSeriesWithKeysName [
 ]
 
 { #category : #tests }
-DataSeriesTests >> testCreateEmptyDataSeriesWithName [
+DataSeriesTest >> testCreateEmptyDataSeriesWithName [
 
 	| name dataSeries |
 	
@@ -288,7 +288,7 @@ DataSeriesTests >> testCreateEmptyDataSeriesWithName [
 ]
 
 { #category : #tests }
-DataSeriesTests >> testCrossTabulateWith [
+DataSeriesTest >> testCrossTabulateWith [
 
 	| series1 series2 expected |
 	series1 := #(A B C A A B C A B B) asDataSeries.
@@ -304,7 +304,7 @@ DataSeriesTests >> testCrossTabulateWith [
 ]
 
 { #category : #tests }
-DataSeriesTests >> testDo [
+DataSeriesTest >> testDo [
 
 	| sum |
 	sum := 0.
@@ -316,7 +316,7 @@ DataSeriesTests >> testDo [
 ]
 
 { #category : #tests }
-DataSeriesTests >> testDoWithIndex [
+DataSeriesTest >> testDoWithIndex [
 
 	| sum |
 	sum := 0.
@@ -328,7 +328,7 @@ DataSeriesTests >> testDoWithIndex [
 ]
 
 { #category : #tests }
-DataSeriesTests >> testEquality [
+DataSeriesTest >> testEquality [
 
 	| a b |
 	
@@ -342,7 +342,7 @@ DataSeriesTests >> testEquality [
 ]
 
 { #category : #tests }
-DataSeriesTests >> testFrequencyTable [
+DataSeriesTest >> testFrequencyTable [
 
 	| aSeries expected |
 	aSeries := #(A B C A A B C A B B) asDataSeries.
@@ -358,7 +358,7 @@ DataSeriesTests >> testFrequencyTable [
 ]
 
 { #category : #tests }
-DataSeriesTests >> testInequality [
+DataSeriesTest >> testInequality [
 
 	| a b |
 	
@@ -372,7 +372,7 @@ DataSeriesTests >> testInequality [
 ]
 
 { #category : #tests }
-DataSeriesTests >> testPrintOn [
+DataSeriesTest >> testPrintOn [
 
 	| population expected actual |
 	population := #(1.609 2.789 8.788) asDataSeries.
@@ -389,7 +389,7 @@ DataSeriesTests >> testPrintOn [
 ]
 
 { #category : #tests }
-DataSeriesTests >> testRemoveAt [
+DataSeriesTest >> testRemoveAt [
 
 	| expected |
 	
@@ -403,7 +403,7 @@ DataSeriesTests >> testRemoveAt [
 ]
 
 { #category : #tests }
-DataSeriesTests >> testRemoveAtKey [
+DataSeriesTest >> testRemoveAtKey [
 
 	| expected |
 	
@@ -417,7 +417,7 @@ DataSeriesTests >> testRemoveAtKey [
 ]
 
 { #category : #tests }
-DataSeriesTests >> testReplaceFromToWithArray [
+DataSeriesTest >> testReplaceFromToWithArray [
 
 	| replacement expected |
 	
@@ -433,7 +433,7 @@ DataSeriesTests >> testReplaceFromToWithArray [
 ]
 
 { #category : #tests }
-DataSeriesTests >> testReplaceFromToWithSeries [
+DataSeriesTest >> testReplaceFromToWithSeries [
 
 	| replacement expected |
 	
@@ -451,7 +451,7 @@ DataSeriesTests >> testReplaceFromToWithSeries [
 ]
 
 { #category : #tests }
-DataSeriesTests >> testReplaceFromToWithStartingAtArray [
+DataSeriesTest >> testReplaceFromToWithStartingAtArray [
 
 	| replacement expected |
 	
@@ -467,7 +467,7 @@ DataSeriesTests >> testReplaceFromToWithStartingAtArray [
 ]
 
 { #category : #tests }
-DataSeriesTests >> testReplaceFromToWithStartingAtSeries [
+DataSeriesTest >> testReplaceFromToWithStartingAtSeries [
 
 	| replacement expected |
 	
@@ -485,7 +485,7 @@ DataSeriesTests >> testReplaceFromToWithStartingAtSeries [
 ]
 
 { #category : #tests }
-DataSeriesTests >> testSort [
+DataSeriesTest >> testSort [
 	| cities expected |
 	
 	cities := #(London Dubai Paris Berlin) asDataSeries.
@@ -501,7 +501,7 @@ DataSeriesTests >> testSort [
 ]
 
 { #category : #tests }
-DataSeriesTests >> testSortDescending [
+DataSeriesTest >> testSortDescending [
 	| cities expected |
 	
 	cities := #(London Dubai Paris Berlin) asDataSeries.
@@ -517,7 +517,7 @@ DataSeriesTests >> testSortDescending [
 ]
 
 { #category : #tests }
-DataSeriesTests >> testSortUsing [
+DataSeriesTest >> testSortUsing [
 	| cities expected |
 	
 	cities := #(London Dubai Paris Berlin) asDataSeries.
@@ -533,7 +533,7 @@ DataSeriesTests >> testSortUsing [
 ]
 
 { #category : #tests }
-DataSeriesTests >> testVarSizeInstanceCreation [
+DataSeriesTest >> testVarSizeInstanceCreation [
 
 	| aSeries |
 	aSeries := DataSeries new: 10.
@@ -541,7 +541,7 @@ DataSeriesTests >> testVarSizeInstanceCreation [
 ]
 
 { #category : #tests }
-DataSeriesTests >> testWithIndexCollect [
+DataSeriesTest >> testWithIndexCollect [
 
 	| actual expected |
 	
@@ -555,7 +555,7 @@ DataSeriesTests >> testWithIndexCollect [
 ]
 
 { #category : #tests }
-DataSeriesTests >> testWithKeyDo [
+DataSeriesTest >> testWithKeyDo [
 
 	| sum |
 	sum := 0.

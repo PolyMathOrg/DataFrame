@@ -1,5 +1,5 @@
 Class {
-	#name : #DataFrameQueriesTests,
+	#name : #DataFrameQueriesTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'df'
@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #initialization }
-DataFrameQueriesTests >> setUp [
+DataFrameQueriesTest >> setUp [
 
 	df := DataFrame withRows: #(
 		(x 10 0.25 0.1)
@@ -21,7 +21,7 @@ DataFrameQueriesTests >> setUp [
 ]
 
 { #category : #initialization }
-DataFrameQueriesTests >> testGroupbyAggregate [
+DataFrameQueriesTest >> testGroupbyAggregate [
 
 	| actual expected |
 	
@@ -38,7 +38,7 @@ DataFrameQueriesTests >> testGroupbyAggregate [
 ]
 
 { #category : #initialization }
-DataFrameQueriesTests >> testSelect [
+DataFrameQueriesTest >> testSelect [
 
 	| actual expected |
 	

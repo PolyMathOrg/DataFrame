@@ -1,5 +1,5 @@
 Class {
-	#name : #DataSeriesStatsTests,
+	#name : #DataSeriesStatsTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'series'
@@ -8,55 +8,55 @@ Class {
 }
 
 { #category : #initialization }
-DataSeriesStatsTests >> setUp [
+DataSeriesStatsTest >> setUp [
 
 	series := #(3 7 6 20 8 9 8 10 15 13 16) asDataSeries.
 ]
 
 { #category : #tests }
-DataSeriesStatsTests >> testAverage [
+DataSeriesStatsTest >> testAverage [
 
 	self assert: series average equals: (115/11).
 ]
 
 { #category : #tests }
-DataSeriesStatsTests >> testFirstQuartile [
+DataSeriesStatsTest >> testFirstQuartile [
 
 	self assert: series firstQuartile equals: 7.
 ]
 
 { #category : #tests }
-DataSeriesStatsTests >> testInterquartileRange [
+DataSeriesStatsTest >> testInterquartileRange [
 
 	self assert: series interquartileRange equals: 8.
 ]
 
 { #category : #tests }
-DataSeriesStatsTests >> testMax [
+DataSeriesStatsTest >> testMax [
 
 	self assert: series max equals: 20.
 ]
 
 { #category : #tests }
-DataSeriesStatsTests >> testMedian [
+DataSeriesStatsTest >> testMedian [
 
 	self assert: series median equals: 9.
 ]
 
 { #category : #tests }
-DataSeriesStatsTests >> testMin [
+DataSeriesStatsTest >> testMin [
 
 	self assert: series min equals: 3.
 ]
 
 { #category : #tests }
-DataSeriesStatsTests >> testMode [
+DataSeriesStatsTest >> testMode [
 
 	self assert: series mode equals: 8.
 ]
 
 { #category : #tests }
-DataSeriesStatsTests >> testQuantile [
+DataSeriesStatsTest >> testQuantile [
 	
 	self assert: (series quantile: 0) equals: 3.
 	self assert: (series quantile: 10) equals: 6.
@@ -67,7 +67,7 @@ DataSeriesStatsTests >> testQuantile [
 ]
 
 { #category : #tests }
-DataSeriesStatsTests >> testQuartile [
+DataSeriesStatsTest >> testQuartile [
 	
 	self assert: (series quartile: 0) equals: 3.
 	self assert: (series quartile: 1) equals: 7.
@@ -77,19 +77,19 @@ DataSeriesStatsTests >> testQuartile [
 ]
 
 { #category : #tests }
-DataSeriesStatsTests >> testRange [
+DataSeriesStatsTest >> testRange [
 
 	self assert: series range equals: 17.
 ]
 
 { #category : #tests }
-DataSeriesStatsTests >> testStdev [
+DataSeriesStatsTest >> testStdev [
 
 	self assert: series stdev closeTo: 5.00727.
 ]
 
 { #category : #tests }
-DataSeriesStatsTests >> testSummary [
+DataSeriesStatsTest >> testSummary [
 
 	| expected actual |
 	
@@ -101,13 +101,13 @@ DataSeriesStatsTests >> testSummary [
 ]
 
 { #category : #tests }
-DataSeriesStatsTests >> testThirdQuartile [
+DataSeriesStatsTest >> testThirdQuartile [
 
 	self assert: series thirdQuartile equals: 15.
 ]
 
 { #category : #tests }
-DataSeriesStatsTests >> testVariance [
+DataSeriesStatsTest >> testVariance [
 
 	self assert: series variance closeTo: 25.07273.
 ]

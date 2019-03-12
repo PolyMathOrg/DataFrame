@@ -1,5 +1,5 @@
 Class {
-	#name : #DataFrameInternalTests,
+	#name : #DataFrameInternalTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'df'
@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #initialization }
-DataFrameInternalTests >> setUp [
+DataFrameInternalTest >> setUp [
 
 	df := DataFrameInternal withRows: #(
 		('Barcelona' 1.609 true)
@@ -17,7 +17,7 @@ DataFrameInternalTests >> setUp [
 ]
 
 { #category : #tests }
-DataFrameInternalTests >> testAddColumnAtPosition [
+DataFrameInternalTest >> testAddColumnAtPosition [
 
 	| expected |
 	
@@ -34,7 +34,7 @@ DataFrameInternalTests >> testAddColumnAtPosition [
 ]
 
 { #category : #tests }
-DataFrameInternalTests >> testAddColumnAtPositionSizeMismatch [
+DataFrameInternalTest >> testAddColumnAtPositionSizeMismatch [
 	
 	| aBlock |
 	aBlock := [ df addColumn: #(1 2 3 4) atPosition: 3 ].
@@ -45,7 +45,7 @@ DataFrameInternalTests >> testAddColumnAtPositionSizeMismatch [
 ]
 
 { #category : #tests }
-DataFrameInternalTests >> testAddRowAtPosition [
+DataFrameInternalTest >> testAddRowAtPosition [
 
 	| expected |
 	
@@ -63,7 +63,7 @@ DataFrameInternalTests >> testAddRowAtPosition [
 ]
 
 { #category : #tests }
-DataFrameInternalTests >> testAddRowAtPositionSizeMismatch [
+DataFrameInternalTest >> testAddRowAtPositionSizeMismatch [
 	
 	| aBlock |
 	aBlock := [ df addRow: #(1 2) atPosition: 3 ].
@@ -74,7 +74,7 @@ DataFrameInternalTests >> testAddRowAtPositionSizeMismatch [
 ]
 
 { #category : #tests }
-DataFrameInternalTests >> testAsArrayOfColumns [
+DataFrameInternalTest >> testAsArrayOfColumns [
 
 	| expected |
 	
@@ -89,7 +89,7 @@ DataFrameInternalTests >> testAsArrayOfColumns [
 ]
 
 { #category : #tests }
-DataFrameInternalTests >> testAsArrayOfRows [
+DataFrameInternalTest >> testAsArrayOfRows [
 
 	| expected |
 	
@@ -104,13 +104,13 @@ DataFrameInternalTests >> testAsArrayOfRows [
 ]
 
 { #category : #tests }
-DataFrameInternalTests >> testAtAt [
+DataFrameInternalTest >> testAtAt [
 	
 	self assert: (df at: 2 at: 2) closeTo: 2.789.
 ]
 
 { #category : #tests }
-DataFrameInternalTests >> testAtAtPut [
+DataFrameInternalTest >> testAtAtPut [
 
 	| array2D expected actual |
 	
@@ -127,7 +127,7 @@ DataFrameInternalTests >> testAtAtPut [
 ]
 
 { #category : #tests }
-DataFrameInternalTests >> testCollect [
+DataFrameInternalTest >> testCollect [
 
 	| dfInternal dfActual dfExpected |
 	
@@ -145,7 +145,7 @@ DataFrameInternalTests >> testCollect [
 ]
 
 { #category : #tests }
-DataFrameInternalTests >> testColumnAt [
+DataFrameInternalTest >> testColumnAt [
 
 	| actualColumn expectedColumn |
 	
@@ -156,7 +156,7 @@ DataFrameInternalTests >> testColumnAt [
 ]
 
 { #category : #tests }
-DataFrameInternalTests >> testColumnAtPut [
+DataFrameInternalTest >> testColumnAtPut [
 
 	| actual expected |
 
@@ -173,7 +173,7 @@ DataFrameInternalTests >> testColumnAtPut [
 ]
 
 { #category : #tests }
-DataFrameInternalTests >> testColumnsAt [
+DataFrameInternalTest >> testColumnsAt [
 
 	| columnNumbers dfActual dfExpected |
 	
@@ -190,7 +190,7 @@ DataFrameInternalTests >> testColumnsAt [
 ]
 
 { #category : #tests }
-DataFrameInternalTests >> testCreateDataFrameInternalWithColumns [
+DataFrameInternalTest >> testCreateDataFrameInternalWithColumns [
 
 	| array2D expected actual |
 	
@@ -206,7 +206,7 @@ DataFrameInternalTests >> testCreateDataFrameInternalWithColumns [
 ]
 
 { #category : #tests }
-DataFrameInternalTests >> testCreateDataFrameInternalWithRows [
+DataFrameInternalTest >> testCreateDataFrameInternalWithRows [
 	
 	| array2D actual expected |
 	
@@ -224,7 +224,7 @@ DataFrameInternalTests >> testCreateDataFrameInternalWithRows [
 ]
 
 { #category : #tests }
-DataFrameInternalTests >> testDeepCopy [
+DataFrameInternalTest >> testDeepCopy [
 
 	| dfCopy |
 	
@@ -235,7 +235,7 @@ DataFrameInternalTests >> testDeepCopy [
 ]
 
 { #category : #tests }
-DataFrameInternalTests >> testDo [
+DataFrameInternalTest >> testDo [
 
 	| dfInternal sum |
 	
@@ -251,7 +251,7 @@ DataFrameInternalTests >> testDo [
 ]
 
 { #category : #tests }
-DataFrameInternalTests >> testFromArray2D [
+DataFrameInternalTest >> testFromArray2D [
 
 	| dfi array2D |
 	
@@ -266,7 +266,7 @@ DataFrameInternalTests >> testFromArray2D [
 ]
 
 { #category : #tests }
-DataFrameInternalTests >> testPrintOn [
+DataFrameInternalTest >> testPrintOn [
 
 	| expected actual |
 	
@@ -285,7 +285,7 @@ DataFrameInternalTests >> testPrintOn [
 ]
 
 { #category : #tests }
-DataFrameInternalTests >> testRemoveColumnAt [
+DataFrameInternalTest >> testRemoveColumnAt [
 
 	| expected |
 	
@@ -302,7 +302,7 @@ DataFrameInternalTests >> testRemoveColumnAt [
 ]
 
 { #category : #tests }
-DataFrameInternalTests >> testRemoveRowAt [
+DataFrameInternalTest >> testRemoveRowAt [
 
 	| expected |
 	
@@ -318,7 +318,7 @@ DataFrameInternalTests >> testRemoveRowAt [
 ]
 
 { #category : #tests }
-DataFrameInternalTests >> testRowAt [
+DataFrameInternalTest >> testRowAt [
 
 	| actualRow expectedRow |
 	
@@ -329,7 +329,7 @@ DataFrameInternalTests >> testRowAt [
 ]
 
 { #category : #tests }
-DataFrameInternalTests >> testRowAtPut [
+DataFrameInternalTest >> testRowAtPut [
 
 	| actual expected |
 
@@ -345,7 +345,7 @@ DataFrameInternalTests >> testRowAtPut [
 ]
 
 { #category : #tests }
-DataFrameInternalTests >> testRowsAt [
+DataFrameInternalTest >> testRowsAt [
 
 	| rowNumbers dfActual dfExpected |
 	
@@ -361,7 +361,7 @@ DataFrameInternalTests >> testRowsAt [
 ]
 
 { #category : #tests }
-DataFrameInternalTests >> testVarSizeInstanceCreation [
+DataFrameInternalTest >> testVarSizeInstanceCreation [
 
 	| dfActual |
 	dfActual := DataFrameInternal new: 6@8.
@@ -371,7 +371,7 @@ DataFrameInternalTests >> testVarSizeInstanceCreation [
 ]
 
 { #category : #tests }
-DataFrameInternalTests >> testWithIndicesCollect [
+DataFrameInternalTest >> testWithIndicesCollect [
 
 	| dfInternal actual expected |
 	
@@ -389,7 +389,7 @@ DataFrameInternalTests >> testWithIndicesCollect [
 ]
 
 { #category : #tests }
-DataFrameInternalTests >> testWithIndicesDo [
+DataFrameInternalTest >> testWithIndicesDo [
 
 	| dfInternal |
 	
