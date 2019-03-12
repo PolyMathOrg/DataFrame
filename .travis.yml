@@ -14,8 +14,8 @@ smalltalk:
 #  - Squeak-4.6
 #  - Squeak-4.5
 
-  - Pharo-alpha
-  - Pharo-stable
+#  - Pharo-alpha
+#  - Pharo-stable
   - Pharo32-8.0
   - Pharo-7.0
   - Pharo-6.1
@@ -23,8 +23,8 @@ smalltalk:
 #  - Pharo-4.0
 #  - Pharo-3.0
 
-  - Pharo64-alpha
-  - Pharo64-stable
+#  - Pharo64-alpha
+#  - Pharo64-stable
   - Pharo64-8.0
   - Pharo64-7.0
   - Pharo64-6.1
