@@ -1,7 +1,14 @@
+"
+I am a smart type detector. I receive a column of string values such as #('5' '-1' '0.1') or #('1:10' '2:20' '3:30'), detect the type to which all values in that column can be converted, and convert all values to that type. For example, #(5.0 -1.0 0.1) and #(1:10 am 2:20 am 3:30 am).
+
+My typical application is to detect data types of data frame columns after that data frame was read from a CSV file.
+
+I support the following types: Integer, Float, Boolean, Time, DateAndTime, String
+"
 Class {
 	#name : #DataFrameTypeDetector,
 	#superclass : #Object,
-	#category : #'DataFrame-IO'
+	#category : #'DataFrame-Type'
 }
 
 { #category : #'as yet unclassified' }
