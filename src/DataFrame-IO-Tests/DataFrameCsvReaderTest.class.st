@@ -21,7 +21,7 @@ DataFrameCsvReaderTest >> createFile: aFileReference withContents: aString [
 
 { #category : #running }
 DataFrameCsvReaderTest >> setUp [
-	directory := 'testData/' asFileReference.
+	directory := FileSystem memory workingDirectory / 'testData'.
 	directory createDirectory.
 	
 	commaCsvFile := directory / 'comma.csv'.
@@ -42,11 +42,6 @@ DataFrameCsvReaderTest >> setUp [
 	expectedDataFrame columnNames: #(temperature precipitation type).
 	expectedDataFrame rowNames: (#('01:10' '01:30' '01:50' '02:10' '02:30')
 		collect: #asTime).
-]
-
-{ #category : #running }
-DataFrameCsvReaderTest >> tearDown [
-	directory deleteAll.
 ]
 
 { #category : #tests }

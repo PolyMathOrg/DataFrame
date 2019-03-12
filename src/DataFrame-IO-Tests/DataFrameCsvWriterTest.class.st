@@ -21,7 +21,7 @@ DataFrameCsvWriterTest >> readFile: aFileReference [
 
 { #category : #running }
 DataFrameCsvWriterTest >> setUp [
-	directory := 'testData/' asFileReference.
+	directory := FileSystem memory workingDirectory / 'testData'.
 	directory createDirectory.
 	
 	commaQuoteCsvFile := directory / 'commaQuote.csv'.
@@ -37,11 +37,6 @@ DataFrameCsvWriterTest >> setUp [
 	dataFrame columnNames: #(temperature precipitation type).
 	dataFrame rowNames: (#('01:10' '01:30' '01:50' '02:10' '02:30')
 		collect: #asTime).
-]
-
-{ #category : #running }
-DataFrameCsvWriterTest >> tearDown [
-	directory deleteAll.
 ]
 
 { #category : #tests }
