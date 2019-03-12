@@ -333,6 +333,9 @@ DataFrame >> addColumn: anArray named: aString [
 { #category : #adding }
 DataFrame >> addColumn: anArray named: aString atPosition: aNumber [
 	"Add a new column at the given position"
+	(self columnNames includes: aString)
+		ifTrue: [ Error signal: 'A column with that name already exists' ].
+	
 	contents addColumn: anArray atPosition: aNumber.
 	columnNames add: aString afterIndex: aNumber - 1.
 ]
@@ -382,6 +385,9 @@ DataFrame >> addRow: anArray named: aString [
 { #category : #adding }
 DataFrame >> addRow: anArray named: aString atPosition: aNumber [
 	"Add a new row at the given position"
+	(self rowNames includes: aString)
+		ifTrue: [ Error signal: 'A row with that name already exists' ].
+	
 	contents addRow: anArray atPosition: aNumber.
 	rowNames add: aString afterIndex: aNumber - 1.
 ]
@@ -528,6 +534,9 @@ DataFrame >> columnNames [
 DataFrame >> columnNames: anArray [
 	anArray size = self numberOfColumns 
 		ifFalse: [ SizeMismatch signal: 'Wrong number of column names' ].
+		
+	anArray asSet size = anArray size
+		ifFalse: [ Error signal: 'All column names must be distinct' ].
 		
 	columnNames := anArray asOrderedCollection
 ]
@@ -903,6 +912,9 @@ DataFrame >> rowNames [
 DataFrame >> rowNames: anArray [
 	anArray size = self numberOfRows 
 		ifFalse: [ SizeMismatch signal: 'Wrong number of row names' ].
+		
+	anArray asSet size = anArray size
+		ifFalse: [ Error signal: 'All row names must be distinct' ].
 		
 	rowNames := anArray asOrderedCollection
 ]

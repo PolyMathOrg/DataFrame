@@ -77,6 +77,14 @@ DataFrameTest >> testAddColumnAtPosition [
 ]
 
 { #category : #tests }
+DataFrameTest >> testAddColumnNameMustBeDistinct [
+
+	| series |
+	series := DataSeries withValues: #(1 2 3) name: #City.
+	self should: [ df addColumn: series ] raise: Error.
+]
+
+{ #category : #tests }
 DataFrameTest >> testAddColumnNamed [
 	| expected |
 	
@@ -108,6 +116,12 @@ DataFrameTest >> testAddColumnNamedAtPosition [
 	expected columnNames: #(City Population Year BeenThere).
 	
 	self assert: df equals: expected.
+]
+
+{ #category : #tests }
+DataFrameTest >> testAddColumnNamedNameMustBeDistinct [
+
+	self should: [ df addColumn: #(1 2 3) named: #City ] raise: Error.
 ]
 
 { #category : #tests }
@@ -224,6 +238,14 @@ DataFrameTest >> testAddRowAtPosition [
 ]
 
 { #category : #tests }
+DataFrameTest >> testAddRowNameMustBeDistinct [
+
+	| series |
+	series := DataSeries withValues: #(1 2 3) name: #A.
+	self should: [ df addRow: series ] raise: Error.
+]
+
+{ #category : #tests }
 DataFrameTest >> testAddRowNamed [
 	| expected |
 	
@@ -257,6 +279,12 @@ DataFrameTest >> testAddRowNamedAtPosition [
 	expected columnNames: #(City Population BeenThere).
 	
 	self assert: df equals: expected.
+]
+
+{ #category : #tests }
+DataFrameTest >> testAddRowNamedNameMustBeDistinct [
+
+	self should: [ df addRow: #(1 2 3) named: #A ] raise: Error.
 ]
 
 { #category : #tests }
@@ -427,6 +455,13 @@ DataFrameTest >> testColumnNames [
 	newNames := #(X Y Z).
 	df columnNames: newNames.
 	self assert: df columnNames equals: newNames asOrderedCollection
+]
+
+{ #category : #tests }
+DataFrameTest >> testColumnNamesMustBeDistinct [
+	| newNames |
+	newNames := #(x y y).
+	self should: [ df columnNames: newNames ] raise: Error.
 ]
 
 { #category : #tests }
@@ -1075,6 +1110,13 @@ DataFrameTest >> testRowNames [
 	newNames := #(X Y Z).
 	df rowNames: newNames.
 	self assert: df rowNames equals: newNames asOrderedCollection
+]
+
+{ #category : #tests }
+DataFrameTest >> testRowNamesMustBeDistinct [
+	| newNames |
+	newNames := #(x y y).
+	self should: [ df rowNames: newNames ] raise: Error.
 ]
 
 { #category : #tests }
