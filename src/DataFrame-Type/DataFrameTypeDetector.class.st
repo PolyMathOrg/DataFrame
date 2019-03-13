@@ -100,7 +100,7 @@ DataFrameTypeDetector >> detectColumnTypeAndConvert: aDataSeries [
 DataFrameTypeDetector >> detectTypesAndConvert: aDataFrame [
 	aDataFrame columnNames do: [ :columnName |
 		aDataFrame column: columnName put: (
-			self detectColumnTypeAndConvert: (aDataFrame column: columnName)) ].
+			self detectColumnTypeAndConvert: (aDataFrame column: columnName)) asArray ].
 		
 	aDataFrame rowNames: (self detectColumnTypeAndConvert: aDataFrame rowNames).
 ]
