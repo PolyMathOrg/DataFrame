@@ -25,24 +25,25 @@ DataFrameAggrGroupTest >> testAggregateAverage [
 
 	| expected actual |
 	
-	expected := #(18.3433 20.79) asDataSeries.
-	expected keys: #(Male Female).
+	expected := DataSeries 
+		withKeys: #(Male Female)
+		values: #(18.3433 20.79)
+		name: #total_bill.
 	
 	actual := (df group: #total_bill by: #sex) average.
-	
 	self assert: actual closeTo: expected.
 ]
 
 { #category : #initialization }
 DataFrameAggrGroupTest >> testAggregateMax [
-
 	| expected actual |
 	
-	expected := #(23.68 24.59) asDataSeries.
-	expected keys: #(Male Female).
+	expected := DataSeries 
+		withKeys: #(Male Female)
+		values: #(23.68 24.59)
+		name: #total_bill.
 	
 	actual := (df group: #total_bill by: #sex) max.
-	
 	self assert: actual equals: expected.
 ]
 
@@ -51,11 +52,12 @@ DataFrameAggrGroupTest >> testAggregateMin [
 
 	| expected actual |
 	
-	expected := #(10.34 16.99) asDataSeries.
-	expected keys: #(Male Female).
+	expected := DataSeries 
+		withKeys: #(Male Female)
+		values: #(10.34 16.99)
+		name: #total_bill.
 	
 	actual := (df group: #total_bill by: #sex) min.
-	
 	self assert: actual equals: expected.
 ]
 
@@ -81,15 +83,16 @@ DataFrameAggrGroupTest >> testDataFrameGroupedPrintOn [
 { #category : #tests }
 DataFrameAggrGroupTest >> testGroupSeriesBySeries [
 
-	| femaleGroup maleGroup expectedSeries actualSeries |
+	| femaleGroup maleGroup expected actual |
 	
 	femaleGroup := #(16.99 24.59) asDataSeries.
 	maleGroup := #(10.34 21.01 23.68) asDataSeries.
 	
-	expectedSeries := { maleGroup . femaleGroup } asDataSeries.
-	expectedSeries keys: #(Male Female).
+	expected := DataSeries 
+		withKeys: #(Male Female)
+		values: { maleGroup . femaleGroup }
+		name: #total_bill.
 	
-	actualSeries := (df group: #total_bill by: #sex) groups.
-	
-self assert: actualSeries equals: expectedSeries.
+	actual := (df group: #total_bill by: #sex) groups.
+	self assert: actual equals: expected.
 ]

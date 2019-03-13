@@ -975,8 +975,8 @@ DataFrame >> select: aBlock [
 { #category : #private }
 DataFrame >> setDefaultRowColumnNames [
 
-	self rowNames: (1 to: self numberOfRows) asOrderedCollection.
-	self columnNames: (1 to: self numberOfColumns) asOrderedCollection.
+	self rowNames: (1 to: self numberOfRows).
+	self columnNames: (1 to: self numberOfColumns).
 ]
 
 { #category : #'gt-inspector-extension' }
@@ -1010,13 +1010,13 @@ DataFrame >> sortBy: columnName using: aBlock [
 	| column sortedKeys newContents |
 	column := self column: columnName.
 	column := column copy.
-	column sortUsing: aBlock.
+	column sort: aBlock.
 	sortedKeys := column keys.
 	
 	newContents := DataFrameInternal new: self dimensions.
 	
 	sortedKeys withIndexDo: [ :key :i |
-		newContents rowAt: i put: (self row: key) ].
+		newContents rowAt: i put: (self row: key) asArray ].
 		
 	contents := newContents.
 	self rowNames: sortedKeys.

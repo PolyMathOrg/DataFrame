@@ -209,7 +209,7 @@ DataSeries >> isSequenceable [
 { #category : #accessing }
 DataSeries >> keys: anArrayOfKeys [
 	| keys |
-	keys := anArrayOfKeys deepCopy.
+	keys := anArrayOfKeys asArray deepCopy.
 	dictionary := self dictionaryClass newFromKeys: keys andValues: self values.
 	orderedKeys := keys.
 ]
