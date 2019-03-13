@@ -10,12 +10,100 @@ Class {
 
 { #category : #initialization }
 DataSeriesTest >> setUp [
-
-	series := (10 to: 100 by: 10) asDataSeries.
-	keyArray := #(a b c d e f g h i j).
+	keyArray := #(a b c d e f g h i j k).
 	
-	series keys: keyArray.
-	series name: 'ExampleSeries'.
+	series := DataSeries
+		withKeys: keyArray
+		values: #(3 7 6 20 8 9 8 10 15 13 16)
+		name: 'ExampleSeries'.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testAddArrayToSeries [
+	| series array actual expected |
+	
+	series := DataSeries withKeys: #(a b c) values: #(1 2 3) name: #X.
+	array := #(3 4 5).
+	
+	expected := DataSeries withKeys: #(a b c) values: #(4 6 8) name: #X.
+	actual := series + array.
+	
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testAddScalarToSeries [
+	| series scalar actual expected |
+	
+	series := DataSeries withKeys: #(a b c) values: #(1 2 3) name: #X.
+	scalar := 10.
+	
+	expected := DataSeries withKeys: #(a b c) values: #(11 12 13) name: #X.
+	actual := series + scalar.
+	
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testAddSeriesToArray [
+	| array series actual expected |
+	
+	array := #(1 2 3).
+	series := DataSeries withKeys: #(a b c) values: #(3 4 5) name: #X.
+	
+	expected := DataSeries withKeys: #(a b c) values: #(4 6 8) name: #X.
+	actual := array + series.
+	
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testAddSeriesToScalar [
+	| scalar series actual expected |
+	
+	scalar := 10.
+	series := DataSeries withKeys: #(a b c) values: #(3 4 5) name: #X.
+	
+	expected := DataSeries withKeys: #(a b c) values: #(13 14 15) name: #X.
+	actual := scalar + series.
+	
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testAddSeriesToSeriesDifferentKeys [
+	| firstSeries secondSeries |
+	
+	firstSeries := DataSeries withKeys: #(x y z) values: #(1 2 3) name: #X.
+	secondSeries := DataSeries withKeys: #(a b c) values: #(3 4 5) name: #X.
+	
+	self should: [ firstSeries + secondSeries ] raise: Error.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testAddSeriesToSeriesSameKeysAndName [
+	| firstSeries secondSeries actual expected |
+	
+	firstSeries := DataSeries withKeys: #(a b c) values: #(1 2 3) name: #X.
+	secondSeries := DataSeries withKeys: #(a b c) values: #(3 4 5) name: #X.
+	
+	expected := DataSeries withKeys: #(a b c) values: #(4 6 8) name: #X.
+	actual := firstSeries + secondSeries.
+	
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testAddSeriesToSeriesSameKeysDifferentName [
+	| firstSeries secondSeries actual expected |
+	
+	firstSeries := DataSeries withKeys: #(a b c) values: #(1 2 3) name: #X.
+	secondSeries := DataSeries withKeys: #(a b c) values: #(3 4 5) name: #Y.
+	
+	expected := DataSeries withKeys: #(a b c) values: #(4 6 8) name: '(no name)'.
+	actual := firstSeries + secondSeries.
+	
+	self assert: actual equals: expected.
 ]
 
 { #category : #tests }
@@ -23,9 +111,9 @@ DataSeriesTest >> testAsDictionary [
 	| expected actual |
 	
 	expected := {
-		'a' -> 10 . 'b' -> 20 . 'c' -> 30 . 'd' -> 40 .
-		'e' -> 50 . 'f' -> 60 . 'g' -> 70 . 'h' -> 80 .
-		'i' -> 90 . 'j' -> 100 } asDictionary.
+		'a' -> 3 . 'b' -> 7 . 'c' -> 6 . 'd' -> 20 .
+		'e' -> 8 . 'f' -> 9 . 'g' -> 8 . 'h' -> 10 .
+		'i' -> 15 . 'j' -> 13 . 'k' -> 16 } asDictionary.
 	
 	actual := series asDictionary.
 	self assert: actual equals: expected
@@ -34,19 +122,19 @@ DataSeriesTest >> testAsDictionary [
 { #category : #tests }
 DataSeriesTest >> testAt [
 
-	self assert: (series at: #b) equals: 20.
+	self assert: (series at: #b) equals: 7.
 ]
 
 { #category : #tests }
 DataSeriesTest >> testAtIndex [
 
-	self assert: (series atIndex: 2) equals: 20.
+	self assert: (series atIndex: 2) equals: 7.
 ]
 
 { #category : #tests }
 DataSeriesTest >> testAtIndexIfAbsent [
 
-	self assert: (series atIndex: 2 ifAbsent: [ 'Executing a block' ]) equals: 20.
+	self assert: (series atIndex: 2 ifAbsent: [ 'Executing a block' ]) equals: 7.
 	self assert: (series atIndex: 100 ifAbsent: [ 'Executing a block' ])
 		equals: 'Executing a block'.
 ]
@@ -56,10 +144,12 @@ DataSeriesTest >> testAtIndexPut [
 
 	| expected |
 	
-	series atIndex: 6 put: -2.	
-	expected := #(10 20 30 40 50 -2 70 80 90 100) asDataSeries.
-	expected keys: keyArray.
-	expected name: series name.
+	series atIndex: 6 put: -2.
+	
+	expected := DataSeries
+		withKeys: keyArray
+		values: #(3 7 6 20 8 -2 8 10 15 13 16)
+		name: series name.
 	
 	self assert: series equals: expected.
 ]
@@ -70,9 +160,11 @@ DataSeriesTest >> testAtPut [
 	| expected |
 	
 	series at: #f put: -2.	
-	expected := #(10 20 30 40 50 -2 70 80 90 100) asDataSeries.
-	expected keys: keyArray.
-	expected name: series name.
+	
+	expected := DataSeries
+		withKeys: keyArray
+		values: #(3 7 6 20 8 -2 8 10 15 13 16)
+		name: series name.
 	
 	self assert: series equals: expected.
 ]
@@ -83,11 +175,19 @@ DataSeriesTest >> testAtPutNewElement [
 	| expected |
 	
 	series at: #X put: -2.	
-	expected := #(10 20 30 40 50 60 70 80 90 100 -2) asDataSeries.
-	expected keys: (keyArray copyWith: #X).
-	expected name: series name.
+	
+	expected := DataSeries
+		withKeys: (keyArray copyWith: #X)
+		values: #(3 7 6 20 8 9 8 10 15 13 16 -2)
+		name: series name.
 	
 	self assert: series equals: expected.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testAverage [
+
+	self assert: series average equals: (115/11).
 ]
 
 { #category : #tests }
@@ -98,34 +198,76 @@ DataSeriesTest >> testCollect [
 	actual := series collect: [ :each |
 		each / 10 ].
 	
-	expected := (1 to: 10) asDataSeries.
-	expected keys: keyArray.
-	expected name: series name.
+	expected := DataSeries
+		withKeys: keyArray
+		values: { 3/10 . 7/10 . 3/5 . 2 . 4/5 . 9/10 . 4/5 . 1 . 3/2 . 13/10 . 8/5 }
+		name: 'ExampleSeries'.
 	
 	self assert: actual equals: expected.
 ]
 
 { #category : #tests }
-DataSeriesTest >> testCopy [
+DataSeriesTest >> testCopyCanBeChanged [
 
-	| seriesCopy expectedOriginal expectedCopy |
+	| original seriesCopy expectedCopyAfterChange |
 	
-	expectedOriginal := #(10 20 30 40 50 60 70 80 90 100) asDataSeries.
-	expectedOriginal keys: keyArray.
-	expectedOriginal name: series name.
+	original := DataSeries
+		withKeys: #(a b c d)
+		values: #(10 30 20 40)
+		name: #X.
 		
-	expectedCopy := #(10 20 30 40 50 -2 70 80 100 -3) asDataSeries.
-	expectedCopy keys: ((keyArray copyWithout: #i) copyWith: #X).
-	expectedCopy name: #ChangedName.
+	expectedCopyAfterChange := DataSeries
+		withKeys: #(b c d e)
+		values: #(100 20 40 200)
+		name: #Y.
+		
+	seriesCopy := original copy.
 	
-	seriesCopy := series copy.
-	seriesCopy at: 6 put: -2.
-	seriesCopy removeAt: #i.
-	seriesCopy at: #X put: -3.
-	seriesCopy name: #ChangedName.
+	seriesCopy at: #b put: 100.
+	seriesCopy at: #e put: 200.
+	seriesCopy removeAt: #a.
+	seriesCopy name: #Y.
 	
-	self assert: series equals: expectedOriginal.
-	self assert: seriesCopy equals: expectedCopy.
+	self assert: seriesCopy equals: expectedCopyAfterChange.
+	
+]
+
+{ #category : #tests }
+DataSeriesTest >> testCopyChangeDoesNotAffectOriginal [
+
+	| original seriesCopy expectedOriginalAfterChange |
+	
+	original := DataSeries
+		withKeys: #(a b c d)
+		values: #(10 30 20 40)
+		name: #X.
+		
+	expectedOriginalAfterChange := DataSeries
+		withKeys: #(a b c d)
+		values: #(10 30 20 40)
+		name: #X.
+		
+	seriesCopy := original copy.
+	
+	seriesCopy at: #b put: 100.
+	seriesCopy at: #e put: 200.
+	seriesCopy removeAt: #a.
+	seriesCopy name: #Y.
+	
+	self assert: original equals: expectedOriginalAfterChange.
+	
+]
+
+{ #category : #tests }
+DataSeriesTest >> testCos [
+
+	| a b pi |
+	
+	pi := Float pi.
+	a := { 0 . pi . pi/2 . pi/4 . pi/3 } asDataSeries.
+	b := { 1.0 . -1.0 . 0.0 . 1/2 sqrt . 0.5 } asDataSeries.
+	
+	self assert: a cos closeTo: b.
 ]
 
 { #category : #tests }
@@ -223,49 +365,6 @@ DataSeriesTest >> testCreateEmptyDataSeries [
 ]
 
 { #category : #tests }
-DataSeriesTest >> testCreateEmptyDataSeriesWithKeys [
-
-	| keys dataSeries |
-	
-	keys := #(x y z) asOrderedCollection.
-	dataSeries := DataSeries withKeys: keys.
-	
-	self assert: dataSeries size equals: 3.
-	self assert: dataSeries asArray equals: #(nil nil nil).
-	self assert: dataSeries keys equals: keys.
-	self assert: dataSeries name isNil.
-]
-
-{ #category : #tests }
-DataSeriesTest >> testCreateEmptyDataSeriesWithKeysName [
-
-	| keys name dataSeries |
-	
-	keys := #(x y z) asOrderedCollection.
-	name := 'Some data'.
-	dataSeries := DataSeries withKeys: keys name: name.
-	
-	self assert: dataSeries size equals: 3.
-	self assert: dataSeries asArray equals: #(nil nil nil).
-	self assert: dataSeries keys equals: keys.
-	self assert: dataSeries name equals: name.
-]
-
-{ #category : #tests }
-DataSeriesTest >> testCreateEmptyDataSeriesWithName [
-
-	| name dataSeries |
-	
-	name := 'Some data'.
-	dataSeries := DataSeries withName: name.
-	
-	self assert: dataSeries size equals: 0.
-	self assert: dataSeries asArray equals: #().
-	self assert: dataSeries keys equals: #() asOrderedCollection.
-	self assert: dataSeries name equals: name.
-]
-
-{ #category : #tests }
 DataSeriesTest >> testCrossTabulateWith [
 
 	| series1 series2 expected |
@@ -282,6 +381,17 @@ DataSeriesTest >> testCrossTabulateWith [
 ]
 
 { #category : #tests }
+DataSeriesTest >> testDivideByScalar [
+
+	| a b |
+	
+	a := #(1 2 3) asDataSeries.
+	b := #(0.5 1 1.5) asDataSeries.
+	
+	self assert: a / 2 equals: b.
+]
+
+{ #category : #tests }
 DataSeriesTest >> testDo [
 
 	| sum |
@@ -290,21 +400,60 @@ DataSeriesTest >> testDo [
 	series do: [ :each |
 		sum := sum + each ].
 	
-	self assert: sum equals: 550.
+	self assert: sum equals: 115.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testEighth [
+
+	self assert: series eighth equals: 10.
 ]
 
 { #category : #tests }
 DataSeriesTest >> testEquality [
 
-	| a b |
+	| firstSeries secondSeries |
 	
-	a := #(1 0.1 'a') asDataSeries.
-	b := #(1 0.1 'a') asDataSeries.
+	firstSeries := DataSeries withKeys: #(a b c) values: #(1 0.1 'a') name: 'A'.
+	secondSeries := DataSeries withKeys: #(a b c) values: #(1 0.1 'a') name: 'A'.
 	
-	a name: 'A'.
-	b name: 'B'.
-	
-	self assert: a equals: b.
+	self assert: firstSeries equals: secondSeries.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testFifth [
+
+	self assert: series fifth equals: 8.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testFirst [
+
+	self assert: series first equals: 3.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testFirstQuartile [
+
+	self assert: series firstQuartile equals: 7.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testFourth [
+
+	self assert: series fourth equals: 20.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testFourthQuartile [
+
+	self assert: series fourthQuartile equals: 20.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testFourthQuartileEqualsMax [
+
+	self assert: series fourthQuartile equals: series max.
 ]
 
 { #category : #tests }
@@ -324,6 +473,25 @@ DataSeriesTest >> testFrequencyTable [
 ]
 
 { #category : #tests }
+DataSeriesTest >> testGroupBy [
+	| firstSeries secondSeries expected actual |
+	
+	firstSeries := DataSeries withValues: #(1 10 2 1 5) name: #salary.
+	secondSeries := DataSeries withValues: #(Male Female Male Male Female) name: #sex.
+	
+	expected := DataSeriesGrouped new.
+	expected groups: (DataSeries
+		withKeys: #(Female Male)
+		values: {
+			DataSeries withValues: #(10 5) .
+			DataSeries withValues: #(1 2 1) }
+		name: #salary).
+		
+	actual := firstSeries groupBy: secondSeries.
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
 DataSeriesTest >> testInequality [
 
 	| a b |
@@ -338,13 +506,139 @@ DataSeriesTest >> testInequality [
 ]
 
 { #category : #tests }
+DataSeriesTest >> testInequalityDifferentKeys [
+
+	| firstSeries secondSeries |
+	
+	firstSeries := DataSeries withKeys: #(a b c) values: #(1 0.1 'a') name: 'A'.
+	secondSeries := DataSeries withKeys: #(x y z) values: #(1 0.1 'a') name: 'A'.
+	
+	self assert: (firstSeries ~= secondSeries).
+]
+
+{ #category : #tests }
+DataSeriesTest >> testInequalityDifferentNames [
+
+	| firstSeries secondSeries |
+	
+	firstSeries := DataSeries withKeys: #(a b c) values: #(1 0.1 'a') name: 'A'.
+	secondSeries := DataSeries withKeys: #(a b c) values: #(1 0.1 'a') name: 'B'.
+	
+	self assert: (firstSeries ~= secondSeries).
+]
+
+{ #category : #tests }
+DataSeriesTest >> testInequalityDifferentValues [
+
+	| firstSeries secondSeries |
+	
+	firstSeries := DataSeries withKeys: #(a b c) values: #(1 0.1 'a') name: 'A'.
+	secondSeries := DataSeries withKeys: #(a b c) values: #(1 0.2 'a') name: 'A'.
+	
+	self assert: (firstSeries ~= secondSeries).
+]
+
+{ #category : #tests }
+DataSeriesTest >> testInterquartileRange [
+
+	self assert: series interquartileRange equals: 8.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testLast [
+
+	self assert: series last equals: 16.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testMax [
+
+	self assert: series max equals: 20.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testMedian [
+
+	self assert: series median equals: 9.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testMin [
+
+	self assert: series min equals: 3.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testMode [
+
+	self assert: series mode equals: 8.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testMultiplyScalar [
+
+	| a b |
+	
+	a := #(1 2 3) asDataSeries.
+	b := #(2 4 6) asDataSeries.
+	
+	self assert: 2 * a equals: b.
+	self assert: a * 2 equals: b.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testNinth [
+
+	self assert: series ninth equals: 15.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testPowerScalar [
+
+	| a b |
+	
+	a := #(1 2 3) asDataSeries.
+	b := #(1 4 9) asDataSeries.
+	
+	self assert: a ** 2 equals: b.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testQuantile [
+	
+	self assert: (series quantile: 0) equals: 3.
+	self assert: (series quantile: 10) equals: 6.
+	self assert: (series quantile: 25) equals: 7.
+	self assert: (series quantile: 50) equals: 9.
+	self assert: (series quantile: 75) equals: 15.
+	self assert: (series quantile: 100) equals: 20.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testQuartile [
+	
+	self assert: (series quartile: 0) equals: 3.
+	self assert: (series quartile: 1) equals: 7.
+	self assert: (series quartile: 2) equals: 9.
+	self assert: (series quartile: 3) equals: 15.
+	self assert: (series quartile: 4) equals: 20.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testRange [
+
+	self assert: series range equals: 17.
+]
+
+{ #category : #tests }
 DataSeriesTest >> testRemoveAt [
 
 	| expected |
 	
-	expected := #(10 20 40 50 60 70 80 90 100) asDataSeries.
-	expected keys: (keyArray copyWithout: #c).
-	expected name: series name.
+	expected := DataSeries
+		withKeys: (keyArray copyWithout: #c)
+		values: #(3 7 20 8 9 8 10 15 13 16)
+		name: 'ExampleSeries'.
 	
 	series removeAt: #c.
 	
@@ -356,9 +650,10 @@ DataSeriesTest >> testRemoveAtIndex [
 
 	| expected |
 	
-	expected := #(10 20 40 50 60 70 80 90 100) asDataSeries.
-	expected keys: (keyArray copyWithout: #c).
-	expected name: series name.
+	expected := DataSeries
+		withKeys: (keyArray copyWithout: #c)
+		values: #(3 7 20 8 9 8 10 15 13 16)
+		name: 'ExampleSeries'.
 	
 	series removeAtIndex: 3.
 	
@@ -366,119 +661,236 @@ DataSeriesTest >> testRemoveAtIndex [
 ]
 
 { #category : #tests }
-DataSeriesTest >> testReplaceFromToWithArray [
+DataSeriesTest >> testSecond [
 
-	| replacement expected |
-	
-	replacement := #(x y z).
-	
-	expected := #(10 20 x y z 60 70 80 90 100) asDataSeries.
-	expected keys: keyArray.
-	expected name: series name.
-	
-	series replaceFrom: 3 to: 5 with: replacement.
-	
-	self assert: series equals: expected.
+	self assert: series second equals: 7.
 ]
 
 { #category : #tests }
-DataSeriesTest >> testReplaceFromToWithSeries [
+DataSeriesTest >> testSecondQuartile [
 
-	| replacement expected |
-	
-	replacement := #(x y z) asDataSeries.
-	replacement keys: #(k1 k2 k3).
-	replacement name: #Replacement.
-	
-	expected := #(10 20 x y z 60 70 80 90 100) asDataSeries.
-	expected keys: #(a b k1 k2 k3 f g h i j).
-	expected name: series name.
-	
-	series replaceFrom: 3 to: 5 with: replacement.
-	
-	self assert: series equals: expected.
+	self assert: series secondQuartile equals: 9.
 ]
 
 { #category : #tests }
-DataSeriesTest >> testReplaceFromToWithStartingAtArray [
+DataSeriesTest >> testSecondQuartileEqualsMedian [
 
-	| replacement expected |
-	
-	replacement := #(a b c d e).
-	
-	expected := #(10 20 b c d 60 70 80 90 100) asDataSeries.
-	expected keys: keyArray.
-	expected name: series name.
-	
-	series replaceFrom: 3 to: 5 with: replacement startingAt: 2.
-	
-	self assert: series equals: expected.
+	self assert: series secondQuartile equals: series median.
 ]
 
 { #category : #tests }
-DataSeriesTest >> testReplaceFromToWithStartingAtSeries [
+DataSeriesTest >> testSeventh [
 
-	| replacement expected |
+	self assert: series seventh equals: 8.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testSin [
+
+	| a b pi |
 	
-	replacement := #(a b c d e) asDataSeries.
-	replacement keys: #(k1 k2 k3 k4 k5).
-	replacement name: #Replacement.
+	pi := Float pi.
+	a := { 0 . pi . pi/2 . pi/4 . pi/6 } asDataSeries.
+	b := { 0.0 . 0.0 . 1.0 . 1/2 sqrt . 0.5 } asDataSeries.
 	
-	expected := #(10 20 b c d 60 70 80 90 100) asDataSeries.
-	expected keys: #(a b k2 k3 k4 f g h i j).
-	expected name: series name.
-	
-	series replaceFrom: 3 to: 5 with: replacement startingAt: 2.
-	
-	self assert: series equals: expected.
+	self assert: a sin closeTo: b.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testSixth [
+
+	self assert: series sixth equals: 9.
 ]
 
 { #category : #tests }
 DataSeriesTest >> testSort [
-	| cities expected |
+	| expected |
 	
-	cities := #(London Dubai Paris Berlin) asDataSeries.
-	cities keys: #(A B C D).
-	cities name: #Cities.
-	
-	expected := #(Berlin Dubai London Paris) asDataSeries.
-	expected keys: #(D B A C).
-	expected name: #Cities.
-	
-	cities sort.
-	self assert: cities equals: expected.
+	expected := DataSeries
+		withKeys: #(a c b e g f h j i k d)
+		values: #(3 6 7 8 8 9 10 13 15 16 20)
+		name: series name.
+		
+	series sort.
+	self assert: series equals: expected
 ]
 
 { #category : #tests }
 DataSeriesTest >> testSortBlock [
-	| cities expected |
+	| expected |
 	
-	cities := #(London Dubai Paris Berlin) asDataSeries.
-	cities keys: #(A B C D).
-	cities name: #Cities.
-	
-	expected := #(Dubai London Berlin Paris) asDataSeries.
-	expected keys: #(B A D C).
-	expected name: #Cities.
-	
-	cities sort: [ :a :b | a value last <= b value last ].
-	self assert: cities equals: expected.
+	expected := DataSeries
+		withKeys: #(k j i h d g f e c b a)
+		values: #(16 13 15 10 20 8 9 8 6 7 3)
+		name: series name.
+		
+	series sort: [ :a :b | a asString size > b asString size ].
+	self assert: series equals: expected
 ]
 
 { #category : #tests }
 DataSeriesTest >> testSortDescending [
-	| cities expected |
+	| expected |
 	
-	cities := #(London Dubai Paris Berlin) asDataSeries.
-	cities keys: #(A B C D).
-	cities name: #Cities.
+	expected := DataSeries
+		withKeys: #(d k i j h f g e b c a)
+		values: #(20 16 15 13 10 9 8 8 7 6 3)
+		name: series name.
+		
+	series sortDescending.
+	self assert: series equals: expected
+]
+
+{ #category : #tests }
+DataSeriesTest >> testSorted [
+	| expected actual |
 	
-	expected := #(Paris London Dubai Berlin) asDataSeries.
-	expected keys: #(C A B D).
-	expected name: #Cities.
+	expected := DataSeries
+		withKeys: #(a c b e g f h j i k d)
+		values: #(3 6 7 8 8 9 10 13 15 16 20)
+		name: series name.
+		
+	actual := series sorted.
+	self assert: actual equals: expected
+]
+
+{ #category : #tests }
+DataSeriesTest >> testSortedBlock [
+	| expected actual |
 	
-	cities sortDescending.
-	self assert: cities equals: expected.
+	expected := DataSeries
+		withKeys: #(k j i h d g f e c b a)
+		values: #(16 13 15 10 20 8 9 8 6 7 3)
+		name: series name.
+		
+	actual := series sorted: [ :a :b | a asString size > b asString size ].
+	self assert: actual equals: expected
+]
+
+{ #category : #tests }
+DataSeriesTest >> testSortedBlockDoesNotChangeTheReceiver [
+	| expected |
+	
+	expected := DataSeries
+		withKeys: #(a b c d e f g h i j k)
+		values: #(3 7 6 20 8 9 8 10 15 13 16)
+		name: series name.
+		
+	series sorted: [ :a :b | a asString size > b asString size ].
+	self assert: series equals: expected
+]
+
+{ #category : #tests }
+DataSeriesTest >> testSortedDescending [
+	| expected actual |
+	
+	expected := DataSeries
+		withKeys: #(d k i j h f g e b c a)
+		values: #(20 16 15 13 10 9 8 8 7 6 3)
+		name: series name.
+		
+	actual := series sortedDescending.
+	self assert: actual equals: expected
+]
+
+{ #category : #tests }
+DataSeriesTest >> testSortedDescendingDoesNotChangeTheReceiver [
+	| expected |
+	
+	expected := DataSeries
+		withKeys: #(a b c d e f g h i j k)
+		values: #(3 7 6 20 8 9 8 10 15 13 16)
+		name: series name.
+		
+	series sortedDescending.
+	self assert: series equals: expected
+]
+
+{ #category : #tests }
+DataSeriesTest >> testSortedDoesNotChangeTheReceiver [
+	| expected |
+	
+	expected := DataSeries
+		withKeys: #(a b c d e f g h i j k)
+		values: #(3 7 6 20 8 9 8 10 15 13 16)
+		name: series name.
+		
+	series sorted.
+	self assert: series equals: expected
+]
+
+{ #category : #tests }
+DataSeriesTest >> testStdev [
+
+	self assert: series stdev closeTo: 5.00727.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testSubtractElementwise [
+
+	| a b c d |
+	
+	a := #(1 2 3) asDataSeries.
+	b := #(3 6 8) asDataSeries.
+	c := #(-2 -4 -5) asDataSeries.
+	d := #(2 4 5) asDataSeries.
+	
+	self assert: a - b equals: c.
+	self assert: b - a equals: d.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testSummary [
+	| expected actual |
+	
+	expected := DataSeries 
+		withKeys: #(Min '1st Qu.' Median Average '3rd Qu.' Max)
+		values: { 3 . 7 . 9 . (115 / 11) . 15 . 20 }
+		name: series name.
+		
+	actual := series summary.
+	
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testThird [
+
+	self assert: series third equals: 6.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testThirdQuartile [
+
+	self assert: series thirdQuartile equals: 15.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testUniqueValues [
+	| aSeries expected actual |
+	aSeries := DataSeries withKeys: #(a b c d e) values: #(z y y z x).
+	expected := #(x y z).
+	actual := aSeries uniqueValues.
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testValueCounts [
+	| actual expected |
+	
+	expected := DataSeries 
+		withKeys: #(8 16 15 13 10 9 7 6 20 3)
+		values: #(2 1 1 1 1 1 1 1 1 1)
+		name: series name.
+		
+	actual := series valueCounts.
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testVariance [
+
+	self assert: series variance closeTo: 25.07273.
 ]
 
 { #category : #tests }
@@ -489,9 +901,10 @@ DataSeriesTest >> testWithIndexCollect [
 	actual := series withIndexCollect: [ :each :i |
 		each / 10 + i ].
 	
-	expected := (2 to: 20 by: 2) asDataSeries.
-	expected keys: keyArray.
-	expected name: series name.
+	expected := DataSeries
+		withKeys: keyArray
+		values: {(13/10). (27/10). (18/5). 6. (29/5). (69/10). (39/5). 9. (21/2). (113/10). (63/5)}
+		name: 'ExampleSeries'.
 	
 	self assert: actual equals: expected.
 ]
@@ -505,7 +918,7 @@ DataSeriesTest >> testWithIndexDo [
 	series withIndexDo: [ :each :i |
 		sum := sum + (each / i) ].
 	
-	self assert: sum equals: 100.
+	self assert: sum equals: (108173/4620).
 ]
 
 { #category : #tests }
@@ -516,9 +929,10 @@ DataSeriesTest >> testWithKeyCollect [
 	actual := series withKeyCollect: [ :each :key |
 		each / 10 + (keyArray indexOf: key) ].
 	
-	expected := (2 to: 20 by: 2) asDataSeries.
-	expected keys: keyArray.
-	expected name: series name.
+	expected := DataSeries
+		withKeys: keyArray
+		values: {(13/10). (27/10). (18/5). 6. (29/5). (69/10). (39/5). 9. (21/2). (113/10). (63/5)}
+		name: 'ExampleSeries'.
 	
 	self assert: actual equals: expected.
 ]
@@ -532,5 +946,17 @@ DataSeriesTest >> testWithKeyDo [
 	series withKeyDo: [ :each :key |
 		sum := sum + (each / (keyArray indexOf: key)) ].
 	
-	self assert: sum equals: 100.
+	self assert: sum equals: (108173/4620).
+]
+
+{ #category : #tests }
+DataSeriesTest >> testZerothQuartile [
+
+	self assert: series zerothQuartile equals: 3.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testZerothQuartileEqualsMin [
+
+	self assert: series zerothQuartile equals: series min.
 ]

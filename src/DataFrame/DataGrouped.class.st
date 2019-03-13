@@ -7,6 +7,14 @@ Class {
 	#category : #'DataFrame-Core'
 }
 
+{ #category : #comparing }
+DataGrouped >> = anObject [
+	self species == anObject species
+		ifFalse: [ ^ false ].
+		
+	^ self groups = anObject groups
+]
+
 { #category : #private }
 DataGrouped >> apply: aBlock [
 
@@ -27,8 +35,12 @@ DataGrouped >> count [
 
 { #category : #accessing }
 DataGrouped >> groups [
-
 	^ groups
+]
+
+{ #category : #accessing }
+DataGrouped >> groups: anObject [
+	groups := anObject
 ]
 
 { #category : #private }

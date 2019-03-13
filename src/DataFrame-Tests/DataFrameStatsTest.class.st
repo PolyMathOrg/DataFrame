@@ -107,7 +107,7 @@ DataFrameStatsTest >> testMode [
 
 	| expected actual |
 	
-	expected := { 4.7 . 3.2 . 1.4 . 0.2 } asDataSeries.
+	expected := { 6.3 . 3.2 . 1.4 . 0.2 } asDataSeries.
 	expected name: #mode.
 	expected keys: df columnNames.
 	

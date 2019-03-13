@@ -30,7 +30,7 @@ DataSeriesGrouped >> printOn: aStream [
 	super printOn: aStream.
 	aStream cr.
 
-	groups doWithIndex: [ :eachGroup :i |
+	groups withIndexDo: [ :eachGroup :i |
 		aStream
 			nextPutAll: (groups keys at: i) asString;
 			nextPutAll: ': '.
@@ -48,20 +48,22 @@ DataSeriesGrouped >> split: firstSeries by: secondSeries [
 	firstSeries size = secondSeries size
 		ifFalse: [ SizeMismatch signal ].
 	
-	secondUnique := secondSeries unique asArray.
+	secondUnique := secondSeries uniqueValues asArray.
 	
 	groups := secondUnique collect: [ :eachUnique |
 		| aList |
 		aList := LinkedList new.
 		
-		secondSeries doWithIndex: [ :eachSecond :i |
+		secondSeries withIndexDo: [ :eachSecond :i |
 			eachSecond = eachUnique 
-				ifTrue: [ aList add: (firstSeries at: i) ] ].
+				ifTrue: [ aList add: (firstSeries atIndex: i) ] ].
 		
 		aList asDataSeries ].
 	
-	groups := groups asDataSeries.
-	groups keys: secondUnique.
+	groups := DataSeries
+		withKeys: secondUnique
+		values: groups asDataSeries
+		name: firstSeries name.
 	
 	^ self
 ]

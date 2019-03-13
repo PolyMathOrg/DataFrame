@@ -78,25 +78,6 @@ DataFrameAggrGroupTest >> testDataFrameGroupedPrintOn [
 	self assert: actual equals: expected.
 ]
 
-{ #category : #initialization }
-DataFrameAggrGroupTest >> testDataSeriesGroupedPrintOn [
-
-	| expected actual |
-	
-	expected := String new writeStream.
-	expected
-		nextPutAll: 'a DataSeriesGrouped'; cr;
-		nextPutAll: ('Male: a DataSeries [3 items]'); cr;
-		nextPutAll: ('Female: a DataSeries [2 items]').
-	expected := expected contents.
-	
-	actual := String new writeStream.
-	(df group: #total_bill by: #sex) printOn: actual.
-	actual := actual contents.
-	
-	self assert: actual equals: expected.
-]
-
 { #category : #tests }
 DataFrameAggrGroupTest >> testGroupSeriesBySeries [
 
