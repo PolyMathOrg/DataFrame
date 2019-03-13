@@ -83,7 +83,7 @@ DataSeries >> collect: aBlock [
 	^ result
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #statistics }
 DataSeries >> crossTabulateWith: aSeries [
 	| df |
 	
@@ -103,7 +103,12 @@ DataSeries >> crossTabulateWith: aSeries [
 	^ df
 ]
 
-{ #category : #accessing }
+{ #category : #defaults }
+DataSeries >> defaultHeadTailSize [
+	^ 5
+]
+
+{ #category : #defaults }
 DataSeries >> defaultName [
 	^ '(no name)'
 ]
@@ -151,7 +156,7 @@ DataSeries >> fourthQuartile [
 	^ self quartile: 4
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #statistics }
 DataSeries >> frequencyTable [
 	| df count proportion |
 	
@@ -170,6 +175,19 @@ DataSeries >> frequencyTable [
 { #category : #queries }
 DataSeries >> groupBy: otherSeries [
 	^ DataSeriesGrouped group: self by: otherSeries
+]
+
+{ #category : #slicing }
+DataSeries >> head [ 
+	^ self head: self defaultHeadTailSize.
+]
+
+{ #category : #slicing }
+DataSeries >> head: aNumber [
+	^ self species
+		withKeys: (self keys copyFrom: 1 to: aNumber)
+		values: (self values copyFrom: 1 to: aNumber)
+		name: self name.
 ]
 
 { #category : #initialization }
@@ -345,6 +363,19 @@ DataSeries >> summary [
 		at: 'Max' put: self max.
 		
 	^ summary
+]
+
+{ #category : #slicing }
+DataSeries >> tail [
+	^ self tail: self defaultHeadTailSize.
+]
+
+{ #category : #slicing }
+DataSeries >> tail: aNumber [
+	^ self species
+		withKeys: (self keys copyFrom: self size - aNumber + 1 to: self size)
+		values: (self values copyFrom: self size - aNumber + 1 to: self size)
+		name: self name.
 ]
 
 { #category : #accessing }

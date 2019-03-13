@@ -492,6 +492,32 @@ DataSeriesTest >> testGroupBy [
 ]
 
 { #category : #tests }
+DataSeriesTest >> testHead [
+	| expected actual |
+	
+	expected := DataSeries
+		withKeys: #(a b c d e)
+		values: #(3 7 6 20 8)
+		name: series name.
+		
+	actual := series head.
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testHeadN [
+	| expected actual |
+	
+	expected := DataSeries
+		withKeys: #(a b)
+		values: #(3 7)
+		name: series name.
+		
+	actual := series head: 2.
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
 DataSeriesTest >> testInequality [
 
 	| a b |
@@ -850,6 +876,32 @@ DataSeriesTest >> testSummary [
 		
 	actual := series summary.
 	
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testTail [
+	| expected actual |
+	
+	expected := DataSeries
+		withKeys: #(g h i j k)
+		values: #(8 10 15 13 16)
+		name: series name.
+		
+	actual := series tail.
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testTailN [
+	| expected actual |
+	
+	expected := DataSeries
+		withKeys: #(j k)
+		values: #(13 16)
+		name: series name.
+		
+	actual := series tail: 2.
 	self assert: actual equals: expected.
 ]
 
