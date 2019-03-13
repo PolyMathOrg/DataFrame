@@ -191,6 +191,50 @@ DataSeriesTest >> testAverage [
 ]
 
 { #category : #tests }
+DataSeriesTest >> testCloseTo [
+
+	| firstSeries secondSeries |
+	
+	firstSeries := DataSeries withKeys: #(a b c) values: #(1 0.1 2) name: 'A'.
+	secondSeries := DataSeries withKeys: #(a b c) values: #(1 0.10000001 2) name: 'A'.
+	
+	self assert: firstSeries closeTo: secondSeries.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testCloseToDifferentKeys [
+
+	| firstSeries secondSeries |
+	
+	firstSeries := DataSeries withKeys: #(a b c) values: #(1 0.1 2) name: 'A'.
+	secondSeries := DataSeries withKeys: #(x y z) values: #(1 0.10000001 2) name: 'A'.
+	
+	self deny: (firstSeries closeTo: secondSeries).
+]
+
+{ #category : #tests }
+DataSeriesTest >> testCloseToDifferentNames [
+
+	| firstSeries secondSeries |
+	
+	firstSeries := DataSeries withKeys: #(a b c) values: #(1 0.1 2) name: 'A'.
+	secondSeries := DataSeries withKeys: #(a b c) values: #(1 0.10000001 2) name: 'B'.
+	
+	self deny: (firstSeries closeTo: secondSeries).
+]
+
+{ #category : #tests }
+DataSeriesTest >> testCloseToDifferentValues [
+
+	| firstSeries secondSeries |
+	
+	firstSeries := DataSeries withKeys: #(a b c) values: #(1 0.1 2) name: 'A'.
+	secondSeries := DataSeries withKeys: #(a b c) values: #(1 3.10000001 2) name: 'A'.
+	
+	self deny: (firstSeries closeTo: secondSeries).
+]
+
+{ #category : #tests }
 DataSeriesTest >> testCollect [
 
 	| actual expected |

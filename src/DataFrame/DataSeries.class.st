@@ -75,6 +75,24 @@ DataSeries >> atIndex: aNumber put: aValue [
 	^ self at: (self keys at: aNumber) put: aValue
 ]
 
+{ #category : #comparing }
+DataSeries >> closeTo: anObject [
+	self == anObject
+		ifTrue: [^ true].
+
+	(self species == anObject species
+		and: [self size = anObject size])
+		ifFalse: [^ false].
+		
+	(anObject name = self name)
+		ifFalse: [ ^ false ].
+		
+	(anObject keys = self keys)
+		ifFalse: [ ^ false ].
+
+	^ super closeTo: anObject
+]
+
 { #category : #enumerating }
 DataSeries >> collect: aBlock [
 	| result |
