@@ -12,16 +12,8 @@ DataSeriesGrouped class >> group: firstSeries by: secondSeries [
 
 { #category : #private }
 DataSeriesGrouped >> apply: aBlock [
-
-	| result |
-	
-	result := groups collect: [ :eachGroup |
+	^ groups collect: [ :eachGroup |
 		aBlock value: eachGroup ].
-	
-	result := result asDataSeries.
-	result keys: groups keys.
-	
-	^ result
 ]
 
 { #category : #printing }

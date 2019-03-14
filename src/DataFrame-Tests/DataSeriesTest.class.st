@@ -323,7 +323,7 @@ DataSeriesTest >> testCreateDataSeriesAsDataSeries [
 	self assert: dataSeries size equals: 3.
 	self assert: dataSeries asArray equals: #(a b c).
 	self assert: dataSeries keys equals: #(1 2 3).
-	self assert: dataSeries name isNil.
+	self assert: dataSeries name equals: '(no name)'.
 ]
 
 { #category : #tests }
@@ -341,7 +341,7 @@ DataSeriesTest >> testCreateDataSeriesWithKeysValues [
 	self assert: dataSeries size equals: 3.
 	self assert: dataSeries asArray equals: values.
 	self assert: dataSeries keys equals: keys.
-	self assert: dataSeries name isNil.
+	self assert: dataSeries name equals: '(no name)'.
 ]
 
 { #category : #tests }
@@ -375,7 +375,7 @@ DataSeriesTest >> testCreateDataSeriesWithValues [
 	self assert: dataSeries size equals: 3.
 	self assert: dataSeries asArray equals: values.
 	self assert: dataSeries keys equals: #(1 2 3).
-	self assert: dataSeries name isNil.
+	self assert: dataSeries name equals: '(no name)'.
 ]
 
 { #category : #tests }
@@ -405,7 +405,7 @@ DataSeriesTest >> testCreateEmptyDataSeries [
 	self assert: dataSeries size equals: 0.
 	self assert: dataSeries asArray equals: #().
 	self assert: dataSeries keys equals: #().
-	self assert: dataSeries name isNil.
+	self assert: dataSeries name equals: '(no name)'.
 ]
 
 { #category : #tests }

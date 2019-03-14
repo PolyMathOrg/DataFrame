@@ -9,10 +9,13 @@ Class {
 
 { #category : #'instance creation' }
 DataSeries class >> newFrom: aCollection [
+	(aCollection species == self)
+		ifTrue: [ ^ super newFrom: aCollection associations ].
+		
 	"If it's a collection of associations use the superclass implementation"
 	^ super newFrom: ((aCollection first respondsTo: #key)
 		ifTrue: [ aCollection ]
-		ifFalse: [ aCollection collectWithIndex: [ :each :i | i -> each ] ]).
+		ifFalse: [ aCollection withIndexCollect: [ :each :i | i -> each ] ]).
 ]
 
 { #category : #'instance creation' }
@@ -212,6 +215,13 @@ DataSeries >> head: aNumber [
 DataSeries >> initialize [ 
 	super initialize.
 	name := self defaultName.
+]
+
+{ #category : #initialization }
+DataSeries >> initialize: aCapacity [
+	"Make sure that initialize is called and the default name is set"
+	self initialize.
+	^ super initialize: aCapacity.
 ]
 
 { #category : #statistics }
