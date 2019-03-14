@@ -538,6 +538,41 @@ DataFrameTest >> testColumnsAt [
 ]
 
 { #category : #tests }
+DataFrameTest >> testColumnsAtPut [
+	| rowNames columnNames dataFrame newColumns expected |
+	
+	rowNames := #('01:10' '01:30' '01:50' '02:10' '02:30') collect: #asTime.
+	columnNames := #(temperature precipitation type).
+	
+	dataFrame := DataFrame
+		withRows: #(
+			(2.4 true rain)
+			(0.5 true rain)
+			(-1.2 true snow)
+			(-2.3 false -)
+			(3.2 true rain))
+		rowNames: rowNames
+		columnNames: columnNames.
+		
+	newColumns := #(
+		(1 1 1 1 1)
+		(2 2 2 2 2)).
+		
+	expected := DataFrame
+		withRows: #(
+			(2 true 1)
+			(2 true 1)
+			(2 true 1)
+			(2 false 1)
+			(2 true 1))
+		rowNames: rowNames
+		columnNames: columnNames.
+	
+	dataFrame columnsAt: #(3 1) put: newColumns.
+	self assert: dataFrame equals: expected.
+]
+
+{ #category : #tests }
 DataFrameTest >> testColumnsFromTo [
 
 	| actualDataFrame expectedDataFrame |
@@ -553,6 +588,76 @@ DataFrameTest >> testColumnsFromTo [
 	actualDataFrame := df columnsFrom: 2 to: 3.
 	
 	self assert: actualDataFrame equals: expectedDataFrame.
+]
+
+{ #category : #tests }
+DataFrameTest >> testColumnsFromToPut [
+	| rowNames columnNames dataFrame newColumns expected |
+	
+	rowNames := #('01:10' '01:30' '01:50' '02:10' '02:30') collect: #asTime.
+	columnNames := #(temperature precipitation type).
+	
+	dataFrame := DataFrame
+		withRows: #(
+			(2.4 true rain)
+			(0.5 true rain)
+			(-1.2 true snow)
+			(-2.3 false -)
+			(3.2 true rain))
+		rowNames: rowNames
+		columnNames: columnNames.
+		
+	newColumns := #(
+		(1 1 1 1 1)
+		(2 2 2 2 2)).
+		
+	expected := DataFrame
+		withRows: #(
+			(2.4 2 1)
+			(0.5 2 1)
+			(-1.2 2 1)
+			(-2.3 2 1)
+			(3.2 2 1))
+		rowNames: rowNames
+		columnNames: columnNames.
+	
+	dataFrame columnsFrom: 3 to: 2 put: newColumns.
+	self assert: dataFrame equals: expected.
+]
+
+{ #category : #tests }
+DataFrameTest >> testColumnsPut [
+	| rowNames columnNames dataFrame newColumns expected |
+	
+	rowNames := #('01:10' '01:30' '01:50' '02:10' '02:30') collect: #asTime.
+	columnNames := #(temperature precipitation type).
+	
+	dataFrame := DataFrame
+		withRows: #(
+			(2.4 true rain)
+			(0.5 true rain)
+			(-1.2 true snow)
+			(-2.3 false -)
+			(3.2 true rain))
+		rowNames: rowNames
+		columnNames: columnNames.
+		
+	newColumns := #(
+		(1 1 1 1 1)
+		(2 2 2 2 2)).
+		
+	expected := DataFrame
+		withRows: #(
+			(2 true 1)
+			(2 true 1)
+			(2 true 1)
+			(2 false 1)
+			(2 true 1))
+		rowNames: rowNames
+		columnNames: columnNames.
+	
+	dataFrame columns: #(type temperature) put: newColumns.
+	self assert: dataFrame equals: expected.
 ]
 
 { #category : #tests }
@@ -1190,6 +1295,42 @@ DataFrameTest >> testRowsAt [
 ]
 
 { #category : #tests }
+DataFrameTest >> testRowsAtPut [
+	| rowNames columnNames dataFrame newRows expected |
+	
+	rowNames := #('01:10' '01:30' '01:50' '02:10' '02:30') collect: #asTime.
+	columnNames := #(temperature precipitation type).
+	
+	dataFrame := DataFrame
+		withRows: #(
+			(2.4 true rain)
+			(0.5 true rain)
+			(-1.2 true snow)
+			(-2.3 false -)
+			(3.2 true rain))
+		rowNames: rowNames
+		columnNames: columnNames.
+		
+	newRows := #(
+		(1 1 1)
+		(2 2 2)
+		(3 3 3)).
+		
+	expected := DataFrame
+		withRows: #(
+			(2.4 true rain)
+			(3 3 3)
+			(1 1 1)
+			(-2.3 false -)
+			(2 2 2))
+		rowNames: rowNames
+		columnNames: columnNames.
+	
+	dataFrame rowsAt: #(3 5 2) put: newRows.
+	self assert: dataFrame equals: expected.
+]
+
+{ #category : #tests }
 DataFrameTest >> testRowsFromTo [
 
 	| actualDataFrame expectedDataFrame |
@@ -1204,6 +1345,78 @@ DataFrameTest >> testRowsFromTo [
 	actualDataFrame := df rowsFrom: 2 to: 3.
 	
 	self assert: actualDataFrame equals: expectedDataFrame.
+]
+
+{ #category : #tests }
+DataFrameTest >> testRowsFromToPut [
+	| rowNames columnNames dataFrame newRows expected |
+	
+	rowNames := #('01:10' '01:30' '01:50' '02:10' '02:30') collect: #asTime.
+	columnNames := #(temperature precipitation type).
+	
+	dataFrame := DataFrame
+		withRows: #(
+			(2.4 true rain)
+			(0.5 true rain)
+			(-1.2 true snow)
+			(-2.3 false -)
+			(3.2 true rain))
+		rowNames: rowNames
+		columnNames: columnNames.
+		
+	newRows := #(
+		(1 1 1)
+		(2 2 2)
+		(3 3 3)).
+		
+	expected := DataFrame
+		withRows: #(
+			(2.4 true rain)
+			(3 3 3)
+			(2 2 2)
+			(1 1 1)
+			(3.2 true rain))
+		rowNames: rowNames
+		columnNames: columnNames.
+	
+	dataFrame rowsFrom: 4 to: 2 put: newRows.
+	self assert: dataFrame equals: expected.
+]
+
+{ #category : #tests }
+DataFrameTest >> testRowsPut [
+	| rowNames columnNames dataFrame newRows expected |
+	
+	rowNames := #('01:10' '01:30' '01:50' '02:10' '02:30') collect: #asTime.
+	columnNames := #(temperature precipitation type).
+	
+	dataFrame := DataFrame
+		withRows: #(
+			(2.4 true rain)
+			(0.5 true rain)
+			(-1.2 true snow)
+			(-2.3 false -)
+			(3.2 true rain))
+		rowNames: rowNames
+		columnNames: columnNames.
+		
+	newRows := #(
+		(1 1 1)
+		(2 2 2)
+		(3 3 3)).
+		
+	expected := DataFrame
+		withRows: #(
+			(2.4 true rain)
+			(3 3 3)
+			(1 1 1)
+			(-2.3 false -)
+			(2 2 2))
+		rowNames: rowNames
+		columnNames: columnNames.
+	
+	dataFrame rows: { '01:50' asTime . '02:30' asTime . '01:30' asTime } put: newRows.
+	self assert: dataFrame equals: expected.
 ]
 
 { #category : #tests }

@@ -554,6 +554,16 @@ DataFrame >> columns: anArrayOfNames [
 ]
 
 { #category : #accessing }
+DataFrame >> columns: anArrayOfColumnNames put: anArrayOfArrays [
+	
+	anArrayOfArrays size = anArrayOfColumnNames size
+		ifFalse: [ SizeMismatch signal ].	
+	
+	anArrayOfColumnNames with: anArrayOfArrays do: [ :name :array |
+		self column: name put: array ].
+]
+
+{ #category : #accessing }
 DataFrame >> columnsAt: anArrayOfNumbers [
 
 	| newColumnNames |
@@ -568,6 +578,16 @@ DataFrame >> columnsAt: anArrayOfNumbers [
 ]
 
 { #category : #accessing }
+DataFrame >> columnsAt: anArrayOfNumbers put: anArrayOfArrays [
+	
+	anArrayOfArrays size = anArrayOfNumbers size
+		ifFalse: [ SizeMismatch signal ].	
+	
+	anArrayOfNumbers with: anArrayOfArrays do: [ :index :array |
+		self columnAt: index put: array ].
+]
+
+{ #category : #accessing }
 DataFrame >> columnsFrom: begin to: end [
 
 	| array |
@@ -577,6 +597,22 @@ DataFrame >> columnsFrom: begin to: end [
 		ifFalse: [ (end to: begin) asArray reverse ].
 	
 	^ self columnsAt: array.
+]
+
+{ #category : #accessing }
+DataFrame >> columnsFrom: firstNumber to: secondNumber put: anArrayOfArrays [
+
+	| interval |
+	
+	anArrayOfArrays size = ((firstNumber - secondNumber) abs + 1)
+		ifFalse: [ SizeMismatch signal ].	
+			
+	interval := secondNumber >= firstNumber
+		ifTrue: [ (firstNumber to: secondNumber) ]
+		ifFalse: [ (secondNumber to: firstNumber) reversed ].
+	
+	interval withIndexDo: [ :columnIndex :i |
+		self columnAt: columnIndex put: (anArrayOfArrays at: i) ].
 ]
 
 { #category : #accessing }
@@ -932,6 +968,16 @@ DataFrame >> rows: anArrayOfNames [
 ]
 
 { #category : #accessing }
+DataFrame >> rows: anArrayOfRowNames put: anArrayOfArrays [
+	
+	anArrayOfArrays size = anArrayOfRowNames size
+		ifFalse: [ SizeMismatch signal ].	
+	
+	anArrayOfRowNames with: anArrayOfArrays do: [ :name :array |
+		self row: name put: array ].
+]
+
+{ #category : #accessing }
 DataFrame >> rowsAt: anArrayOfNumbers [
 
 	| newRowNames |
@@ -946,9 +992,35 @@ DataFrame >> rowsAt: anArrayOfNumbers [
 ]
 
 { #category : #accessing }
+DataFrame >> rowsAt: anArrayOfNumbers put: anArrayOfArrays [
+	
+	anArrayOfArrays size = anArrayOfNumbers size
+		ifFalse: [ SizeMismatch signal ].	
+	
+	anArrayOfNumbers with: anArrayOfArrays do: [ :index :array |
+		self rowAt: index put: array ].
+]
+
+{ #category : #accessing }
 DataFrame >> rowsFrom: begin to: end [
 
 	^ self rowsAt: (begin to: end).
+]
+
+{ #category : #accessing }
+DataFrame >> rowsFrom: firstNumber to: secondNumber put: anArrayOfArrays [
+
+	| interval |
+	
+	anArrayOfArrays size = ((firstNumber - secondNumber) abs + 1)
+		ifFalse: [ SizeMismatch signal ].	
+			
+	interval := secondNumber >= firstNumber
+		ifTrue: [ (firstNumber to: secondNumber) ]
+		ifFalse: [ (secondNumber to: firstNumber) reversed ].
+	
+	interval withIndexDo: [ :rowIndex :i |
+		self rowAt: rowIndex put: (anArrayOfArrays at: i) ].
 ]
 
 { #category : #enumerating }
