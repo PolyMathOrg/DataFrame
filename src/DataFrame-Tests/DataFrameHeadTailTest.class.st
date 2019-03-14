@@ -105,64 +105,6 @@ DataFrameHeadTailTest >> testDataFrameTailN [
 ]
 
 { #category : #tests }
-DataFrameHeadTailTest >> testDataSeriesHead [
-
-	| actual expected |
-	
-	expected := #(5.1 4.9 4.7 7 6.4) asDataSeries.
-	expected name: series name.
-	expected keys: (1 to: series defaultHeadTailSize).
-	
-	actual := series head.
-
-	self assert: actual equals: expected.
-]
-
-{ #category : #tests }
-DataFrameHeadTailTest >> testDataSeriesHeadN [
-
-	| actual expected |
-	
-	expected := #(5.1 4.9 4.7) asDataSeries.
-	expected name: series name.
-	expected keys: (1 to: 3).
-	
-	actual := series head: 3.
-
-	self assert: actual equals: expected.
-]
-
-{ #category : #tests }
-DataFrameHeadTailTest >> testDataSeriesTail [
-
-	| actual expected |
-	
-	expected := #(6.4 6.9 6.3 5.8 7.1) asDataSeries.
-	expected name: series name.
-	expected keys:
-		(series size - series defaultHeadTailSize + 1 to: series size).
-	
-	actual := series tail.
-
-	self assert: actual equals: expected.
-]
-
-{ #category : #tests }
-DataFrameHeadTailTest >> testDataSeriesTailN [
-
-	| actual expected |
-	
-	expected := #(6.3 5.8 7.1) asDataSeries.
-	expected name: series name.
-	expected keys:
-		(series size - 3 + 1 to: series size).
-	
-	actual := series tail: 3.
-
-	self assert: actual equals: expected.
-]
-
-{ #category : #tests }
 DataFrameHeadTailTest >> testDefaultHeadTailSize [
 
 	self assert: df defaultHeadTailSize equals: 5.

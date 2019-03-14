@@ -1,658 +1,502 @@
-"
-I am a data series, suitable for data analysis.
-"
 Class {
 	#name : #DataSeries,
-	#superclass : #SequenceableCollection,
+	#superclass : #OrderedDictionary,
 	#instVars : [
-		'contents',
-		'keys',
 		'name'
 	],
 	#category : #'DataFrame-Core'
 }
 
 { #category : #'instance creation' }
-DataSeries class >> new: aNumber [
-
-	^ self new initialize: aNumber.
-	
+DataSeries class >> newFrom: aCollection [
+	(aCollection species == self)
+		ifTrue: [ ^ super newFrom: aCollection associations ].
+		
+	"If it's a collection of associations use the superclass implementation"
+	^ super newFrom: ((aCollection first respondsTo: #key)
+		ifTrue: [ aCollection ]
+		ifFalse: [ aCollection withIndexCollect: [ :each :i | i -> each ] ]).
 ]
 
 { #category : #'instance creation' }
-DataSeries class >> withKeys: anArrayOfKeys [
-	
-	| series |
-	series := self new: anArrayOfKeys size.
-	series keys: anArrayOfKeys.
-	^ series.
-		
-	
+DataSeries class >> withKeys: keys values: values [
+	^ self newFromKeys: keys andValues: values 
 ]
 
 { #category : #'instance creation' }
-DataSeries class >> withKeys: anArrayOfKeys name: aName [
-	
-	| series |
-	series := self withKeys: anArrayOfKeys.
-	series name: aName.
-	^ series.
-		
-	
+DataSeries class >> withKeys: keys values: values name: aName [
+	^ (self withKeys: keys values: values) name: aName; yourself
 ]
 
 { #category : #'instance creation' }
-DataSeries class >> withName: aName [
-	
-	| series |
-	series := self new.
-	series name: aName.
-	^ series.
-		
-	
+DataSeries class >> withValues: values [
+	| keys |
+	keys := (1 to: values size) asArray. 
+	^ self withKeys: keys values: values 
 ]
 
 { #category : #'instance creation' }
-DataSeries class >> withValues: anArray [
-	
-	| series |
-	series := self new: anArray size.
-	series fillWithValuesOf: anArray.
-	^ series.
-		
-	
-]
-
-{ #category : #'instance creation' }
-DataSeries class >> withValues: anArray keys: anArrayOfKeys [
-	
-	| series |
-	series := self withValues: anArray.
-	series keys: anArrayOfKeys.
-	^ series.
-		
-	
-]
-
-{ #category : #'instance creation' }
-DataSeries class >> withValues: anArray keys: anArrayOfKeys name: aName [
-	
-	| series |
-	series := self withValues: anArray name: aName.
-	series keys: anArrayOfKeys.
-	^ series.
-		
-	
-]
-
-{ #category : #'instance creation' }
-DataSeries class >> withValues: anArray name: aName [
-	
-	| series |
-	series := self withValues: anArray.
-	series name: aName.
-	^ series.
-		
-	
+DataSeries class >> withValues: values name: aName [
+	| keys |
+	keys := (1 to: values size) asArray. 
+	^ (self withKeys: keys values: values) name: aName; yourself
 ]
 
 { #category : #comparing }
-DataSeries >> = otherSeries [
-
-	(otherSeries isKindOf: DataSeries)
+DataSeries >> = anObject [
+	(super = anObject)
 		ifFalse: [ ^ false ].
-
-	"I'm not sure if names should be considered when testing for equality"
-	"self name = otherSeries name
-		ifFalse: [ ^ false ]."
 		
-	self keys = otherSeries keys
-		ifFalse: [ ^ false ].
-
-	^ (1 to: self size) inject: true into: [ :allEqual :i |
-		| selfCell otherCell |
-		selfCell := self at: i.
-		otherCell := otherSeries at: i.
-		
-		(allEqual and: (selfCell = otherCell))
-			ifTrue: [ true ]
-			ifFalse: [ 
-				(selfCell isNumber and: otherCell isNumber)
-					ifFalse: [ false ]
-					ifTrue: [ (selfCell isNaN and: otherCell isNaN) ] ] ].
+	^ anObject name = self name
+		"order of keys"
+		and: [ anObject keys = self keys ]
 ]
 
-{ #category : #adding }
-DataSeries >> add: aValue atKey: aKey [
+{ #category : #adapting }
+DataSeries >> adaptToCollection: rcvr andSend: selector [
+	"If I am involved in arithmetic with another Collection, return a Collection of
+	the results of each element combined with the scalar in that expression."
 
-	contents add: aValue.
-	keys := keys copyWith: aKey.
-]
-
-{ #category : #converting }
-DataSeries >> asDataFrame [
-
-	| df |
-	df := DataFrame withColumns: { self }.
-	df columnNames: { self name }.
-	df rowNames: self keys.
-	^ df
-]
-
-{ #category : #converting }
-DataSeries >> asDataSeries [
-
-	^ DataSeries newFrom: self.
-]
-
-{ #category : #converting }
-DataSeries >> asDictionary [
-	^ Dictionary newFromKeys: keys andValues: contents
+	(rcvr isSequenceable and: [ self isSequenceable ]) ifFalse:
+		[self error: 'Only sequenceable collections may be combined arithmetically'].
+	^ rcvr withSeries: self collect:
+		[:rcvrElement :myElement | rcvrElement perform: selector with: myElement]
 ]
 
 { #category : #accessing }
-DataSeries >> at: aNumber [
-
-	^ contents at: aNumber
+DataSeries >> atIndex: aNumber [
+	^ self at: (self keys at: aNumber)
 ]
 
 { #category : #accessing }
-DataSeries >> at: aNumber put: aValue [
-
-	contents at: aNumber put: aValue.
+DataSeries >> atIndex: aNumber ifAbsent: aBlock [
+	^ [ self at: (self keys at: aNumber) ] on: SubscriptOutOfBounds do: aBlock
 ]
 
 { #category : #accessing }
-DataSeries >> atKey: aKey [
-
-	^ self atKey: aKey ifAbsent: [
-		NotFoundError signal:
-			'Key ',
-			aKey asString,
-			' was not found in ',
-			self class asString ].
-]
-
-{ #category : #accessing }
-DataSeries >> atKey: aKey ifAbsent: exceptionBlock [
-	
-	| index |
-	index := self indexOfKey: aKey ifAbsent: exceptionBlock.
-		
-	"In case contents and keys have different sizes"
-	^ contents at: index ifAbsent: exceptionBlock.
-]
-
-{ #category : #accessing }
-DataSeries >> atKey: aKey put: aValue [
-
-	| index |
-	index := keys indexOf: aKey.
-	
-	index = 0
-		"a key was not found - create a new element"
-		ifTrue: [
-			self add: aValue atKey: aKey ]
-		"a key was found - update the value"
-		ifFalse: [
-			self at: index put: aValue ].
+DataSeries >> atIndex: aNumber put: aValue [
+	^ self at: (self keys at: aNumber) put: aValue
 ]
 
 { #category : #comparing }
-DataSeries >> closeTo: otherSeries [
+DataSeries >> closeTo: anObject [
+	self == anObject
+		ifTrue: [^ true].
 
-	(otherSeries isKindOf: DataSeries)
-		ifFalse: [ ^ false ].
-
-	"I'm not sure if names should be considered when testing for equality"
-	self name = otherSeries name
+	(self species == anObject species
+		and: [self size = anObject size])
+		ifFalse: [^ false].
+		
+	(anObject name = self name)
 		ifFalse: [ ^ false ].
 		
-	self keys = otherSeries keys
+	(anObject keys = self keys)
 		ifFalse: [ ^ false ].
 
-	^ (1 to: self size) inject: true into: [ :allEqual :i |
-		| selfCell otherCell |
-		selfCell := self at: i.
-		otherCell := otherSeries at: i.
-		
-		allEqual and: ((selfCell closeTo: otherCell) or:
-			((selfCell isNumber and: otherCell isNumber) and:
-			(selfCell isNaN and: otherCell isNaN))) ].
+	^ super closeTo: anObject
 ]
 
 { #category : #enumerating }
 DataSeries >> collect: aBlock [
-
-	| series |
-	series := super collect: aBlock.
-	series name: self name.
-	series keys: self keys.
-	^ series
+	| result |
+	result :=  super collect: aBlock.
+	result name: self name.
+	^ result
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #statistics }
 DataSeries >> crossTabulateWith: aSeries [
-
 	| df |
 	
 	(self size = aSeries size)
 		ifFalse: [ SizeMismatch signal ].
 	
-	"TODO: Rewrite it with DataFrame>>select:"
 	df := DataFrame withRows: 
-		(self unique asArray collect: [ :each1 |
-			aSeries unique asArray collect: [ :each2 |
+		(self uniqueValues collect: [ :each1 |
+			aSeries uniqueValues collect: [ :each2 |
 				(1 to: self size) inject: 0 into: [ :accum :i |
 					(((self at: i) = each1) and: ((aSeries at: i) = each2))
 						ifTrue: [ accum + 1 ]
 						ifFalse: [ accum ] ] ] ]).
 		
-	df rowNames: self unique asArray.
-	df columnNames: aSeries unique asArray.
+	df rowNames: self uniqueValues.
+	df columnNames: aSeries uniqueValues.
 	^ df
 ]
 
-{ #category : #accessing }
+{ #category : #defaults }
 DataSeries >> defaultHeadTailSize [
-
 	^ 5
 ]
 
-{ #category : #'reflective operations' }
-DataSeries >> doesNotUnderstand: aMessage [
-
-	^ self collect: [ :each |
-		each
-			perform: aMessage selector
-			withArguments: aMessage arguments ]
-	
+{ #category : #defaults }
+DataSeries >> defaultName [
+	^ '(no name)'
 ]
 
-{ #category : #initialization }
-DataSeries >> fillWithValuesOf: anArray [
-"Fills a newly created series with values of an array. This method is called from the fromArray: class method. It should only be called after initialize: as it is assumed that the memory was already allocated and the size of the self is equal to the size of array.
-This method is private and should not be used in custom applications"
+{ #category : #accessing }
+DataSeries >> eighth [
+	"Answer the eighth element of the receiver.
+	Raise an error if there are not enough elements."
+	^ self atIndex: 8
+]
 
-	anArray doWithIndex: [ :each :i |
-		contents at: i put: each ].
+{ #category : #errors }
+DataSeries >> errorKeysMismatch [
+	Error signal: 'Keys of two series do not match'
+]
+
+{ #category : #accessing }
+DataSeries >> fifth [
+	"Answer the fifth element of the receiver.
+	Raise an error if there are not enough elements."
+	^ self atIndex: 5
+]
+
+{ #category : #accessing }
+DataSeries >> first [ 
+	"Answer the first element of the receiver.
+	Raise an error if there are not enough elements."
+	^ self atIndex: 1
 ]
 
 { #category : #statistics }
 DataSeries >> firstQuartile [
-	
 	^ self quartile: 1
+]
+
+{ #category : #accessing }
+DataSeries >> fourth [
+	"Answer the fourth element of the receiver.
+	Raise an error if there are not enough elements."
+	^ self atIndex: 4
+]
+
+{ #category : #statistics }
+DataSeries >> fourthQuartile [
+	^ self quartile: 4
 ]
 
 { #category : #statistics }
 DataSeries >> frequencyTable [
-
 	| df count proportion |
 	
-	count := (self groupBy: self) count.
+	count := self valueCounts.
 	proportion := count / self size.
 	
 	df := DataFrame withColumns:
-		{ count . proportion }.
+		{ count asArray . proportion asArray }.
 		
-	df rowNames: self unique asArray.
+	df rowNames: self uniqueValues asArray.
 	df columnNames: #(Count Proportion).
 	
 	^ df
 ]
 
-{ #category : #accessing }
-DataSeries >> from: start to: end [
-
-	| series |
-	series := ((start to: end) collect: [ :i |
-		self at: i]) asDataSeries.
-	
-	series name: self name.
-	series keys: (self keys copyFrom: start to: end).
-	^ series.
+{ #category : #queries }
+DataSeries >> groupBy: otherSeries [
+	^ DataSeriesGrouped group: self by: otherSeries
 ]
 
-{ #category : #'as yet unclassified' }
-DataSeries >> groupBy: aSeries [
-
-	^ DataSeriesGrouped group: self by: aSeries
-]
-
-{ #category : #'gt-inspector-extension' }
-DataSeries >> gtInspectorItemsIn: composite [
-	self asDictionary gtInspectorItemsIn: composite
-]
-
-{ #category : #accessing }
-DataSeries >> head [
-
+{ #category : #slicing }
+DataSeries >> head [ 
 	^ self head: self defaultHeadTailSize.
 ]
 
-{ #category : #accessing }
+{ #category : #slicing }
 DataSeries >> head: aNumber [
-
-	| n |
-	
-	self size > aNumber
-		ifTrue: [ n := aNumber ]
-		ifFalse: [ n := self size ].
-		
-	^ self from: 1 to: n.
-]
-
-{ #category : #private }
-DataSeries >> indexOfKey: aKey [
-
-	^ self indexOfKey: aKey ifAbsent: [
-		NotFoundError signal:
-			'Key ',
-			aKey asString,
-			' was not found in ',
-			self class asString ].
-]
-
-{ #category : #private }
-DataSeries >> indexOfKey: aKey ifAbsent: aBlock [
-
-	| index |
-	index := keys indexOf: aKey.
-	
-	index = 0
-		ifTrue: [ ^ aBlock value ].
-		
-	^ index
+	^ self species
+		withKeys: (self keys copyFrom: 1 to: aNumber)
+		values: (self values copyFrom: 1 to: aNumber)
+		name: self name.
 ]
 
 { #category : #initialization }
-DataSeries >> initialize [
-
+DataSeries >> initialize [ 
 	super initialize.
-	contents := DataSeriesInternal new.
-	keys := OrderedCollection new.
+	name := self defaultName.
 ]
 
 { #category : #initialization }
-DataSeries >> initialize: aNumber [
-"Creates an empty DataSeries of a given size. Keys are set to their default values"
-
-	contents := DataSeriesInternal new: aNumber.
-	self setDefaultKeys.
-	^ self
+DataSeries >> initialize: aCapacity [
+	"Make sure that initialize is called and the default name is set"
+	self initialize.
+	^ super initialize: aCapacity.
 ]
 
 { #category : #statistics }
 DataSeries >> interquartileRange [
+	^ self thirdQuartile - self firstQuartile 
+]
 
-	^ self thirdQuartile - self firstQuartile
+{ #category : #testing }
+DataSeries >> isSequenceable [
+	^ true
 ]
 
 { #category : #accessing }
-DataSeries >> keyAtValue: value [
-
-	^ self keyAtValue: value ifAbsent: [ ValueNotFound signalFor: value ]
+DataSeries >> keys: anArrayOfKeys [
+	| keys |
+	keys := anArrayOfKeys asArray deepCopy.
+	dictionary := self dictionaryClass newFromKeys: keys andValues: self values.
+	orderedKeys := keys.
 ]
 
 { #category : #accessing }
-DataSeries >> keyAtValue: value ifAbsent: exceptionBlock [
-
-	| index |
-	index := contents indexOf: value.
-	
-	index = 0
-		ifTrue: [ ^ exceptionBlock value ]
-		ifFalse: [ ^ keys at: index ].
+DataSeries >> last [
+	"Answer the last element of the receiver.
+	Raise an error if there are not enough elements."
+	^ self atIndex: self size
 ]
 
 { #category : #accessing }
-DataSeries >> keys [
-
-	^ keys
-]
-
-{ #category : #accessing }
-DataSeries >> keys: anArray [
-
-	keys := anArray asOrderedCollection.
-]
-
-{ #category : #sorting }
-DataSeries >> mergeFirst: first middle: middle last: last into: dst by: aBlock [
-	"Private. Merge the sorted ranges [first..middle] and [middle+1..last] 
-	of the receiver into the range [first..last] of dst."
-
-	| i1 i2 key1 key2 val1 val2 out |
-	i1 := first.
-	i2 := middle + 1.
-	key1 := self keys at: i1.
-	key2 := self keys at: i2.
-	val1 := self at: i1.
-	val2 := self at: i2.
-	out := first - 1.  "will be pre-incremented"
-
-	"select 'lower' half of the elements based on comparator"
-	[ (i1 <= middle) and: [i2 <= last] ]
-		whileTrue: [
-			out := out + 1.
-			
-			(aBlock value: val1 value: val2)
-				ifTrue: [
-					dst at: out put: val1.
-					dst keys at: out put: key1.
-					i1 := i1 + 1.
-					val1 := self at: i1.
-					key1 := self keys at: i1 ]
-				
-				ifFalse: [
-					dst at: out put: val2.
-					dst keys at: out put: key2.
-					i2 := i2 + 1.
-					i2 <= last
-						ifTrue: [
-							val2 := self at: i2.
-							key2 := self keys at: i2 ] ] ].
-
-	"copy the remaining elements"
-	i1 <= middle
-		ifTrue: [dst replaceFrom: out + 1 to: last with: self startingAt: i1]
-		ifFalse: [dst replaceFrom: out + 1 to: last with: self startingAt: i2]
-]
-
-{ #category : #statistics }
 DataSeries >> mode [
-
 	| valueCounts maxCount |
-	
 	valueCounts := (self groupBy: self) count.
 	maxCount := valueCounts max.
-	
 	^ valueCounts keyAtValue: maxCount.
 ]
 
 { #category : #accessing }
 DataSeries >> name [
-
 	^ name
 ]
 
 { #category : #accessing }
-DataSeries >> name: aString [
-
-	name := aString
+DataSeries >> name: anObject [
+	name := anObject
 ]
 
-{ #category : #copying }
-DataSeries >> postCopy [
-
-	keys := keys copy.
-	contents := contents copy.
-]
-
-{ #category : #printing }
-DataSeries >> printOn: aStream [
-
-	| title |
-	title := self class name.
-	
-	aStream
-		nextPutAll: (title first isVowel ifTrue: ['an '] ifFalse: ['a ']);
-		nextPutAll: title;
-		nextPutAll: ' [';
-		nextPutAll: self size asString;
-		nextPutAll: (self size % 10 = 1 ifTrue: [' item]'] ifFalse: [' items]']).
+{ #category : #accessing }
+DataSeries >> ninth [
+	"Answer the ninth element of the receiver.
+	Raise an error if there are not enough elements."
+	^ self atIndex: 9
 ]
 
 { #category : #statistics }
-DataSeries >> quantile: number [
-	
+DataSeries >> quantile: aNumber [
 	| sortedSeries index |
+	sortedSeries := self sort.
 	
-	sortedSeries := self asArray sort asDataSeries.
-	
-	number = 0
+	aNumber = 0
 		ifTrue: [ ^ sortedSeries first ].
 	
-	index := (sortedSeries size * (number / 100)) ceiling.
-	^ sortedSeries at: index.
+	index := (sortedSeries size * (aNumber / 100)) ceiling.
+	^ sortedSeries atIndex: index.
 ]
 
 { #category : #statistics }
-DataSeries >> quartile: number [
-	
-	^ self quantile: (25 * number)
+DataSeries >> quartile: aNumber [
+	^ self quantile: (25 * aNumber)
 ]
 
 { #category : #removing }
-DataSeries >> removeAt: aNumber [
-
-	contents removeAt: aNumber.
-	keys := keys copyWithoutIndex: aNumber.
+DataSeries >> removeAt: aKey [
+	^ self removeKey: aKey
 ]
 
 { #category : #removing }
-DataSeries >> removeAtKey: aKey [
-
-	| index |
-	index := self indexOfKey: aKey.
-	self removeAt: index.
+DataSeries >> removeAtIndex: aNumber [
+	^ self removeAt: (self keys at: aNumber)
 ]
 
 { #category : #accessing }
-DataSeries >> replaceFrom: start to: stop with: replacement [
+DataSeries >> second [
+	"Answer the second element of the receiver.
+	Raise an error if there are not enough elements."
+	^ self atIndex: 2
+]
 
-	(replacement isKindOf: self class)
-		ifTrue: [ 
-			keys
-				replaceFrom: start
-				to: stop
-				with: replacement keys ].
-		
-	super replaceFrom: start to: stop with: replacement.
+{ #category : #statistics }
+DataSeries >> secondQuartile [
+	^ self quartile: 2
 ]
 
 { #category : #accessing }
-DataSeries >> replaceFrom: start to: stop with: replacement startingAt: repStart [ 
-
-	(replacement isKindOf: self class)
-		ifTrue: [ 
-			keys
-				replaceFrom: start
-				to: stop
-				with: replacement keys
-				startingAt: repStart ].
-		
-	super replaceFrom: start to: stop with: replacement startingAt: repStart .
-]
-
-{ #category : #initialization }
-DataSeries >> setDefaultKeys [
-"Sets the keys of a series to their default values - to an array of numbers from 1 to self size. This method can be reimplemented by a subclass to provide different default keys"
-
-	keys := (1 to: self size) asOrderedCollection.
+DataSeries >> seventh [
+	"Answer the seventh element of the receiver.
+	Raise an error if there are not enough elements."
+	^ self atIndex: 7
 ]
 
 { #category : #accessing }
-DataSeries >> size [
+DataSeries >> sixth [
+	"Answer the sixth element of the receiver.
+	Raise an error if there are not enough elements."
+	^ self atIndex: 6
+]
 
-	^ contents size
+{ #category : #sorting }
+DataSeries >> sort [
+	self sort: [ :a :b | a <= b ]
+]
+
+{ #category : #sorting }
+DataSeries >> sort: aBlock [
+	| associationBlock |
+	associationBlock := [ :a :b | aBlock value: a value value: b value ].
+	self sortAssociations: associationBlock
+]
+
+{ #category : #sorting }
+DataSeries >> sortAssociations: aBlock [
+	| sortedAssociations |
+	sortedAssociations := self associations sort: aBlock.
+	self removeAll.
+	self addAll: sortedAssociations.
 ]
 
 { #category : #sorting }
 DataSeries >> sortDescending [
-	^ self sortUsing: [ :a :b | a >= b ]
+	self sort: [ :a :b | a > b ]
 ]
 
 { #category : #sorting }
-DataSeries >> sortUsing: aBlock [
-	^ self sort: aBlock
+DataSeries >> sorted [
+	^ self sorted: [ :a :b | a <= b ]
 ]
 
-{ #category : #accessing }
-DataSeries >> summary [
+{ #category : #sorting }
+DataSeries >> sorted: aBlock [
+	| associationBlock |
+	associationBlock := [ :a :b | aBlock value: a value value: b value ].
+	^ self sortedAssociations: associationBlock
+]
 
+{ #category : #sorting }
+DataSeries >> sortedAssociations: aBlock [
+	| sortedAssociations |
+	sortedAssociations := self associations sort: aBlock.
+	^ sortedAssociations asDataSeries name: self name; yourself
+]
+
+{ #category : #sorting }
+DataSeries >> sortedDescending [
+	^ self sorted: [ :a :b | a > b ]
+]
+
+{ #category : #statistics }
+DataSeries >> summary [
 	| summary |
-	summary := self class new.
+	summary := self species new.
 	summary name: self name.
 	
 	summary
-		atKey: 'Min' put: self min;
-		atKey: '1st Qu.' put: self firstQuartile;
-		atKey: 'Median' put: self median;
-		atKey: 'Average' put: self average;
-		atKey: '3rd Qu.' put: self thirdQuartile;
-		atKey: 'Max' put: self max.
+		at: 'Min' put: self min;
+		at: '1st Qu.' put: self firstQuartile;
+		at: 'Median' put: self median;
+		at: 'Average' put: self average;
+		at: '3rd Qu.' put: self thirdQuartile;
+		at: 'Max' put: self max.
 		
 	^ summary
-	
 ]
 
-{ #category : #accessing }
+{ #category : #slicing }
 DataSeries >> tail [
-
 	^ self tail: self defaultHeadTailSize.
 ]
 
-{ #category : #accessing }
+{ #category : #slicing }
 DataSeries >> tail: aNumber [
+	^ self species
+		withKeys: (self keys copyFrom: self size - aNumber + 1 to: self size)
+		values: (self values copyFrom: self size - aNumber + 1 to: self size)
+		name: self name.
+]
 
-	| n |
-	
-	self size > aNumber
-		ifTrue: [ n := aNumber ]
-		ifFalse: [ n := self size ].
-			
-	^ self from: (self size - n + 1) to: (self size).
+{ #category : #accessing }
+DataSeries >> third [
+	"Answer the third element of the receiver.
+	Raise an error if there are not enough elements."
+	^ self atIndex: 3
 ]
 
 { #category : #statistics }
 DataSeries >> thirdQuartile [
-	
 	^ self quartile: 3
 ]
 
-{ #category : #'as yet unclassified' }
-DataSeries >> unique [
-	| unique |
-	unique := self asSet asDataSeries.
-	unique name: self name.
-	^ unique
+{ #category : #accessing }
+DataSeries >> uniqueValues [
+	^ self asSet asArray
+]
+
+{ #category : #statistics }
+DataSeries >> valueCounts [
+	^ (self groupBy: self) count sortDescending
+]
+
+{ #category : #enumerating }
+DataSeries >> with: aCollection collect: twoArgBlock [ 
+	"Collect and return the result of evaluating twoArgBlock with corresponding elements from this series and aCollection."
+	| result |
+	aCollection size = self size ifFalse: [self errorSizeMismatch].
+	
+	result := self species new: self size.
+	result name: self name.
+	
+	self keys withIndexDo: [ :key :i |
+		result at: key put:
+		(twoArgBlock
+			value: (self at: key)
+			value: (aCollection at: i))].
+	^ result
 ]
 
 { #category : #enumerating }
 DataSeries >> withIndexCollect: aBlock [
-
-	| series |
-	series := super withIndexCollect: aBlock.
-	series name: self name.
-	^ series
+	| result |
+	result := self species newFrom:
+		(self associations withIndexCollect: [:each :i |
+			each key -> (aBlock value: each value value: i)]).
+	result name: self name.
+	^ result
 ]
 
 { #category : #enumerating }
-DataSeries >> withKeyDo: elementAndKeyBlock [
+DataSeries >> withIndexDo: aBlock [
+	self keys withIndexDo: [ :each :i | aBlock value: (self at: each) value: i ]
+]
 
-	1 to: self size do: [ :index |
-		elementAndKeyBlock
-			value: (contents at: index)
-			value: (keys at: index) ].
+{ #category : #enumerating }
+DataSeries >> withKeyCollect: aBlock [
+	| result |
+	result := self species newFrom:
+		(self associations collect: [:each |
+			each key -> (aBlock value: each value value: each key)]).
+	result name: self name.
+	^ result
+]
+
+{ #category : #enumerating }
+DataSeries >> withKeyDo: aBlock [
+	self keysDo: [ :each | aBlock value: (self at: each) value: each ]
+]
+
+{ #category : #enumerating }
+DataSeries >> withSeries: otherDataSeries collect: twoArgBlock [ 
+	"Collect and return the result of evaluating twoArgBlock with corresponding elements from this series and otherDataSeries."
+	| result |
+	otherDataSeries size = self size ifFalse: [self errorSizeMismatch].
+	otherDataSeries keys = self keys ifFalse: [ self errorKeysMismatch ].
+	
+	result := self species new: self size.
+	
+	result name: ((otherDataSeries name = self name)
+		ifTrue: [ self name ]
+		ifFalse: [ self defaultName ]).
+	
+	self keysDo: [ :key |
+		result at: key put:
+		(twoArgBlock
+			value: (self at: key)
+			value: (otherDataSeries at: key))].
+	^ result
+]
+
+{ #category : #statistics }
+DataSeries >> zerothQuartile [
+	^ self quartile: 0
 ]

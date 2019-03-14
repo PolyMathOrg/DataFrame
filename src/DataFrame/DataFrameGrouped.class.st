@@ -15,7 +15,7 @@ DataFrameGrouped >> apply: aBlock [
 	
 	| colNames numberOfRows numberOfColumns result |
 	
-	colNames := (groups at: 1) columnNames.
+	colNames := groups first columnNames.
 	
 	numberOfRows := groups size.
 	numberOfColumns := colNames size.
@@ -24,7 +24,7 @@ DataFrameGrouped >> apply: aBlock [
 	result rowNames: groups keys.
 	result columnNames: colNames.
 	
-	groups doWithIndex: [ :df :i |
+	groups withIndexDo: [ :df :i |
 		1 to: colNames size do: [ :j |
 			result at: i at: j put:
 				(aBlock value: (df columnAt: j)) ] ].
@@ -38,7 +38,7 @@ DataFrameGrouped >> printOn: aStream [
 	super printOn: aStream.
 	aStream cr.
 	
-	groups doWithIndex: [ :eachDataFrame :i |
+	groups withIndexDo: [ :eachDataFrame :i |
 		aStream
 			nextPutAll: (groups keys at: i) asString;
 			nextPutAll: ': '.
@@ -56,15 +56,15 @@ DataFrameGrouped >> split: aDataFrame by: aSeries [
 	aDataFrame numberOfRows = aSeries size
 		ifFalse: [ SizeMismatch signal ].
 	
-	seriesUnique := aSeries unique asArray.
+	seriesUnique := aSeries uniqueValues.
 	
 	groups := seriesUnique collect: [ :eachUnique |
 		| aList df |
 		aList := LinkedList new.
 		
-		aSeries doWithIndex: [ :each :i |
+		aSeries withIndexDo: [ :each :i |
 			each = eachUnique 
-				ifTrue: [ aList add: (aDataFrame rowAt: i) ] ].
+				ifTrue: [ aList add: (aDataFrame rowAt: i) asArray ] ].
 		
 		df := DataFrame withRows: aList.
 		df columnNames: aDataFrame columnNames.

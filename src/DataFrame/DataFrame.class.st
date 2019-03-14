@@ -367,7 +367,7 @@ DataFrame >> addEmptyRowNamed: aString atPosition: aNumber [
 { #category : #adding }
 DataFrame >> addRow: aDataSeries [
 	"Add DataSeries as a new row at the end"
-	self addRow: aDataSeries named: aDataSeries name.
+	self addRow: aDataSeries asArray named: aDataSeries name.
 ]
 
 { #category : #adding }
@@ -957,14 +957,17 @@ DataFrame >> select: aBlock [
 	Collect into a new collection like the receiver, only those elements for 
 	which aBlock evaluates to true. Answer the new collection."
 
-	| rows selectedRows df |
+	| rows selectedRows selectedRowNames selectedRowsAsArrays df |
 	
 	rows := self asArrayOfRows.
 	selectedRows := rows select: aBlock.
+	selectedRowNames := selectedRows collect: #name.
+	selectedRowsAsArrays := selectedRows collect: #asArray.
 	
-	df := self class withRows: selectedRows.
-	df columnNames: self columnNames.
-	df rowNames: (selectedRows collect: #name).
+	df := self class
+		withRows: selectedRowsAsArrays
+		rowNames: selectedRowNames
+		columnNames: self columnNames.
 	
 	^ df
 ]
@@ -972,8 +975,8 @@ DataFrame >> select: aBlock [
 { #category : #private }
 DataFrame >> setDefaultRowColumnNames [
 
-	self rowNames: (1 to: self numberOfRows) asOrderedCollection.
-	self columnNames: (1 to: self numberOfColumns) asOrderedCollection.
+	self rowNames: (1 to: self numberOfRows).
+	self columnNames: (1 to: self numberOfColumns).
 ]
 
 { #category : #'gt-inspector-extension' }
@@ -1007,13 +1010,13 @@ DataFrame >> sortBy: columnName using: aBlock [
 	| column sortedKeys newContents |
 	column := self column: columnName.
 	column := column copy.
-	column sortUsing: aBlock.
+	column sort: aBlock.
 	sortedKeys := column keys.
 	
 	newContents := DataFrameInternal new: self dimensions.
 	
 	sortedKeys withIndexDo: [ :key :i |
-		newContents rowAt: i put: (self row: key) ].
+		newContents rowAt: i put: (self row: key) asArray ].
 		
 	contents := newContents.
 	self rowNames: sortedKeys.

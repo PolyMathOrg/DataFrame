@@ -44,7 +44,7 @@ DataFrameQueriesTest >> testSelect [
 	
 	actual := df
 		select: [ :row |
-			(row atKey: #a) = 'x' and: (row atKey: #b) < 30 ].
+			(row at: #a) = 'x' and: (row at: #b) < 30 ].
 		
 	expected := DataFrame withRows: #(
 		(x 10 0.25 0.1)

@@ -10,7 +10,7 @@ DataFrame class >> readFrom: aLocation using: aDataFrameReader [
 DataFrame class >> readFromCsv: aFileReference [ 
 	| reader |
 	reader := DataFrameCsvReader new.
-	^ reader readFrom: aFileReference.
+	^ self readFrom: aFileReference using: reader.
 ]
 
 { #category : #'*DataFrame-IO' }
@@ -18,7 +18,7 @@ DataFrame class >> readFromCsv: aFileReference withSeparator: aSeparator [
 	| reader |
 	reader := DataFrameCsvReader new.
 	reader separator: aSeparator.
-	^ reader readFrom: aFileReference.
+	^ self readFrom: aFileReference using: reader
 ]
 
 { #category : #'*DataFrame-IO' }
@@ -26,7 +26,7 @@ DataFrame class >> readFromCsvWithRowNames: aFileReference [
 	| reader |
 	reader := DataFrameCsvReader new.
 	reader includeRowNames: true.
-	^ reader readFrom: aFileReference.
+	^ self readFrom: aFileReference using: reader
 ]
 
 { #category : #'*DataFrame-IO' }
@@ -35,7 +35,7 @@ DataFrame class >> readFromCsvWithRowNames: aFileReference separator: aSeparator
 	reader := DataFrameCsvReader new.
 	reader includeRowNames: true.
 	reader separator: aSeparator.
-	^ reader readFrom: aFileReference.
+	^ self readFrom: aFileReference using: reader
 ]
 
 { #category : #'*DataFrame-IO' }
