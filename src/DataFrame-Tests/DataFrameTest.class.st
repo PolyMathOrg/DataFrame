@@ -1059,6 +1059,30 @@ DataFrameTest >> testInequality [
 ]
 
 { #category : #tests }
+DataFrameTest >> testInjectInto [
+	| numericDataFrame actual expected |
+	
+	numericDataFrame := DataFrame 
+		withRows: #(
+			(4.5 86 24)
+			(2.3 60 14)
+			(1.2 56 16)
+			(-1.0 12 18))
+		rowNames: #(A B C D)
+		columnNames: #(temperature humidity wind).
+
+	expected := DataSeries
+		withKeys: #(temperature humidity wind)
+		values: #(7.0 214 72)
+		name: '(no name)'.
+		
+	actual := numericDataFrame inject: 0 into:
+		[ :sum :each | sum + each ].
+	
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
 DataFrameTest >> testPrintOn [
 
 	| expected actual |
@@ -1068,6 +1092,23 @@ DataFrameTest >> testPrintOn [
 	actual := String new writeStream.
 	df printOn: actual.
 	actual := actual contents.
+	
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+DataFrameTest >> testReject [
+	| actual expected |
+
+	expected := DataFrame
+		withRows: #(
+			(Dubai 2.789 true)
+			(London 8.788 false))
+		rowNames: #(B C)
+		columnNames: df columnNames.
+		
+	actual := df reject:
+		[ :row | (row at: #Population) < 2 ].
 	
 	self assert: actual equals: expected.
 ]
@@ -1424,6 +1465,23 @@ DataFrameTest >> testRowsPut [
 ]
 
 { #category : #tests }
+DataFrameTest >> testSelect [
+	| actual expected |
+
+	expected := DataFrame
+		withRows: #(
+			(Dubai 2.789 true)
+			(London 8.788 false))
+		rowNames: #(B C)
+		columnNames: df columnNames.
+		
+	actual := df select:
+		[ :row | (row at: #Population) > 2 ].
+	
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
 DataFrameTest >> testSortBy [
 
 	| actual expected |
@@ -1581,6 +1639,106 @@ DataFrameTest >> testVarSizeInstanceCreation [
 	
 	self assert: dataFrame rowNames equals: #(1 2 3) asOrderedCollection.
 	self assert: dataFrame columnNames equals: #(1 2) asOrderedCollection.
+]
+
+{ #category : #tests }
+DataFrameTest >> testWithIndexCollect [
+	| expectedDf expectedResult actualResult |
+	
+	expectedDf := DataFrame withRows: #(
+		(Barcelona 1.609 true)
+   		(Dubai 2.789 true)
+   		(London 8.788 false)).
+		
+	expectedDf rowNames: #(A B C).
+	expectedDf columnNames: #(City Population BeenThere).
+	
+	expectedResult := DataFrame withRows: #(
+		('BARCELONA' 2)
+   		('DUBAI' 4)
+   		('LONDON' 11)).
+		
+	expectedResult rowNames: #(A B C).
+	expectedResult columnNames: #(City Population).
+	
+	actualResult := df withIndexCollect: [ :row :index |
+		row at: #City put: (row at: #City) asUppercase.
+		row at: #Population put: (row at: #Population) asInteger + index.
+		row removeAt: #BeenThere.
+		row ].
+	
+	self assert: actualResult equals: expectedResult.
+	self assert: df equals: expectedDf.
+]
+
+{ #category : #tests }
+DataFrameTest >> testWithIndexDo [
+
+	| actual expected |
+
+	expected := { 
+		1 -> (DataSeries withKeys: df columnNames values: #(Barcelona 1.609 true) name: 'A') .
+		2 -> (DataSeries withKeys: df columnNames values: #(Dubai 2.789 true) name: 'B') .
+		3 -> (DataSeries withKeys: df columnNames values: #(London 8.788 false) name: 'C') } asDictionary.
+		
+	actual := Dictionary new.
+	
+	df withIndexDo: [ :each :index |
+		actual at: index put: each ].
+	
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+DataFrameTest >> testWithIndexDoCanModifyRows [
+	| expected |
+
+	expected := DataFrame
+		withRows: #(
+			(Barcelona 1.609 true)
+			(Dubai 4.789 true)
+			(London 11.788 false))
+		rowNames: df rowNames
+		columnNames: df columnNames.
+	
+	df withIndexDo: [ :row :index |
+		row name = 'A'
+			ifFalse: [ row at: #Population put: ((row at: #Population) + index) ] ].
+	
+	self assert: df equals: expected.
+]
+
+{ #category : #tests }
+DataFrameTest >> testWithIndexReject [
+	| actual expected |
+
+	expected := DataFrame
+		withRows: #(
+			(Barcelona 1.609 true)
+			(London 8.788 false))
+		rowNames: #(A C)
+		columnNames: df columnNames.
+		
+	actual := df withIndexReject: [ :row :index |
+		((row at: #Population) > 2) and: [ index % 2 = 0 ] ].
+	
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+DataFrameTest >> testWithIndexSelect [
+	| actual expected |
+
+	expected := DataFrame
+		withRows: #(
+			(Dubai 2.789 true))
+		rowNames: #(B)
+		columnNames: df columnNames.
+		
+	actual := df withIndexSelect: [ :row :index |
+		((row at: #Population) > 2) and: [ index % 2 = 0 ] ].
+	
+	self assert: actual equals: expected.
 ]
 
 { #category : #tests }

@@ -478,7 +478,7 @@ DataFrame >> closeTo: aDataFrame [
 
 { #category : #enumerating }
 DataFrame >> collect: aBlock [ 
-	"Overrides the Collection>>collect to create DataFrame with the same numer of columns as values in the first row"
+	"Overrides the Collection>>collect to create DataFrame with the same number of columns as values in the first row"
 	| firstRow newDataFrame |
 	
 	firstRow := (self rowAt: 1) copy.
@@ -1173,6 +1173,61 @@ DataFrame >> transposed [
 DataFrame >> variance [
 
 	^ self applyToAllColumns: #variance
+]
+
+{ #category : #enumerating }
+DataFrame >> withIndexCollect: elementAndIndexBlock [
+	"Overrides withIndexCollect: to create DataFrame with the same number of columns as values in the first row"
+	| firstRow newDataFrame |
+	
+	firstRow := (self rowAt: 1) copy.
+	newDataFrame := self class new: 0@(elementAndIndexBlock value: firstRow value: 1) size.
+	newDataFrame columnNames: firstRow keys.
+	
+	self withIndexDo: [ :each :index | newDataFrame add: (elementAndIndexBlock value: each copy value: index)].
+	^ newDataFrame
+]
+
+{ #category : #enumerating }
+DataFrame >> withIndexDo: elementAndIndexBlock [
+
+	1 to: self size do: [ :i |
+		| row |
+		row := (self rowAt: i).
+		elementAndIndexBlock value: row value: i.
+			
+		"A hack to allow modification of rows inside do block"
+		self rowAt: i put: row asArray ].
+]
+
+{ #category : #enumerating }
+DataFrame >> withIndexReject: elementAndIndexBlock [ 
+	"Evaluate aBlock with each of the receiver's elements and index as the arguments. 
+	Collect into a new collection like the receiver, only those elements for 
+	which aBlock evaluates to false. Answer the new collection."
+	^ self withIndexSelect: [ :row :index | (elementAndIndexBlock value: row value: index) not ]
+]
+
+{ #category : #enumerating }
+DataFrame >> withIndexSelect: elementAndIndexBlock [ 
+	"Evaluate aBlock with each of the receiver's elements and index as the arguments. 
+	Collect into a new collection like the receiver, only those elements for 
+	which aBlock evaluates to true. Answer the new collection."
+
+	| rows selectedRowIndices selectedRowNames selectedRowsAsArrays df |
+	
+	rows := self asArrayOfRows.
+	selectedRowIndices := (1 to: rows size) select: [ :i |
+		elementAndIndexBlock value: (rows at: i) value: i ].
+	selectedRowNames := selectedRowIndices collect: [ :i | self rowNames at: i ].
+	selectedRowsAsArrays := selectedRowIndices collect: [ :i | (rows at: i) asArray ].
+	
+	df := self class
+		withRows: selectedRowsAsArrays
+		rowNames: selectedRowNames
+		columnNames: self columnNames.
+	
+	^ df
 ]
 
 { #category : #enumerating }
