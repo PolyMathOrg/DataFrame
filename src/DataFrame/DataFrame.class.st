@@ -867,6 +867,8 @@ DataFrame >> removeColumn: columnName [
 
 { #category : #removing }
 DataFrame >> removeColumnAt: columnNumber [
+	(columnNumber < 1 or: [ columnNumber > self numberOfColumns ])
+		ifTrue: [ SubscriptOutOfBounds signalFor: columnNumber ].
 
 	contents removeColumnAt: columnNumber.
 	columnNames := columnNames copyWithoutIndex: columnNumber.
@@ -882,7 +884,9 @@ DataFrame >> removeRow: rowName [
 
 { #category : #removing }
 DataFrame >> removeRowAt: rowNumber [
-
+	(rowNumber < 1 or: [ rowNumber > self numberOfRows ])
+		ifTrue: [ SubscriptOutOfBounds signalFor: rowNumber ].
+		
 	contents removeRowAt: rowNumber.
 	rowNames := rowNames copyWithoutIndex: rowNumber.
 ]

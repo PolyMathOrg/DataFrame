@@ -1091,6 +1091,16 @@ DataFrameTest >> testRemoveColumnAt [
 ]
 
 { #category : #tests }
+DataFrameTest >> testRemoveColumnAtOutOfRange [
+	self should: [ df removeColumnAt: 100 ] raise: SubscriptOutOfBounds.
+]
+
+{ #category : #tests }
+DataFrameTest >> testRemoveColumnNotFound [
+	self should: [ df removeColumn: #NoSuchColumn ] raise: NotFoundError.
+]
+
+{ #category : #tests }
 DataFrameTest >> testRemoveRow [
 
 	| expected |
@@ -1122,6 +1132,16 @@ DataFrameTest >> testRemoveRowAt [
 	df removeRowAt: 2.
 	
 	self assert: df equals: expected.
+]
+
+{ #category : #tests }
+DataFrameTest >> testRemoveRowAtOutOfRange [
+	self should: [ df removeRowAt: 100 ] raise: SubscriptOutOfBounds.
+]
+
+{ #category : #tests }
+DataFrameTest >> testRemoveRowNotFound [
+	self should: [ df removeRow: #NoSuchRow ] raise: NotFoundError.
 ]
 
 { #category : #tests }
