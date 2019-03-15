@@ -1584,7 +1584,7 @@ DataFrameTest >> testVarSizeInstanceCreation [
 ]
 
 { #category : #tests }
-DataFrameTest >> testWithKeyDo [
+DataFrameTest >> testWithRowNameDo [
 
 	| actual expected |
 
@@ -1599,14 +1599,14 @@ DataFrameTest >> testWithKeyDo [
 		
 	actual := Dictionary new.
 	
-	df withKeyDo: [ :each :key |
+	df withRowNameDo: [ :each :key |
 		actual at: key put: each ].
 	
 	self assert: actual equals: expected.
 ]
 
 { #category : #tests }
-DataFrameTest >> testWithKeyDoCanModifyRows [
+DataFrameTest >> testWithRowNameDoCanModifyRows [
 	| expected |
 
 	expected := DataFrame
@@ -1617,7 +1617,7 @@ DataFrameTest >> testWithKeyDoCanModifyRows [
 		rowNames: df rowNames
 		columnNames: df columnNames.
 	
-	df withKeyDo: [ :row :key |
+	df withRowNameDo: [ :row :key |
 		row name = 'A'
 			ifFalse: [ row at: #City put: (row at: #City) asUppercase ] ].
 	

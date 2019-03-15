@@ -1176,7 +1176,7 @@ DataFrame >> variance [
 ]
 
 { #category : #enumerating }
-DataFrame >> withKeyDo: elementAndKeyBlock [
+DataFrame >> withRowNameDo: elementAndKeyBlock [
 
 	1 to: self size do: [ :i |
 		| row |
