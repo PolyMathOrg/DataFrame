@@ -1229,18 +1229,3 @@ DataFrame >> withIndexSelect: elementAndIndexBlock [
 	
 	^ df
 ]
-
-{ #category : #enumerating }
-DataFrame >> withRowNameDo: elementAndKeyBlock [
-
-	1 to: self size do: [ :i |
-		| row |
-		row := (self rowAt: i).
-		
-		elementAndKeyBlock
-			value: row
-			value: (rowNames at: i).
-			
-		"A hack to allow modification of rows inside do block"
-		self rowAt: i put: row asArray ].
-]
