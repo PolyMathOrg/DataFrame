@@ -1091,40 +1091,6 @@ DataFrameTest >> testRemoveColumnAt [
 ]
 
 { #category : #tests }
-DataFrameTest >> testRemoveFirstRow [
-
-	| expected |
-	
-	expected := DataFrame withRows: #(
-   		(Dubai 2.789 true)
-   		(London 8.788 false)).
-		
-	expected rowNames: #(B C).
-	expected columnNames: #(City Population BeenThere).
-		
-	df removeFirstRow.
-	
-	self assert: df equals: expected.
-]
-
-{ #category : #tests }
-DataFrameTest >> testRemoveLastRow [
-
-	| expected |
-	
-	expected := DataFrame withRows: #(
-		(Barcelona 1.609 true)
-   		(Dubai 2.789 true)).
-		
-	expected rowNames: #(A B).
-	expected columnNames: #(City Population BeenThere).
-		
-	df removeLastRow.
-	
-	self assert: df equals: expected.
-]
-
-{ #category : #tests }
 DataFrameTest >> testRemoveRow [
 
 	| expected |

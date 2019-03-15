@@ -873,22 +873,6 @@ DataFrame >> removeColumnAt: columnNumber [
 ]
 
 { #category : #removing }
-DataFrame >> removeFirstRow [
-
-	self removeRowAt: 1.
-
-	
-]
-
-{ #category : #removing }
-DataFrame >> removeLastRow [
-
-	self removeRowAt: (self numberOfRows).
-
-	
-]
-
-{ #category : #removing }
 DataFrame >> removeRow: rowName [
 
 	| index |
