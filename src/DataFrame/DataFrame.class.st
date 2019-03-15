@@ -647,9 +647,13 @@ DataFrame >> dimensions [
 { #category : #enumerating }
 DataFrame >> do: aBlock [
 "We enumerate through the data enrties - through rows of a data frame"
-
+	| row |
+	
 	1 to: self numberOfRows do: [ :i |
-		aBlock value: (self rowAt: i) ].
+		row := self rowAt: i.
+		aBlock value: row. 
+		"A hack to allow modification of rows inside do block"
+		self rowAt: i put: row asArray ].
 ]
 
 { #category : #statistics }
@@ -1174,8 +1178,14 @@ DataFrame >> variance [
 { #category : #enumerating }
 DataFrame >> withKeyDo: elementAndKeyBlock [
 
-	1 to: self size do: [ :index |
+	1 to: self size do: [ :i |
+		| row |
+		row := (self rowAt: i).
+		
 		elementAndKeyBlock
-			value: (self rowAt: index)
-			value: (rowNames at: index) ].
+			value: row
+			value: (rowNames at: i).
+			
+		"A hack to allow modification of rows inside do block"
+		self rowAt: i put: row asArray ].
 ]

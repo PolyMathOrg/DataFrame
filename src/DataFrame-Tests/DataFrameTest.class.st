@@ -993,6 +993,24 @@ DataFrameTest >> testDo [
 ]
 
 { #category : #tests }
+DataFrameTest >> testDoCanModifyRows [
+	| expected |
+
+	expected := DataFrame
+		withRows: #(
+			(BARCELONA 1.609 true)
+			(DUBAI 2.789 true)
+			(LONDON 8.788 false))
+		rowNames: df rowNames
+		columnNames: df columnNames.
+	
+	df do: [ :row |
+		row at: #City put: (row at: #City) asUppercase ].
+	
+	self assert: df equals: expected.
+]
+
+{ #category : #tests }
 DataFrameTest >> testEquality [
 
 	| df1 df2 |
@@ -1585,4 +1603,23 @@ DataFrameTest >> testWithKeyDo [
 		actual at: key put: each ].
 	
 	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+DataFrameTest >> testWithKeyDoCanModifyRows [
+	| expected |
+
+	expected := DataFrame
+		withRows: #(
+			(Barcelona 1.609 true)
+			(DUBAI 2.789 true)
+			(LONDON 8.788 false))
+		rowNames: df rowNames
+		columnNames: df columnNames.
+	
+	df withKeyDo: [ :row :key |
+		row name = 'A'
+			ifFalse: [ row at: #City put: (row at: #City) asUppercase ] ].
+	
+	self assert: df equals: expected.
 ]
