@@ -662,7 +662,7 @@ DataFrame >> firstQuartile [
 	^ self applyToAllColumns: #firstQuartile
 ]
 
-{ #category : #queries }
+{ #category : #grouping }
 DataFrame >> group: colNameOrArray by: colName [
 
 	| left right |
@@ -676,7 +676,7 @@ DataFrame >> group: colNameOrArray by: colName [
 	^ left groupBy: right.
 ]
 
-{ #category : #queries }
+{ #category : #grouping }
 DataFrame >> groupBy: colName [
 
 	| groupedColNames |
@@ -689,7 +689,7 @@ DataFrame >> groupBy: colName [
 		by: (self column: colName)
 ]
 
-{ #category : #queries }
+{ #category : #grouping }
 DataFrame >> groupBy: colName aggregate: selector [
 
 	^ (self groupBy: colName) perform: selector.
@@ -733,30 +733,20 @@ DataFrame >> head: aNumber [
 
 { #category : #private }
 DataFrame >> indexOfColumnNamed: columnName [
-
-	| index |
-	index := self columnNames indexOf: columnName.
-	
-	"If a column with that name does not exist"
-	index = 0
-		ifTrue: [ NotFoundError signal:
+	"Answer the index of a column with a given name or signal an exception if the column with that name was not found"
+	^ self columnNames
+		indexOf: columnName
+		ifAbsent: [ NotFoundError signal:
 			('Column ', columnName, ' was not found') ].
-		
-	^ index
 ]
 
 { #category : #private }
 DataFrame >> indexOfRowNamed: rowName [
-
-	| index |
-	index := self rowNames indexOf: rowName.
-	
-	"If a row with that name does not exist"
-	index = 0
-		ifTrue: [ NotFoundError signal:
+	"Answer the index of a row with a given name or signal an exception if the row with that name was not found"
+	^ self rowNames
+		indexOf: rowName
+		ifAbsent: [ NotFoundError signal:
 			('Row ', rowName, ' was not found') ].
-		
-	^ index
 ]
 
 { #category : #initialization }
@@ -893,6 +883,22 @@ DataFrame >> removeRowAt: rowNumber [
 		
 	contents removeRowAt: rowNumber.
 	rowNames := rowNames copyWithoutIndex: rowNumber.
+]
+
+{ #category : #renaming }
+DataFrame >> renameColumn: oldName to: newName [
+	"Find a column with oldName and rename it to newName"
+	| index |
+	index := self indexOfColumnNamed: oldName.
+	self columnNames at: index put: newName.
+]
+
+{ #category : #renaming }
+DataFrame >> renameRow: oldName to: newName [
+	"Find a row with oldName and rename it to newName"
+	| index |
+	index := self indexOfRowNamed: oldName.
+	self rowNames at: index put: newName.
 ]
 
 { #category : #accessing }
@@ -1127,12 +1133,7 @@ DataFrame >> thirdQuartile [
 DataFrame >> toColumn: columnName applyElementwise: aBlock [
 		
 	| index |
-	index := self columnNames indexOf: columnName.
-	
-	"If a column with that name does not exist"
-	index = 0
-		ifTrue: [ NotFoundError signal ].
-		
+	index := self indexOfColumnNamed: columnName.
 	self toColumnAt: index applyElementwise: aBlock.
 ]
 

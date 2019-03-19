@@ -1023,6 +1023,36 @@ DataFrameTest >> testEquality [
 ]
 
 { #category : #tests }
+DataFrameTest >> testIndexOfColumnNamed [
+	| expected actual |
+	expected := 2.
+	actual := df indexOfColumnNamed: #Population.
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+DataFrameTest >> testIndexOfColumnNamedNotFound [
+	self
+		should: [ df indexOfColumnNamed: #NoSuchColumn ]
+		raise: NotFoundError.
+]
+
+{ #category : #tests }
+DataFrameTest >> testIndexOfRowNamed [
+	| expected actual |
+	expected := 2.
+	actual := df indexOfRowNamed: #B.
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+DataFrameTest >> testIndexOfRowNamedNotFound [
+	self
+		should: [ df indexOfRowNamed: #NoSuchRow ]
+		raise: NotFoundError.
+]
+
+{ #category : #tests }
 DataFrameTest >> testInequality [
 
 	| df1 df2 df3 df4 df5 |
@@ -1201,6 +1231,50 @@ DataFrameTest >> testRemoveRowAtOutOfRange [
 { #category : #tests }
 DataFrameTest >> testRemoveRowNotFound [
 	self should: [ df removeRow: #NoSuchRow ] raise: NotFoundError.
+]
+
+{ #category : #tests }
+DataFrameTest >> testRenameColumnTo [
+	| expected |
+	expected := DataFrame
+		withRows: #(
+			(Barcelona 1.609 true)
+   			(Dubai 2.789 true)
+   			(London 8.788 false))
+		rowNames: #(A B C)
+		columnNames: #(City Population Visited).
+		
+	df renameColumn: #BeenThere to: #Visited.
+	self assert: df equals: expected.
+]
+
+{ #category : #tests }
+DataFrameTest >> testRenameColumnToNotFound [
+	self
+		should: [ df renameColumn: #NoSuchColumn to: #Sth ]
+		raise: NotFoundError.
+]
+
+{ #category : #tests }
+DataFrameTest >> testRenameRowTo [
+	| expected |
+	expected := DataFrame
+		withRows: #(
+			(Barcelona 1.609 true)
+   			(Dubai 2.789 true)
+   			(London 8.788 false))
+		rowNames: #(A X C)
+		columnNames: #(City Population BeenThere).
+		
+	df renameRow: #B to: #X.
+	self assert: df equals: expected.
+]
+
+{ #category : #tests }
+DataFrameTest >> testRenameRowToNotFound [
+	self
+		should: [ df renameRow: #NoSuchRow to: #Sth ]
+		raise: NotFoundError.
 ]
 
 { #category : #tests }
