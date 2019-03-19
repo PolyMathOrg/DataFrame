@@ -86,11 +86,6 @@ DataSeries >> atIndex: aNumber [
 ]
 
 { #category : #accessing }
-DataSeries >> atIndex: aNumber ifAbsent: aBlock [
-	^ [ self at: (self keys at: aNumber) ] on: SubscriptOutOfBounds do: aBlock
-]
-
-{ #category : #accessing }
 DataSeries >> atIndex: aNumber put: aValue [
 	^ self at: (self keys at: aNumber) put: aValue
 ]

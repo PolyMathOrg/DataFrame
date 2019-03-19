@@ -132,14 +132,6 @@ DataSeriesTest >> testAtIndex [
 ]
 
 { #category : #tests }
-DataSeriesTest >> testAtIndexIfAbsent [
-
-	self assert: (series atIndex: 2 ifAbsent: [ 'Executing a block' ]) equals: 7.
-	self assert: (series atIndex: 100 ifAbsent: [ 'Executing a block' ])
-		equals: 'Executing a block'.
-]
-
-{ #category : #tests }
 DataSeriesTest >> testAtIndexPut [
 
 	| expected |
