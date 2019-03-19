@@ -321,7 +321,7 @@ DataFrame >> addColumn: aDataSeries [
 { #category : #adding }
 DataFrame >> addColumn: aDataSeries atPosition: aNumber [
 	"Add DataSeries as a new column at the given position"
-	self addColumn: aDataSeries named: aDataSeries name atPosition: aNumber.
+	self addColumn: aDataSeries asArray named: aDataSeries name atPosition: aNumber.
 ]
 
 { #category : #adding }

@@ -115,7 +115,7 @@ DataSeries >> crossTabulateWith: aSeries [
 		(self uniqueValues collect: [ :each1 |
 			aSeries uniqueValues collect: [ :each2 |
 				(1 to: self size) inject: 0 into: [ :accum :i |
-					(((self at: i) = each1) and: ((aSeries at: i) = each2))
+					(((self atIndex: i) = each1) and: ((aSeries atIndex: i) = each2))
 						ifTrue: [ accum + 1 ]
 						ifFalse: [ accum ] ] ] ]).
 		
