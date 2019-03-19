@@ -971,6 +971,57 @@ DataFrameTest >> testCrossTabulation [
 ]
 
 { #category : #tests }
+DataFrameTest >> testDetect [
+	| actual expected |
+
+	expected := DataSeries
+		withKeys: df columnNames
+		values: #(London 8.788 false)
+		name: #C.
+		
+	actual := df detect:
+		[ :row | (row at: #BeenThere) not ].
+	
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+DataFrameTest >> testDetectIfNone [
+	| actual expected |
+
+	expected := DataSeries
+		withKeys: df columnNames
+		values: #(London 8.788 false)
+		name: #C.
+		
+	actual := df
+		detect: [ :row | (row at: #BeenThere) not ]
+		ifNone: [ 'not found' ].
+	
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+DataFrameTest >> testDetectIfNoneNotFound [
+	| actual expected |
+	
+	expected := 'not found'.
+		
+	actual := df
+		detect: [ :row | (row at: #City) = 'Paris' ]
+		ifNone: [ 'not found' ].
+	
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+DataFrameTest >> testDetectNotFound [
+	self
+		should: [ df detect: [ :row | row at: #City = 'Paris' ] ]
+		raise: NotFound
+]
+
+{ #category : #tests }
 DataFrameTest >> testDo [
 
 	| actual expected |
