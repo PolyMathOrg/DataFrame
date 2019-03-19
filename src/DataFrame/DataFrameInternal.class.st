@@ -43,7 +43,7 @@ DataFrameInternal class >> withColumns: anArrayOfArrays [
 	1 to: numberOfRows do: [ :i |
 		1 to: numberOfColumns do: [ :j |
 			dfInternal at: i at: j put:
-				((anArrayOfArrays at: j) at: i) ] ].
+				((anArrayOfArrays at: j) asArray at: i) ] ].
 		
 	^ dfInternal
 ]
@@ -60,7 +60,7 @@ DataFrameInternal class >> withRows: anArrayOfArrays [
 	1 to: numberOfRows do: [ :i |
 		1 to: numberOfColumns do: [ :j |
 			dfInternal at: i at: j put:
-				((anArrayOfArrays at: i) at: j) ] ].
+				((anArrayOfArrays at: i) asArray at: j) ] ].
 		
 	^ dfInternal
 ]
