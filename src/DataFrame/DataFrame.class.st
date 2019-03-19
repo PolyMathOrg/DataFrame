@@ -449,6 +449,20 @@ DataFrame >> at: rowNumber at: columnNumber put: value [
 	contents at: rowNumber at: columnNumber put: value.
 ]
 
+{ #category : #accessing }
+DataFrame >> at: rowIndex at: columnIndex transform: aBlock [
+	"Evaluate aBlock on the value at the intersection of rowIndex and columnIndex and replace that value with the result"
+	| value |
+	value := self at: rowIndex at: columnIndex.
+	self at: rowIndex at: columnIndex put: (aBlock value: value)
+]
+
+{ #category : #accessing }
+DataFrame >> at: aNumber transform: aBlock [
+	"Evaluate aBlock on the row at aNumber and replace that row with the result"
+	^ self rowAt: aNumber transform: aBlock
+]
+
 { #category : #statistics }
 DataFrame >> average [
 
@@ -491,18 +505,56 @@ DataFrame >> collect: aBlock [
 
 { #category : #accessing }
 DataFrame >> column: columnName [
-
+	"Answer the column with columnName as a DataSeries or signal an exception if a column with that name was not found"
 	| index |
 	index := self indexOfColumnNamed: columnName.
 	^ self columnAt: index
 ]
 
 { #category : #accessing }
-DataFrame >> column: columnName put: anArray [
+DataFrame >> column: columnName ifAbsent: exceptionBlock [
+	"Answer the column with columnName as a DataSeries or evaluate exception block if a column with that name was not found"
+	| index |
+	index := self
+		indexOfColumnNamed: columnName
+		ifAbsent: [ ^ exceptionBlock value ].
+		
+	^ self columnAt: index
+]
 
+{ #category : #accessing }
+DataFrame >> column: columnName put: anArray [
+	"Replace the current values of column with columnName with anArray or signal an exception if a column with that name was not found"
 	| index |
 	index := self indexOfColumnNamed: columnName.
 	^ self columnAt: index put: anArray.
+]
+
+{ #category : #accessing }
+DataFrame >> column: columnName put: anArray ifAbsent: exceptionBlock [
+	"Replace the current values of column with columnName with anArray or evaluate exception block if a column with that name was not found"
+	| index |
+	index := self
+		indexOfColumnNamed: columnName
+		ifAbsent: [ ^ exceptionBlock value ].
+		
+	^ self columnAt: index put: anArray
+]
+
+{ #category : #accessing }
+DataFrame >> column: columnName transform: aBlock [
+	"Evaluate aBlock on the column with columnName and replace column with the result. Signal an exception if columnName was not found"
+	| column |
+	column := self column: columnName.
+	self column: columnName put: (aBlock value: column) asArray
+]
+
+{ #category : #accessing }
+DataFrame >> column: columnName transform: aBlock ifAbsent: exceptionBlock [
+	"Evaluate aBlock on the column with columnName and replace column with the result. Evaluate exceptionBlock if columnName was not found"
+	| column |
+	column := self column: columnName ifAbsent: [ ^ exceptionBlock value ].
+	self column: columnName put: (aBlock value: column)
 ]
 
 { #category : #accessing }
@@ -522,6 +574,14 @@ DataFrame >> columnAt: aNumber put: anArray [
 		ifFalse: [ SizeMismatch signal ].	
 	
 	contents columnAt: aNumber put: anArray.
+]
+
+{ #category : #accessing }
+DataFrame >> columnAt: aNumber transform: aBlock [
+	"Evaluate aBlock on the column at aNumber and replace that column with the result"
+	| column |
+	column := self columnAt: aNumber.
+	self columnAt: aNumber put: (aBlock value: column) asArray
 ]
 
 { #category : #accessing }
@@ -731,22 +791,36 @@ DataFrame >> head: aNumber [
 	^ self rowsAt: (1 to: n).
 ]
 
-{ #category : #private }
+{ #category : #accessing }
 DataFrame >> indexOfColumnNamed: columnName [
 	"Answer the index of a column with a given name or signal an exception if the column with that name was not found"
-	^ self columnNames
-		indexOf: columnName
-		ifAbsent: [ NotFoundError signal:
-			('Column ', columnName, ' was not found') ].
+	^ self
+		indexOfColumnNamed: columnName
+		ifAbsent: [ NotFoundError signal: ('Column ', columnName, ' was not found') ].
 ]
 
-{ #category : #private }
+{ #category : #accessing }
+DataFrame >> indexOfColumnNamed: columnName ifAbsent: exceptionBlock [
+	"Answer the index of a column with a given name or evaluate the exceptionBlock if the column with that name was not found"
+	^ self columnNames
+		indexOf: columnName
+		ifAbsent: exceptionBlock.
+]
+
+{ #category : #accessing }
 DataFrame >> indexOfRowNamed: rowName [
 	"Answer the index of a row with a given name or signal an exception if the row with that name was not found"
+	^ self
+		indexOfRowNamed: rowName
+		ifAbsent: [ NotFoundError signal: ('Row ', rowName, ' was not found') ].
+]
+
+{ #category : #accessing }
+DataFrame >> indexOfRowNamed: rowName ifAbsent: exceptionBlock [
+	"Answer the index of a row with a given name or evaluate the exceptionBlock if the row with that name was not found"
 	^ self rowNames
 		indexOf: rowName
-		ifAbsent: [ NotFoundError signal:
-			('Row ', rowName, ' was not found') ].
+		ifAbsent: exceptionBlock.
 ]
 
 { #category : #initialization }
@@ -903,18 +977,56 @@ DataFrame >> renameRow: oldName to: newName [
 
 { #category : #accessing }
 DataFrame >> row: rowName [
-
+	"Answer the row with rowName as a DataSeries or signal an exception if a row with that name was not found"
 	| index |
 	index := self indexOfRowNamed: rowName.
 	^ self rowAt: index
 ]
 
 { #category : #accessing }
-DataFrame >> row: rowName put: anArray [
+DataFrame >> row: rowName ifAbsent: exceptionBlock [
+	"Answer the row with rowName as a DataSeries or evaluate exception block if a row with that name was not found"
+	| index |
+	index := self
+		indexOfRowNamed: rowName
+		ifAbsent: [ ^ exceptionBlock value ].
+		
+	^ self rowAt: index
+]
 
+{ #category : #accessing }
+DataFrame >> row: rowName put: anArray [
+	"Replace the current values of row with rowName with anArray or signal an exception if a row with that name was not found"
 	| index |
 	index := self indexOfRowNamed: rowName.
 	^ self rowAt: index put: anArray.
+]
+
+{ #category : #accessing }
+DataFrame >> row: rowName put: anArray ifAbsent: exceptionBlock [
+	"Replace the current values of row with rowName with anArray or evaluate exception block if a row with that name was not found"
+	| index |
+	index := self
+		indexOfRowNamed: rowName
+		ifAbsent: [ ^ exceptionBlock value ].
+		
+	^ self rowAt: index put: anArray
+]
+
+{ #category : #accessing }
+DataFrame >> row: rowName transform: aBlock [
+	"Evaluate aBlock on the row with rowName and replace row with the result. Signal an exception if rowName was not found"
+	| row |
+	row := self row: rowName.
+	self row: rowName put: (aBlock value: row) asArray
+]
+
+{ #category : #accessing }
+DataFrame >> row: rowName transform: aBlock ifAbsent: exceptionBlock [
+	"Evaluate aBlock on the row with rowName and replace row with the result. Evaluate exceptionBlock if rowName was not found"
+	| row |
+	row := self row: rowName ifAbsent: [ ^ exceptionBlock value ].
+	self row: rowName put: (aBlock value: row)
 ]
 
 { #category : #accessing }
@@ -934,6 +1046,14 @@ DataFrame >> rowAt: aNumber put: anArray [
 		ifFalse: [ SizeMismatch signal ].
 		
 	contents rowAt: aNumber put: anArray.
+]
+
+{ #category : #accessing }
+DataFrame >> rowAt: aNumber transform: aBlock [
+	"Evaluate aBlock on the row at aNumber and replace that row with the result"
+	| row |
+	row := self rowAt: aNumber.
+	self rowAt: aNumber put: (aBlock value: row) asArray
 ]
 
 { #category : #accessing }

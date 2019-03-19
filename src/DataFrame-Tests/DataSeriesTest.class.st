@@ -155,6 +155,21 @@ DataSeriesTest >> testAtIndexPut [
 ]
 
 { #category : #tests }
+DataSeriesTest >> testAtIndexTransform [
+
+	| expected |
+	
+	series atIndex: 6 transform: [ :x | x + 1 ].	
+	
+	expected := DataSeries
+		withKeys: keyArray
+		values: #(3 7 6 20 8 10 8 10 15 13 16)
+		name: series name.
+	
+	self assert: series equals: expected.
+]
+
+{ #category : #tests }
 DataSeriesTest >> testAtPut [
 
 	| expected |
@@ -182,6 +197,41 @@ DataSeriesTest >> testAtPutNewElement [
 		name: series name.
 	
 	self assert: series equals: expected.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testAtTransform [
+
+	| expected |
+	
+	series at: #f transform: [ :x | x + 1 ].	
+	
+	expected := DataSeries
+		withKeys: keyArray
+		values: #(3 7 6 20 8 10 8 10 15 13 16)
+		name: series name.
+	
+	self assert: series equals: expected.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testAtTransformIfAbsent [
+
+	| expected exceptionBlockEvaluated |
+	
+	exceptionBlockEvaluated := false.
+	series
+		at: #NoSuchKey
+		transform: [ :x | x + 1 ]
+		ifAbsent: [ exceptionBlockEvaluated := true ].	
+	
+	expected := DataSeries
+		withKeys: keyArray
+		values: #(3 7 6 20 8 9 8 10 15 13 16)
+		name: series name.
+	
+	self assert: series equals: expected.
+	self assert: exceptionBlockEvaluated.
 ]
 
 { #category : #tests }

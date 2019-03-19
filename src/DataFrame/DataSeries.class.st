@@ -64,6 +64,23 @@ DataSeries >> adaptToCollection: rcvr andSend: selector [
 ]
 
 { #category : #accessing }
+DataSeries >> at: aKey transform: aBlock [
+	"Evaluate aBlock on the value at aKey and replace that value with the result. Signal an exception if aKey was not found"
+	self at: aKey transform: aBlock ifAbsent: NotFoundError.
+]
+
+{ #category : #accessing }
+DataSeries >> at: aKey transform: aBlock ifAbsent: exceptionBlock [
+	"Evaluate aBlock on the value at aKey and replace that value with the result. Evaluate exceptionBlock if aKey was not found"
+	| oldValue |
+	oldValue := self at: aKey ifAbsent: [
+		exceptionBlock value.
+		^ self ].
+	
+	self at: aKey put: (aBlock value: oldValue).
+]
+
+{ #category : #accessing }
 DataSeries >> atIndex: aNumber [
 	^ self at: (self keys at: aNumber)
 ]
@@ -76,6 +93,14 @@ DataSeries >> atIndex: aNumber ifAbsent: aBlock [
 { #category : #accessing }
 DataSeries >> atIndex: aNumber put: aValue [
 	^ self at: (self keys at: aNumber) put: aValue
+]
+
+{ #category : #accessing }
+DataSeries >> atIndex: aNumber transform: aBlock [
+	"Evaluate aBlock on the value at aNumber and replace that value with the result"
+	| key |
+	key := self keys at: aNumber.
+	self at: key transform: aBlock
 ]
 
 { #category : #comparing }

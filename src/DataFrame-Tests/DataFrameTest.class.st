@@ -368,6 +368,40 @@ DataFrameTest >> testAtAtPut [
 ]
 
 { #category : #tests }
+DataFrameTest >> testAtAtTransform [
+
+	| expected |
+
+	expected := DataFrame
+		withRows: #(
+			(Barcelona 1.609 true)
+   			(Dubai 2 true)
+   			(London 8.788 false))
+		rowNames: #(A B C)
+		columnNames: #(City Population BeenThere).
+		
+	df at: 2 at: 2 transform: [ :value | value floor ].
+	self assert: df equals: expected
+]
+
+{ #category : #tests }
+DataFrameTest >> testAtTransform [
+
+	| expected |
+
+	expected := DataFrame
+		withRows: #(
+			(Barcelona 1.609 true)
+   			(Dubai 0 true)
+   			(London 8.788 false))
+		rowNames: #(A B C)
+		columnNames: #(City Population BeenThere).
+		
+	df at: 2 transform: [ :row | row at: #Population put: 0; yourself ].
+	self assert: df equals: expected
+]
+
+{ #category : #tests }
 DataFrameTest >> testCollect [
 	| expectedDf expectedResult actualResult |
 	
@@ -450,6 +484,36 @@ DataFrameTest >> testColumnAtPut [
 ]
 
 { #category : #tests }
+DataFrameTest >> testColumnAtTransform [
+
+	| expected |
+
+	expected := DataFrame
+		withRows: #(
+			(Barcelona 1.609 true)
+   			(Dubai 0 true)
+   			(London 8.788 false))
+		rowNames: #(A B C)
+		columnNames: #(City Population BeenThere).
+		
+	df columnAt: 2 transform: [ :column | column at: #B put: 0; yourself ].
+	self assert: df equals: expected
+]
+
+{ #category : #tests }
+DataFrameTest >> testColumnIfAbsent [
+
+	| exceptionBlockEvaluated |
+	
+	exceptionBlockEvaluated := false.
+	
+	df column: #NoSuchColumn
+		ifAbsent: [ exceptionBlockEvaluated := true ].
+		
+	self assert: exceptionBlockEvaluated.
+]
+
+{ #category : #tests }
 DataFrameTest >> testColumnNames [
 	| newNames |
 	newNames := #(X Y Z).
@@ -476,6 +540,13 @@ DataFrameTest >> testColumnNamesSizeMismatch [
 ]
 
 { #category : #tests }
+DataFrameTest >> testColumnNotFound [
+	self
+		should: [ df column: #NoSuchColumn ]
+		raise: NotFoundError.
+]
+
+{ #category : #tests }
 DataFrameTest >> testColumnPut [
 
 	| actual expected |
@@ -493,6 +564,98 @@ DataFrameTest >> testColumnPut [
 	actual column: #BeenThere put: #(0 1 0).
 	
 	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+DataFrameTest >> testColumnPutIfAbsent [
+
+	| expected exceptionBlockEvaluated |
+	
+	exceptionBlockEvaluated := false.
+	
+	expected := DataFrame
+		withRows: #(
+			(Barcelona 1.609 true)
+   			(Dubai 2.789 true)
+   			(London 8.788 false))
+		rowNames: #(A B C)
+		columnNames: #(City Population BeenThere).
+	
+	df column: #NoSuchColumn
+		put: #(0 0 0)
+		ifAbsent: [ exceptionBlockEvaluated := true ].
+		
+	self assert: df equals: expected.
+	self assert: exceptionBlockEvaluated.
+]
+
+{ #category : #tests }
+DataFrameTest >> testColumnPutNotFound [
+	self
+		should: [ df column: #NoSuchColumn put: #(0 0 0) ]
+		raise: NotFoundError.
+]
+
+{ #category : #tests }
+DataFrameTest >> testColumnTransform [
+
+	| expected |
+
+	expected := DataFrame
+		withRows: #(
+			(Barcelona 1.609 true)
+   			(Dubai 0 true)
+   			(London 8.788 false))
+		rowNames: #(A B C)
+		columnNames: #(City Population BeenThere).
+		
+	df column: #Population transform: [ :column | column at: #B put: 0; yourself ].
+	self assert: df equals: expected
+]
+
+{ #category : #tests }
+DataFrameTest >> testColumnTransformIfAbsent [
+
+	| expected exceptionBlockEvaluated |
+
+	exceptionBlockEvaluated := false.
+	
+	expected := DataFrame
+		withRows: #(
+			(Barcelona 1.609 true)
+   			(Dubai 2.789 true)
+   			(London 8.788 false))
+		rowNames: #(A B C)
+		columnNames: #(City Population BeenThere).
+		
+	df column: #NoSuchColumn
+		transform: [ :column | column at: #B put: 0 ]
+		ifAbsent: [ exceptionBlockEvaluated := true ].
+		
+	self assert: df equals: expected.
+	self assert: exceptionBlockEvaluated.
+]
+
+{ #category : #tests }
+DataFrameTest >> testColumnTransformNotFound [
+
+	| expected |
+	
+	expected := DataFrame
+		withRows: #(
+			(Barcelona 1.609 true)
+   			(Dubai 2.789 true)
+   			(London 8.788 false))
+		rowNames: #(A B C)
+		columnNames: #(City Population BeenThere).
+		
+	self
+		should: [
+			df column: #NoSuchColumn
+				transform: [ :column | column at: #B put: 0 ] ]
+		raise: NotFoundError.
+		
+	self assert: df equals: expected.
 ]
 
 { #category : #tests }
@@ -1082,10 +1245,35 @@ DataFrameTest >> testIndexOfColumnNamed [
 ]
 
 { #category : #tests }
+DataFrameTest >> testIndexOfColumnNamedIfAbsent [ 
+	| expected actual exceptionBlockEvaluated |
+	exceptionBlockEvaluated := false.
+	expected := 2.
+	
+	actual := df
+		indexOfColumnNamed: #Population
+		ifAbsent: [ exceptionBlockEvaluated := true ].
+		
+	self assert: actual equals: expected.
+	self deny: exceptionBlockEvaluated
+]
+
+{ #category : #tests }
+DataFrameTest >> testIndexOfColumnNamedIfAbsentNotFound [
+	| exceptionBlockEvaluated |
+	exceptionBlockEvaluated := false.
+	
+	df indexOfColumnNamed: #NoSuchColumn
+		ifAbsent: [ exceptionBlockEvaluated := true ].
+		
+	self assert: exceptionBlockEvaluated
+]
+
+{ #category : #tests }
 DataFrameTest >> testIndexOfColumnNamedNotFound [
 	self
 		should: [ df indexOfColumnNamed: #NoSuchColumn ]
-		raise: NotFoundError.
+		raise: NotFoundError
 ]
 
 { #category : #tests }
@@ -1097,10 +1285,35 @@ DataFrameTest >> testIndexOfRowNamed [
 ]
 
 { #category : #tests }
+DataFrameTest >> testIndexOfRowNamedIfAbsent [ 
+	| expected actual exceptionBlockEvaluated |
+	exceptionBlockEvaluated := false.
+	expected := 2.
+	
+	actual := df
+		indexOfRowNamed: #B
+		ifAbsent: [ exceptionBlockEvaluated := true ].
+		
+	self assert: actual equals: expected.
+	self deny: exceptionBlockEvaluated
+]
+
+{ #category : #tests }
+DataFrameTest >> testIndexOfRowNamedIfAbsentNotFound [
+	| exceptionBlockEvaluated |
+	exceptionBlockEvaluated := false.
+	
+	df indexOfRowNamed: #NoSuchRow
+		ifAbsent: [ exceptionBlockEvaluated := true ].
+		
+	self assert: exceptionBlockEvaluated
+]
+
+{ #category : #tests }
 DataFrameTest >> testIndexOfRowNamedNotFound [
 	self
 		should: [ df indexOfRowNamed: #NoSuchRow ]
-		raise: NotFoundError.
+		raise: NotFoundError
 ]
 
 { #category : #tests }
@@ -1380,6 +1593,36 @@ DataFrameTest >> testRowAtPut [
 ]
 
 { #category : #tests }
+DataFrameTest >> testRowAtTransform [
+
+	| expected |
+
+	expected := DataFrame
+		withRows: #(
+			(Barcelona 1.609 true)
+   			(Dubai 0 true)
+   			(London 8.788 false))
+		rowNames: #(A B C)
+		columnNames: #(City Population BeenThere).
+		
+	df rowAt: 2 transform: [ :row | row at: #Population put: 0; yourself ].
+	self assert: df equals: expected
+]
+
+{ #category : #tests }
+DataFrameTest >> testRowIfAbsent [
+
+	| exceptionBlockEvaluated |
+	
+	exceptionBlockEvaluated := false.
+
+	df row: #NoSuchRow
+		ifAbsent: [ exceptionBlockEvaluated := true ].
+		
+	self assert: exceptionBlockEvaluated.
+]
+
+{ #category : #tests }
 DataFrameTest >> testRowNames [
 	| newNames |
 	newNames := #(X Y Z).
@@ -1406,6 +1649,13 @@ DataFrameTest >> testRowNamesSizeMismatch [
 ]
 
 { #category : #tests }
+DataFrameTest >> testRowNotFound [
+	self
+		should: [ df row: #NoSuchRow ]
+		raise: NotFoundError.
+]
+
+{ #category : #tests }
 DataFrameTest >> testRowPut [
 
 	| actual expected |
@@ -1422,6 +1672,98 @@ DataFrameTest >> testRowPut [
 	actual row: #B put: #(X Y Z).
 	
 	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+DataFrameTest >> testRowPutIfAbsent [
+
+	| expected exceptionBlockEvaluated |
+	
+	exceptionBlockEvaluated := false.
+	
+	expected := DataFrame
+		withRows: #(
+			(Barcelona 1.609 true)
+   			(Dubai 2.789 true)
+   			(London 8.788 false))
+		rowNames: #(A B C)
+		columnNames: #(City Population BeenThere).
+	
+	df row: #NoSuchRow
+		put: #(0 0 0)
+		ifAbsent: [ exceptionBlockEvaluated := true ].
+		
+	self assert: df equals: expected.
+	self assert: exceptionBlockEvaluated.
+]
+
+{ #category : #tests }
+DataFrameTest >> testRowPutNotFound [
+	self
+		should: [ df row: #NoSuchRow put: #(0 0 0) ]
+		raise: NotFoundError.
+]
+
+{ #category : #tests }
+DataFrameTest >> testRowTransform [
+
+	| expected |
+
+	expected := DataFrame
+		withRows: #(
+			(Barcelona 1.609 true)
+   			(Dubai 0 true)
+   			(London 8.788 false))
+		rowNames: #(A B C)
+		columnNames: #(City Population BeenThere).
+		
+	df row: #B transform: [ :row | row at: #Population put: 0; yourself ].
+	self assert: df equals: expected
+]
+
+{ #category : #tests }
+DataFrameTest >> testRowTransformIfAbsent [
+
+	| expected exceptionBlockEvaluated |
+
+	exceptionBlockEvaluated := false.
+	
+	expected := DataFrame
+		withRows: #(
+			(Barcelona 1.609 true)
+   			(Dubai 2.789 true)
+   			(London 8.788 false))
+		rowNames: #(A B C)
+		columnNames: #(City Population BeenThere).
+		
+	df row: #NoSuchRow
+		transform: [ :row | row at: #Population put: 0 ]
+		ifAbsent: [ exceptionBlockEvaluated := true ].
+		
+	self assert: df equals: expected.
+	self assert: exceptionBlockEvaluated.
+]
+
+{ #category : #tests }
+DataFrameTest >> testRowTransformNotFound [
+
+	| expected |
+	
+	expected := DataFrame
+		withRows: #(
+			(Barcelona 1.609 true)
+   			(Dubai 2.789 true)
+   			(London 8.788 false))
+		rowNames: #(A B C)
+		columnNames: #(City Population BeenThere).
+		
+	self
+		should: [
+			df row: #NoSuchRow
+				transform: [ :row | row at: #Population put: 0 ] ]
+		raise: NotFoundError.
+		
+	self assert: df equals: expected.
 ]
 
 { #category : #tests }
