@@ -336,7 +336,7 @@ DataFrame >> addColumn: anArray named: aString atPosition: aNumber [
 	(self columnNames includes: aString)
 		ifTrue: [ Error signal: 'A column with that name already exists' ].
 	
-	contents addColumn: anArray atPosition: aNumber.
+	contents addColumn: anArray asArray atPosition: aNumber.
 	columnNames add: aString afterIndex: aNumber - 1.
 ]
 
