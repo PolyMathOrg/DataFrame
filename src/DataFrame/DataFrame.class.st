@@ -723,36 +723,36 @@ DataFrame >> firstQuartile [
 ]
 
 { #category : #grouping }
-DataFrame >> group: colNameOrArray by: colName [
+DataFrame >> group: anAggregateColumnName by: aGroupColumnName aggregateUsing: aBlock [
+	^ self group: anAggregateColumnName by: aGroupColumnName aggregateUsing: aBlock as: anAggregateColumnName.
+]
 
-	| left right |
+{ #category : #grouping }
+DataFrame >> group: anAggregateColumnName by: aGroupColumnName aggregateUsing: aBlock as: aNewColumnName [
+
+	| groupColumn aggregateColumn |
 	
-	left := colNameOrArray isArray
-		ifTrue: [ self columns: colNameOrArray ]	"a DataFrame"
-		ifFalse: [ self column: colNameOrArray ].	"a DataSeries"
+	aGroupColumnName = anAggregateColumnName
+		ifTrue: [ Error signal: 'Can not group a column by itself' ].
 		
-	right := self column: colName.
+	groupColumn := self column: aGroupColumnName.
+	aggregateColumn := self column: anAggregateColumnName.
 	
-	^ left groupBy: right.
+	^ aggregateColumn groupBy: groupColumn aggregateUsing: aBlock as: aNewColumnName
 ]
 
 { #category : #grouping }
-DataFrame >> groupBy: colName [
+DataFrame >> groupBy: columnName aggregate: anArrayOfUsingAsStatements [
 
-	| groupedColNames |
+	| aggregatedColumns |
 	
-	"We exclude the column by which we are grouping"
-	groupedColNames := self columnNames copyWithout: colName.
-
-	^ DataFrameGrouped
-		group: (self columns: groupedColNames)
-		by: (self column: colName)
-]
-
-{ #category : #grouping }
-DataFrame >> groupBy: colName aggregate: selector [
-
-	^ (self groupBy: colName) perform: selector.
+	aggregatedColumns := anArrayOfUsingAsStatements collect: [ :aBlock |
+		aBlock value: self value: columnName ].
+	
+	^ DataFrame
+		withColumns: aggregatedColumns
+		rowNames: aggregatedColumns first keys
+		columnNames: (aggregatedColumns collect: #name)
 ]
 
 { #category : #'gt-inspector-extension' }

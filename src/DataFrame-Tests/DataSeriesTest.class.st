@@ -559,22 +559,59 @@ DataSeriesTest >> testFrequencyTable [
 ]
 
 { #category : #tests }
-DataSeriesTest >> testGroupBy [
+DataSeriesTest >> testGroupByAggregateUsing [
 	| firstSeries secondSeries expected actual |
 	
 	firstSeries := DataSeries withValues: #(1 10 2 1 5) name: #salary.
 	secondSeries := DataSeries withValues: #(Male Female Male Male Female) name: #sex.
 	
-	expected := DataSeriesGrouped new.
-	expected groups: (DataSeries
+	expected := DataSeries
 		withKeys: #(Female Male)
-		values: {
-			DataSeries withValues: #(10 5) .
-			DataSeries withValues: #(1 2 1) }
-		name: #salary).
+		values: #(15 4)
+		name: #salary.
 		
-	actual := firstSeries groupBy: secondSeries.
+	actual := firstSeries groupBy: secondSeries aggregateUsing: #sum.
 	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testGroupByAggregateUsingAs [
+	| firstSeries secondSeries expected actual |
+	
+	firstSeries := DataSeries withValues: #(1 10 2 1 5) name: #salary.
+	secondSeries := DataSeries withValues: #(Male Female Male Male Female) name: #sex.
+	
+	expected := DataSeries
+		withKeys: #(Female Male)
+		values: #(15 4)
+		name: #totalSalary.
+		
+	actual := firstSeries groupBy: secondSeries aggregateUsing: #sum as: #totalSalary.
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testGroupByAggregateUsingAsSizeMismatch [
+	| firstSeries secondSeries |
+	
+	firstSeries := DataSeries withValues: #(1 10 2 1) name: #salary.
+	secondSeries := DataSeries withValues: #(Male Female Male Male Female) name: #sex.
+		
+	self
+		should: [ firstSeries groupBy: secondSeries aggregateUsing: #sum as: #totalSalary ]
+		raise: SizeMismatch.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testGroupByAggregateUsingSizeMismatch [
+	| firstSeries secondSeries |
+	
+	firstSeries := DataSeries withValues: #(1 10 2 1 5 100) name: #salary.
+	secondSeries := DataSeries withValues: #(Male Female Male Male Female) name: #sex.
+		
+	self
+		should: [ firstSeries groupBy: secondSeries aggregateUsing: #sum ]
+		raise: SizeMismatch.
 ]
 
 { #category : #tests }
@@ -1017,7 +1054,7 @@ DataSeriesTest >> testValueCounts [
 	| actual expected |
 	
 	expected := DataSeries 
-		withKeys: #(8 16 15 13 10 9 7 6 20 3)
+		withKeys: #(8 20 16 15 13 10 9 7 6 3)
 		values: #(2 1 1 1 1 1 1 1 1 1)
 		name: series name.
 		

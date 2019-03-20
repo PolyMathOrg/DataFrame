@@ -213,9 +213,31 @@ DataSeries >> frequencyTable [
 	^ df
 ]
 
-{ #category : #queries }
-DataSeries >> groupBy: otherSeries [
-	^ DataSeriesGrouped group: self by: otherSeries
+{ #category : #grouping }
+DataSeries >> groupBy: otherSeries aggregateUsing: aBlock [
+	"Group my values by the unique values of otherSeries, aggregate them using aBlock. Use my name by default"
+	^ self groupBy: otherSeries aggregateUsing: aBlock as: self name
+]
+
+{ #category : #grouping }
+DataSeries >> groupBy: otherSeries aggregateUsing: aBlock as: aNewName [
+	"Group my values by the unique values of otherSeries, aggregate them using aBlock, and answer a new DataSeries with unique values of otherSeries (group keys) as keys, aggregated values of myself as values, and aNewName as name"
+	| groupKeys groups |
+	
+	self size = otherSeries size
+		ifFalse: [ SizeMismatch signal ].
+		
+	groupKeys := otherSeries uniqueValues.
+	
+	groups := groupKeys collect: [ :each |
+		(1 to: self size)
+			select: [ :i | (otherSeries atIndex: i) = each ]
+			thenCollect: [ :i | self atIndex: i ] ].
+	
+	^ DataSeries
+		withKeys: groupKeys
+		values: (groups collect: aBlock)
+		name: aNewName
 ]
 
 { #category : #slicing }
@@ -272,7 +294,7 @@ DataSeries >> last [
 { #category : #accessing }
 DataSeries >> mode [
 	| valueCounts maxCount |
-	valueCounts := (self groupBy: self) count.
+	valueCounts := self valueCounts.
 	maxCount := valueCounts max.
 	^ valueCounts keyAtValue: maxCount.
 ]
@@ -440,12 +462,12 @@ DataSeries >> thirdQuartile [
 
 { #category : #accessing }
 DataSeries >> uniqueValues [
-	^ self asSet asArray
+	^ self asSet asArray sort
 ]
 
 { #category : #statistics }
 DataSeries >> valueCounts [
-	^ (self groupBy: self) count sortDescending
+	^ (self groupBy: self aggregateUsing: #size) sortDescending
 ]
 
 { #category : #enumerating }
