@@ -45,31 +45,32 @@ rows := methods collect: [ :method |
 ### Creating a DataFrame
 We create a DataFrame and specify the names of its columns:
 ```Smalltalk
-methodsData := (DataFrame fromRows: rows)
-  columnNames: #(packageName className methodName sourceCode);
-  yourself.
+methodsData := DataFrame
+  withRows: rows
+  columnNames: #(packageName className methodName sourceCode).
 ```
 ### Adding a column
 We add a new column with number of arguments for each method. To do that we count the number of occurences of `:` symbol in method's name:
 ```Smalltalk
-methodsData atColumn: #numberOfArgs put: 
-  ((methodsData column: #methodName) collect: [ :name |
-    name occurrencesOf: $: ]).
+methodsData
+  addColumn: ((methodsData column: #methodName)
+    collect: [ :name | name occurrencesOf: $: ])
+  named: #numberOfArgs.
 ```
 ### Filtering data
 Now we select only those methods that belong to package [Renraku](https://github.com/Uko/Renraku), have at least one argument, and source code with less than 5 tokens:
 ```Smalltalk
 renrakuMethods := methodsData select: [ :row |
-  ((row atKey: #packageName) = 'Renraku' and: 
-  (row atKey: #numberOfArgs) > 0) and:
-  ((row atKey: #sourceCode) findTokens: ' ') size < 5 ].
+  ((row at: #packageName) = 'Renraku' and: 
+  (row at: #numberOfArgs) > 0) and:
+  ((row at: #sourceCode) findTokens: ' ') size < 5 ].
 ```
 ### Sorting rows by values of a column
 First we sort methods by their names and then we sort the result by number of arguments in descending order:
 ```Smalltalk
 renrakuMethods
-  orderBy: #methodName;
-  orderDescendingBy: #numberOfArgs.
+  sortBy: #methodName;
+  sortDescendingBy: #numberOfArgs.
 ```
 ### Selecting specific columns
 We selecting only 4 columns (without className) and specify their order. If you inspect the result of this query, you will see the table similar to the one in a screenshot above.
