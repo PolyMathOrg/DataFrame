@@ -478,7 +478,11 @@ DataSeries >> thirdQuartile [
 
 { #category : #accessing }
 DataSeries >> uniqueValues [
-	^ self asSet asArray sort
+	| v |
+	v := self asSet asArray.
+	
+	"Sort if possible"
+	^ [ v sort ] on: Error do: [ v ].
 ]
 
 { #category : #statistics }
