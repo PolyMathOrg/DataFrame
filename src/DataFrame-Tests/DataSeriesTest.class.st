@@ -467,6 +467,34 @@ DataSeriesTest >> testCrossTabulateWith [
 ]
 
 { #category : #tests }
+DataSeriesTest >> testDetect [
+
+	| expected actual |
+	
+	expected := 7.
+	actual := series detect: [ :x | x > 5 ].
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testDetectIfNone [
+
+	| expected actual |
+	
+	expected := 'not found'.
+	actual := series detect: [ :x | x > 100 ] ifNone: [ 'not found' ].
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testDetectNotFound [
+
+	self
+		should: [ series detect: [ :x | x > 100 ] ]
+		raise: NotFound.
+]
+
+{ #category : #tests }
 DataSeriesTest >> testDivideByScalar [
 
 	| a b |
@@ -688,6 +716,16 @@ DataSeriesTest >> testInequalityDifferentValues [
 ]
 
 { #category : #tests }
+DataSeriesTest >> testInjectInto [
+
+	| expected actual |
+	
+	expected := 115.
+	actual := series inject: 0 into: [ :sum :x | sum + x ].
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
 DataSeriesTest >> testInterquartileRange [
 
 	self assert: series interquartileRange equals: 8.
@@ -780,6 +818,20 @@ DataSeriesTest >> testRange [
 ]
 
 { #category : #tests }
+DataSeriesTest >> testReject [
+
+	| expected actual |
+	
+	expected := DataSeries
+		withKeys: #(a b c e f g)
+		values: #(3 7 6 8 9 8)
+		name: 'ExampleSeries'.
+		
+	actual := series reject: [ :x | x >= 10 ].
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
 DataSeriesTest >> testRemoveAt [
 
 	| expected |
@@ -825,6 +877,20 @@ DataSeriesTest >> testSecondQuartile [
 DataSeriesTest >> testSecondQuartileEqualsMedian [
 
 	self assert: series secondQuartile equals: series median.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testSelect [
+
+	| expected actual |
+	
+	expected := DataSeries
+		withKeys: #(a b c e f g)
+		values: #(3 7 6 8 9 8)
+		name: 'ExampleSeries'.
+		
+	actual := series select: [ :x | x < 10 ].
+	self assert: actual equals: expected.
 ]
 
 { #category : #tests }
@@ -1085,6 +1151,34 @@ DataSeriesTest >> testWithIndexCollect [
 ]
 
 { #category : #tests }
+DataSeriesTest >> testWithIndexDetect [
+
+	| expected actual |
+	
+	expected := 6.
+	actual := series withIndexDetect: [ :x :i | (x > 5) and: (i odd) ].
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testWithIndexDetectIfNone [
+
+	| expected actual |
+	
+	expected := 'not found'.
+	actual := series withIndexDetect: [ :x :i | i > 100 ] ifNone: [ 'not found' ].
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testWithIndexDetectNotFound [
+
+	self
+		should: [ series withIndexDetect: [ :x :i | i > 100 ] ]
+		raise: NotFound.
+]
+
+{ #category : #tests }
 DataSeriesTest >> testWithIndexDo [
 
 	| sum |
@@ -1094,6 +1188,34 @@ DataSeriesTest >> testWithIndexDo [
 		sum := sum + (each / i) ].
 	
 	self assert: sum equals: (108173/4620).
+]
+
+{ #category : #tests }
+DataSeriesTest >> testWithIndexReject [
+
+	| expected actual |
+	
+	expected := DataSeries
+		withKeys: #(a c e g)
+		values: #(3 6 8 8)
+		name: 'ExampleSeries'.
+		
+	actual := series withIndexReject: [ :x :i | x >= 10 or: i even ].
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testWithIndexSelect [
+
+	| expected actual |
+	
+	expected := DataSeries
+		withKeys: #(a c e g)
+		values: #(3 6 8 8)
+		name: 'ExampleSeries'.
+		
+	actual := series withIndexSelect: [ :x :i | x < 10 and: i odd ].
+	self assert: actual equals: expected.
 ]
 
 { #category : #tests }
@@ -1113,6 +1235,34 @@ DataSeriesTest >> testWithKeyCollect [
 ]
 
 { #category : #tests }
+DataSeriesTest >> testWithKeyDetect [
+
+	| expected actual |
+	
+	expected := 6.
+	actual := series withKeyDetect: [ :x :k | x > 5 and: (k = #c) ].
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testWithKeyDetectIfNone [
+
+	| expected actual |
+	
+	expected := 'not found'.
+	actual := series withKeyDetect: [ :x :k | x > 5 and: (k = #NoSuchKey) ] ifNone: [ 'not found' ].
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testWithKeyDetectNotFound [
+
+	self
+		should: [ series withKeyDetect: [ :x :k | x > 5 and: (k = #NoSuchKey) ] ]
+		raise: NotFound.
+]
+
+{ #category : #tests }
 DataSeriesTest >> testWithKeyDo [
 
 	| sum |
@@ -1122,6 +1272,34 @@ DataSeriesTest >> testWithKeyDo [
 		sum := sum + (each / (keyArray indexOf: key)) ].
 	
 	self assert: sum equals: (108173/4620).
+]
+
+{ #category : #tests }
+DataSeriesTest >> testWithKeyReject [
+
+	| expected actual |
+	
+	expected := DataSeries
+		withKeys: #(a c g)
+		values: #(3 6 8)
+		name: 'ExampleSeries'.
+		
+	actual := series withKeyReject: [ :x :k | x >= 10 or: (#(a c g) includes: k) not ].
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testWithKeySelect [
+
+	| expected actual |
+	
+	expected := DataSeries
+		withKeys: #(a c g)
+		values: #(3 6 8)
+		name: 'ExampleSeries'.
+		
+	actual := series withKeySelect: [ :x :k | x < 10 and: (#(a c g) includes: k) ].
+	self assert: actual equals: expected.
 ]
 
 { #category : #tests }

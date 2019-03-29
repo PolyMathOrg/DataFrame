@@ -333,6 +333,14 @@ DataSeries >> quartile: aNumber [
 	^ self quantile: (25 * aNumber)
 ]
 
+{ #category : #enumerating }
+DataSeries >> reject: aBlock [
+	| result |
+	result := super reject: aBlock.
+	result name: self name.
+	^ result
+]
+
 { #category : #removing }
 DataSeries >> removeAt: aKey [
 	^ self removeKey: aKey
@@ -353,6 +361,14 @@ DataSeries >> second [
 { #category : #statistics }
 DataSeries >> secondQuartile [
 	^ self quartile: 2
+]
+
+{ #category : #enumerating }
+DataSeries >> select: aBlock [
+	| result |
+	result := super select: aBlock.
+	result name: self name.
+	^ result
 ]
 
 { #category : #accessing }
@@ -498,8 +514,44 @@ DataSeries >> withIndexCollect: aBlock [
 ]
 
 { #category : #enumerating }
+DataSeries >> withIndexDetect: aBlock [
+	
+	^ self withIndexDetect: aBlock ifNone: [ NotFound signal ].
+]
+
+{ #category : #enumerating }
+DataSeries >> withIndexDetect: aBlock ifNone: exceptionBlock [
+	
+	| selectedIndex |
+	
+	selectedIndex := (1 to: self size)
+		detect: [ :i | aBlock value: (self atIndex: i) value: i ]
+		ifNone: [ ^ exceptionBlock value ].
+		
+	^ self atIndex: selectedIndex.
+]
+
+{ #category : #enumerating }
 DataSeries >> withIndexDo: aBlock [
 	self keys withIndexDo: [ :each :i | aBlock value: (self at: each) value: i ]
+]
+
+{ #category : #enumerating }
+DataSeries >> withIndexReject: aBlock [
+	^ self withIndexSelect: [ :each :i | (aBlock value: each value: i) not ]
+]
+
+{ #category : #enumerating }
+DataSeries >> withIndexSelect: aBlock [
+	| selectedIndices |
+	
+	selectedIndices := (1 to: self size) select: [ :i |
+		aBlock value: (self atIndex: i) value: i ].
+	
+	^ DataSeries
+		withKeys: (selectedIndices collect: [ :i | self keys at: i ])
+		values: (selectedIndices collect: [ :i | self atIndex: i ])
+		name: self name.
 ]
 
 { #category : #enumerating }
@@ -513,8 +565,44 @@ DataSeries >> withKeyCollect: aBlock [
 ]
 
 { #category : #enumerating }
+DataSeries >> withKeyDetect: aBlock [
+	
+	^ self withKeyDetect: aBlock ifNone: [ NotFound signal ].
+]
+
+{ #category : #enumerating }
+DataSeries >> withKeyDetect: aBlock ifNone: exceptionBlock [
+	
+	| selectedKey |
+	
+	selectedKey := self keys
+		detect: [ :key | aBlock value: (self at: key) value: key ]
+		ifNone: [ ^ exceptionBlock value ].
+		
+	^ self at: selectedKey.
+]
+
+{ #category : #enumerating }
 DataSeries >> withKeyDo: aBlock [
 	self keysDo: [ :each | aBlock value: (self at: each) value: each ]
+]
+
+{ #category : #enumerating }
+DataSeries >> withKeyReject: aBlock [
+	^ self withKeySelect: [ :each :key | (aBlock value: each value: key) not ]
+]
+
+{ #category : #enumerating }
+DataSeries >> withKeySelect: aBlock [
+	| selectedKeys |
+	
+	selectedKeys := self keys select: [ :key |
+		aBlock value: (self at: key) value: key ].
+	
+	^ DataSeries
+		withKeys: selectedKeys
+		values: (selectedKeys collect: [ :key | self at: key ])
+		name: self name.
 ]
 
 { #category : #enumerating }
