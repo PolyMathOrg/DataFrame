@@ -324,7 +324,7 @@ DataSeries >> ninth [
 { #category : #statistics }
 DataSeries >> quantile: aNumber [
 	| sortedSeries index |
-	sortedSeries := self sort.
+	sortedSeries := self sorted.
 	
 	aNumber = 0
 		ifTrue: [ ^ sortedSeries first ].

@@ -1332,6 +1332,15 @@ DataSeriesTest >> testStatsQuantile [
 ]
 
 { #category : #tests }
+DataSeriesTest >> testStatsQuantileDoesNotModifyTheSeries [
+	
+	| copy |
+	copy := series copy.
+	series quantile: 5.
+	self assert: series equals: copy.
+]
+
+{ #category : #tests }
 DataSeriesTest >> testStatsQuartile [
 	
 	self assert: (series quartile: 0) equals: 3.
