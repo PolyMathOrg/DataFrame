@@ -291,6 +291,11 @@ DataSeries >> last [
 	^ self atIndex: self size
 ]
 
+{ #category : #'math functions' }
+DataSeries >> log: base [
+	^ self collect: [ :each | each log: base ]
+]
+
 { #category : #accessing }
 DataSeries >> mode [
 	| valueCounts maxCount |

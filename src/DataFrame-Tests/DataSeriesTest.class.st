@@ -610,18 +610,6 @@ DataSeriesTest >> testCopyChangeDoesNotAffectOriginal [
 ]
 
 { #category : #tests }
-DataSeriesTest >> testCos [
-
-	| a b pi |
-	
-	pi := Float pi.
-	a := { 0 . pi . pi/2 . pi/4 . pi/3 } asDataSeries.
-	b := { 1.0 . -1.0 . 0.0 . 1/2 sqrt . 0.5 } asDataSeries.
-	
-	self assert: a cos closeTo: b.
-]
-
-{ #category : #tests }
 DataSeriesTest >> testCreateDataSeriesAsDataSeries [
 
 	| dataSeries |
@@ -952,13 +940,74 @@ DataSeriesTest >> testLast [
 ]
 
 { #category : #tests }
-DataSeriesTest >> testNinth [
+DataSeriesTest >> testMathAbs [
 
-	self assert: series ninth equals: 15.
+	| a b |
+	
+	a := { 1 . -2 . 3 . -4 } asDataSeries.
+	b := { 1 . 2 . 3 . 4 } asDataSeries.
+	
+	self assert: a abs closeTo: b.
 ]
 
 { #category : #tests }
-DataSeriesTest >> testPowerScalar [
+DataSeriesTest >> testMathCos [
+
+	| a b pi |
+	
+	pi := Float pi.
+	a := { 0 . pi . pi/2 . pi/4 . pi/3 } asDataSeries.
+	b := { 1.0 . -1.0 . 0.0 . 1/2 sqrt . 0.5 } asDataSeries.
+	
+	self assert: a cos closeTo: b.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testMathExp [
+
+	| a b |
+	
+	a := { 1 . 2 . 3 . 4 } asDataSeries.
+	b := { 2.71828 . 7.38906 . 20.08554 . 54.59815 } asDataSeries.
+	
+	self assert: a exp closeTo: b.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testMathLn [
+
+	| a b |
+	
+	a := { 1 . 2 . 3 . 4 } asDataSeries.
+	b := { 0 . 0.69315 . 1.09861 . 1.38629 } asDataSeries.
+	
+	self assert: a ln closeTo: b.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testMathLog [
+
+	| a b |
+	
+	a := { 1 . 2 . 3 . 4 } asDataSeries.
+	b := { 0.0 . 0.30103 . 0.47712 . 0.60205 } asDataSeries.
+	
+	self assert: a log closeTo: b.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testMathLog2 [
+
+	| a b |
+	
+	a := { 1 . 2 . 3 . 4 } asDataSeries.
+	b := { 0 . 1 . 1.58496 . 2 } asDataSeries.
+	
+	self assert: (a log: 2) closeTo: b.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testMathPowerScalar [
 
 	| a b |
 	
@@ -966,6 +1015,46 @@ DataSeriesTest >> testPowerScalar [
 	b := #(1 4 9) asDataSeries.
 	
 	self assert: a ** 2 equals: b.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testMathSin [
+
+	| a b pi |
+	
+	pi := Float pi.
+	a := { 0 . pi . pi/2 . pi/4 . pi/6 } asDataSeries.
+	b := { 0.0 . 0.0 . 1.0 . 1/2 sqrt . 0.5 } asDataSeries.
+	
+	self assert: a sin closeTo: b.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testMathSqrt [
+
+	| a b |
+	
+	a := { 1 . 2 . 3 . 4 } asDataSeries.
+	b := { 1 . 1.41421 . 1.73205 . 2 } asDataSeries.
+	
+	self assert: a sqrt closeTo: b.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testMathTan [
+
+	| a b |
+	
+	a := { 1 . 2 . 3 . 4 } asDataSeries.
+	b := { 1.55741 . -2.18504 . -0.14255 . 1.15782 } asDataSeries.
+	
+	self assert: a tan closeTo: b.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testNinth [
+
+	self assert: series ninth equals: 15.
 ]
 
 { #category : #tests }
@@ -1036,18 +1125,6 @@ DataSeriesTest >> testSelect [
 DataSeriesTest >> testSeventh [
 
 	self assert: series seventh equals: 8.
-]
-
-{ #category : #tests }
-DataSeriesTest >> testSin [
-
-	| a b pi |
-	
-	pi := Float pi.
-	a := { 0 . pi . pi/2 . pi/4 . pi/6 } asDataSeries.
-	b := { 0.0 . 0.0 . 1.0 . 1/2 sqrt . 0.5 } asDataSeries.
-	
-	self assert: a sin closeTo: b.
 ]
 
 { #category : #tests }
