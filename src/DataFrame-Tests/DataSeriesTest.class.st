@@ -19,7 +19,7 @@ DataSeriesTest >> setUp [
 ]
 
 { #category : #tests }
-DataSeriesTest >> testAddArrayToSeries [
+DataSeriesTest >> testArithmeticsAddArrayToSeries [
 	| series array actual expected |
 	
 	series := DataSeries withKeys: #(a b c) values: #(1 2 3) name: #X.
@@ -32,7 +32,7 @@ DataSeriesTest >> testAddArrayToSeries [
 ]
 
 { #category : #tests }
-DataSeriesTest >> testAddScalarToSeries [
+DataSeriesTest >> testArithmeticsAddScalarToSeries [
 	| series scalar actual expected |
 	
 	series := DataSeries withKeys: #(a b c) values: #(1 2 3) name: #X.
@@ -45,7 +45,7 @@ DataSeriesTest >> testAddScalarToSeries [
 ]
 
 { #category : #tests }
-DataSeriesTest >> testAddSeriesToArray [
+DataSeriesTest >> testArithmeticsAddSeriesToArray [
 	| array series actual expected |
 	
 	array := #(1 2 3).
@@ -58,7 +58,7 @@ DataSeriesTest >> testAddSeriesToArray [
 ]
 
 { #category : #tests }
-DataSeriesTest >> testAddSeriesToScalar [
+DataSeriesTest >> testArithmeticsAddSeriesToScalar [
 	| scalar series actual expected |
 	
 	scalar := 10.
@@ -71,7 +71,7 @@ DataSeriesTest >> testAddSeriesToScalar [
 ]
 
 { #category : #tests }
-DataSeriesTest >> testAddSeriesToSeriesDifferentKeys [
+DataSeriesTest >> testArithmeticsAddSeriesToSeriesDifferentKeys [
 	| firstSeries secondSeries |
 	
 	firstSeries := DataSeries withKeys: #(x y z) values: #(1 2 3) name: #X.
@@ -81,7 +81,7 @@ DataSeriesTest >> testAddSeriesToSeriesDifferentKeys [
 ]
 
 { #category : #tests }
-DataSeriesTest >> testAddSeriesToSeriesSameKeysAndName [
+DataSeriesTest >> testArithmeticsAddSeriesToSeriesSameKeysAndName [
 	| firstSeries secondSeries actual expected |
 	
 	firstSeries := DataSeries withKeys: #(a b c) values: #(1 2 3) name: #X.
@@ -94,7 +94,7 @@ DataSeriesTest >> testAddSeriesToSeriesSameKeysAndName [
 ]
 
 { #category : #tests }
-DataSeriesTest >> testAddSeriesToSeriesSameKeysDifferentName [
+DataSeriesTest >> testArithmeticsAddSeriesToSeriesSameKeysDifferentName [
 	| firstSeries secondSeries actual expected |
 	
 	firstSeries := DataSeries withKeys: #(a b c) values: #(1 2 3) name: #X.
@@ -102,6 +102,277 @@ DataSeriesTest >> testAddSeriesToSeriesSameKeysDifferentName [
 	
 	expected := DataSeries withKeys: #(a b c) values: #(4 6 8) name: '(no name)'.
 	actual := firstSeries + secondSeries.
+	
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testArithmeticsDivideArrayBySeries [
+
+	| array a b |
+	
+	array := #(2 4 3).
+	a := #(1 2 3) asDataSeries.
+	b := { 2 . 2 . 1 } asDataSeries.
+	
+	self assert: array / a equals: b.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testArithmeticsDivideSeriesByArray [
+
+	| array a b |
+	
+	array := #(2 4 3).
+	a := #(1 2 3) asDataSeries.
+	b := { 1/2 . 1/2 . 1 } asDataSeries.
+	
+	self assert: a / array equals: b.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testArithmeticsDivideSeriesByScalar [
+
+	| a b |
+	
+	a := #(1 2 3) asDataSeries.
+	b := #(0.5 1 1.5) asDataSeries.
+	
+	self assert: a / 2 equals: b.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testArithmeticsDivideSeriesBySeries [
+
+	| a b c |
+	
+	a := #(2 4 3) asDataSeries.
+	b := #(1 2 3) asDataSeries.
+	c := { 2 . 2 . 1 } asDataSeries.
+	
+	self assert: a / b equals: c.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testArithmeticsDivideSeriesBySeriesDifferentKeys [
+	| firstSeries secondSeries |
+	
+	firstSeries := DataSeries withKeys: #(x y z) values: #(1 2 3) name: #X.
+	secondSeries := DataSeries withKeys: #(a b c) values: #(3 4 5) name: #X.
+	
+	self should: [ firstSeries / secondSeries ] raise: Error.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testArithmeticsDivideSeriesBySeriesSameKeysAndName [
+	| firstSeries secondSeries actual expected |
+	
+	firstSeries := DataSeries withKeys: #(a b c) values: #(1 2 3) name: #X.
+	secondSeries := DataSeries withKeys: #(a b c) values: #(3 4 5) name: #X.
+	
+	expected := DataSeries withKeys: #(a b c) values: { 1/3 . 1/2 . 3/5 } name: #X.
+	actual := firstSeries / secondSeries.
+	
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testArithmeticsDivideSeriesBySeriesSameKeysDifferentName [
+	| firstSeries secondSeries actual expected |
+	
+	firstSeries := DataSeries withKeys: #(a b c) values: #(1 2 3) name: #X.
+	secondSeries := DataSeries withKeys: #(a b c) values: #(3 4 5) name: #Y.
+	
+	expected := DataSeries withKeys: #(a b c) values: { 1/3 . 1/2 . 3/5 } name: '(no name)'.
+	actual := firstSeries / secondSeries.
+	
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testArithmeticsMultiplyArrayBySeries [
+
+	| array a b |
+	
+	array := #(2 4 3).
+	a := #(1 2 3) asDataSeries.
+	b := #(2 8 9) asDataSeries.
+	
+	self assert: array * a equals: b.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testArithmeticsMultiplyScalarBySeries [
+
+	| a b |
+	
+	a := #(1 2 3) asDataSeries.
+	b := #(2 4 6) asDataSeries.
+	
+	self assert: 2 * a equals: b.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testArithmeticsMultiplySeriesByArray [
+
+	| array a b |
+	
+	array := #(2 4 3).
+	a := #(1 2 3) asDataSeries.
+	b := #(2 8 9) asDataSeries.
+	
+	self assert: a * array equals: b.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testArithmeticsMultiplySeriesByScalar [
+
+	| a b |
+	
+	a := #(1 2 3) asDataSeries.
+	b := #(2 4 6) asDataSeries.
+	
+	self assert: a * 2 equals: b.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testArithmeticsMultiplySeriesBySeries [
+
+	| a b c |
+	
+	a := #(2 4 3) asDataSeries.
+	b := #(1 2 3) asDataSeries.
+	c := #(2 8 9) asDataSeries.
+	
+	self assert: a * b equals: c.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testArithmeticsMultiplySeriesBySeriesDifferentKeys [
+	| firstSeries secondSeries |
+	
+	firstSeries := DataSeries withKeys: #(x y z) values: #(1 2 3) name: #X.
+	secondSeries := DataSeries withKeys: #(a b c) values: #(3 4 5) name: #X.
+	
+	self should: [ firstSeries * secondSeries ] raise: Error.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testArithmeticsMultiplySeriesBySeriesSameKeysAndName [
+	| firstSeries secondSeries actual expected |
+	
+	firstSeries := DataSeries withKeys: #(a b c) values: #(1 2 3) name: #X.
+	secondSeries := DataSeries withKeys: #(a b c) values: #(3 4 5) name: #X.
+	
+	expected := DataSeries withKeys: #(a b c) values: #(3 8 15) name: #X.
+	actual := firstSeries * secondSeries.
+	
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testArithmeticsMultiplySeriesBySeriesSameKeysDifferentName [
+	| firstSeries secondSeries actual expected |
+	
+	firstSeries := DataSeries withKeys: #(a b c) values: #(1 2 3) name: #X.
+	secondSeries := DataSeries withKeys: #(a b c) values: #(3 4 5) name: #Y.
+	
+	expected := DataSeries withKeys: #(a b c) values: #(3 8 15) name: '(no name)'.
+	actual := firstSeries * secondSeries.
+	
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testArithmeticsSubtractArrayFromSeries [
+
+	| array a b |
+	
+	array := #(2 4 3).
+	a := #(1 2 3) asDataSeries.
+	b := #(-1 -2 0) asDataSeries.
+	
+	self assert: a - array equals: b.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testArithmeticsSubtractScalarFromSeries [
+
+	| a b |
+	
+	a := #(1 2 3) asDataSeries.
+	b := #(-1 0 1) asDataSeries.
+	
+	self assert: a - 2 equals: b.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testArithmeticsSubtractSeriesFromArray [
+
+	| array a b |
+	
+	array := #(2 4 3).
+	a := #(1 2 3) asDataSeries.
+	b := #(1 2 0) asDataSeries.
+	
+	self assert: array - a equals: b.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testArithmeticsSubtractSeriesFromScalar [
+
+	| a b |
+	
+	a := #(1 2 3) asDataSeries.
+	b := #(1 0 -1) asDataSeries.
+	
+	self assert: 2 - a equals: b.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testArithmeticsSubtractSeriesFromSeries [
+
+	| a b c |
+	
+	a := #(2 4 3) asDataSeries.
+	b := #(1 2 3) asDataSeries.
+	c := #(1 2 0) asDataSeries.
+	
+	self assert: a - b equals: c.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testArithmeticsSubtractSeriesFromSeriesDifferentKeys [
+	| firstSeries secondSeries |
+	
+	firstSeries := DataSeries withKeys: #(x y z) values: #(1 2 3) name: #X.
+	secondSeries := DataSeries withKeys: #(a b c) values: #(3 4 5) name: #X.
+	
+	self should: [ firstSeries - secondSeries ] raise: Error.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testArithmeticsSubtractSeriesFromSeriesSameKeysAndName [
+	| firstSeries secondSeries actual expected |
+	
+	firstSeries := DataSeries withKeys: #(a b c) values: #(1 2 3) name: #X.
+	secondSeries := DataSeries withKeys: #(a b c) values: #(3 4 5) name: #X.
+	
+	expected := DataSeries withKeys: #(a b c) values: #(-2 -2 -2) name: #X.
+	actual := firstSeries - secondSeries.
+	
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testArithmeticsSubtractSeriesFromSeriesSameKeysDifferentName [
+	| firstSeries secondSeries actual expected |
+	
+	firstSeries := DataSeries withKeys: #(a b c) values: #(1 2 3) name: #X.
+	secondSeries := DataSeries withKeys: #(a b c) values: #(3 4 5) name: #Y.
+	
+	expected := DataSeries withKeys: #(a b c) values: #(-2 -2 -2) name: '(no name)'.
+	actual := firstSeries - secondSeries.
 	
 	self assert: actual equals: expected.
 ]
@@ -495,17 +766,6 @@ DataSeriesTest >> testDetectNotFound [
 ]
 
 { #category : #tests }
-DataSeriesTest >> testDivideByScalar [
-
-	| a b |
-	
-	a := #(1 2 3) asDataSeries.
-	b := #(0.5 1 1.5) asDataSeries.
-	
-	self assert: a / 2 equals: b.
-]
-
-{ #category : #tests }
 DataSeriesTest >> testDo [
 
 	| sum |
@@ -759,18 +1019,6 @@ DataSeriesTest >> testMin [
 DataSeriesTest >> testMode [
 
 	self assert: series mode equals: 8.
-]
-
-{ #category : #tests }
-DataSeriesTest >> testMultiplyScalar [
-
-	| a b |
-	
-	a := #(1 2 3) asDataSeries.
-	b := #(2 4 6) asDataSeries.
-	
-	self assert: 2 * a equals: b.
-	self assert: a * 2 equals: b.
 ]
 
 { #category : #tests }
@@ -1038,20 +1286,6 @@ DataSeriesTest >> testSortedDoesNotChangeTheReceiver [
 DataSeriesTest >> testStdev [
 
 	self assert: series stdev closeTo: 5.00727.
-]
-
-{ #category : #tests }
-DataSeriesTest >> testSubtractElementwise [
-
-	| a b c d |
-	
-	a := #(1 2 3) asDataSeries.
-	b := #(3 6 8) asDataSeries.
-	c := #(-2 -4 -5) asDataSeries.
-	d := #(2 4 5) asDataSeries.
-	
-	self assert: a - b equals: c.
-	self assert: b - a equals: d.
 ]
 
 { #category : #tests }
