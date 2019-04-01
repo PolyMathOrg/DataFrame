@@ -498,12 +498,6 @@ DataSeriesTest >> testAtTransformIfAbsent [
 ]
 
 { #category : #tests }
-DataSeriesTest >> testAverage [
-
-	self assert: series average equals: (115/11).
-]
-
-{ #category : #tests }
 DataSeriesTest >> testCloseTo [
 
 	| firstSeries secondSeries |
@@ -807,43 +801,9 @@ DataSeriesTest >> testFirst [
 ]
 
 { #category : #tests }
-DataSeriesTest >> testFirstQuartile [
-
-	self assert: series firstQuartile equals: 7.
-]
-
-{ #category : #tests }
 DataSeriesTest >> testFourth [
 
 	self assert: series fourth equals: 20.
-]
-
-{ #category : #tests }
-DataSeriesTest >> testFourthQuartile [
-
-	self assert: series fourthQuartile equals: 20.
-]
-
-{ #category : #tests }
-DataSeriesTest >> testFourthQuartileEqualsMax [
-
-	self assert: series fourthQuartile equals: series max.
-]
-
-{ #category : #tests }
-DataSeriesTest >> testFrequencyTable [
-
-	| aSeries expected |
-	aSeries := #(A B C A A B C A B B) asDataSeries.
-	
-	expected := DataFrame withColumns: {
-		{ 4 . 4 . 2 } .
-		{ 2/5 . 2/5 . 1/5 }}.
-		
-	expected rowNames: #(A B C).
-	expected columnNames: #(Count Proportion).
-	
-	self assert: aSeries frequencyTable equals: expected
 ]
 
 { #category : #tests }
@@ -986,39 +946,9 @@ DataSeriesTest >> testInjectInto [
 ]
 
 { #category : #tests }
-DataSeriesTest >> testInterquartileRange [
-
-	self assert: series interquartileRange equals: 8.
-]
-
-{ #category : #tests }
 DataSeriesTest >> testLast [
 
 	self assert: series last equals: 16.
-]
-
-{ #category : #tests }
-DataSeriesTest >> testMax [
-
-	self assert: series max equals: 20.
-]
-
-{ #category : #tests }
-DataSeriesTest >> testMedian [
-
-	self assert: series median equals: 9.
-]
-
-{ #category : #tests }
-DataSeriesTest >> testMin [
-
-	self assert: series min equals: 3.
-]
-
-{ #category : #tests }
-DataSeriesTest >> testMode [
-
-	self assert: series mode equals: 8.
 ]
 
 { #category : #tests }
@@ -1036,33 +966,6 @@ DataSeriesTest >> testPowerScalar [
 	b := #(1 4 9) asDataSeries.
 	
 	self assert: a ** 2 equals: b.
-]
-
-{ #category : #tests }
-DataSeriesTest >> testQuantile [
-	
-	self assert: (series quantile: 0) equals: 3.
-	self assert: (series quantile: 10) equals: 6.
-	self assert: (series quantile: 25) equals: 7.
-	self assert: (series quantile: 50) equals: 9.
-	self assert: (series quantile: 75) equals: 15.
-	self assert: (series quantile: 100) equals: 20.
-]
-
-{ #category : #tests }
-DataSeriesTest >> testQuartile [
-	
-	self assert: (series quartile: 0) equals: 3.
-	self assert: (series quartile: 1) equals: 7.
-	self assert: (series quartile: 2) equals: 9.
-	self assert: (series quartile: 3) equals: 15.
-	self assert: (series quartile: 4) equals: 20.
-]
-
-{ #category : #tests }
-DataSeriesTest >> testRange [
-
-	self assert: series range equals: 17.
 ]
 
 { #category : #tests }
@@ -1113,18 +1016,6 @@ DataSeriesTest >> testRemoveAtIndex [
 DataSeriesTest >> testSecond [
 
 	self assert: series second equals: 7.
-]
-
-{ #category : #tests }
-DataSeriesTest >> testSecondQuartile [
-
-	self assert: series secondQuartile equals: 9.
-]
-
-{ #category : #tests }
-DataSeriesTest >> testSecondQuartileEqualsMedian [
-
-	self assert: series secondQuartile equals: series median.
 ]
 
 { #category : #tests }
@@ -1283,13 +1174,122 @@ DataSeriesTest >> testSortedDoesNotChangeTheReceiver [
 ]
 
 { #category : #tests }
-DataSeriesTest >> testStdev [
+DataSeriesTest >> testStatsAverage [
+
+	self assert: series average equals: (115/11).
+]
+
+{ #category : #tests }
+DataSeriesTest >> testStatsFirstQuartile [
+
+	self assert: series firstQuartile equals: 7.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testStatsFourthQuartile [
+
+	self assert: series fourthQuartile equals: 20.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testStatsFourthQuartileEqualsMax [
+
+	self assert: series fourthQuartile equals: series max.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testStatsFrequencyTable [
+
+	| aSeries expected |
+	aSeries := #(A B C A A B C A B B) asDataSeries.
+	
+	expected := DataFrame withColumns: {
+		{ 4 . 4 . 2 } .
+		{ 2/5 . 2/5 . 1/5 }}.
+		
+	expected rowNames: #(A B C).
+	expected columnNames: #(Count Proportion).
+	
+	self assert: aSeries frequencyTable equals: expected
+]
+
+{ #category : #tests }
+DataSeriesTest >> testStatsInterquartileRange [
+
+	self assert: series interquartileRange equals: 8.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testStatsMax [
+
+	self assert: series max equals: 20.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testStatsMedian [
+
+	self assert: series median equals: 9.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testStatsMin [
+
+	self assert: series min equals: 3.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testStatsMode [
+
+	self assert: series mode equals: 8.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testStatsQuantile [
+	
+	self assert: (series quantile: 0) equals: 3.
+	self assert: (series quantile: 10) equals: 6.
+	self assert: (series quantile: 25) equals: 7.
+	self assert: (series quantile: 50) equals: 9.
+	self assert: (series quantile: 75) equals: 15.
+	self assert: (series quantile: 100) equals: 20.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testStatsQuartile [
+	
+	self assert: (series quartile: 0) equals: 3.
+	self assert: (series quartile: 1) equals: 7.
+	self assert: (series quartile: 2) equals: 9.
+	self assert: (series quartile: 3) equals: 15.
+	self assert: (series quartile: 4) equals: 20.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testStatsRange [
+
+	self assert: series range equals: 17.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testStatsSecondQuartile [
+
+	self assert: series secondQuartile equals: 9.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testStatsSecondQuartileEqualsMedian [
+
+	self assert: series secondQuartile equals: series median.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testStatsStdev [
 
 	self assert: series stdev closeTo: 5.00727.
 ]
 
 { #category : #tests }
-DataSeriesTest >> testSummary [
+DataSeriesTest >> testStatsSummary [
 	| expected actual |
 	
 	expected := DataSeries 
@@ -1300,6 +1300,30 @@ DataSeriesTest >> testSummary [
 	actual := series summary.
 	
 	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testStatsThirdQuartile [
+
+	self assert: series thirdQuartile equals: 15.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testStatsVariance [
+
+	self assert: series variance closeTo: 25.07273.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testStatsZerothQuartile [
+
+	self assert: series zerothQuartile equals: 3.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testStatsZerothQuartileEqualsMin [
+
+	self assert: series zerothQuartile equals: series min.
 ]
 
 { #category : #tests }
@@ -1335,12 +1359,6 @@ DataSeriesTest >> testThird [
 ]
 
 { #category : #tests }
-DataSeriesTest >> testThirdQuartile [
-
-	self assert: series thirdQuartile equals: 15.
-]
-
-{ #category : #tests }
 DataSeriesTest >> testUniqueValues [
 	| aSeries expected actual |
 	aSeries := DataSeries withKeys: #(a b c d e) values: #(z y y z x).
@@ -1360,12 +1378,6 @@ DataSeriesTest >> testValueCounts [
 		
 	actual := series valueCounts.
 	self assert: actual equals: expected.
-]
-
-{ #category : #tests }
-DataSeriesTest >> testVariance [
-
-	self assert: series variance closeTo: 25.07273.
 ]
 
 { #category : #tests }
@@ -1534,16 +1546,4 @@ DataSeriesTest >> testWithKeySelect [
 		
 	actual := series withKeySelect: [ :x :k | x < 10 and: (#(a c g) includes: k) ].
 	self assert: actual equals: expected.
-]
-
-{ #category : #tests }
-DataSeriesTest >> testZerothQuartile [
-
-	self assert: series zerothQuartile equals: 3.
-]
-
-{ #category : #tests }
-DataSeriesTest >> testZerothQuartileEqualsMin [
-
-	self assert: series zerothQuartile equals: series min.
 ]
