@@ -865,6 +865,14 @@ DataFrame >> initializeRows: anArrayOfArrays [
 	self setDefaultRowColumnNames.
 ]
 
+{ #category : #enumerating }
+DataFrame >> inject: thisValue into: binaryBlock [ 
+	| series |
+	series := super inject: thisValue into: binaryBlock.
+	series name: series defaultName.
+	^ series
+]
+
 { #category : #statistics }
 DataFrame >> interquartileRange [
 

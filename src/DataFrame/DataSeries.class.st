@@ -617,10 +617,7 @@ DataSeries >> withSeries: otherDataSeries collect: twoArgBlock [
 	otherDataSeries keys = self keys ifFalse: [ self errorKeysMismatch ].
 	
 	result := self species new: self size.
-	
-	result name: ((otherDataSeries name = self name)
-		ifTrue: [ self name ]
-		ifFalse: [ self defaultName ]).
+	result name: self name.
 	
 	self keysDo: [ :key |
 		result at: key put:

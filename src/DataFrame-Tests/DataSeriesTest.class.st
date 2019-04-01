@@ -100,7 +100,7 @@ DataSeriesTest >> testArithmeticsAddSeriesToSeriesSameKeysDifferentName [
 	firstSeries := DataSeries withKeys: #(a b c) values: #(1 2 3) name: #X.
 	secondSeries := DataSeries withKeys: #(a b c) values: #(3 4 5) name: #Y.
 	
-	expected := DataSeries withKeys: #(a b c) values: #(4 6 8) name: '(no name)'.
+	expected := DataSeries withKeys: #(a b c) values: #(4 6 8) name: #X.
 	actual := firstSeries + secondSeries.
 	
 	self assert: actual equals: expected.
@@ -183,7 +183,7 @@ DataSeriesTest >> testArithmeticsDivideSeriesBySeriesSameKeysDifferentName [
 	firstSeries := DataSeries withKeys: #(a b c) values: #(1 2 3) name: #X.
 	secondSeries := DataSeries withKeys: #(a b c) values: #(3 4 5) name: #Y.
 	
-	expected := DataSeries withKeys: #(a b c) values: { 1/3 . 1/2 . 3/5 } name: '(no name)'.
+	expected := DataSeries withKeys: #(a b c) values: { 1/3 . 1/2 . 3/5 } name: #X.
 	actual := firstSeries / secondSeries.
 	
 	self assert: actual equals: expected.
@@ -277,7 +277,7 @@ DataSeriesTest >> testArithmeticsMultiplySeriesBySeriesSameKeysDifferentName [
 	firstSeries := DataSeries withKeys: #(a b c) values: #(1 2 3) name: #X.
 	secondSeries := DataSeries withKeys: #(a b c) values: #(3 4 5) name: #Y.
 	
-	expected := DataSeries withKeys: #(a b c) values: #(3 8 15) name: '(no name)'.
+	expected := DataSeries withKeys: #(a b c) values: #(3 8 15) name: #X.
 	actual := firstSeries * secondSeries.
 	
 	self assert: actual equals: expected.
@@ -371,7 +371,7 @@ DataSeriesTest >> testArithmeticsSubtractSeriesFromSeriesSameKeysDifferentName [
 	firstSeries := DataSeries withKeys: #(a b c) values: #(1 2 3) name: #X.
 	secondSeries := DataSeries withKeys: #(a b c) values: #(3 4 5) name: #Y.
 	
-	expected := DataSeries withKeys: #(a b c) values: #(-2 -2 -2) name: '(no name)'.
+	expected := DataSeries withKeys: #(a b c) values: #(-2 -2 -2) name: #X.
 	actual := firstSeries - secondSeries.
 	
 	self assert: actual equals: expected.
