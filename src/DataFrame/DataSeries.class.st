@@ -197,22 +197,6 @@ DataSeries >> fourthQuartile [
 	^ self quartile: 4
 ]
 
-{ #category : #statistics }
-DataSeries >> frequencyTable [
-	| df count proportion |
-	
-	count := self valueCounts.
-	proportion := count / self size.
-	
-	df := DataFrame withColumns:
-		{ count asArray . proportion asArray }.
-		
-	df rowNames: self uniqueValues asArray.
-	df columnNames: #(Count Proportion).
-	
-	^ df
-]
-
 { #category : #grouping }
 DataSeries >> groupBy: otherSeries aggregateUsing: aBlock [
 	"Group my values by the unique values of otherSeries, aggregate them using aBlock. Use my name by default"
@@ -493,6 +477,14 @@ DataSeries >> uniqueValues [
 { #category : #statistics }
 DataSeries >> valueCounts [
 	^ (self groupBy: self aggregateUsing: #size) sortDescending
+]
+
+{ #category : #statistics }
+DataSeries >> valueFrequencies [
+	| count freq |
+	count := self valueCounts.
+	freq := count / self size.
+	^ freq
 ]
 
 { #category : #enumerating }
