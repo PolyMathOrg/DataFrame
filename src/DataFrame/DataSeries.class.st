@@ -100,6 +100,11 @@ DataSeries >> atIndex: aNumber transform: aBlock [
 
 { #category : #comparing }
 DataSeries >> closeTo: anObject [
+	^ self closeTo: anObject precision: self defaultPrecision.
+]
+
+{ #category : #comparing }
+DataSeries >> closeTo: anObject precision: aPrecision [
 	self == anObject
 		ifTrue: [^ true].
 
@@ -113,7 +118,10 @@ DataSeries >> closeTo: anObject [
 	(anObject keys = self keys)
 		ifFalse: [ ^ false ].
 
-	^ super closeTo: anObject
+	^ (1 to: self values size)
+		detect: [ :i | ((self atIndex: i) closeTo: (anObject atIndex: i) precision: aPrecision) not ]
+		ifFound: [ false ]
+		ifNone: [ true ]
 ]
 
 { #category : #enumerating }
@@ -152,6 +160,11 @@ DataSeries >> defaultHeadTailSize [
 { #category : #defaults }
 DataSeries >> defaultName [
 	^ '(no name)'
+]
+
+{ #category : #defaults }
+DataSeries >> defaultPrecision [
+	^ 0.0001
 ]
 
 { #category : #accessing }
