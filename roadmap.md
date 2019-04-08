@@ -16,7 +16,7 @@ In this document, I describe the functionality that we want to add to DataFrame 
 
 ## Experimental
 
-* Database backend
+* **Database backend** - DataFrame is designed using the [Adapter pattern](https://en.wikipedia.org/wiki/Adapter_pattern) to support multiple backends (see DataFrameInternal class). Basically, DataFrame is just a layer of abstraction over some collection (which actually stores the data) that provides a handy API for data analysis. At this point, the data is stored in an Array2D. We would like to try using other backends. One cool thing to try would be a database connection. The user works with DataFrame as before, but under the hood, data is stored in a database (e.g. SQLLite) and DataFrame acts as an interface for querying that database.
 
 ## Documentation
 
