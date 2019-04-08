@@ -26,4 +26,4 @@ In this document, I describe the functionality that we want to add to DataFrame 
 ## Tools around DataFrame
 
 * **Toy Datasets** - a separate repository that contains many popular datasets (such as Iris, Housing, etc.) and a Loader that can load a selected dataset as data frame into your image. There is a similar tool in [scikit-learn](https://scikit-learn.org/stable/datasets/index.html) as well as [data() function in R](https://www.rdocumentation.org/packages/utils/versions/3.5.3/topics/data).
-* DataFrame editor
+* **DataFrame editor** - it would be nice to have a [Spec](https://github.com/pharo-spec/Spec) view for previewing data frames, searching, querying, and editing them. Inspector only shows a simple table view, but it would be useful to have something similar to Excel (in the end, DataFrame already implements Excel functionality, we only need to add a view for it in Pharo image).
