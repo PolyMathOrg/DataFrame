@@ -9,10 +9,10 @@ In this document, I describe the functionality that we want to add to DataFrame 
 
 ## New functionality
 
-* Handling missing values
-* Joins
-* Time series
-* Support for more file formats
+* **Handling missing values** - finding missing values, replacing them with something. Reading files with missing values. Detecting types of columns that have missing values.
+* **Joins** - left, right, inner join of sevaral data frames
+* **Time series** - similar to the [Time Series / Date functionality](https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html) in pandas
+* **Support for more file formats** - at this moment, we can read/write data from CSV files. Add support for more file formats, for example, Excel. Are there other formats that we should consider?
 
 ## Experimental
 
