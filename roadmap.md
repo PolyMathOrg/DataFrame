@@ -25,5 +25,5 @@ In this document, I describe the functionality that we want to add to DataFrame 
 
 ## Tools around DataFrame
 
-* Datasets
+* **Toy Datasets** - a separate repository that contains many popular datasets (such as Iris, Housing, etc.) and a Loader that can load a selected dataset as data frame into your image. There is a similar tool in [scikit-learn](https://scikit-learn.org/stable/datasets/index.html) as well as [data() function in R](https://www.rdocumentation.org/packages/utils/versions/3.5.3/topics/data).
 * DataFrame editor
