@@ -20,8 +20,8 @@ In this document, I describe the functionality that we want to add to DataFrame 
 
 ## Documentation
 
-* Examples
-* Tutorials
+* **Examples** - simple examples of using specific methods of DataFrame. They should be stored in DataFrame-Examples packages and executable.
+* **Tutorials** - demonstrate the application of data frames to practical data analysis problems. Take some dataset, analyse it, and wrte down the steps. We can reproduce something from [Kaggle](https://www.kaggle.com/).
 
 ## Tools around DataFrame
 
