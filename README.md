@@ -29,7 +29,7 @@ Metacello new
 
 ## Very simple example
 
-In this section I show a very simple example of creating and manipulating a little data frame. For more advanced examples, please check the DataFrame Booklet.
+In this section I show a very simple example of creating and manipulating a little data frame. For more advanced examples, please check the [DataFrame Booklet](#dataframe-booklet).
 
 ### Creating a data frame 
 
