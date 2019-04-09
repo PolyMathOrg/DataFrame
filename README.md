@@ -27,7 +27,20 @@ Metacello new
   load.
 ```
 
-## Simple example
+## Very simple example
+
+In this section I show a very simple example of creating and manipulating a little data frame. For more advanced examples, please check the DataFrame Booklet.
+
+### Creating a data frame 
+
+```Smalltalk
+weather := DataFrame withRows: #(
+  (2.4 true rain)
+  (0.5 true rain)
+  (-1.2 true snow)
+  (-2.3 false -)
+  (3.2 true rain)).
+```
 
 ## DataFrame Booklet
 
