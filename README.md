@@ -9,15 +9,13 @@
 
 DataFrame is a tabular data structure for data analysis in [Pharo](https://pharo.org/).
 
-For more information, please read [Data Analysis Made Simple with Pharo DataFrame](https://github.com/SquareBracketAssociates/Booklet-DataFrame) - a booklet that serves as the main source of documentation for the DataFrame project. It describes the complete API of DataFrame and DataSeries data structures, and provides examples for each method.
+<img width="700" src="img/weatherDf.png">
 
 ## What are data frames?
 
 Data frames are the one of the essential parts of the data science toolkit. They are the specialized data structures for tabular data sets that provide us with a simple and powerful API for summarizing, cleaning, and manipulating a wealth of data sources that are currently cumbersome to use.
 
 A data frame is like a database inside a variable. It is an object which can be created, modified, copied, serialized, debugged, inspected, and garbage collected. It allows you to communicate with your data quickly and effortlessly, using just a few lines of code. DataFrame project is similar to [pandas](https://pandas.pydata.org/) library in Python or built-in [data.frame](https://www.rdocumentation.org/packages/base/versions/3.5.3/topics/data.frame) class in R.
-
-[![Screenshot](img/example.png)](https://raw.githubusercontent.com/PolyMathOrg/DataFrame/master/img/example.png)
 
 ## Installation
 The following script installs DataFrame into the Pharo image
@@ -28,6 +26,12 @@ Metacello new
   repository: 'github://PolyMathOrg/DataFrame/src';
   load.
 ```
+
+## DataFrame Booklet
+
+For more information, please read [Data Analysis Made Simple with Pharo DataFrame](https://github.com/SquareBracketAssociates/Booklet-DataFrame) - a booklet that serves as the main source of documentation for the DataFrame project. It describes the complete API of DataFrame and DataSeries data structures, and provides examples for each method.
+
+[![DataFrame Booklet](img/booklet.png)](https://github.com/SquareBracketAssociates/Booklet-DataFrame)
 
 ## Example
 
