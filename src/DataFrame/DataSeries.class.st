@@ -63,6 +63,14 @@ DataSeries >> adaptToCollection: rcvr andSend: selector [
 		[:rcvrElement :myElement | rcvrElement perform: selector with: myElement]
 ]
 
+{ #category : #converting }
+DataSeries >> asDataFrame [
+	^ DataFrame
+		withColumns: {  self values }
+		rowNames: self keys
+		columnNames: { self name }.
+]
+
 { #category : #accessing }
 DataSeries >> at: aKey transform: aBlock [
 	"Evaluate aBlock on the value at aKey and replace that value with the result. Signal an exception if aKey was not found"

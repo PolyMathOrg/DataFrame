@@ -378,6 +378,19 @@ DataSeriesTest >> testArithmeticsSubtractSeriesFromSeriesSameKeysDifferentName [
 ]
 
 { #category : #converting }
+DataSeriesTest >> testAsDataFrame [
+	| expected actual |
+	
+	expected := DataFrame
+		withColumns: #((3 7 6 20 8 9 8 10 15 13 16))
+		rowNames: #(a b c d e f g h i j k)
+		columnNames: #(ExampleSeries).
+	
+	actual := series asDataFrame.
+	self assert: actual equals: expected
+]
+
+{ #category : #converting }
 DataSeriesTest >> testAsDictionary [
 	| expected actual |
 	
