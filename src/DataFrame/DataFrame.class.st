@@ -1187,7 +1187,7 @@ DataFrame >> showWithGlamourIn: composite [
 		intercellSpacing: 1;
 		dataSource: (DataFrameFTData elements: self);
 		onAnnouncement: FTSelectionChanged
-			do: [ :ann | (self rowAt: ann newSelectedIndexes first) inspect ].
+			do: [ :ann | (self rowAt: ann newSelectedRowIndexes first) inspect ].
 
 	"		onAnnouncement: FTSelectionChanged 
 			do: [ :ann | (self rowsAt: ann newSelectedRowIndexes) gtInspectorItemsIn: composite ];"
