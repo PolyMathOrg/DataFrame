@@ -43,6 +43,28 @@ DataSeries class >> withValues: values name: aName [
 ]
 
 { #category : #comparing }
+DataSeries >> < aDataSeries [
+	"Element-wise comparision between two DataSeries.
+	 Does not consider keys for comparision.
+	 Returns an Array."
+
+	^ (1 to: self size) collect: [ :i |
+			(self values at: i) < (aDataSeries values at: i)
+			]
+]
+
+{ #category : #comparing }
+DataSeries >> <= aDataSeries [
+	"Element-wise comparision between two DataSeries.
+	 Does not consider keys for comparision.
+	 Returns an Array."
+
+	^ (1 to: self size) collect: [ :i |
+			(self values at: i) <= (aDataSeries values at: i)
+			]
+]
+
+{ #category : #comparing }
 DataSeries >> = anObject [
 	(super = anObject)
 		ifFalse: [ ^ false ].
@@ -50,6 +72,28 @@ DataSeries >> = anObject [
 	^ anObject name = self name
 		"order of keys"
 		and: [ anObject keys = self keys ]
+]
+
+{ #category : #comparing }
+DataSeries >> > aDataSeries [
+	"Element-wise comparision between two DataSeries.
+	 Does not consider keys for comparision.
+	 Returns an Array."
+
+	^ (1 to: self size) collect: [ :i |
+			(self values at: i) > (aDataSeries values at: i)
+			]
+]
+
+{ #category : #comparing }
+DataSeries >> >= aDataSeries [
+	"Element-wise comparision between two DataSeries.
+	 Does not consider keys for comparision.
+	 Returns an Array."
+
+	^ (1 to: self size) collect: [ :i |
+			(self values at: i) >= (aDataSeries values at: i)
+			]
 ]
 
 { #category : #adapting }

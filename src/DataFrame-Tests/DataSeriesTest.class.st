@@ -847,6 +847,28 @@ DataSeriesTest >> testFourth [
 	self assert: series fourth equals: 20.
 ]
 
+{ #category : #comparing }
+DataSeriesTest >> testGreaterThan [
+
+	| firstSeries secondSeries |
+	
+	firstSeries := DataSeries withKeys: #(a b c) values: #(1 0.4 'a').
+	secondSeries := DataSeries withKeys: #(1 2 3) values: #(1 0.1 'b').
+	
+	self assert: firstSeries > secondSeries equals: #(false true false).
+]
+
+{ #category : #comparing }
+DataSeriesTest >> testGreaterThanEqual [
+
+	| firstSeries secondSeries |
+	
+	firstSeries := DataSeries withKeys: #(a b c) values: #(1 0.4 'a').
+	secondSeries := DataSeries withKeys: #(1 2 3) values: #(1 0.1 'b').
+	
+	self assert: firstSeries >= secondSeries equals: #(true true false).
+]
+
 { #category : #grouping }
 DataSeriesTest >> testGroupByAggregateUsing [
 	| firstSeries secondSeries expected actual |
@@ -990,6 +1012,28 @@ DataSeriesTest >> testInjectInto [
 DataSeriesTest >> testLast [
 
 	self assert: series last equals: 16.
+]
+
+{ #category : #comparing }
+DataSeriesTest >> testLessThan [
+
+	| firstSeries secondSeries |
+	
+	firstSeries := DataSeries withKeys: #(a b c) values: #(1 0.4 'a').
+	secondSeries := DataSeries withKeys: #(1 2 3) values: #(1 0.1 'b').
+	
+	self assert: firstSeries < secondSeries equals: #(false false true).
+]
+
+{ #category : #comparing }
+DataSeriesTest >> testLessThanEqual [
+
+	| firstSeries secondSeries |
+	
+	firstSeries := DataSeries withKeys: #(a b c) values: #(1 0.4 'a').
+	secondSeries := DataSeries withKeys: #(1 2 3) values: #(1 0.1 'b').
+	
+	self assert: firstSeries <= secondSeries equals: #(true false true).
 ]
 
 { #category : #'math functions' }
