@@ -43,25 +43,33 @@ DataSeries class >> withValues: values name: aName [
 ]
 
 { #category : #comparing }
-DataSeries >> < aDataSeries [
+DataSeries >> < aDataSeriesOrNumber [
 	"Element-wise comparision between two DataSeries.
 	 Does not consider keys for comparision.
 	 Returns an Array."
 
-	^ (1 to: self size) collect: [ :i |
-			(self values at: i) < (aDataSeries values at: i)
-			]
+	(aDataSeriesOrNumber isNumber)
+	ifTrue: [ ^ aDataSeriesOrNumber adaptToCollection: self andSend: #< ]
+	ifFalse: [
+		^ (1 to: self size) collect: [ :i |
+			(self values at: i) < (aDataSeriesOrNumber values at: i)
+			]].
+	
 ]
 
 { #category : #comparing }
-DataSeries >> <= aDataSeries [
+DataSeries >> <= aDataSeriesOrNumber [
 	"Element-wise comparision between two DataSeries.
 	 Does not consider keys for comparision.
 	 Returns an Array."
 
-	^ (1 to: self size) collect: [ :i |
-			(self values at: i) <= (aDataSeries values at: i)
-			]
+	(aDataSeriesOrNumber isNumber)
+	ifTrue: [ ^ aDataSeriesOrNumber adaptToCollection: self andSend: #<= ]
+	ifFalse: [
+		^ (1 to: self size) collect: [ :i |
+			(self values at: i) <= (aDataSeriesOrNumber values at: i)
+			]].
+	
 ]
 
 { #category : #comparing }
@@ -75,25 +83,33 @@ DataSeries >> = anObject [
 ]
 
 { #category : #comparing }
-DataSeries >> > aDataSeries [
+DataSeries >> > aDataSeriesOrNumber [
 	"Element-wise comparision between two DataSeries.
 	 Does not consider keys for comparision.
 	 Returns an Array."
 
-	^ (1 to: self size) collect: [ :i |
-			(self values at: i) > (aDataSeries values at: i)
-			]
+	(aDataSeriesOrNumber isNumber)
+	ifTrue: [ ^ aDataSeriesOrNumber adaptToCollection: self andSend: #> ]
+	ifFalse: [
+		^ (1 to: self size) collect: [ :i |
+			(self values at: i) > (aDataSeriesOrNumber values at: i)
+			]].
+	
 ]
 
 { #category : #comparing }
-DataSeries >> >= aDataSeries [
+DataSeries >> >= aDataSeriesOrNumber [
 	"Element-wise comparision between two DataSeries.
 	 Does not consider keys for comparision.
 	 Returns an Array."
 
-	^ (1 to: self size) collect: [ :i |
-			(self values at: i) >= (aDataSeries values at: i)
-			]
+	(aDataSeriesOrNumber isNumber)
+	ifTrue: [ ^ aDataSeriesOrNumber adaptToCollection: self andSend: #>= ]
+	ifFalse: [
+		^ (1 to: self size) collect: [ :i |
+			(self values at: i) >= (aDataSeriesOrNumber values at: i)
+			]].
+	
 ]
 
 { #category : #adapting }
