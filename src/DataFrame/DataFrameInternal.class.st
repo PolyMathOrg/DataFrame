@@ -36,14 +36,17 @@ DataFrameInternal class >> withColumns: anArrayOfArrays [
 	
 	| numberOfRows numberOfColumns dfInternal |
 	
-	numberOfRows := anArrayOfArrays first size.
 	numberOfColumns := anArrayOfArrays size.
+	numberOfRows := 0.
+	1 to: numberOfColumns do: [ :index |
+		numberOfRows := numberOfRows max: (anArrayOfArrays at: index) size
+		].
 	dfInternal := self new: (numberOfRows @ numberOfColumns ).
 	
 	1 to: numberOfRows do: [ :i |
 		1 to: numberOfColumns do: [ :j |
-			dfInternal at: i at: j put:
-				((anArrayOfArrays at: j) asArray at: i) ] ].
+			dfInternal at: i at: j
+				put: ((anArrayOfArrays at: j) asArray at: i ifAbsent: nil) ] ].
 		
 	^ dfInternal
 ]
@@ -54,14 +57,17 @@ DataFrameInternal class >> withRows: anArrayOfArrays [
 	| numberOfRows numberOfColumns dfInternal |
 	
 	numberOfRows := anArrayOfArrays size.
-	numberOfColumns := anArrayOfArrays first size.
-	dfInternal := self new: (numberOfRows @ numberOfColumns ).
+	numberOfColumns := 0.
+	1 to: numberOfRows do: [ :index |
+		numberOfColumns := numberOfColumns max: (anArrayOfArrays at: index) size
+		].
+	dfInternal := self new: numberOfRows @ numberOfColumns.
 	
-	1 to: numberOfRows do: [ :i |
-		1 to: numberOfColumns do: [ :j |
-			dfInternal at: i at: j put:
-				((anArrayOfArrays at: i) asArray at: j) ] ].
-		
+	1 to: numberOfRows do: [ :i | 
+		1 to: numberOfColumns do: [ :j | 
+			dfInternal at: i at: j
+				put: ((anArrayOfArrays at: i) asArray at: j ifAbsent: nil) ] ].
+	
 	^ dfInternal
 ]
 

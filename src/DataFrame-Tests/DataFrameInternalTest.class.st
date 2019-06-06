@@ -371,6 +371,19 @@ DataFrameInternalTest >> testVarSizeInstanceCreation [
 ]
 
 { #category : #tests }
+DataFrameInternalTest >> testWithColumns [
+
+	| dfi validOutput |
+	dfi := DataFrameInternal withColumns: #((1 2) (1 2 3 4 5) ('a' 3.14 'bcd')).
+	validOutput := Array2D
+		rows: 5
+		columns: 3
+		contents: #(1 1 'a' 2 2 3.14 nil 3 'bcd' nil 4 nil nil 5 nil).
+	
+	self assert: dfi asArray2D equals: validOutput.
+]
+
+{ #category : #tests }
 DataFrameInternalTest >> testWithIndicesCollect [
 
 	| dfInternal actual expected |
@@ -398,4 +411,17 @@ DataFrameInternalTest >> testWithIndicesDo [
 		
 	dfInternal withIndicesDo: [ :each :i :j |
 		self assert: each equals: ((i - 1) * 2 + j) ].
+]
+
+{ #category : #tests }
+DataFrameInternalTest >> testWithRows [
+
+	| dfi validOutput |
+	dfi := DataFrameInternal withRows: #((1 2) (1 2 3 4 5) ('a' 3.14 'bcd')).
+	validOutput := Array2D
+		rows: 3
+		columns: 5
+		contents: #(1 2 nil nil nil 1 2 3 4 5 'a' 3.14 'bcd' nil nil).
+	
+	self assert: dfi asArray2D equals: validOutput.
 ]
