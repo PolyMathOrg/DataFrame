@@ -7,6 +7,17 @@ DataFrame class >> readFrom: aLocation using: aDataFrameReader [
 ]
 
 { #category : #'*DataFrame-IO' }
+DataFrame class >> readFrom: aLocation using: aDataFrameReader missingValuesString: aSet [
+	"Read data frame from a given location using a given DataFrameReader. Location can be a file reference, a database connection, or something else (depending on the implementation of the reader).
+	 Replaces the elements of aSet present in dataframe with nil"
+	
+	| df |
+	df := aDataFrameReader readFrom: aLocation.
+	df contents replaceMissingValuesStrings: aSet.
+	^ df
+]
+
+{ #category : #'*DataFrame-IO' }
 DataFrame class >> readFromCsv: aFileReference [ 
 	| reader |
 	reader := DataFrameCsvReader new.

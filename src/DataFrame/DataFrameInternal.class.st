@@ -314,6 +314,17 @@ DataFrameInternal >> removeRowAt: rowNumber [
 	contents := newContents.
 ]
 
+{ #category : #filling }
+DataFrameInternal >> replaceMissingValuesStrings: aSet [
+	"Replaces dataframeinternal values with nil if they are a part of aSet"
+
+	1 to: self numberOfRows do: [ :i |
+		1 to: self numberOfColumns do: [ :j |
+			(aSet includes: (contents at: i at: j))
+				ifTrue: [ contents at: i at: j put: nil ].
+			 ] ].
+]
+
 { #category : #accessing }
 DataFrameInternal >> rowAt: aNumber [
 
