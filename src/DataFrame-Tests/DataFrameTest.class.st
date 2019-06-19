@@ -1539,6 +1539,118 @@ DataFrameTest >> testRemoveColumnNotFound [
 ]
 
 { #category : #tests }
+DataFrameTest >> testRemoveColumnsOfRowElementsSatisfingOnRow [
+
+	| expected aBlock |
+	df := DataFrame withRows: #(
+		(1 2 3)
+   		(Dubai 4 5.0)
+   		(nil 8.788 false)).
+		
+	df rowNames: #(A B C).
+	df columnNames: #(X Y Z).
+	
+	expected := DataFrame withRows: #(
+		(2)
+   		(4)
+   		(8.788)).
+		
+	expected rowNames: #(A B C).
+	expected columnNames: #(Y).
+	
+	aBlock := [ :rowElement | rowElement ~= 4 ].
+	
+	self assert: (df removeColumnsOfRowElementsSatisfing: aBlock onRow: 2) equals: expected.
+]
+
+{ #category : #tests }
+DataFrameTest >> testRemoveColumnsOfRowElementsSatisfingOnRowAllTrue [
+
+	| expected aBlock |
+	
+	expected := DataFrame withRows: #().
+	aBlock := [ :rowElement | true ].
+	
+	self assert: (df removeColumnsOfRowElementsSatisfing: aBlock onRow: 2) equals: expected.
+]
+
+{ #category : #tests }
+DataFrameTest >> testRemoveColumnsOfRowElementsSatisfingOnRowNamed [
+
+	| expected aBlock |
+	df := DataFrame withRows: #(
+		(1 2 3)
+   		(Dubai 4 5.0)
+   		(nil 8.788 false)).
+		
+	df rowNames: #(A B C).
+	df columnNames: #(X Y Z).
+	
+	expected := DataFrame withRows: #(
+		(2)
+   		(4)
+   		(8.788)).
+		
+	expected rowNames: #(A B C).
+	expected columnNames: #(Y).
+	
+	aBlock := [ :rowElement | rowElement ~= 4 ].
+	
+	self assert: (df removeColumnsOfRowElementsSatisfing: aBlock onRowNamed: 'B') equals: expected.
+]
+
+{ #category : #tests }
+DataFrameTest >> testRemoveColumnsWithNilsAtRow [
+
+	| expected |
+	df := DataFrame withRows: #(
+		(Barcelona 1.609 nil)
+   		(Dubai nil nil)
+   		(nil 8.788 false)).
+		
+	df rowNames: #(A B C).
+	df columnNames: #(City Population BeenThere).
+	
+	expected := DataFrame withRows: #(
+		(Barcelona)
+   		(Dubai)
+   		(nil)).
+		
+	expected rowNames: #(A B C).
+	expected columnNames: #(City).
+	
+	self assert: (df removeColumnsWithNilsAtRow: 2) equals: expected.
+]
+
+{ #category : #tests }
+DataFrameTest >> testRemoveColumnsWithNilsAtRowNamed [
+
+	| expected |
+	df := DataFrame withRows: #(
+		(Barcelona 1.609 nil)
+   		(Dubai nil nil)
+   		(nil 8.788 false)).
+		
+	df rowNames: #(A B C).
+	df columnNames: #(City Population BeenThere).
+	
+	expected := DataFrame withRows: #(
+		(Barcelona)
+   		(Dubai)
+   		(nil)).
+		
+	expected rowNames: #(A B C).
+	expected columnNames: #(City).
+	
+	self assert: (df removeColumnsWithNilsAtRowNamed: #B) equals: expected.
+]
+
+{ #category : #tests }
+DataFrameTest >> testRemoveColumnsWithNilsAtRowOutOfRange [
+	self should: [ df removeColumnsWithNilsAtRow: 100 ] raise: SubscriptOutOfBounds.
+]
+
+{ #category : #tests }
 DataFrameTest >> testRemoveRow [
 
 	| expected |
@@ -1580,6 +1692,110 @@ DataFrameTest >> testRemoveRowAtOutOfRange [
 { #category : #tests }
 DataFrameTest >> testRemoveRowNotFound [
 	self should: [ df removeRow: #NoSuchRow ] raise: NotFoundError.
+]
+
+{ #category : #tests }
+DataFrameTest >> testRemoveRowsOfColumnElementsSatisfingOnColumn [
+
+	| expected aBlock |
+	df := DataFrame withRows: #(
+		(1 2 3)
+   		(Dubai 4 5.0)
+   		(nil 8.788 false)).
+		
+	df rowNames: #(A B C).
+	df columnNames: #(X Y Z).
+	
+	expected := DataFrame withRows: #(
+		(Dubai 4 5.0)).
+		
+	expected rowNames: #(B).
+	expected columnNames: #(X Y Z).
+	
+	aBlock := [ :rowElement | rowElement ~= 4 ].
+	
+	self assert: (df removeRowsOfColumnElementsSatisfing: aBlock onColumn: 2) equals: expected.
+]
+
+{ #category : #tests }
+DataFrameTest >> testRemoveRowsOfColumnElementsSatisfingOnColumnAllTrue [
+
+	| expected aBlock |
+	
+	expected := DataFrame withColumns: #().	
+	aBlock := [ :rowElement | true ].
+	
+	self assert: (df removeRowsOfColumnElementsSatisfing: aBlock onColumn: 2) equals: expected.
+]
+
+{ #category : #tests }
+DataFrameTest >> testRemoveRowsOfColumnElementsSatisfingOnColumnNamed [
+
+	| expected aBlock |
+	df := DataFrame withRows: #(
+		(1 2 3)
+   		(Dubai 4 5.0)
+   		(nil 8.788 false)).
+		
+	df rowNames: #(A B C).
+	df columnNames: #(X Y Z).
+	
+	expected := DataFrame withRows: #(
+		(Dubai 4 5.0)).
+		
+	expected rowNames: #(B).
+	expected columnNames: #(X Y Z).
+	
+	aBlock := [ :rowElement | rowElement ~= 4 ].
+	
+	self assert: (df removeRowsOfColumnElementsSatisfing: aBlock onColumnNamed: #Y) equals: expected.
+]
+
+{ #category : #tests }
+DataFrameTest >> testRemoveRowsWithNilsAtColumn [
+
+	| expected |
+	df := DataFrame withRows: #(
+		(Barcelona 1.609 nil)
+   		(Dubai nil nil)
+   		(nil 8.788 false)).
+		
+	df rowNames: #(A B C).
+	df columnNames: #(City Population BeenThere).
+	
+	expected := DataFrame withRows: #(
+   		(nil 8.788 false)).
+		
+	expected rowNames: #(C).
+	expected columnNames: #(City Population BeenThere).
+	
+	self assert: (df removeRowsWithNilsAtColumn: 3) equals: expected.
+]
+
+{ #category : #tests }
+DataFrameTest >> testRemoveRowsWithNilsAtColumnNamed [
+
+	| expected |
+	df := DataFrame withRows: #(
+		(Barcelona 1.609 nil)
+   		(Dubai nil nil)
+   		(nil 8.788 false)).
+		
+	df rowNames: #(A B C).
+	df columnNames: #(City Population BeenThere).
+	
+	expected := DataFrame withRows: #(
+   		(nil 8.788 false)).
+		
+	expected rowNames: #(C).
+	expected columnNames: #(City Population BeenThere).
+	
+	self assert: (df removeRowsWithNilsAtColumnNamed: #BeenThere) equals: expected.
+]
+
+{ #category : #tests }
+DataFrameTest >> testRemoveRowsWithNilsAtColumnOutOfRange [
+	self should: [ df removeRowsWithNilsAtColumn: 100 ] raise: SubscriptOutOfBounds.
 ]
 
 { #category : #tests }

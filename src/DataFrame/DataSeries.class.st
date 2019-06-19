@@ -396,6 +396,11 @@ DataSeries >> removeAtIndex: aNumber [
 	^ self removeAt: (self keys at: aNumber)
 ]
 
+{ #category : #removing }
+DataSeries >> removeNils [
+	^ self reject: [ :ele | ele isNil ]
+]
+
 { #category : #accessing }
 DataSeries >> second [
 	"Answer the second element of the receiver.

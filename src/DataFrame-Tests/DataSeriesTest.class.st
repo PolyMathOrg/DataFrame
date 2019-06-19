@@ -1426,6 +1426,28 @@ DataSeriesTest >> testRemoveAtIndex [
 	self assert: series equals: expected.
 ]
 
+{ #category : #removing }
+DataSeriesTest >> testRemoveNils [
+
+	| expected |
+	
+	series := DataSeries withKeys: #(1 2 'a' 3) values: #(nil 4.2 'b' nil).
+	expected := DataSeries withKeys: #(2 'a') values: #(4.2 'b').
+	
+	self assert: series removeNils equals: expected.
+]
+
+{ #category : #removing }
+DataSeriesTest >> testRemoveNilsOnNamedSeries [
+
+	| expected |
+	
+	series := DataSeries withKeys: #(1 2 'a' 3) values: #(nil 4.2 'b' nil) name: 'A'.
+	expected := DataSeries withKeys: #(2 'a') values: #(4.2 'b') name: 'A'.
+	
+	self assert: series removeNils equals: expected.
+]
+
 { #category : #accessing }
 DataSeriesTest >> testSecond [
 
