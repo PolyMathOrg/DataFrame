@@ -1155,17 +1155,20 @@ DataFrame >> select: aBlock [
 	Collect into a new collection like the receiver, only those elements for 
 	which aBlock evaluates to true. Answer the new collection."
 
-	| rows selectedRows selectedRowNames selectedRowsAsArrays df |
+	| rows selectedRows selectedRowNames selectedColumnNames selectedRowsAsArrays df |
 	
 	rows := self asArrayOfRows.
 	selectedRows := rows select: aBlock.
-	selectedRowNames := selectedRows collect: #name.
+	selectedRowNames := (selectedRows isEmpty)
+		ifTrue: [ #() ] ifFalse: [ selectedRows collect: #name ].
+	selectedColumnNames := (selectedRows isEmpty)
+		ifTrue: [ #() ] ifFalse: [ self columnNames ].
 	selectedRowsAsArrays := selectedRows collect: #asArray.
 	
 	df := self class
 		withRows: selectedRowsAsArrays
 		rowNames: selectedRowNames
-		columnNames: self columnNames.
+		columnNames: selectedColumnNames.
 	
 	^ df
 ]

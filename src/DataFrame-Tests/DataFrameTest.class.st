@@ -1082,6 +1082,42 @@ DataFrameTest >> testCreateEmptyDataFrameWithColumnNames [
 ]
 
 { #category : #tests }
+DataFrameTest >> testCreateEmptyDataFrameWithColumns [
+
+	| dataFrame  |
+	dataFrame := DataFrame withColumns: #().
+	
+	self assert: dataFrame class equals: DataFrame.
+]
+
+{ #category : #tests }
+DataFrameTest >> testCreateEmptyDataFrameWithColumnsColumnNames [
+
+	| dataFrame  |
+	dataFrame := DataFrame withColumns: #() columnNames: #().
+	
+	self assert: dataFrame class equals: DataFrame.
+]
+
+{ #category : #tests }
+DataFrameTest >> testCreateEmptyDataFrameWithColumnsRowNames [
+
+	| dataFrame  |
+	dataFrame := DataFrame withColumns: #() rowNames: #().
+	
+	self assert: dataFrame class equals: DataFrame.
+]
+
+{ #category : #tests }
+DataFrameTest >> testCreateEmptyDataFrameWithColumnsRowNamesColumnNames [
+
+	| dataFrame  |
+	dataFrame := DataFrame withColumns: #() rowNames: #() columnNames: #().
+	
+	self assert: dataFrame class equals: DataFrame.
+]
+
+{ #category : #tests }
 DataFrameTest >> testCreateEmptyDataFrameWithRowNames [
 	| rowNames dataFrame |
 	
@@ -1109,6 +1145,42 @@ DataFrameTest >> testCreateEmptyDataFrameWithRowNamesColumnNames [
 	self assert: dataFrame dimensions equals: 3@3.
 	self assert: dataFrame rowNames equals: rowNames.
 	self assert: dataFrame columnNames equals: columnNames.
+]
+
+{ #category : #tests }
+DataFrameTest >> testCreateEmptyDataFrameWithRows [
+
+	| dataFrame  |
+	dataFrame := DataFrame withRows: #().
+	
+	self assert: dataFrame class equals: DataFrame.
+]
+
+{ #category : #tests }
+DataFrameTest >> testCreateEmptyDataFrameWithRowsColumnNames [
+
+	| dataFrame  |
+	dataFrame := DataFrame withRows: #() columnNames: #().
+	
+	self assert: dataFrame class equals: DataFrame.
+]
+
+{ #category : #tests }
+DataFrameTest >> testCreateEmptyDataFrameWithRowsRowNames [
+
+	| dataFrame  |
+	dataFrame := DataFrame withRows: #() rowNames: #().
+	
+	self assert: dataFrame class equals: DataFrame.
+]
+
+{ #category : #tests }
+DataFrameTest >> testCreateEmptyDataFrameWithRowsRowNamesColumnNames [
+
+	| dataFrame  |
+	dataFrame := DataFrame withRows: #() rowNames: #() columnNames: #().
+	
+	self assert: dataFrame class equals: DataFrame.
 ]
 
 { #category : #tests }
@@ -1403,6 +1475,19 @@ DataFrameTest >> testReject [
 		
 	actual := df reject:
 		[ :row | (row at: #Population) < 2 ].
+	
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+DataFrameTest >> testRejectEntireDataFrame [
+	| actual expected |
+
+	expected := DataFrame
+		withRows: #().
+		
+	actual := df reject:
+		[ :row | (row at: #Population) < 10 ].
 	
 	self assert: actual equals: expected.
 ]
@@ -1944,6 +2029,18 @@ DataFrameTest >> testSelect [
 		
 	actual := df select:
 		[ :row | (row at: #Population) > 2 ].
+	
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+DataFrameTest >> testSelectEmptyDataFrame [
+	| actual expected |
+
+	expected := DataFrame withRows: #().
+		
+	actual := df select:
+		[ :row | (row at: #Population) > 10 ].
 	
 	self assert: actual equals: expected.
 ]
