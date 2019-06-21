@@ -510,6 +510,278 @@ DataSeriesTest >> testAtTransformIfAbsent [
 	self assert: exceptionBlockEvaluated.
 ]
 
+{ #category : #comparing }
+DataSeriesTest >> testBooleanGreaterThanEqualFromScalar [
+
+	| aSeries expected |
+	
+	aSeries := DataSeries withKeys: #(1 2 3) values: #(1 0.4 8).
+	expected := DataSeries withKeys: #(1 2 3) values: #(true true false).
+	
+	self assert: 1 >= aSeries equals: expected.
+]
+
+{ #category : #comparing }
+DataSeriesTest >> testBooleanGreaterThanEqualWithArray [
+
+	| aSeries expected |
+	
+	aSeries := DataSeries withKeys: #(1 2 3) values: #(1 0.4 'a').
+	expected := DataSeries withKeys: #(1 2 3) values: #(true true false).
+	
+	self assert: aSeries >= #(1 0.1 'b') equals: expected.
+]
+
+{ #category : #comparing }
+DataSeriesTest >> testBooleanGreaterThanEqualWithScalar [
+
+	| firstSeries expected |
+	
+	firstSeries := DataSeries withKeys: #(a b c) values: #(0.8 0.4 1).
+	expected := DataSeries withKeys: #(a b c) values: #(true false true).
+	
+	self assert: firstSeries >= 0.8 equals: expected.
+]
+
+{ #category : #comparing }
+DataSeriesTest >> testBooleanGreaterThanEqualWithSeries [
+
+	| firstSeries secondSeries expected |
+	
+	firstSeries := DataSeries withKeys: #(1 2 3) values: #(1 0.4 'a').
+	secondSeries := DataSeries withKeys: #(1 2 3) values: #(1 0.1 'b').
+	expected := DataSeries withKeys: #(1 2 3) values: #(true true false).
+	
+	self assert: firstSeries >= secondSeries equals: expected.
+]
+
+{ #category : #comparing }
+DataSeriesTest >> testBooleanGreaterThanEqualWithSeriesDifferentKeys [
+
+	| firstSeries secondSeries |
+	
+	firstSeries := DataSeries withKeys: #(a b c) values: #(1 0.4 'a').
+	secondSeries := DataSeries withKeys: #(1 2 3) values: #(1 0.1 'b').
+	
+	self should: [ firstSeries >= secondSeries ] raise: Error.
+]
+
+{ #category : #comparing }
+DataSeriesTest >> testBooleanGreaterThanEqualWithSeriesDifferentNames [
+
+	| firstSeries secondSeries expected |
+	
+	firstSeries := DataSeries withKeys: #(1 2 3) values: #(1 0.4 'a') name: 'firstSeries'.
+	secondSeries := DataSeries withKeys: #(1 2 3) values: #(1 0.1 'b') name: 'secondSeries'.
+	expected := DataSeries withKeys: #(1 2 3) values: #(true true false) name: 'firstSeries'.
+	
+	self assert: firstSeries >= secondSeries equals: expected.
+]
+
+{ #category : #comparing }
+DataSeriesTest >> testBooleanGreaterThanFromScalar [
+
+	| aSeries expected |
+	
+	aSeries := DataSeries withKeys: #(1 2 3) values: #(1 0.4 8).
+	expected := DataSeries withKeys: #(1 2 3) values: #(false true false).
+	
+	self assert: 1 > aSeries equals: expected.
+]
+
+{ #category : #comparing }
+DataSeriesTest >> testBooleanGreaterThanWithArray [
+
+	| aSeries expected |
+	
+	aSeries := DataSeries withKeys: #(1 2 3) values: #(1 0.4 'a').
+	expected := DataSeries withKeys: #(1 2 3) values: #(false true false).
+	
+	self assert: aSeries > #(1 0.1 'b') equals: expected.
+]
+
+{ #category : #comparing }
+DataSeriesTest >> testBooleanGreaterThanWithScalar [
+
+	| firstSeries expected |
+	
+	firstSeries := DataSeries withKeys: #(a b c) values: #(0.8 0.4 1).
+	expected := DataSeries withKeys: #(a b c) values: #(true false true).
+	
+	self assert: firstSeries >= 0.8 equals: expected.
+]
+
+{ #category : #comparing }
+DataSeriesTest >> testBooleanGreaterThanWithSeries [
+
+	| firstSeries secondSeries expected |
+	
+	firstSeries := DataSeries withKeys: #(1 2 3) values: #(1 0.4 'a').
+	secondSeries := DataSeries withKeys: #(1 2 3) values: #(1 0.1 'b').
+	expected := DataSeries withKeys: #(1 2 3) values: #(false true false).
+	
+	self assert: firstSeries > secondSeries equals: expected.
+]
+
+{ #category : #comparing }
+DataSeriesTest >> testBooleanGreaterThanWithSeriesDifferentKeys [
+
+	| firstSeries secondSeries |
+	
+	firstSeries := DataSeries withKeys: #(a b c) values: #(1 0.4 'a').
+	secondSeries := DataSeries withKeys: #(1 2 3) values: #(1 0.1 'b').
+	
+	self should: [ firstSeries > secondSeries ] raise: Error.
+]
+
+{ #category : #comparing }
+DataSeriesTest >> testBooleanGreaterThanWithSeriesDifferentNames [
+
+	| firstSeries secondSeries expected |
+	
+	firstSeries := DataSeries withKeys: #(1 2 3) values: #(1 0.4 'a') name: 'firstSeries'.
+	secondSeries := DataSeries withKeys: #(1 2 3) values: #(1 0.1 'b') name: 'secondSeries'.
+	expected := DataSeries withKeys: #(1 2 3) values: #(false true false) name: 'firstSeries'.
+	
+	self assert: firstSeries > secondSeries equals: expected.
+]
+
+{ #category : #comparing }
+DataSeriesTest >> testBooleanLessThanEqualFromScalar [
+
+	| aSeries expected |
+	
+	aSeries := DataSeries withKeys: #(1 2 3) values: #(1 0.4 8).
+	expected := DataSeries withKeys: #(1 2 3) values: #(true false true).
+	
+	self assert: 1 <= aSeries equals: expected.
+]
+
+{ #category : #comparing }
+DataSeriesTest >> testBooleanLessThanEqualWithArray [
+
+	| aSeries expected |
+	
+	aSeries := DataSeries withKeys: #(1 2 3) values: #(1 0.4 'a').
+	expected := DataSeries withKeys: #(1 2 3) values: #(true false true).
+
+	self assert: aSeries <= #(1 0.1 'b') equals: expected.
+]
+
+{ #category : #comparing }
+DataSeriesTest >> testBooleanLessThanEqualWithScalar [
+
+	| firstSeries expected |
+	
+	firstSeries := DataSeries withKeys: #(a b c) values: #(0.8 0.4 1).
+	expected := DataSeries withKeys: #(a b c) values: #(true true false).
+	
+	self assert: firstSeries <= 0.8 equals: expected.
+]
+
+{ #category : #comparing }
+DataSeriesTest >> testBooleanLessThanEqualWithSeries [
+
+	| firstSeries secondSeries expected |
+	
+	firstSeries := DataSeries withKeys: #(a b c) values: #(1 0.4 'a').
+	secondSeries := DataSeries withKeys: #(a b c) values: #(1 0.1 'b').
+	expected := DataSeries withKeys: #(a b c) values: #(true false true).
+	
+	self assert: firstSeries <= secondSeries equals: expected.
+]
+
+{ #category : #comparing }
+DataSeriesTest >> testBooleanLessThanEqualWithSeriesDifferentKeys [
+
+	| firstSeries secondSeries |
+	
+	firstSeries := DataSeries withKeys: #(a b c) values: #(1 0.4 'a').
+	secondSeries := DataSeries withKeys: #(1 2 3) values: #(1 0.1 'b').
+	
+	self should: [ firstSeries <= secondSeries ] raise: Error.
+]
+
+{ #category : #comparing }
+DataSeriesTest >> testBooleanLessThanEqualWithSeriesDifferentNames [
+
+	| firstSeries secondSeries expected |
+	
+	firstSeries := DataSeries withKeys: #(1 2 3) values: #(1 0.4 'a') name: 'firstSeries'.
+	secondSeries := DataSeries withKeys: #(1 2 3) values: #(1 0.1 'b') name: 'secondSeries'.
+	expected := DataSeries withKeys: #(1 2 3) values: #(true false true) name: 'firstSeries'.
+	
+	self assert: firstSeries <= secondSeries equals: expected.
+]
+
+{ #category : #comparing }
+DataSeriesTest >> testBooleanLessThanFromScalar [
+
+	| aSeries expected |
+	
+	aSeries := DataSeries withKeys: #(1 2 3) values: #(1 0.4 8).
+	expected := DataSeries withKeys: #(1 2 3) values: #(false false true).
+	
+	self assert: 1 < aSeries equals: expected.
+]
+
+{ #category : #comparing }
+DataSeriesTest >> testBooleanLessThanWithArray [
+
+	| aSeries expected |
+	
+	aSeries := DataSeries withKeys: #(1 2 3) values: #(1 0.4 'a').
+	expected := DataSeries withKeys: #(1 2 3) values: #(false false true).
+
+	self assert: aSeries < #(1 0.1 'b') equals: expected.
+]
+
+{ #category : #comparing }
+DataSeriesTest >> testBooleanLessThanWithScalar [
+
+	| firstSeries expected |
+	
+	firstSeries := DataSeries withKeys: #(a b c) values: #(0.8 0.4 1).
+	expected := DataSeries withKeys: #(a b c) values: #(false true false).
+	
+	self assert: firstSeries < 0.8 equals: expected.
+]
+
+{ #category : #comparing }
+DataSeriesTest >> testBooleanLessThanWithSeries [
+
+	| firstSeries secondSeries expected |
+	
+	firstSeries := DataSeries withKeys: #(a b c) values: #(1 0.4 'a').
+	secondSeries := DataSeries withKeys: #(a b c) values: #(1 0.1 'b').
+	expected := DataSeries withKeys: #(a b c) values: #(false false true).
+	
+	self assert: firstSeries < secondSeries equals: expected.
+]
+
+{ #category : #comparing }
+DataSeriesTest >> testBooleanLessThanWithSeriesDifferentKeys [
+
+	| firstSeries secondSeries |
+	
+	firstSeries := DataSeries withKeys: #(a b c) values: #(1 0.4 'a').
+	secondSeries := DataSeries withKeys: #(1 2 3) values: #(1 0.1 'b').
+	
+	self should: [ firstSeries < secondSeries ] raise: Error.
+]
+
+{ #category : #comparing }
+DataSeriesTest >> testBooleanLessThanWithSeriesDifferentNames [
+
+	| firstSeries secondSeries expected |
+	
+	firstSeries := DataSeries withKeys: #(1 2 3) values: #(1 0.4 'a') name: 'firstSeries'.
+	secondSeries := DataSeries withKeys: #(1 2 3) values: #(1 0.1 'b') name: 'secondSeries'.
+	expected := DataSeries withKeys: #(1 2 3) values: #(false false true) name: 'firstSeries'.
+	
+	self assert: firstSeries < secondSeries equals: expected.
+]
+
 { #category : #categorical }
 DataSeriesTest >> testCategoricalCrossTabulateWith [
 
