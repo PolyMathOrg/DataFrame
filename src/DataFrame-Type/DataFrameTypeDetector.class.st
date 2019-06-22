@@ -14,14 +14,14 @@ Class {
 { #category : #testing }
 DataFrameTypeDetector >> canAllBeBoolean: aDataSeries [
 	^ aDataSeries
-		detect: [ :each | (each ~= 'true') and: (each ~= 'false') ]
+		detect: [ :each | (each ~= 'true') & (each ~= 'false') & (each isNotNil)]
 		ifFound: [ false ]
 		ifNone: [ true ].
 ]
 
 { #category : #testing }
 DataFrameTypeDetector >> canAllBeDateAndTime: aDataSeries [
-	[ aDataSeries do: #asDateAndTime ]
+	[ aDataSeries do: [ :ele | ele isNil ifFalse: [ ele asDateAndTime ]] ]
 		on: Error do: [ ^ false ].
 	^ true
 ]
@@ -32,14 +32,14 @@ DataFrameTypeDetector >> canAllBeNumber: aDataSeries [
 	regex := '^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$' asRegex.
 	
 	^ aDataSeries
-		detect: [ :each | [ (regex matches: each) not ] on: Error do: [ ^ false ] ]
+		detect: [ :each | [ each isNil ifTrue: [ false ] ifFalse: [ (regex matches: each) not ]] on: Error do: [ ^ false ] ]
 		ifFound: [ false ]
 		ifNone: [ true ]
 ]
 
 { #category : #testing }
 DataFrameTypeDetector >> canAllBeTime: aDataSeries [
-	[ aDataSeries do: #asTime ]
+	[ aDataSeries do: [ :ele | ele isNil ifFalse: [ ele asTime ] ] ]
 		on: Error do: [ ^ false ].
 	^ true
 ]
@@ -47,34 +47,36 @@ DataFrameTypeDetector >> canAllBeTime: aDataSeries [
 { #category : #testing }
 DataFrameTypeDetector >> canAnyBeFloat: aDataSeries [
 	^ aDataSeries
-		detect: [ :each | each asNumber isFloat ]
+		detect: [ :each | each isNil ifTrue: [ false ] ifFalse: [ (each asNumber isFloat) ] ]
 		ifFound: [ true ]
 		ifNone: [ false ].
 ]
 
 { #category : #converting }
 DataFrameTypeDetector >> convertToBoolean: aDataSeries [
-	^ aDataSeries collect: [ :each | each = 'true' ]
+	^ aDataSeries collect: [ :each |
+		each isNil
+			ifFalse: [ each = 'true' ] ]
 ]
 
 { #category : #converting }
 DataFrameTypeDetector >> convertToDateAndTime: aDataSeries [
-	^ aDataSeries collect: #asDateAndTime
+	^ aDataSeries collect: [ :ele | ele isNil ifFalse: [ ele asDateAndTime ] ]
 ]
 
 { #category : #converting }
 DataFrameTypeDetector >> convertToFloat: aDataSeries [
-	^ aDataSeries collect: [ :each | each asNumber asFloat ]
+	^ aDataSeries collect: [ :each | each isNil ifFalse: [ each asNumber asFloat ] ]
 ]
 
 { #category : #converting }
 DataFrameTypeDetector >> convertToInteger: aDataSeries [
-	^ aDataSeries collect: [ :each | each asNumber asInteger ]
+	^ aDataSeries collect: [ :each | each isNil ifFalse: [ each asNumber asInteger ] ]
 ]
 
 { #category : #converting }
 DataFrameTypeDetector >> convertToTime: aDataSeries [
-	^ aDataSeries collect: #asTime
+	^ aDataSeries collect: [ :ele | ele isNil ifFalse: [ ele asTime ] ]
 ]
 
 { #category : #'public API' }
