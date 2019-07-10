@@ -898,6 +898,27 @@ DataSeriesTest >> testCollect [
 	self assert: actual equals: expected.
 ]
 
+{ #category : #enumerating }
+DataSeriesTest >> testCollectWithNotNils [
+
+	| actual expected |
+
+	series := DataSeries
+		withKeys: #(a b c d e f g h i j k)
+		values: #(nil 7 6 nil 8 9 8 10 nil 13 16)
+		name: 'ExampleSeries'.
+	
+	actual := series collectWithNotNils: [ :each |
+		each / 10 ].
+	
+	expected := DataSeries
+		withKeys: keyArray
+		values: { nil . 7/10 . 3/5 . nil . 4/5 . 9/10 . 4/5 . 1 . nil . 13/10 . 8/5 }
+		name: 'ExampleSeries'.
+	
+	self assert: actual equals: expected.
+]
+
 { #category : #copying }
 DataSeriesTest >> testCopyCanBeChanged [
 

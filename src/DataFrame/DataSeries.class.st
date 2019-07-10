@@ -175,6 +175,14 @@ DataSeries >> collect: aBlock [
 	^ result
 ]
 
+{ #category : #enumerating }
+DataSeries >> collectWithNotNils: aBlock [
+	"Applies aBlock to every non-nil element"
+	^ self collect: [ :each |
+		each isNil ifTrue: [ nil ] ifFalse: [ aBlock value: each ]
+		]
+]
+
 { #category : #statistics }
 DataSeries >> crossTabulateWith: aSeries [
 	| df |
