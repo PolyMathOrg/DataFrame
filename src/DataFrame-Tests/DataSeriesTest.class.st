@@ -1107,6 +1107,74 @@ DataSeriesTest >> testFifth [
 	self assert: series fifth equals: 8.
 ]
 
+{ #category : #tests }
+DataSeriesTest >> testFillNilsWith [
+
+	| expected |
+	series := DataSeries
+		withKeys: keyArray
+		values: #(3 7 nil 20 8 9 8 nil 15 nil 16)
+		name: 'ExampleSeries'.
+		
+	expected := DataSeries
+		withKeys: keyArray
+		values: #(3 7 0 20 8 9 8 0 15 0 16)
+		name: 'ExampleSeries'.
+	
+	self assert: (series fillNilsWith: 0.0) equals: expected.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testFillNilsWithFloat [
+
+	| expected |
+	series := DataSeries
+		withKeys: keyArray
+		values: #(3 7 nil 20 8 9 8 nil 15 nil 16)
+		name: 'ExampleSeries'.
+		
+	expected := DataSeries
+		withKeys: keyArray
+		values: #(3 7 3.14 20 8 9 8 3.14 15 3.14 16)
+		name: 'ExampleSeries'.
+	
+	self assert: (series fillNilsWith: 3.14) equals: expected.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testFillNilsWithString [
+
+	| expected |
+	series := DataSeries
+		withKeys: keyArray
+		values: #(3 7 nil 20 8 9 8 nil 15 nil 16)
+		name: 'ExampleSeries'.
+		
+	expected := DataSeries
+		withKeys: keyArray
+		values: #(3 7 'abc' 20 8 9 8 'abc' 15 'abc' 16)
+		name: 'ExampleSeries'.
+	
+	self assert: (series fillNilsWith: 'abc') equals: expected.
+]
+
+{ #category : #tests }
+DataSeriesTest >> testFillNilsWithZero [
+
+	| expected |
+	series := DataSeries
+		withKeys: keyArray
+		values: #(3 7 nil 20 8 9 8 nil 15 nil 16)
+		name: 'ExampleSeries'.
+		
+	expected := DataSeries
+		withKeys: keyArray
+		values: #(3 7 0 20 8 9 8 0 15 0 16)
+		name: 'ExampleSeries'.
+	
+	self assert: (series fillNilsWithZero) equals: expected.
+]
+
 { #category : #accessing }
 DataSeriesTest >> testFirst [
 
