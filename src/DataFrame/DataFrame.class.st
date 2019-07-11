@@ -951,6 +951,41 @@ DataFrame >> removeColumnAt: columnNumber [
 ]
 
 { #category : #removing }
+DataFrame >> removeColumnsOfRowElementsSatisfing: aBlock onRow: rowNumber [
+
+	| columnNamesCopy |
+	(rowNumber < 1 or: [ rowNumber > self numberOfRows ])
+		ifTrue: [ SubscriptOutOfBounds signalFor: rowNumber ].
+		
+	columnNamesCopy := columnNames deepCopy.
+	columnNames removeAll.
+	columnNamesCopy withIndexDo: [ :columnName :j |
+		(aBlock value: (contents at: rowNumber at: j))
+			ifFalse: [ columnNames add: columnName ]].
+	contents removeColumnsOfRowElementsSatisfing: aBlock onRow: rowNumber.
+	
+	self numberOfColumns = 0 ifTrue: [ rowNames removeAll ].
+]
+
+{ #category : #removing }
+DataFrame >> removeColumnsOfRowElementsSatisfing: aBlock onRowNamed: rowName [
+
+	| index |
+	index := self indexOfRowNamed: rowName.
+	self removeColumnsOfRowElementsSatisfing: aBlock onRow: index.
+]
+
+{ #category : #removing }
+DataFrame >> removeColumnsWithNilsAtRow: rowNumber [
+	self removeColumnsOfRowElementsSatisfing: [ :ele | ele isNil ] onRow: rowNumber.
+]
+
+{ #category : #removing }
+DataFrame >> removeColumnsWithNilsAtRowNamed: rowName [
+	self removeColumnsOfRowElementsSatisfing: [ :ele | ele isNil ] onRowNamed: rowName.
+]
+
+{ #category : #removing }
 DataFrame >> removeRow: rowName [
 
 	| index |
@@ -965,6 +1000,41 @@ DataFrame >> removeRowAt: rowNumber [
 		
 	contents removeRowAt: rowNumber.
 	rowNames := rowNames copyWithoutIndex: rowNumber.
+]
+
+{ #category : #removing }
+DataFrame >> removeRowsOfColumnElementsSatisfing: aBlock onColumn: columnNumber [
+	
+	| rowNamesCopy |
+	(columnNumber < 1 or: [ columnNumber > self numberOfColumns ])
+		ifTrue: [ SubscriptOutOfBounds signalFor: columnNumber ].
+
+	rowNamesCopy := rowNames deepCopy.
+	rowNames removeAll.
+	rowNamesCopy withIndexDo: [ :rowName :i |
+		(aBlock value: (contents at: i at: columnNumber))
+			ifFalse: [ rowNames add: rowName ] ].
+	contents removeRowsOfColumnElementsSatisfing: aBlock onColumn: columnNumber.
+	
+	self numberOfRows = 0 ifTrue: [ columnNames removeAll ].
+]
+
+{ #category : #removing }
+DataFrame >> removeRowsOfColumnElementsSatisfing: aBlock onColumnNamed: columnName [
+
+	| index |
+	index := self indexOfColumnNamed: columnName.
+	self removeRowsOfColumnElementsSatisfing: aBlock onColumn: index.
+]
+
+{ #category : #removing }
+DataFrame >> removeRowsWithNilsAtColumn: columnNumber [
+	self removeRowsOfColumnElementsSatisfing: [ :ele | ele isNil ] onColumn: columnNumber.
+]
+
+{ #category : #removing }
+DataFrame >> removeRowsWithNilsAtColumnNamed: columnName [
+	self removeRowsOfColumnElementsSatisfing: [ :ele | ele isNil ] onColumnNamed: columnName.
 ]
 
 { #category : #renaming }

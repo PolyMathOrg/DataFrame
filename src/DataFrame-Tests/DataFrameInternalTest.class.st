@@ -302,6 +302,28 @@ DataFrameInternalTest >> testRemoveColumnAt [
 ]
 
 { #category : #tests }
+DataFrameInternalTest >> testRemoveColumnsOfRowElementsSatisfingOnRow [
+
+	| expected |
+	
+	df := DataFrameInternal withRows: #(
+		('Barcelona' 1.609 nil)
+   		('Dubai' 2.789 true)
+   		('London' nil nil)
+		('Washington' nil true)
+		('Delhi' 10.422 nil)).
+	
+	expected := DataFrameInternal withRows: #(
+		('Barcelona')
+   		('Dubai')
+   		('London')
+		('Washington')
+		('Delhi')).
+	
+	self assert: (df removeColumnsOfRowElementsSatisfing: [ :ele | ele isNil ] onRow: 3) equals: expected.
+]
+
+{ #category : #tests }
 DataFrameInternalTest >> testRemoveRowAt [
 
 	| expected |
@@ -318,8 +340,23 @@ DataFrameInternalTest >> testRemoveRowAt [
 ]
 
 { #category : #tests }
-DataFrameInternalTest >> testReplaceMissingValuesStrings [
+DataFrameInternalTest >> testRemoveRowsOfColumnElementsSatisfingOnColumn [
+  | expected |
+	
+	df := DataFrameInternal withRows: #(
+		('Barcelona' 1.609 nil)
+   		('Dubai' 2.789 true)
+   		('London' 8.788 nil)
+		('Washington' nil true)
+		('Delhi' 10.422 nil)).
+	
+	expected := DataFrameInternal withRows: #(
+   		('Dubai' 2.789 true)
+		('Washington' nil true)).
+	
+	self assert: (df removeRowsOfColumnElementsSatisfing: [ :ele | ele isNil ] onColumn: 3) equals: expected.
 
+DataFrameInternalTest >> testReplaceMissingValuesStrings [
 	| expected |
 	
 	df := DataFrameInternal withRows: #(
