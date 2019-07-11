@@ -357,6 +357,7 @@ DataFrameInternalTest >> testRemoveRowsOfColumnElementsSatisfingOnColumn [
 	self assert: (df removeRowsOfColumnElementsSatisfing: [ :ele | ele isNil ] onColumn: 3) equals: expected.
 ]
 
+{ #category : #tests }
 DataFrameInternalTest >> testReplaceMissingValuesStrings [
 	| expected |
 	
