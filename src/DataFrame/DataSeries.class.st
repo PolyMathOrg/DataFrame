@@ -229,6 +229,22 @@ DataSeries >> fifth [
 	^ self atIndex: 5
 ]
 
+{ #category : #filling }
+DataSeries >> fillNilsWith: anObject [
+	"Fills nils inplace with anObject"
+	
+	self withIndexDo: [ :ele :index |
+		ele isNil
+			ifTrue: [ self atIndex: index put: anObject ] ]
+]
+
+{ #category : #filling }
+DataSeries >> fillNilsWithZero [
+	"Fills nils inplace with anObject"
+	
+	self fillNilsWith: 0.
+]
+
 { #category : #accessing }
 DataSeries >> first [ 
 	"Answer the first element of the receiver.
