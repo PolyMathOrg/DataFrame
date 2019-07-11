@@ -378,6 +378,7 @@ DataFrameInternal >> removeRowsOfColumnElementsSatisfing: aBlock onColumn: colum
 					(contents at: i at: j) ]]].
 		
 	contents := newContents.
+]
 
 { #category : #filling }
 DataFrameInternal >> replaceMissingValuesStrings: aSet [
