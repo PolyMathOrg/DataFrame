@@ -46,6 +46,15 @@ BaselineOfDataFrame >> baseline: spec [
 			package: 'DataFrame-IO-Tests' with: [ spec requires: #('DataFrame-IO') ]].
 		
 		spec
+			for: #'pharo7.x'
+			do: [
+				spec
+					package: 'DataFrame-Pharo67' ].
+		
+		spec
 			for: #'pharo6.x'
-			do: [ spec package: 'DataFrame-Pharo6' ]
+			do: [
+				spec
+					package: 'DataFrame-Pharo6';
+					package: 'DataFrame-Pharo67' ].
 ]
