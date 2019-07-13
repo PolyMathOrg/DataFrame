@@ -873,6 +873,37 @@ DataFrame >> inject: thisValue into: binaryBlock [
 	^ series
 ]
 
+{ #category : #splitjoin }
+DataFrame >> innerJoin: aDataFrame [
+	"Performs inner join on aDataFrame with rowNames as keys"
+
+	| outputRows columnIntersection outputColumns outputDf |
+	
+	"Using select instead of intersection to preserve order"
+	outputRows := self rowNames select: [ :row | aDataFrame rowNames includes: row ].
+	columnIntersection := (self columnNames intersection: (aDataFrame columnNames)) asSet.
+	outputColumns := OrderedCollection new.
+	self columnNames do: [ :column |
+		(columnIntersection includes: column)
+			ifTrue: [ outputColumns add: ('' join: {column, '_x'}) ]
+			ifFalse: [ outputColumns add: column ]
+			].
+	aDataFrame columnNames do: [ :column |
+		(columnIntersection includes: column)
+			ifTrue: [ outputColumns add: ('' join: {column, '_y'}) ]
+			ifFalse: [ outputColumns add: column ]
+			].
+	
+	outputDf := self class withColumnNames: outputColumns.
+	outputRows do: [ :rowName |
+		| rowToAdd |
+		rowToAdd := (self row: rowName) asArray, (aDataFrame row: rowName) asArray.
+		outputDf addRow: rowToAdd named: rowName.
+		].
+	
+	^ outputDf
+]
+
 { #category : #statistics }
 DataFrame >> interquartileRange [
 
