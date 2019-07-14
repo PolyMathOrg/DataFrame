@@ -1563,6 +1563,132 @@ DataFrameTest >> testInnerJoinSameColumnNames [
 ]
 
 { #category : #splitjoin }
+DataFrameTest >> testLeftJoin [
+	| df2 expected |
+	
+	df2 := DataFrame withRows: #(
+		(false 0)
+   		(false 1)
+   		(true 2))
+		rowNames: #(A B C)
+		columnNames: #(Capital TimesVisited).
+	
+	expected := DataFrame withRows: #(
+		(Barcelona 1.609 true false 0)
+   		(Dubai 2.789 true false 1)
+   		(London 8.788 false true 2))
+		rowNames: #(A B C)
+		columnNames: #(City Population BeenThere Capital TimesVisited).
+	
+	self assert: (df leftJoin: df2) equals: expected.
+]
+
+{ #category : #splitjoin }
+DataFrameTest >> testLeftJoinNoIntersection [
+	| df2 expected |
+	
+	df2 := DataFrame withRows: #(
+		(false 0)
+   		(false 1)
+   		(true 2))
+		rowNames: #(D E F)
+		columnNames: #(Capital TimesVisited).
+	
+	expected := DataFrame withRows: #(
+		(Barcelona 1.609 true nil nil)
+   		(Dubai 2.789 true nil nil)
+   		(London 8.788 false nil nil))
+		rowNames: #(A B C)
+		columnNames: #(City Population BeenThere Capital TimesVisited).
+	
+	self assert: (df leftJoin: df2) equals: expected.
+]
+
+{ #category : #splitjoin }
+DataFrameTest >> testLeftJoinOnEmpty [
+	| df2 expected |
+	
+	df2 := DataFrame new.
+	
+	expected := DataFrame withColumnNames: #(City Population BeenThere).
+	
+	self assert: (df leftJoin: df2) equals: df.
+	self assert: (df2 leftJoin: df) equals: expected.
+]
+
+{ #category : #splitjoin }
+DataFrameTest >> testLeftJoinOnEmptyWithColumnNames [
+	| df2 expected |
+	
+	df2 := DataFrame withColumnNames: #(Capital TimesVisited).
+	
+	expected := DataFrame withRows: #(
+		(Barcelona 1.609 true nil nil)
+   		(Dubai 2.789 true nil nil)
+   		(London 8.788 false nil nil))
+		rowNames: #(A B C)
+		columnNames: #(City Population BeenThere Capital TimesVisited).
+	
+	self assert: (df leftJoin: df2) equals: expected.
+]
+
+{ #category : #splitjoin }
+DataFrameTest >> testLeftJoinOnSelf [
+	| expected |
+	
+	expected := DataFrame withRows: #(
+		(Barcelona 1.609 true Barcelona 1.609 true)
+   		(Dubai 2.789 true Dubai 2.789 true)
+   		(London 8.788 false London 8.788 false))
+		rowNames: #(A B C)
+		columnNames: #(City_x Population_x BeenThere_x City_y Population_y BeenThere_y).
+	
+	self assert: (df leftJoin: df) equals: expected.
+]
+
+{ #category : #splitjoin }
+DataFrameTest >> testLeftJoinRowMismatch [
+	| df2 expected |
+	
+	df2 := DataFrame withRows: #(
+		(false 0)
+   		(false 1)
+   		(true 2))
+		rowNames: #(A D C)
+		columnNames: #(Capital TimesVisited).
+	
+	expected := DataFrame withRows: #(
+		(Barcelona 1.609 true false 0)
+   		(Dubai 2.789 true nil nil)
+   		(London 8.788 false true 2))
+		rowNames: #(A B C)
+		columnNames: #(City Population BeenThere Capital TimesVisited).
+	
+	self assert: (df leftJoin: df2) equals: expected.
+]
+
+{ #category : #splitjoin }
+DataFrameTest >> testLeftJoinSameColumnNames [
+	| df2 expected |
+	
+	df2 := DataFrame withRows: #(
+		(false 0)
+   		(false 1)
+   		(true 2))
+		rowNames: #(A D C)
+		columnNames: #(Capital Population).
+	
+	expected := DataFrame withRows: #(
+		(Barcelona 1.609 true false 0)
+   		(Dubai 2.789 true nil nil)
+   		(London 8.788 false true 2))
+		rowNames: #(A B C)
+		columnNames: #(City Population_x BeenThere Capital Population_y).
+	
+	self assert: (df leftJoin: df2) equals: expected.
+]
+
+{ #category : #splitjoin }
 DataFrameTest >> testOuterJoin [
 	| df2 expected |
 	

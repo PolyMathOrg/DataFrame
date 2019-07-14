@@ -919,6 +919,24 @@ DataFrame >> interquartileRange [
 	^ self applyToAllColumns: #interquartileRange
 ]
 
+{ #category : #splitjoin }
+DataFrame >> leftJoin: aDataFrame [
+	"Performs left join on aDataFrame with rowNames as keys"
+
+	| outputDf commonRows |
+	
+	outputDf := self class withColumnNames: (self getJointColumnsWith: aDataFrame).
+	commonRows := self rowNames intersection: aDataFrame rowNames.
+	self rowNames do: [ :rowName | 
+		| rowToAdd |
+		rowToAdd := (commonRows includes: rowName)
+			ifTrue: [ (self row: rowName) asArray , (aDataFrame row: rowName) asArray ]
+			ifFalse: [ (self row: rowName) asArray , (Array new: aDataFrame columnNames size) ].
+		outputDf addRow: rowToAdd named: rowName ].
+	
+	^ outputDf
+]
+
 { #category : #statistics }
 DataFrame >> max [
 
