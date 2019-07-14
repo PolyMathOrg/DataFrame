@@ -1135,6 +1135,25 @@ DataFrame >> renameRow: oldName to: newName [
 	self rowNames at: index put: newName.
 ]
 
+{ #category : #splitjoin }
+DataFrame >> rightJoin: aDataFrame [
+	"Performs right join on aDataFrame with rowNames as keys"
+
+	| outputDf commonRows |
+	
+	outputDf := self class withColumnNames: (self getJointColumnsWith: aDataFrame).
+	commonRows := self rowNames intersection: aDataFrame rowNames.
+	
+	aDataFrame rowNames do: [ :rowName | 
+		| rowToAdd |
+		rowToAdd := (commonRows includes: rowName)
+			ifTrue: [ (self row: rowName) asArray , (aDataFrame row: rowName) asArray ]
+			ifFalse: [ (Array new: self columnNames size) , (aDataFrame row: rowName) asArray ].
+		outputDf addRow: rowToAdd named: rowName ].
+	
+	^ outputDf
+]
+
 { #category : #accessing }
 DataFrame >> row: rowName [
 	"Answer the row with rowName as a DataSeries or signal an exception if a row with that name was not found"

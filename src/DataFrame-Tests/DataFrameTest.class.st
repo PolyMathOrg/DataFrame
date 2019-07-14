@@ -2212,6 +2212,127 @@ DataFrameTest >> testRenameRowToNotFound [
 		raise: LibrarySymbolNotFoundError.
 ]
 
+{ #category : #splitjoin }
+DataFrameTest >> testRightJoin [
+	| df2 expected |
+	
+	df2 := DataFrame withRows: #(
+		(false 0)
+   		(false 1)
+   		(true 2))
+		rowNames: #(A B C)
+		columnNames: #(Capital TimesVisited).
+	
+	expected := DataFrame withRows: #(
+		(Barcelona 1.609 true false 0)
+   		(Dubai 2.789 true false 1)
+   		(London 8.788 false true 2))
+		rowNames: #(A B C)
+		columnNames: #(City Population BeenThere Capital TimesVisited).
+	
+	self assert: (df rightJoin: df2) equals: expected.
+]
+
+{ #category : #splitjoin }
+DataFrameTest >> testRightJoinNoIntersection [
+	| df2 expected |
+	
+	df2 := DataFrame withRows: #(
+		(false 0)
+   		(false 1)
+   		(true 2))
+		rowNames: #(D E F)
+		columnNames: #(Capital TimesVisited).
+	
+	expected := DataFrame withRows: #(
+		(nil nil nil false 0)
+   		(nil nil nil false 1)
+   		(nil nil nil true 2))
+		rowNames: #(D E F)
+		columnNames: #(City Population BeenThere Capital TimesVisited).
+	
+	self assert: (df rightJoin: df2) equals: expected.
+]
+
+{ #category : #splitjoin }
+DataFrameTest >> testRightJoinOnEmpty [
+	| df2 expected |
+	
+	df2 := DataFrame new.
+	
+	expected := DataFrame withColumnNames: #(City Population BeenThere).
+	
+	self assert: (df rightJoin: df2) equals: expected.
+	self assert: (df2 rightJoin: df) equals: df.
+]
+
+{ #category : #splitjoin }
+DataFrameTest >> testRightJoinOnEmptyWithColumnNames [
+	| df2 expected |
+	
+	df2 := DataFrame withColumnNames: #(Capital TimesVisited).
+	
+	expected := DataFrame withColumnNames: #(City Population BeenThere Capital TimesVisited).
+	
+	self assert: (df rightJoin: df2) equals: expected.
+]
+
+{ #category : #splitjoin }
+DataFrameTest >> testRightJoinOnSelf [
+	| expected |
+	
+	expected := DataFrame withRows: #(
+		(Barcelona 1.609 true Barcelona 1.609 true)
+   		(Dubai 2.789 true Dubai 2.789 true)
+   		(London 8.788 false London 8.788 false))
+		rowNames: #(A B C)
+		columnNames: #(City_x Population_x BeenThere_x City_y Population_y BeenThere_y).
+	
+	self assert: (df rightJoin: df) equals: expected.
+]
+
+{ #category : #splitjoin }
+DataFrameTest >> testRightJoinRowMismatch [
+	| df2 expected |
+	
+	df2 := DataFrame withRows: #(
+		(false 0)
+   		(false 1)
+   		(true 2))
+		rowNames: #(A D C)
+		columnNames: #(Capital TimesVisited).
+	
+	expected := DataFrame withRows: #(
+		(Barcelona 1.609 true false 0)
+   		(nil nil nil false 1)
+   		(London 8.788 false true 2))
+		rowNames: #(A D C)
+		columnNames: #(City Population BeenThere Capital TimesVisited).
+	
+	self assert: (df rightJoin: df2) equals: expected.
+]
+
+{ #category : #splitjoin }
+DataFrameTest >> testRightJoinSameColumnNames [
+	| df2 expected |
+	
+	df2 := DataFrame withRows: #(
+		(false 0)
+   		(false 1)
+   		(true 2))
+		rowNames: #(A D C)
+		columnNames: #(Capital Population).
+	
+	expected := DataFrame withRows: #(
+		(Barcelona 1.609 true false 0)
+   		(nil nil nil false 1)
+   		(London 8.788 false true 2))
+		rowNames: #(A D C)
+		columnNames: #(City Population_x BeenThere Capital Population_y).
+	
+	self assert: (df rightJoin: df2) equals: expected.
+]
+
 { #category : #tests }
 DataFrameTest >> testRow [
 
