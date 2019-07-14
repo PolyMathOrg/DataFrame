@@ -722,6 +722,27 @@ DataFrame >> firstQuartile [
 	^ self applyToAllColumns: #firstQuartile
 ]
 
+{ #category : #private }
+DataFrame >> getJointColumnsWith: aDataFrame [
+	"comment stating purpose of message"
+
+	| columnIntersection outputColumns |
+	columnIntersection := (self columnNames intersection: (aDataFrame columnNames)) asSet.
+	outputColumns := OrderedCollection new.
+	self columnNames do: [ :column |
+		(columnIntersection includes: column)
+			ifTrue: [ outputColumns add: ('' join: {column, '_x'}) ]
+			ifFalse: [ outputColumns add: column ]
+			].
+	aDataFrame columnNames do: [ :column |
+		(columnIntersection includes: column)
+			ifTrue: [ outputColumns add: ('' join: {column, '_y'}) ]
+			ifFalse: [ outputColumns add: column ]
+			].
+	
+	^ outputColumns
+]
+
 { #category : #grouping }
 DataFrame >> group: anAggregateColumnName by: aGroupColumnName aggregateUsing: aBlock [
 	^ self group: anAggregateColumnName by: aGroupColumnName aggregateUsing: aBlock as: anAggregateColumnName.
@@ -877,24 +898,12 @@ DataFrame >> inject: thisValue into: binaryBlock [
 DataFrame >> innerJoin: aDataFrame [
 	"Performs inner join on aDataFrame with rowNames as keys"
 
-	| outputRows columnIntersection outputColumns outputDf |
+	| outputRows outputDf |
+	
+	outputDf := self class withColumnNames: (self getJointColumnsWith: aDataFrame).
 	
 	"Using select instead of intersection to preserve order"
 	outputRows := self rowNames select: [ :row | aDataFrame rowNames includes: row ].
-	columnIntersection := (self columnNames intersection: (aDataFrame columnNames)) asSet.
-	outputColumns := OrderedCollection new.
-	self columnNames do: [ :column |
-		(columnIntersection includes: column)
-			ifTrue: [ outputColumns add: ('' join: {column, '_x'}) ]
-			ifFalse: [ outputColumns add: column ]
-			].
-	aDataFrame columnNames do: [ :column |
-		(columnIntersection includes: column)
-			ifTrue: [ outputColumns add: ('' join: {column, '_y'}) ]
-			ifFalse: [ outputColumns add: column ]
-			].
-	
-	outputDf := self class withColumnNames: outputColumns.
 	outputRows do: [ :rowName |
 		| rowToAdd |
 		rowToAdd := (self row: rowName) asArray, (aDataFrame row: rowName) asArray.
@@ -944,6 +953,30 @@ DataFrame >> numberOfColumns [
 DataFrame >> numberOfRows [
 
 	^ contents numberOfRows
+]
+
+{ #category : #splitjoin }
+DataFrame >> outerJoin: aDataFrame [
+	"Performs outer join on aDataFrame with rowNames as keys"
+
+	| outputDf commonRows |
+	
+	outputDf := self class withColumnNames: (self getJointColumnsWith: aDataFrame).
+	commonRows := self rowNames intersection: aDataFrame rowNames.
+	self rowNames do: [ :rowName | 
+		| rowToAdd |
+		rowToAdd := (commonRows includes: rowName)
+			ifTrue: [ (self row: rowName) asArray , (aDataFrame row: rowName) asArray ]
+			ifFalse: [ (self row: rowName) asArray , (Array new: aDataFrame columnNames size) ].
+		outputDf addRow: rowToAdd named: rowName ].
+	
+	aDataFrame rowNames do: [ :rowName | 
+		(commonRows includes: rowName)
+			ifFalse: [ outputDf
+				addRow: (Array new: self columnNames size) , (aDataFrame row: rowName) asArray
+				named: rowName ] ].
+	
+	^ outputDf
 ]
 
 { #category : #printing }
