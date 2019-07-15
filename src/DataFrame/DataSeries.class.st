@@ -237,22 +237,6 @@ DataSeries >> fifth [
 	^ self atIndex: 5
 ]
 
-{ #category : #filling }
-DataSeries >> fillNilsWith: anObject [
-	"Fills nils inplace with anObject"
-	
-	self withIndexDo: [ :ele :index |
-		ele isNil
-			ifTrue: [ self atIndex: index put: anObject ] ]
-]
-
-{ #category : #filling }
-DataSeries >> fillNilsWithZero [
-	"Fills nils inplace with anObject"
-	
-	self fillNilsWith: 0.
-]
-
 { #category : #accessing }
 DataSeries >> first [ 
 	"Answer the first element of the receiver.
@@ -423,6 +407,49 @@ DataSeries >> removeAtIndex: aNumber [
 { #category : #removing }
 DataSeries >> removeNils [
 	^ self reject: [ :ele | ele isNil ]
+]
+
+{ #category : #replacing }
+DataSeries >> replaceNilsWith: anObject [
+	"Replaces nils inplace with anObject"
+	
+	self withIndexDo: [ :ele :index |
+		ele isNil
+			ifTrue: [ self atIndex: index put: anObject ] ]
+]
+
+{ #category : #replacing }
+DataSeries >> replaceNilsWithAverage [
+	"Replaces nils inplace with average"
+	
+	| mean |
+	mean := (self select: [ :ele | ele isNotNil ]) average.
+	self replaceNilsWith: mean.
+]
+
+{ #category : #replacing }
+DataSeries >> replaceNilsWithMedian [
+	"Replaces nils inplace with median"
+	
+	| median |
+	median := (self select: [ :ele | ele isNotNil ]) median.
+	self replaceNilsWith: median.
+]
+
+{ #category : #replacing }
+DataSeries >> replaceNilsWithMode [
+	"Replaces nils inplace with mode"
+	
+	| mode |
+	mode := (self select: [ :ele | ele isNotNil ]) mode.
+	self replaceNilsWith: mode.
+]
+
+{ #category : #replacing }
+DataSeries >> replaceNilsWithZero [
+	"Replaces nils inplace with zero"
+	
+	self replaceNilsWith: 0.
 ]
 
 { #category : #accessing }
