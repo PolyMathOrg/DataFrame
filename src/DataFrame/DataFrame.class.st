@@ -716,6 +716,22 @@ DataFrame >> do: aBlock [
 		self rowAt: i put: row asArray ].
 ]
 
+{ #category : #'find-select' }
+DataFrame >> findAll: anObject atColumn: columnName [
+	"Returns rowNames of rows having anObject at columnName"
+
+	^ self rowNames select: [ :row | ((self column: columnName) at: row) = anObject ]
+]
+
+{ #category : #'find-select' }
+DataFrame >> findAllIndicesOf: anObject atColumn: columnName [
+	"Returns indices of rows having anObject at columnName"
+	| output |
+	output := OrderedCollection new.
+	self rowNames withIndexDo: [ :row :index | ((self column: columnName) at: row) = anObject ifTrue: [ output add: index ]].
+	^ output
+]
+
 { #category : #statistics }
 DataFrame >> firstQuartile [
 
@@ -908,6 +924,41 @@ DataFrame >> innerJoin: aDataFrame [
 		| rowToAdd |
 		rowToAdd := (self row: rowName) asArray, (aDataFrame row: rowName) asArray.
 		outputDf addRow: rowToAdd named: rowName.
+		].
+	
+	^ outputDf
+]
+
+{ #category : #splitjoin }
+DataFrame >> innerJoin: aDataFrame leftColumn: leftColumn rightColumn: rightColumn [
+	"Performs inner join on aDataFrame with rowNames as keys.
+	 rowNames are not preserved.
+	 Duplicate column names will be appended with '_x' and '_y'."
+
+	| outputRows outputDf |
+	
+	outputDf := self class withColumnNames: (self getJointColumnsWith: aDataFrame).
+	
+	"Skip join if any of the dataframe is zero"
+	((self size isZero) | (aDataFrame size isZero)) ifFalse: [
+		"Using select instead of intersection to preserve order"
+		outputRows := OrderedCollection new.
+		(self column: leftColumn) withIndexDo: [ :ele :index |
+			((aDataFrame column: rightColumn) includes: ele) ifTrue: [ outputRows add: index ] ].
+		outputRows do: [ :rowIndex |
+			| rowsWithSameKey rowToAdd |
+			rowsWithSameKey := aDataFrame findAllIndicesOf: (self at: rowIndex at: (self indexOfColumnNamed: leftColumn)) atColumn: rightColumn.
+			rowsWithSameKey do: [ :rightRow |
+				rowToAdd := (self rowAt: rowIndex) asArray, (aDataFrame rowAt: rightRow) asArray.
+				outputDf addRow: rowToAdd named: (outputDf size + 1).
+				].
+			].
+		].
+	
+	"Since Key is common, remove duplicate key column if it is of same name"
+	(leftColumn = rightColumn) ifTrue: [
+		outputDf removeColumn: (rightColumn, '_y').
+		outputDf renameColumn: (leftColumn, '_x') to: leftColumn.
 		].
 	
 	^ outputDf
