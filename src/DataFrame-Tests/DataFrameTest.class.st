@@ -1911,6 +1911,305 @@ DataFrameTest >> testLeftJoin [
 ]
 
 { #category : #splitjoin }
+DataFrameTest >> testLeftJoinLeftColumnRightColumn [
+
+	| df2 expected |
+	
+	df := DataFrame withRows: #(
+		('K0' 'A0' 0)
+		('K1' 'A1' 1)
+		('K2' 'A2' 2)
+		)
+		rowNames: #('1K0' '1K1' '1K2')
+		columnNames: #(Key1 A B).
+	
+	df2 := DataFrame withRows: #(
+		('K0' 'B0' true)
+		('K1' 'B1' false)
+		('K2' 'B2' true)
+		('K3' 'B3' false)
+		)
+		rowNames: #('1K0' '1K1' '1K2' '1K3')
+		columnNames: #(Key2 C D).
+	
+	expected := DataFrame withRows: #(
+		('K0' 'A0' 0 'K0' 'B0' true)
+		('K1' 'A1' 1 'K1' 'B1' false)
+		('K2' 'A2' 2 'K2' 'B2' true)
+		)
+		columnNames: #(Key1 A B Key2 C D).
+		
+	self assert: (df leftJoin: df2 leftColumn: 'Key1' rightColumn: 'Key2') equals: expected.
+]
+
+{ #category : #splitjoin }
+DataFrameTest >> testLeftJoinLeftColumnRightColumnDuplicateKeys [
+
+	| df2 expected |
+	
+	df := DataFrame withRows: #(
+		('K0' 'A0' 0)
+		('K1' 'A1' 1)
+		('K1' 'A2' 2)
+		('K2' 'A3' 3)
+		('K0' 'A4' 4)
+		('K5' 'A5' 5)
+		('K6' 'A6' 6)
+		)
+		rowNames: #('1K0' '1K1' '2K1' '1K2' '2K0' '1K5' '1K6')
+		columnNames: #(Key A B).
+	
+	df2 := DataFrame withRows: #(
+		('K3' 'B0' false)
+		('K2' 'B1' true)
+		('K2' 'B2' false)
+		('K1' 'B3' true)
+		('K3' 'B4' false)
+		('K3' 'B5' true)
+		('K0' 'B6' false)
+		)
+		rowNames: #('1K3' '1K2' '2K2' '1K1' '2K3' '3K3' '1K0')
+		columnNames: #(Key C D).
+	
+	expected := DataFrame withRows: #(
+		('K0' 'A0' 0 'B6' false)
+		('K1' 'A1' 1 'B3' true)
+		('K1' 'A2' 2 'B3' true)
+		('K2' 'A3' 3 'B1' true)
+		('K2' 'A3' 3 'B2' false)
+		('K0' 'A4' 4 'B6' false)
+		('K5' 'A5' 5 nil nil)
+		('K6' 'A6' 6 nil nil)
+		)
+		columnNames: #(Key A B C D).
+		
+	self assert: (df leftJoin: df2 leftColumn: 'Key' rightColumn: 'Key') equals: expected.
+]
+
+{ #category : #splitjoin }
+DataFrameTest >> testLeftJoinLeftColumnRightColumnMissingKey [
+
+	| df2 |
+	
+	df := DataFrame withRows: #(
+		('K0' 'A0' 0)
+		('K1' 'A1' 1)
+		('K2' 'A2' 2)
+		)
+		rowNames: #('1K0' '1K1' '1K2')
+		columnNames: #(Key1 A B).
+	
+	df2 := DataFrame withRows: #(
+		('K0' 'B0' true)
+		('K1' 'B1' false)
+		('K2' 'B2' true)
+		('K3' 'B3' false)
+		)
+		rowNames: #('1K0' '1K1' '1K2' '1K3')
+		columnNames: #(Key2 C D).
+		
+	self should: [df leftJoin: df2 leftColumn: 'Key' rightColumn: 'Key2'] raise: Error.
+	self should: [df leftJoin: df2 leftColumn: 'Key1' rightColumn: 'Key'] raise: Error.
+	self should: [df leftJoin: df2 leftColumn: 'Key' rightColumn: 'Key'] raise: Error.
+]
+
+{ #category : #splitjoin }
+DataFrameTest >> testLeftJoinLeftColumnRightColumnNoIntersection [
+
+	| df2 expected |
+	
+	df := DataFrame withRows: #(
+		('K0' 'A0' 0)
+		('K1' 'A1' 1)
+		('K2' 'A2' 2)
+		)
+		rowNames: #('1K0' '1K1' '1K2')
+		columnNames: #(Key A B).
+	
+	df2 := DataFrame withRows: #(
+		('L0' 'B0' true)
+		('L1' 'B1' false)
+		('L2' 'B2' true)
+		('L3' 'B3' false)
+		)
+		rowNames: #('1K0' '1K1' '1K2' '1K3')
+		columnNames: #(Key C D).
+	
+	expected :=  DataFrame withRows: #(
+		('K0' 'A0' 0 nil nil)
+		('K1' 'A1' 1 nil nil)
+		('K2' 'A2' 2 nil nil)
+		)
+		columnNames: #(Key A B C D).
+		
+	self assert: (df leftJoin: df2 leftColumn: 'Key' rightColumn: 'Key') equals: expected.
+]
+
+{ #category : #splitjoin }
+DataFrameTest >> testLeftJoinLeftColumnRightColumnOnEmpty [
+
+	| df2 |
+	
+	df := DataFrame withRows: #(
+		('K0' 'A0' 0)
+		('K1' 'A1' 1)
+		('K2' 'A2' 2)
+		)
+		rowNames: #('1K0' '1K1' '1K2')
+		columnNames: #(Key A B).
+	
+	df2 := DataFrame new.
+		
+	self should: [df leftJoin: df2 leftColumn: 'Key' rightColumn: 'Key'] raise: Error.
+]
+
+{ #category : #splitjoin }
+DataFrameTest >> testLeftJoinLeftColumnRightColumnOnEmptyWithColumnNames [
+
+	| df2 expected |
+	
+	df := DataFrame withRows: #(
+		('K0' 'A0' 0)
+		('K1' 'A1' 1)
+		('K2' 'A2' 2)
+		)
+		rowNames: #('1K0' '1K1' '1K2')
+		columnNames: #(Key A B).
+	
+	df2 := DataFrame withColumnNames: #(Key C D).
+		
+	expected := DataFrame withRows: #(
+		('K0' 'A0' 0 nil nil)
+		('K1' 'A1' 1 nil nil)
+		('K2' 'A2' 2 nil nil)
+		)
+		columnNames: #(Key A B C D).
+	self assert: (df leftJoin: df2 leftColumn: 'Key' rightColumn: 'Key') equals: expected.
+	
+	expected := DataFrame withColumnNames: #(Key C D A B).
+	self assert: (df2 leftJoin: df leftColumn: 'Key' rightColumn: 'Key') equals: expected.
+]
+
+{ #category : #splitjoin }
+DataFrameTest >> testLeftJoinLeftColumnRightColumnOnSelf [
+	
+	| expected |
+	
+	df := DataFrame withRows: #(
+		('K0' 'A0' 0)
+		('K1' 'A1' 1)
+		('K2' 'A2' 2)
+		)
+		rowNames: #('1K0' '1K1' '1K2')
+		columnNames: #(Key A B).	
+	
+	expected := DataFrame withRows: #(
+		('K0' 'A0' 0 'A0' 0)
+		('K1' 'A1' 1 'A1' 1)
+		('K2' 'A2' 2 'A2' 2)
+		)
+		columnNames: #(Key A_x B_x A_y B_y).
+		
+	self assert: (df leftJoin: df leftColumn: 'Key' rightColumn: 'Key') equals: expected.
+]
+
+{ #category : #splitjoin }
+DataFrameTest >> testLeftJoinLeftColumnRightColumnRowMismatch [
+
+	| df2 expected |
+	
+	df := DataFrame withRows: #(
+		('K0' 'A0' 0)
+		('K3' 'A3' 3)
+		('K2' 'A2' 2)
+		)
+		rowNames: #('1K0' '1K1' '1K2')
+		columnNames: #(Key A B).
+	
+	df2 := DataFrame withRows: #(
+		('K0' 'B0' true)
+		('K1' 'B1' false)
+		('K2' 'B2' true)
+		('K3' 'B3' false)
+		)
+		rowNames: #('1K0' '1K1' '1K2' '1K3')
+		columnNames: #(Key C D).
+	
+	expected := DataFrame withRows: #(
+		('K0' 'A0' 0 'B0' true)
+		('K3' 'A3' 3 'B3' false)
+		('K2' 'A2' 2 'B2' true)
+		)
+		columnNames: #(Key A B C D).
+		
+	self assert: (df leftJoin: df2 leftColumn: 'Key' rightColumn: 'Key') equals: expected.
+]
+
+{ #category : #splitjoin }
+DataFrameTest >> testLeftJoinLeftColumnRightColumnSameColumnNames [
+
+	| df2 expected |
+	
+	df := DataFrame withRows: #(
+		('K0' 'A0' 0)
+		('K1' 'A1' 1)
+		('K2' 'A2' 2)
+		)
+		rowNames: #('1K0' '1K1' '1K2')
+		columnNames: #(Key A B).
+	
+	df2 := DataFrame withRows: #(
+		('K0' 'B0' true)
+		('K1' 'B1' false)
+		('K2' 'B2' true)
+		('K3' 'B3' false)
+		)
+		rowNames: #('1K0' '1K1' '1K2' '1K3')
+		columnNames: #(Key A B).
+	
+	expected := DataFrame withRows: #(
+		('K0' 'A0' 0 'B0' true)
+		('K1' 'A1' 1 'B1' false)
+		('K2' 'A2' 2 'B2' true)
+		)
+		columnNames: #(Key A_x B_x A_y B_y).
+		
+	self assert: (df leftJoin: df2 leftColumn: 'Key' rightColumn: 'Key') equals: expected.
+]
+
+{ #category : #splitjoin }
+DataFrameTest >> testLeftJoinLeftColumnRightColumnSameKeyName [
+
+	| df2 expected |
+	
+	df := DataFrame withRows: #(
+		('K0' 'A0' 0)
+		('K1' 'A1' 1)
+		('K2' 'A2' 2)
+		)
+		rowNames: #('1K0' '1K1' '1K2')
+		columnNames: #(Key A B).
+	
+	df2 := DataFrame withRows: #(
+		('K0' 'B0' true)
+		('K1' 'B1' false)
+		('K2' 'B2' true)
+		('K3' 'B3' false)
+		)
+		rowNames: #('1K0' '1K1' '1K2' '1K3')
+		columnNames: #(Key C D).
+	
+	expected := DataFrame withRows: #(
+		('K0' 'A0' 0 'B0' true)
+		('K1' 'A1' 1 'B1' false)
+		('K2' 'A2' 2 'B2' true)
+		)
+		columnNames: #(Key A B C D).
+		
+	self assert: (df leftJoin: df2 leftColumn: 'Key' rightColumn: 'Key') equals: expected.
+]
+
+{ #category : #splitjoin }
 DataFrameTest >> testLeftJoinNoIntersection [
 	| df2 expected |
 	
