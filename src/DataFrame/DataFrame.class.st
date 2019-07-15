@@ -1048,6 +1048,59 @@ DataFrame >> outerJoin: aDataFrame [
 	^ outputDf
 ]
 
+{ #category : #splitjoin }
+DataFrame >> outerJoin: aDataFrame leftColumn: leftColumn rightColumn: rightColumn [
+	"Performs outer join on aDataFrame with rowNames as keys.
+	 rowNames are not preserved.
+	 Duplicate column names will be appended with '_x' and '_y'."
+
+	| outputDf commonRows leftNils |
+	
+	outputDf := self class withColumnNames: (self getJointColumnsWith: aDataFrame).
+	
+	commonRows := (self column: leftColumn) asArray intersection: (aDataFrame column: rightColumn) asArray.
+
+	1 to: self size do: [ :rowIndex |
+		| rowsWithSameKey rowToAdd |
+		(commonRows includes: (self at: rowIndex at: (self indexOfColumnNamed: leftColumn)))
+		ifTrue: [
+			"Row present in both df - append rows and add to outputDf"
+			rowsWithSameKey := aDataFrame findAllIndicesOf: (self at: rowIndex at: (self indexOfColumnNamed: leftColumn)) atColumn: rightColumn.
+			rowsWithSameKey do: [ :rightRow |
+				rowToAdd := (self rowAt: rowIndex) asArray, (aDataFrame rowAt: rightRow) asArray.
+				outputDf addRow: rowToAdd named: (outputDf size + 1).
+				].
+			]
+		ifFalse: [
+			"Row present in left-only - append nils and add to outputDf"
+			rowToAdd := (self rowAt: rowIndex) asArray, (Array new: aDataFrame columnNames size).
+			outputDf addRow: rowToAdd named: (outputDf size + 1)
+			].
+		].
+	
+	1 to: aDataFrame size do: [ :rowIndex |
+		| rowToAdd |
+		(commonRows includes: (aDataFrame at: rowIndex at: (aDataFrame indexOfColumnNamed: rightColumn)))
+		ifFalse: [
+			"Row present in right-only - construct row and append"
+			leftNils := self columnNames collect: [ :col |
+				col = rightColumn
+					ifTrue: [ (aDataFrame rowAt: rowIndex) at: rightColumn ]
+					ifFalse: [ nil ] ].
+			rowToAdd := leftNils, (aDataFrame rowAt: rowIndex) asArray.
+			outputDf addRow: rowToAdd named: (outputDf size + 1).
+			].
+		].
+	
+	"Since Key is common, remove duplicate key column if it is of same name"
+	(leftColumn = rightColumn) ifTrue: [
+		outputDf removeColumn: (rightColumn, '_y').
+		outputDf renameColumn: (leftColumn, '_x') to: leftColumn.
+		].
+	
+	^ outputDf
+]
+
 { #category : #printing }
 DataFrame >> printOn: aStream [
 
