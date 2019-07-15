@@ -1297,6 +1297,49 @@ DataFrame >> rightJoin: aDataFrame [
 	^ outputDf
 ]
 
+{ #category : #splitjoin }
+DataFrame >> rightJoin: aDataFrame leftColumn: leftColumn rightColumn: rightColumn [
+	"Performs right join on aDataFrame with rowNames as keys.
+	 rowNames are not preserved.
+	 Duplicate column names will be appended with '_x' and '_y'."
+
+	| outputDf commonRows leftNils |
+	
+	outputDf := self class withColumnNames: (self getJointColumnsWith: aDataFrame).
+	
+	commonRows := (self column: leftColumn) asArray intersection: (aDataFrame column: rightColumn) asArray.
+	
+	1 to: aDataFrame size do: [ :rowIndex |
+		| rowToAdd rowsWithSameKey |
+		(commonRows includes: (aDataFrame at: rowIndex at: (aDataFrame indexOfColumnNamed: rightColumn)))
+		ifTrue: [ 
+			"Row present in both df - append rows and add to outputDf"
+			rowsWithSameKey := self findAllIndicesOf: (aDataFrame at: rowIndex at: (aDataFrame indexOfColumnNamed: rightColumn)) atColumn: leftColumn.
+			rowsWithSameKey do: [ :leftRow |
+				rowToAdd := (self rowAt: leftRow) asArray, (aDataFrame rowAt: rowIndex) asArray.
+				outputDf addRow: rowToAdd named: (outputDf size + 1).
+				]
+			]
+		ifFalse: [
+			"Row present in right-only - construct row and append"
+			leftNils := self columnNames collect: [ :col |
+				col = rightColumn
+					ifTrue: [ (aDataFrame rowAt: rowIndex) at: rightColumn ]
+					ifFalse: [ nil ] ].
+			rowToAdd := leftNils, (aDataFrame rowAt: rowIndex) asArray.
+			outputDf addRow: rowToAdd named: (outputDf size + 1).
+			].
+		].
+	
+	"Since Key is common, remove duplicate key column if it is of same name"
+	(leftColumn = rightColumn) ifTrue: [
+		outputDf removeColumn: (rightColumn, '_y').
+		outputDf renameColumn: (leftColumn, '_x') to: leftColumn.
+		].
+	
+	^ outputDf
+]
+
 { #category : #accessing }
 DataFrame >> row: rowName [
 	"Answer the row with rowName as a DataSeries or signal an exception if a row with that name was not found"
