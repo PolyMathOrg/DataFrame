@@ -84,3 +84,18 @@ DataFrame >> writeToCsv: aFileReference withSeparator: aSeparator [
 	writer separator: aSeparator.
 	self writeTo: aFileReference using: writer.
 ]
+
+{ #category : #'*DataFrame-IO' }
+DataFrame >> writeToJson: aFileReference [
+	| writer |
+	writer := DataFrameJsonWriter new.
+	self writeTo: aFileReference using: writer.
+]
+
+{ #category : #'*DataFrame-IO' }
+DataFrame >> writeToJson: aFileReference orient: orient [
+	| writer |
+	writer := DataFrameJsonWriter new.
+	writer orient: orient.
+	self writeTo: aFileReference using: writer.
+]
