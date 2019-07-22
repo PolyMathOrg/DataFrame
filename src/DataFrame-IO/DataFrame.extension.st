@@ -99,3 +99,20 @@ DataFrame >> writeToJson: aFileReference orient: orient [
 	writer orient: orient.
 	self writeTo: aFileReference using: writer.
 ]
+
+{ #category : #'*DataFrame-IO' }
+DataFrame >> writeToPrettyJson: aFileReference [
+	| writer |
+	writer := DataFrameJsonWriter new.
+	writer pretty: true.
+	self writeTo: aFileReference using: writer.
+]
+
+{ #category : #'*DataFrame-IO' }
+DataFrame >> writeToPrettyJson: aFileReference orient: orient [
+	| writer |
+	writer := DataFrameJsonWriter new.
+	writer orient: orient.
+	writer pretty: true.
+	self writeTo: aFileReference using: writer.
+]
