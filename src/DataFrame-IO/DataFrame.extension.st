@@ -50,6 +50,21 @@ DataFrame class >> readFromCsvWithRowNames: aFileReference separator: aSeparator
 ]
 
 { #category : #'*DataFrame-IO' }
+DataFrame class >> readFromJson: aFileReference [ 
+	| reader |
+	reader := DataFrameJsonReader new.
+	^ self readFrom: aFileReference using: reader.
+]
+
+{ #category : #'*DataFrame-IO' }
+DataFrame class >> readFromJson: aFileReference orient: orient [
+	| reader |
+	reader := DataFrameJsonReader new.
+	reader orient: orient.
+	^ self readFrom: aFileReference using: reader.
+]
+
+{ #category : #'*DataFrame-IO' }
 DataFrame >> writeTo: aLocation using: aDataFrameWriter [
 	"Write data frame to a given location using a given DataFrameWriter. Location can be a file reference, a database connection, or something else (depending on the implementation of the writer)"
 	aDataFrameWriter write: self to: aLocation

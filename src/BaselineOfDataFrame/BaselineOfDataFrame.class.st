@@ -35,6 +35,9 @@ BaselineOfDataFrame >> baseline: spec [
 		spec
 			baseline: 'NeoCSV'
 			with: [ spec repository: 'github://svenvc/NeoCSV/repository' ].
+		spec
+			baseline: 'NeoJSON'
+			with: [ spec repository: 'github://svenvc/NeoJSON/repository' ].
 				
 		"Packages"
 		spec 
@@ -42,7 +45,7 @@ BaselineOfDataFrame >> baseline: spec [
 			package: 'DataFrame-Tests' with: [ spec requires: #('DataFrame') ];
 			package: 'DataFrame-Type' with: [ spec requires: #('DataFrame') ];
 			package: 'DataFrame-Type-Tests' with: [ spec requires: #('DataFrame-Type') ];
-			package: 'DataFrame-IO' with: [ spec requires: #('DataFrame' 'DataFrame-Type' 'NeoCSV') ];
+			package: 'DataFrame-IO' with: [ spec requires: #('DataFrame' 'DataFrame-Type' 'NeoCSV' 'NeoJSON') ];
 			package: 'DataFrame-IO-Tests' with: [ spec requires: #('DataFrame-IO') ]].
 		
 		spec
