@@ -32,6 +32,8 @@ DataFrameJsonReader >> createDataFrame [
 	rowNames ifNotNil: [ df rowNames: rowNames ].
 	columnNames ifNotNil: [ df columnNames: columnNames  ].
 	
+	DataFrameTypeDetector new detectTypesAndConvert: df.
+	
 	^ df
 ]
 
