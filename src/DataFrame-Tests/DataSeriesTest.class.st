@@ -1139,74 +1139,6 @@ DataSeriesTest >> testFifth [
 	self assert: series fifth equals: 8.
 ]
 
-{ #category : #tests }
-DataSeriesTest >> testFillNilsWith [
-
-	| expected |
-	series := DataSeries
-		withKeys: keyArray
-		values: #(3 7 nil 20 8 9 8 nil 15 nil 16)
-		name: 'ExampleSeries'.
-		
-	expected := DataSeries
-		withKeys: keyArray
-		values: #(3 7 0 20 8 9 8 0 15 0 16)
-		name: 'ExampleSeries'.
-	
-	self assert: (series fillNilsWith: 0.0) equals: expected.
-]
-
-{ #category : #tests }
-DataSeriesTest >> testFillNilsWithFloat [
-
-	| expected |
-	series := DataSeries
-		withKeys: keyArray
-		values: #(3 7 nil 20 8 9 8 nil 15 nil 16)
-		name: 'ExampleSeries'.
-		
-	expected := DataSeries
-		withKeys: keyArray
-		values: #(3 7 3.14 20 8 9 8 3.14 15 3.14 16)
-		name: 'ExampleSeries'.
-	
-	self assert: (series fillNilsWith: 3.14) equals: expected.
-]
-
-{ #category : #tests }
-DataSeriesTest >> testFillNilsWithString [
-
-	| expected |
-	series := DataSeries
-		withKeys: keyArray
-		values: #(3 7 nil 20 8 9 8 nil 15 nil 16)
-		name: 'ExampleSeries'.
-		
-	expected := DataSeries
-		withKeys: keyArray
-		values: #(3 7 'abc' 20 8 9 8 'abc' 15 'abc' 16)
-		name: 'ExampleSeries'.
-	
-	self assert: (series fillNilsWith: 'abc') equals: expected.
-]
-
-{ #category : #tests }
-DataSeriesTest >> testFillNilsWithZero [
-
-	| expected |
-	series := DataSeries
-		withKeys: keyArray
-		values: #(3 7 nil 20 8 9 8 nil 15 nil 16)
-		name: 'ExampleSeries'.
-		
-	expected := DataSeries
-		withKeys: keyArray
-		values: #(3 7 0 20 8 9 8 0 15 0 16)
-		name: 'ExampleSeries'.
-	
-	self assert: (series fillNilsWithZero) equals: expected.
-]
-
 { #category : #accessing }
 DataSeriesTest >> testFirst [
 
@@ -1557,6 +1489,125 @@ DataSeriesTest >> testRemoveNilsOnNamedSeries [
 	expected := DataSeries withKeys: #(2 'a') values: #(4.2 'b') name: 'A'.
 	
 	self assert: series removeNils equals: expected.
+]
+
+{ #category : #replacing }
+DataSeriesTest >> testReplaceNilsWith [
+
+	| expected |
+	series := DataSeries
+		withKeys: keyArray
+		values: #(3 7 nil 20 8 9 8 nil 15 nil 16)
+		name: 'ExampleSeries'.
+		
+	expected := DataSeries
+		withKeys: keyArray
+		values: #(3 7 0 20 8 9 8 0 15 0 16)
+		name: 'ExampleSeries'.
+	
+	self assert: (series replaceNilsWith: 0.0) equals: expected.
+]
+
+{ #category : #replacing }
+DataSeriesTest >> testReplaceNilsWithAverage [
+
+	| expected |
+	series := DataSeries
+		withKeys: keyArray
+		values: #(3 7 nil 20 8 9 8 nil 15 nil 16)
+		name: 'ExampleSeries'.
+		
+	expected := DataSeries
+		withKeys: keyArray
+		values: {3 . 7 . 43/4 . 20 . 8 . 9 . 8 . 43/4 . 15 . 43/4 . 16}
+		name: 'ExampleSeries'.
+	
+	self assert: series replaceNilsWithAverage equals: expected.
+]
+
+{ #category : #replacing }
+DataSeriesTest >> testReplaceNilsWithFloat [
+
+	| expected |
+	series := DataSeries
+		withKeys: keyArray
+		values: #(3 7 nil 20 8 9 8 nil 15 nil 16)
+		name: 'ExampleSeries'.
+		
+	expected := DataSeries
+		withKeys: keyArray
+		values: #(3 7 3.14 20 8 9 8 3.14 15 3.14 16)
+		name: 'ExampleSeries'.
+	
+	self assert: (series replaceNilsWith: 3.14) equals: expected.
+]
+
+{ #category : #replacing }
+DataSeriesTest >> testReplaceNilsWithMedian [
+
+	| expected |
+	series := DataSeries
+		withKeys: #(a b c d e f g h i j k l)
+		values: #(1 3 7 nil 20 8 9 8 nil 15 nil 16)
+		name: 'ExampleSeries'.
+		
+	expected := DataSeries
+		withKeys: #(a b c d e f g h i j k l)
+		values: #(1 3 7 8 20 8 9 8 8 15 8 16)
+		name: 'ExampleSeries'.
+	
+	self assert: series replaceNilsWithMedian equals: expected.
+]
+
+{ #category : #replacing }
+DataSeriesTest >> testReplaceNilsWithMode [
+
+	| expected |
+	series := DataSeries
+		withKeys: keyArray
+		values: #(3 7 nil 20 8 9 8 nil 15 nil 16)
+		name: 'ExampleSeries'.
+		
+	expected := DataSeries
+		withKeys: keyArray
+		values: #(3 7 8 20 8 9 8 8 15 8 16)
+		name: 'ExampleSeries'.
+	
+	self assert: series replaceNilsWithMode equals: expected.
+]
+
+{ #category : #replacing }
+DataSeriesTest >> testReplaceNilsWithString [
+
+	| expected |
+	series := DataSeries
+		withKeys: keyArray
+		values: #(3 7 nil 20 8 9 8 nil 15 nil 16)
+		name: 'ExampleSeries'.
+		
+	expected := DataSeries
+		withKeys: keyArray
+		values: #(3 7 'abc' 20 8 9 8 'abc' 15 'abc' 16)
+		name: 'ExampleSeries'.
+	
+	self assert: (series replaceNilsWith: 'abc') equals: expected.
+]
+
+{ #category : #replacing }
+DataSeriesTest >> testReplaceNilsWithZero [
+
+	| expected |
+	series := DataSeries
+		withKeys: keyArray
+		values: #(3 7 nil 20 8 9 8 nil 15 nil 16)
+		name: 'ExampleSeries'.
+		
+	expected := DataSeries
+		withKeys: keyArray
+		values: #(3 7 0 20 8 9 8 0 15 0 16)
+		name: 'ExampleSeries'.
+	
+	self assert: (series replaceNilsWithZero) equals: expected.
 ]
 
 { #category : #accessing }
