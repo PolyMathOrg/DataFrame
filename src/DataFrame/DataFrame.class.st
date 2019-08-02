@@ -1270,6 +1270,11 @@ DataFrame >> showWithGlamourIn: composite [
 	^ table
 ]
 
+{ #category : #accessing }
+DataFrame >> size [
+	^ self numberOfRows
+]
+
 { #category : #sorting }
 DataFrame >> sortBy: columnName [
 	self sortBy: columnName using: [ :a :b | a <= b ]
