@@ -9,6 +9,8 @@ Class {
 
 { #category : #'instance creation' }
 DataSeries class >> newFrom: aCollection [
+	aCollection ifEmpty: [ ^ self new ].
+
 	(aCollection species == self)
 		ifTrue: [ ^ super newFrom: aCollection associations ].
 		

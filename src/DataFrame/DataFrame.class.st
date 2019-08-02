@@ -716,10 +716,47 @@ DataFrame >> do: aBlock [
 		self rowAt: i put: row asArray ].
 ]
 
+{ #category : #'find-select' }
+DataFrame >> findAll: anObject atColumn: columnName [
+	"Returns rowNames of rows having anObject at columnName"
+
+	^ self rowNames select: [ :row | ((self column: columnName) at: row) = anObject ]
+]
+
+{ #category : #'find-select' }
+DataFrame >> findAllIndicesOf: anObject atColumn: columnName [
+	"Returns indices of rows having anObject at columnName"
+	| output |
+	output := OrderedCollection new.
+	self rowNames withIndexDo: [ :row :index | ((self column: columnName) at: row) = anObject ifTrue: [ output add: index ]].
+	^ output
+]
+
 { #category : #statistics }
 DataFrame >> firstQuartile [
 
 	^ self applyToAllColumns: #firstQuartile
+]
+
+{ #category : #private }
+DataFrame >> getJointColumnsWith: aDataFrame [
+	"comment stating purpose of message"
+
+	| columnIntersection outputColumns |
+	columnIntersection := (self columnNames intersection: (aDataFrame columnNames)) asSet.
+	outputColumns := OrderedCollection new.
+	self columnNames do: [ :column |
+		(columnIntersection includes: column)
+			ifTrue: [ outputColumns add: ('' join: {column, '_x'}) ]
+			ifFalse: [ outputColumns add: column ]
+			].
+	aDataFrame columnNames do: [ :column |
+		(columnIntersection includes: column)
+			ifTrue: [ outputColumns add: ('' join: {column, '_y'}) ]
+			ifFalse: [ outputColumns add: column ]
+			].
+	
+	^ outputColumns
 ]
 
 { #category : #grouping }
@@ -873,10 +910,121 @@ DataFrame >> inject: thisValue into: binaryBlock [
 	^ series
 ]
 
+{ #category : #splitjoin }
+DataFrame >> innerJoin: aDataFrame [
+	"Performs inner join on aDataFrame with rowNames as keys"
+
+	| outputRows outputDf |
+	
+	outputDf := self class withColumnNames: (self getJointColumnsWith: aDataFrame).
+	
+	"Using select instead of intersection to preserve order"
+	outputRows := self rowNames select: [ :row | aDataFrame rowNames includes: row ].
+	outputRows do: [ :rowName |
+		| rowToAdd |
+		rowToAdd := (self row: rowName) asArray, (aDataFrame row: rowName) asArray.
+		outputDf addRow: rowToAdd named: rowName.
+		].
+	
+	^ outputDf
+]
+
+{ #category : #splitjoin }
+DataFrame >> innerJoin: aDataFrame leftColumn: leftColumn rightColumn: rightColumn [
+	"Performs inner join on aDataFrame with rowNames as keys.
+	 rowNames are not preserved.
+	 Duplicate column names will be appended with '_x' and '_y'."
+
+	| outputRows outputDf |
+	
+	outputDf := self class withColumnNames: (self getJointColumnsWith: aDataFrame).
+	
+	"Skip join if any of the dataframe is zero"
+	((self size isZero) | (aDataFrame size isZero)) ifFalse: [
+		"Using select instead of intersection to preserve order"
+		outputRows := OrderedCollection new.
+		(self column: leftColumn) withIndexDo: [ :ele :index |
+			((aDataFrame column: rightColumn) includes: ele) ifTrue: [ outputRows add: index ] ].
+		outputRows do: [ :rowIndex |
+			| rowsWithSameKey rowToAdd |
+			rowsWithSameKey := aDataFrame findAllIndicesOf: (self at: rowIndex at: (self indexOfColumnNamed: leftColumn)) atColumn: rightColumn.
+			rowsWithSameKey do: [ :rightRow |
+				rowToAdd := (self rowAt: rowIndex) asArray, (aDataFrame rowAt: rightRow) asArray.
+				outputDf addRow: rowToAdd named: (outputDf size + 1).
+				].
+			].
+		].
+	
+	"Since Key is common, remove duplicate key column if it is of same name"
+	(leftColumn = rightColumn) ifTrue: [
+		outputDf removeColumn: (rightColumn, '_y').
+		outputDf renameColumn: (leftColumn, '_x') to: leftColumn.
+		].
+	
+	^ outputDf
+]
+
 { #category : #statistics }
 DataFrame >> interquartileRange [
 
 	^ self applyToAllColumns: #interquartileRange
+]
+
+{ #category : #splitjoin }
+DataFrame >> leftJoin: aDataFrame [
+	"Performs left join on aDataFrame with rowNames as keys"
+
+	| outputDf commonRows |
+	
+	outputDf := self class withColumnNames: (self getJointColumnsWith: aDataFrame).
+	commonRows := self rowNames intersection: aDataFrame rowNames.
+	self rowNames do: [ :rowName | 
+		| rowToAdd |
+		rowToAdd := (commonRows includes: rowName)
+			ifTrue: [ (self row: rowName) asArray , (aDataFrame row: rowName) asArray ]
+			ifFalse: [ (self row: rowName) asArray , (Array new: aDataFrame columnNames size) ].
+		outputDf addRow: rowToAdd named: rowName ].
+	
+	^ outputDf
+]
+
+{ #category : #splitjoin }
+DataFrame >> leftJoin: aDataFrame leftColumn: leftColumn rightColumn: rightColumn [
+	"Performs left join on aDataFrame with rowNames as keys.
+	 rowNames are not preserved.
+	 Duplicate column names will be appended with '_x' and '_y'."
+
+	| outputDf commonRows |
+	
+	outputDf := self class withColumnNames: (self getJointColumnsWith: aDataFrame).
+	
+	commonRows := (self column: leftColumn) asArray intersection: (aDataFrame column: rightColumn) asArray.
+	
+	1 to: self size do: [ :rowIndex |
+		| rowsWithSameKey rowToAdd |
+		(commonRows includes: (self at: rowIndex at: (self indexOfColumnNamed: leftColumn)))
+		ifTrue: [
+			"Row present in both df - append rows and add to outputDf"
+			rowsWithSameKey := aDataFrame findAllIndicesOf: (self at: rowIndex at: (self indexOfColumnNamed: leftColumn)) atColumn: rightColumn.
+			rowsWithSameKey do: [ :rightRow |
+				rowToAdd := (self rowAt: rowIndex) asArray, (aDataFrame rowAt: rightRow) asArray.
+				outputDf addRow: rowToAdd named: (outputDf size + 1).
+				].
+			]
+		ifFalse: [
+			"Row present in left-only - append nils and add to outputDf"
+			rowToAdd := (self rowAt: rowIndex) asArray, (Array new: aDataFrame columnNames size).
+			outputDf addRow: rowToAdd named: (outputDf size + 1)
+			].
+		].
+	
+	"Since Key is common, remove duplicate key column if it is of same name"
+	(leftColumn = rightColumn) ifTrue: [
+		outputDf removeColumn: (rightColumn, '_y').
+		outputDf renameColumn: (leftColumn, '_x') to: leftColumn.
+		].
+	
+	^ outputDf
 ]
 
 { #category : #statistics }
@@ -913,6 +1061,83 @@ DataFrame >> numberOfColumns [
 DataFrame >> numberOfRows [
 
 	^ contents numberOfRows
+]
+
+{ #category : #splitjoin }
+DataFrame >> outerJoin: aDataFrame [
+	"Performs outer join on aDataFrame with rowNames as keys"
+
+	| outputDf commonRows |
+	
+	outputDf := self class withColumnNames: (self getJointColumnsWith: aDataFrame).
+	commonRows := self rowNames intersection: aDataFrame rowNames.
+	self rowNames do: [ :rowName | 
+		| rowToAdd |
+		rowToAdd := (commonRows includes: rowName)
+			ifTrue: [ (self row: rowName) asArray , (aDataFrame row: rowName) asArray ]
+			ifFalse: [ (self row: rowName) asArray , (Array new: aDataFrame columnNames size) ].
+		outputDf addRow: rowToAdd named: rowName ].
+	
+	aDataFrame rowNames do: [ :rowName | 
+		(commonRows includes: rowName)
+			ifFalse: [ outputDf
+				addRow: (Array new: self columnNames size) , (aDataFrame row: rowName) asArray
+				named: rowName ] ].
+	
+	^ outputDf
+]
+
+{ #category : #splitjoin }
+DataFrame >> outerJoin: aDataFrame leftColumn: leftColumn rightColumn: rightColumn [
+	"Performs outer join on aDataFrame with rowNames as keys.
+	 rowNames are not preserved.
+	 Duplicate column names will be appended with '_x' and '_y'."
+
+	| outputDf commonRows leftNils |
+	
+	outputDf := self class withColumnNames: (self getJointColumnsWith: aDataFrame).
+	
+	commonRows := (self column: leftColumn) asArray intersection: (aDataFrame column: rightColumn) asArray.
+
+	1 to: self size do: [ :rowIndex |
+		| rowsWithSameKey rowToAdd |
+		(commonRows includes: (self at: rowIndex at: (self indexOfColumnNamed: leftColumn)))
+		ifTrue: [
+			"Row present in both df - append rows and add to outputDf"
+			rowsWithSameKey := aDataFrame findAllIndicesOf: (self at: rowIndex at: (self indexOfColumnNamed: leftColumn)) atColumn: rightColumn.
+			rowsWithSameKey do: [ :rightRow |
+				rowToAdd := (self rowAt: rowIndex) asArray, (aDataFrame rowAt: rightRow) asArray.
+				outputDf addRow: rowToAdd named: (outputDf size + 1).
+				].
+			]
+		ifFalse: [
+			"Row present in left-only - append nils and add to outputDf"
+			rowToAdd := (self rowAt: rowIndex) asArray, (Array new: aDataFrame columnNames size).
+			outputDf addRow: rowToAdd named: (outputDf size + 1)
+			].
+		].
+	
+	1 to: aDataFrame size do: [ :rowIndex |
+		| rowToAdd |
+		(commonRows includes: (aDataFrame at: rowIndex at: (aDataFrame indexOfColumnNamed: rightColumn)))
+		ifFalse: [
+			"Row present in right-only - construct row and append"
+			leftNils := self columnNames collect: [ :col |
+				col = rightColumn
+					ifTrue: [ (aDataFrame rowAt: rowIndex) at: rightColumn ]
+					ifFalse: [ nil ] ].
+			rowToAdd := leftNils, (aDataFrame rowAt: rowIndex) asArray.
+			outputDf addRow: rowToAdd named: (outputDf size + 1).
+			].
+		].
+	
+	"Since Key is common, remove duplicate key column if it is of same name"
+	(leftColumn = rightColumn) ifTrue: [
+		outputDf removeColumn: (rightColumn, '_y').
+		outputDf renameColumn: (leftColumn, '_x') to: leftColumn.
+		].
+	
+	^ outputDf
 ]
 
 { #category : #printing }
@@ -1051,6 +1276,68 @@ DataFrame >> renameRow: oldName to: newName [
 	| index |
 	index := self indexOfRowNamed: oldName.
 	self rowNames at: index put: newName.
+]
+
+{ #category : #splitjoin }
+DataFrame >> rightJoin: aDataFrame [
+	"Performs right join on aDataFrame with rowNames as keys"
+
+	| outputDf commonRows |
+	
+	outputDf := self class withColumnNames: (self getJointColumnsWith: aDataFrame).
+	commonRows := self rowNames intersection: aDataFrame rowNames.
+	
+	aDataFrame rowNames do: [ :rowName | 
+		| rowToAdd |
+		rowToAdd := (commonRows includes: rowName)
+			ifTrue: [ (self row: rowName) asArray , (aDataFrame row: rowName) asArray ]
+			ifFalse: [ (Array new: self columnNames size) , (aDataFrame row: rowName) asArray ].
+		outputDf addRow: rowToAdd named: rowName ].
+	
+	^ outputDf
+]
+
+{ #category : #splitjoin }
+DataFrame >> rightJoin: aDataFrame leftColumn: leftColumn rightColumn: rightColumn [
+	"Performs right join on aDataFrame with rowNames as keys.
+	 rowNames are not preserved.
+	 Duplicate column names will be appended with '_x' and '_y'."
+
+	| outputDf commonRows leftNils |
+	
+	outputDf := self class withColumnNames: (self getJointColumnsWith: aDataFrame).
+	
+	commonRows := (self column: leftColumn) asArray intersection: (aDataFrame column: rightColumn) asArray.
+	
+	1 to: aDataFrame size do: [ :rowIndex |
+		| rowToAdd rowsWithSameKey |
+		(commonRows includes: (aDataFrame at: rowIndex at: (aDataFrame indexOfColumnNamed: rightColumn)))
+		ifTrue: [ 
+			"Row present in both df - append rows and add to outputDf"
+			rowsWithSameKey := self findAllIndicesOf: (aDataFrame at: rowIndex at: (aDataFrame indexOfColumnNamed: rightColumn)) atColumn: leftColumn.
+			rowsWithSameKey do: [ :leftRow |
+				rowToAdd := (self rowAt: leftRow) asArray, (aDataFrame rowAt: rowIndex) asArray.
+				outputDf addRow: rowToAdd named: (outputDf size + 1).
+				]
+			]
+		ifFalse: [
+			"Row present in right-only - construct row and append"
+			leftNils := self columnNames collect: [ :col |
+				col = rightColumn
+					ifTrue: [ (aDataFrame rowAt: rowIndex) at: rightColumn ]
+					ifFalse: [ nil ] ].
+			rowToAdd := leftNils, (aDataFrame rowAt: rowIndex) asArray.
+			outputDf addRow: rowToAdd named: (outputDf size + 1).
+			].
+		].
+	
+	"Since Key is common, remove duplicate key column if it is of same name"
+	(leftColumn = rightColumn) ifTrue: [
+		outputDf removeColumn: (rightColumn, '_y').
+		outputDf renameColumn: (leftColumn, '_x') to: leftColumn.
+		].
+	
+	^ outputDf
 ]
 
 { #category : #accessing }

@@ -390,6 +390,17 @@ DataSeriesTest >> testAsDataFrame [
 	self assert: actual equals: expected
 ]
 
+{ #category : #creation }
+DataSeriesTest >> testAsDataSeriesEmpty [
+
+	| dataseries expected |
+	
+	dataseries := #() asDataSeries.
+	expected := DataSeries new.
+	
+	self assert: dataseries equals: expected.
+]
+
 { #category : #converting }
 DataSeriesTest >> testAsDictionary [
 	| expected actual |
@@ -1463,6 +1474,17 @@ DataSeriesTest >> testMathTan [
 	b := { 1.55741 . -2.18504 . -0.14255 . 1.15782 } asDataSeries.
 	
 	self assert: a tan closeTo: b.
+]
+
+{ #category : #creation }
+DataSeriesTest >> testNewFrom [
+
+	| dataseries |
+	
+	dataseries := DataSeries newFrom: (series associations).
+	dataseries name: 'ExampleSeries'.
+	
+	self assert: dataseries equals: series.
 ]
 
 { #category : #accessing }
