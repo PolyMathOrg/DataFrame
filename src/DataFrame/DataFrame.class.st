@@ -930,7 +930,13 @@ DataFrame >> innerJoin: aDataFrame [
 ]
 
 { #category : #splitjoin }
-DataFrame >> innerJoin: aDataFrame leftColumn: leftColumn rightColumn: rightColumn [
+DataFrame >> innerJoin: aDataFrame on: aColumnName [
+	"Inner join of self with aDataFrame on a column that has a name aColumnName in both data frames"
+	^ self innerJoin: aDataFrame onLeft: aColumnName onRight: aColumnName
+]
+
+{ #category : #splitjoin }
+DataFrame >> innerJoin: aDataFrame onLeft: leftColumn onRight: rightColumn [
 	"Performs inner join on aDataFrame with rowNames as keys.
 	 rowNames are not preserved.
 	 Duplicate column names will be appended with '_x' and '_y'."
@@ -989,7 +995,13 @@ DataFrame >> leftJoin: aDataFrame [
 ]
 
 { #category : #splitjoin }
-DataFrame >> leftJoin: aDataFrame leftColumn: leftColumn rightColumn: rightColumn [
+DataFrame >> leftJoin: aDataFrame on: aColumnName [
+	"Left join of self with aDataFrame on a column that has a name aColumnName in both data frames"
+	^ self leftJoin: aDataFrame onLeft: aColumnName onRight: aColumnName
+]
+
+{ #category : #splitjoin }
+DataFrame >> leftJoin: aDataFrame onLeft: leftColumn onRight: rightColumn [
 	"Performs left join on aDataFrame with rowNames as keys.
 	 rowNames are not preserved.
 	 Duplicate column names will be appended with '_x' and '_y'."
@@ -1088,7 +1100,13 @@ DataFrame >> outerJoin: aDataFrame [
 ]
 
 { #category : #splitjoin }
-DataFrame >> outerJoin: aDataFrame leftColumn: leftColumn rightColumn: rightColumn [
+DataFrame >> outerJoin: aDataFrame on: aColumnName [
+	"Outer join of self with aDataFrame on a column that has a name aColumnName in both data frames"
+	^ self outerJoin: aDataFrame onLeft: aColumnName onRight: aColumnName
+]
+
+{ #category : #splitjoin }
+DataFrame >> outerJoin: aDataFrame onLeft: leftColumn onRight: rightColumn [
 	"Performs outer join on aDataFrame with rowNames as keys.
 	 rowNames are not preserved.
 	 Duplicate column names will be appended with '_x' and '_y'."
@@ -1298,7 +1316,13 @@ DataFrame >> rightJoin: aDataFrame [
 ]
 
 { #category : #splitjoin }
-DataFrame >> rightJoin: aDataFrame leftColumn: leftColumn rightColumn: rightColumn [
+DataFrame >> rightJoin: aDataFrame on: aColumnName [
+	"Right join of self with aDataFrame on a column that has a name aColumnName in both data frames"
+	^ self rightJoin: aDataFrame onLeft: aColumnName onRight: aColumnName
+]
+
+{ #category : #splitjoin }
+DataFrame >> rightJoin: aDataFrame onLeft: leftColumn onRight: rightColumn [
 	"Performs right join on aDataFrame with rowNames as keys.
 	 rowNames are not preserved.
 	 Duplicate column names will be appended with '_x' and '_y'."
