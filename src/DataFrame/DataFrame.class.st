@@ -199,21 +199,21 @@ DataFrame class >> withColumns: anArrayOfArrays columnNames: anArrayOfColumnName
 
 { #category : #'instance creation' }
 DataFrame class >> withColumns: anArrayOfArrays rowNames: anArrayOfRowNames [
-
-	| df |
-	df := self withColumns: anArrayOfArrays.
-	df rowNames: anArrayOfRowNames.
-	^ df
+	^ anArrayOfArrays
+		ifNotEmpty: [ (self withColumns: anArrayOfArrays)
+				rowNames: anArrayOfRowNames;
+				yourself ]
+		ifEmpty: [ self withRowNames: anArrayOfRowNames ]
 ]
 
 { #category : #'instance creation' }
 DataFrame class >> withColumns: anArrayOfArrays rowNames: anArrayOfRowNames columnNames: anArrayOfColumnNames [
-
-	| df |
-	df := self withColumns: anArrayOfArrays.
-	df rowNames: anArrayOfRowNames.
-	df columnNames: anArrayOfColumnNames.
-	^ df
+	^ anArrayOfArrays
+		ifNotEmpty: [ (self withColumns: anArrayOfArrays)
+				rowNames: anArrayOfRowNames;
+				columnNames: anArrayOfColumnNames;
+				yourself ]
+		ifEmpty: [ self withRowNames: anArrayOfRowNames ]
 ]
 
 { #category : #'instance creation' }
@@ -261,11 +261,11 @@ DataFrame class >> withRows: anArrayOfArrays [
 
 { #category : #'instance creation' }
 DataFrame class >> withRows: anArrayOfArrays columnNames: anArrayOfColumnNames [
-
-	| df |
-	df := self withRows: anArrayOfArrays.
-	df columnNames: anArrayOfColumnNames.
-	^ df
+	^ anArrayOfArrays
+		ifNotEmpty: [ (self withRows: anArrayOfArrays)
+				columnNames: anArrayOfColumnNames;
+				yourself ]
+		ifEmpty: [ self withColumnNames: anArrayOfColumnNames ]
 ]
 
 { #category : #'instance creation' }
@@ -279,12 +279,12 @@ DataFrame class >> withRows: anArrayOfArrays rowNames: anArrayOfRowNames [
 
 { #category : #'instance creation' }
 DataFrame class >> withRows: anArrayOfArrays rowNames: anArrayOfRowNames columnNames: anArrayOfColumnNames [
-
-	| df |
-	df := self withRows: anArrayOfArrays.
-	df rowNames: anArrayOfRowNames.
-	df columnNames: anArrayOfColumnNames.
-	^ df
+	^ anArrayOfArrays
+		ifNotEmpty: [ (self withRows: anArrayOfArrays)
+				rowNames: anArrayOfRowNames;
+				columnNames: anArrayOfColumnNames;
+				yourself ]
+		ifEmpty: [ self withColumnNames: anArrayOfColumnNames ]
 ]
 
 { #category : #comparing }
