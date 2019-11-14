@@ -29,7 +29,6 @@ Metacello new
   repository: 'github://PolyMathOrg/DataFrame/src';
   load.
 ```
-```
 
 ## What are data frames?
 
