@@ -12,13 +12,24 @@ DataFrame is a tabular data structure for data analysis in [Pharo](https://pharo
 <img width="700" src="img/weatherDf.png">
 
 ## Installation
-To install DataFrame, go to the Playground (`Ctrl+OW`) in your fresh Pharo image and execute the following Metacello script (select it and press Do-it button or `Ctrl+D`):
+To install DataFrame v2.0, go to the Playground (`Ctrl+OW`) in your Pharo image and execute the following Metacello script (select it and press Do-it button or `Ctrl+D`):
 
-```smalltalk
+```Smalltalk
+Metacello new
+  baseline: 'DataFrame';
+  repository: 'github://PolyMathOrg/DataFrame:v2.0/src';
+  load.
+```
+
+Use this script if you want the latest version of DataFrame:
+
+```Smalltalk
+```Smalltalk
 Metacello new
   baseline: 'DataFrame';
   repository: 'github://PolyMathOrg/DataFrame/src';
   load.
+```
 ```
 
 ## What are data frames?
