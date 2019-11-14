@@ -24,7 +24,6 @@ Metacello new
 Use this script if you want the latest version of DataFrame:
 
 ```Smalltalk
-```Smalltalk
 Metacello new
   baseline: 'DataFrame';
   repository: 'github://PolyMathOrg/DataFrame/src';
