@@ -4289,6 +4289,62 @@ DataFrameTest >> testVarSizeInstanceCreation [
 ]
 
 { #category : #tests }
+DataFrameTest >> testWithColumnsRowNames [
+	| dataframe |
+	dataframe := DataFrame
+		withColumns: #(#(1 2 3) #(4 5 6))
+		rowNames: #('one' 'two' 'three').
+	self
+		assert: dataframe rowNames asArray
+		equals: #('one' 'two' 'three').
+	self assert: (dataframe row: 'one') asArray equals: #(1 4).
+	self assert: (dataframe row: 'two') asArray equals: #(2 5).
+	self assert: (dataframe row: 'three') asArray equals: #(3 6)
+]
+
+{ #category : #tests }
+DataFrameTest >> testWithColumnsRowNamesColumnNames [
+	| dataframe |
+	dataframe := DataFrame
+		withColumns: #(#(1 4) #(2 5) #(3 6))
+		rowNames: #('1' '2')
+		columnNames: #('one' 'two' 'three').
+	self
+		assert: dataframe columnNames asArray
+		equals: #('one' 'two' 'three').
+	self assert: ((dataframe column: 'one') at: '1') equals: 1.
+	self assert: ((dataframe column: 'two') at: '1') equals: 2.
+	self assert: ((dataframe column: 'three') at: '1') equals: 3.
+	self assert: ((dataframe column: 'one') at: '2') equals: 4.
+	self assert: ((dataframe column: 'two') at: '2') equals: 5.
+	self assert: ((dataframe column: 'three') at: '2') equals: 6
+]
+
+{ #category : #tests }
+DataFrameTest >> testWithColumnsRowNamesColumnNames_emptyColumns [
+	| dataframe |
+	dataframe := DataFrame
+		withColumns: #()
+		rowNames: #('1' '2')
+		columnNames: #().
+	self assert: dataframe rowNames asArray equals: #('1' '2').
+	self assert: (dataframe row: '1') isEmpty.
+	self assert: (dataframe row: '2') isEmpty
+]
+
+{ #category : #tests }
+DataFrameTest >> testWithColumnsRowNames_emptyColumns [
+	| dataframe |
+	dataframe := DataFrame
+		withColumns: #()
+		rowNames: #('one' 'two' 'three').
+	self
+		assert: dataframe rowNames asArray
+		equals: #('one' 'two' 'three').
+	self assert: (dataframe row: 'one') isEmpty
+]
+
+{ #category : #tests }
 DataFrameTest >> testWithIndexCollect [
 	| expectedDf expectedResult actualResult |
 	
@@ -4386,4 +4442,61 @@ DataFrameTest >> testWithIndexSelect [
 		((row at: #Population) > 2) and: [ index % 2 = 0 ] ].
 	
 	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+DataFrameTest >> testWithRowsColumnNames [
+	| dataframe |
+	dataframe := DataFrame
+		withRows: #(#(1 2 3) #(4 5 6))
+		columnNames: #('one' 'two' 'three').
+	self
+		assert: dataframe columnNames asArray
+		equals: #('one' 'two' 'three').
+	self assert: (dataframe column: 'one') asArray equals: #(1 4).
+	self assert: (dataframe column: 'two') asArray equals: #(2 5).
+	self assert: (dataframe column: 'three') asArray equals: #(3 6)
+]
+
+{ #category : #tests }
+DataFrameTest >> testWithRowsColumnNames_emptyRows [
+	| dataframe |
+	dataframe := DataFrame
+		withRows: #()
+		columnNames: #('one' 'two' 'three').
+	self
+		assert: dataframe columnNames asArray
+		equals: #('one' 'two' 'three').
+	self assert: (dataframe column: 'one') isEmpty
+]
+
+{ #category : #tests }
+DataFrameTest >> testWithRowsRowNamesColumnNames [
+	| dataframe |
+	dataframe := DataFrame
+		withRows: #(#(1 2 3) #(4 5 6))
+		rowNames: #('1' '2')
+		columnNames: #('one' 'two' 'three').
+	self
+		assert: dataframe columnNames asArray
+		equals: #('one' 'two' 'three').
+	self assert: ((dataframe column: 'one') at: '1') equals: 1.
+	self assert: ((dataframe column: 'two') at: '1') equals: 2.
+	self assert: ((dataframe column: 'three') at: '1') equals: 3.
+	self assert: ((dataframe column: 'one') at: '2') equals: 4.
+	self assert: ((dataframe column: 'two') at: '2') equals: 5.
+	self assert: ((dataframe column: 'three') at: '2') equals: 6
+]
+
+{ #category : #tests }
+DataFrameTest >> testWithRowsRowNamesColumnNames_emptyRows [
+	| dataframe |
+	dataframe := DataFrame
+		withRows: #()
+		rowNames: #()
+		columnNames: #('one' 'two' 'three').
+	self
+		assert: dataframe columnNames asArray
+		equals: #('one' 'two' 'three').
+	self assert: (dataframe column: 'one') isEmpty
 ]
