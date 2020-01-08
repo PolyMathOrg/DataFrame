@@ -15,7 +15,7 @@ DataSeries class >> newFrom: aCollection [
 		ifTrue: [ ^ super newFrom: aCollection associations ].
 		
 	"If it's a collection of associations use the superclass implementation"
-	^ super newFrom: ((aCollection first respondsTo: #key)
+	^ super newFrom: ((aCollection anyOne respondsTo: #key)
 		ifTrue: [ aCollection ]
 		ifFalse: [ aCollection withIndexCollect: [ :each :i | i -> each ] ]).
 ]
