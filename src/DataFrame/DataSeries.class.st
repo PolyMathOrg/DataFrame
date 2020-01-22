@@ -322,6 +322,11 @@ DataSeries >> interquartileRange [
 ]
 
 { #category : #testing }
+DataSeries >> isCategorical [
+
+]
+
+{ #category : #testing }
 DataSeries >> isSequenceable [
 	^ true
 ]

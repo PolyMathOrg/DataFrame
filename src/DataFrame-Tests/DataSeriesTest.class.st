@@ -793,6 +793,22 @@ DataSeriesTest >> testBooleanLessThanWithSeriesDifferentNames [
 	self assert: firstSeries < secondSeries equals: expected.
 ]
 
+{ #category : #arithmetic }
+DataSeriesTest >> testCategoricalCanBeMadeCategorical [
+
+	| categoricalSeries |
+	categoricalSeries := #(small medium large) asDataSeries.
+	self assert: categoricalSeries makeCategorical isCategorical
+]
+
+{ #category : #arithmetic }
+DataSeriesTest >> testCategoricalCanBeMadeNumerical [
+
+	| categoricalSeries |
+	categoricalSeries := #(small medium large) asDataSeries.
+	self assert: categoricalSeries makeNumerical isNumerical
+]
+
 { #category : #categorical }
 DataSeriesTest >> testCategoricalCrossTabulateWith [
 
@@ -807,6 +823,22 @@ DataSeriesTest >> testCategoricalCrossTabulateWith [
 	expected columnNames: #(1 2).
 	
 	self assert: (series1 crossTabulateWith: series2) equals: expected.
+]
+
+{ #category : #arithmetic }
+DataSeriesTest >> testCategoricalIsCategorical [
+
+	| categoricalSeries |
+	categoricalSeries := #(small medium large) asDataSeries.
+	self assert: categoricalSeries isCategorical
+]
+
+{ #category : #arithmetic }
+DataSeriesTest >> testCategoricalIsNotNumerical [
+
+	| categoricalSeries |
+	categoricalSeries := #(small medium large) asDataSeries.
+	self deny: categoricalSeries isNumerical
 ]
 
 { #category : #categorical }
@@ -1423,6 +1455,38 @@ DataSeriesTest >> testNewFrom [
 DataSeriesTest >> testNinth [
 
 	self assert: series ninth equals: 15.
+]
+
+{ #category : #arithmetic }
+DataSeriesTest >> testNumericalCanBeMadeCategorical [
+
+	| numericalSeries |
+	numericalSeries := {42 . -1.0 . 4/3} asDataSeries.
+	self assert: numericalSeries makeCategorical isCategorical
+]
+
+{ #category : #arithmetic }
+DataSeriesTest >> testNumericalCanBeMadeNumerical [
+
+	| numericalSeries |
+	numericalSeries := {42 . -1.0 . 4/3} asDataSeries.
+	self assert: numericalSeries makeNumerical isNumerical
+]
+
+{ #category : #arithmetic }
+DataSeriesTest >> testNumericalIsNotCategorical [
+
+	| numericalSeries |
+	numericalSeries := {42 . -1.0 . 4/3} asDataSeries.
+	self deny: numericalSeries isCategorical
+]
+
+{ #category : #arithmetic }
+DataSeriesTest >> testNumericalIsNumerical [
+
+	| numericalSeries |
+	numericalSeries := {42 . -1.0 . 4/3} asDataSeries.
+	self assert: numericalSeries isNumerical
 ]
 
 { #category : #enumerating }
