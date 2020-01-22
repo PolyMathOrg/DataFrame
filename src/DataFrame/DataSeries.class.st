@@ -2,7 +2,8 @@ Class {
 	#name : #DataSeries,
 	#superclass : #OrderedDictionary,
 	#instVars : [
-		'name'
+		'name',
+		'forcedIsNumerical'
 	],
 	#category : #'DataFrame-Core'
 }
@@ -321,9 +322,15 @@ DataSeries >> interquartileRange [
 	^ self thirdQuartile - self firstQuartile 
 ]
 
-{ #category : #testing }
+{ #category : #'categorical-numerical' }
 DataSeries >> isCategorical [
+	^ self isNumerical not
+]
 
+{ #category : #'categorical-numerical' }
+DataSeries >> isNumerical [
+	^ forcedIsNumerical ifNil: [self uniqueValues allSatisfy: [:each|each isNumber]]
+		
 ]
 
 { #category : #testing }
@@ -349,6 +356,18 @@ DataSeries >> last [
 { #category : #'math functions' }
 DataSeries >> log: base [
 	^ self collect: [ :each | each log: base ]
+]
+
+{ #category : #'categorical-numerical' }
+DataSeries >> makeCategorical [
+	forcedIsNumerical := false
+		
+]
+
+{ #category : #'categorical-numerical' }
+DataSeries >> makeNumerical [
+	forcedIsNumerical := true
+		
 ]
 
 { #category : #accessing }
