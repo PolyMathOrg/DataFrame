@@ -1571,7 +1571,7 @@ DataFrame >> showWithGlamourIn: composite [
 		intercellSpacing: 1;
 		dataSource: (DataFrameFTData elements: self);
 		onAnnouncement: FTSelectionChanged
-			do: [ :ann | (self rowAt: ann newSelectedRowIndexes first) inspect ].
+			do: [ :ann | (self rowAt: ann newSelectedIndexes first) inspect ].
 
 	"		onAnnouncement: FTSelectionChanged 
 			do: [ :ann | (self rowsAt: ann newSelectedRowIndexes) gtInspectorItemsIn: composite ];"
@@ -1648,18 +1648,17 @@ DataFrame >> thirdQuartile [
 
 { #category : #applying }
 DataFrame >> toColumn: columnName applyElementwise: aBlock [
-		
-	| index |
-	index := self indexOfColumnNamed: columnName.
-	self toColumnAt: index applyElementwise: aBlock.
+	| column |
+	column := (self column: columnName) asArray.
+	column := column collect: [ :each | aBlock value: each ].
+	self column: columnName put: column asArray.
 ]
 
 { #category : #applying }
 DataFrame >> toColumnAt: columnNumber applyElementwise: aBlock [
-		
-	1 to: self numberOfRows do: [ :i |
-		contents at: i at: columnNumber put:
-			(aBlock value: (contents at: i at: columnNumber)) ].
+	| columnName |
+	columnName := self columnNames at: columnNumber.
+	^ self toColumn: columnName applyElementwise: aBlock.
 ]
 
 { #category : #applying }
