@@ -30,6 +30,18 @@ Metacello new
   load.
 ```
 
+## How to depend on it?
+
+If you want to add a dependency on `DataFrame` to your project, include the following lines into your baseline method:
+
+```Smalltalk
+spec
+  baseline: 'DataFrame'
+  with: [ spec repository: 'github://PolyMathOrg/DataFrame/src' ].
+```
+
+If you are new to baselines and Metacello, check out the [Baselines](https://github.com/pharo-open-documentation/pharo-wiki/blob/master/General/Baselines.md) tutorial on Pharo Wiki.
+
 ## What are data frames?
 
 Data frames are the one of the essential parts of the data science toolkit. They are the specialized data structures for tabular data sets that provide us with a simple and powerful API for summarizing, cleaning, and manipulating a wealth of data sources that are currently cumbersome to use.
