@@ -2900,7 +2900,7 @@ DataFrameTest >> testRejectEntireDataFrame [
 	self assert: actual equals: expected.
 ]
 
-{ #category : #tests }
+{ #category : #removing }
 DataFrameTest >> testRemoveColumn [
 
 	| expected |
@@ -2918,7 +2918,7 @@ DataFrameTest >> testRemoveColumn [
 	self assert: df equals: expected.
 ]
 
-{ #category : #tests }
+{ #category : #removing }
 DataFrameTest >> testRemoveColumnAt [
 
 	| expected |
@@ -2936,17 +2936,49 @@ DataFrameTest >> testRemoveColumnAt [
 	self assert: df equals: expected.
 ]
 
-{ #category : #tests }
+{ #category : #removing }
 DataFrameTest >> testRemoveColumnAtOutOfRange [
 	self should: [ df removeColumnAt: 100 ] raise: SubscriptOutOfBounds.
 ]
 
-{ #category : #tests }
+{ #category : #removing }
 DataFrameTest >> testRemoveColumnNotFound [
 	self should: [ df removeColumn: #NoSuchColumn ] raise: LibrarySymbolNotFoundError.
 ]
 
-{ #category : #tests }
+{ #category : #removing }
+DataFrameTest >> testRemoveColumns [
+	| expected |
+	
+	expected := DataFrame withRows: #(
+		(true)
+   		(true)
+   		(false)).
+		
+	expected rowNames: #(A B C).
+	expected columnNames: #(BeenThere).
+		
+	df removeColumns: #(City Population).
+	self assert: df equals: expected.
+]
+
+{ #category : #removing }
+DataFrameTest >> testRemoveColumnsAt [
+	| expected |
+	
+	expected := DataFrame withRows: #(
+		(true)
+   		(true)
+   		(false)).
+		
+	expected rowNames: #(A B C).
+	expected columnNames: #(BeenThere).
+		
+	df removeColumnsAt: #(1 2).
+	self assert: df equals: expected.
+]
+
+{ #category : #removing }
 DataFrameTest >> testRemoveColumnsOfRowElementsSatisfingOnRow [
 
 	| expected aBlock |
@@ -2971,7 +3003,7 @@ DataFrameTest >> testRemoveColumnsOfRowElementsSatisfingOnRow [
 	self assert: (df removeColumnsOfRowElementsSatisfing: aBlock onRow: 2) equals: expected.
 ]
 
-{ #category : #tests }
+{ #category : #removing }
 DataFrameTest >> testRemoveColumnsOfRowElementsSatisfingOnRowAllTrue [
 
 	| expected aBlock |
@@ -2982,7 +3014,7 @@ DataFrameTest >> testRemoveColumnsOfRowElementsSatisfingOnRowAllTrue [
 	self assert: (df removeColumnsOfRowElementsSatisfing: aBlock onRow: 2) equals: expected.
 ]
 
-{ #category : #tests }
+{ #category : #removing }
 DataFrameTest >> testRemoveColumnsOfRowElementsSatisfingOnRowNamed [
 
 	| expected aBlock |
@@ -3007,7 +3039,7 @@ DataFrameTest >> testRemoveColumnsOfRowElementsSatisfingOnRowNamed [
 	self assert: (df removeColumnsOfRowElementsSatisfing: aBlock onRowNamed: 'B') equals: expected.
 ]
 
-{ #category : #tests }
+{ #category : #removing }
 DataFrameTest >> testRemoveColumnsWithNilsAtRow [
 
 	| expected |
@@ -3030,7 +3062,7 @@ DataFrameTest >> testRemoveColumnsWithNilsAtRow [
 	self assert: (df removeColumnsWithNilsAtRow: 2) equals: expected.
 ]
 
-{ #category : #tests }
+{ #category : #removing }
 DataFrameTest >> testRemoveColumnsWithNilsAtRowNamed [
 
 	| expected |
@@ -3053,12 +3085,12 @@ DataFrameTest >> testRemoveColumnsWithNilsAtRowNamed [
 	self assert: (df removeColumnsWithNilsAtRowNamed: #B) equals: expected.
 ]
 
-{ #category : #tests }
+{ #category : #removing }
 DataFrameTest >> testRemoveColumnsWithNilsAtRowOutOfRange [
 	self should: [ df removeColumnsWithNilsAtRow: 100 ] raise: SubscriptOutOfBounds.
 ]
 
-{ #category : #tests }
+{ #category : #removing }
 DataFrameTest >> testRemoveRow [
 
 	| expected |
@@ -3075,7 +3107,7 @@ DataFrameTest >> testRemoveRow [
 	self assert: df equals: expected.
 ]
 
-{ #category : #tests }
+{ #category : #removing }
 DataFrameTest >> testRemoveRowAt [
 
 	| expected |
@@ -3092,17 +3124,45 @@ DataFrameTest >> testRemoveRowAt [
 	self assert: df equals: expected.
 ]
 
-{ #category : #tests }
+{ #category : #removing }
 DataFrameTest >> testRemoveRowAtOutOfRange [
 	self should: [ df removeRowAt: 100 ] raise: SubscriptOutOfBounds.
 ]
 
-{ #category : #tests }
+{ #category : #removing }
 DataFrameTest >> testRemoveRowNotFound [
 	self should: [ df removeRow: #NoSuchRow ] raise: LibrarySymbolNotFoundError.
 ]
 
-{ #category : #tests }
+{ #category : #removing }
+DataFrameTest >> testRemoveRows [
+	| expected |
+	
+	expected := DataFrame withRows: #(
+		(Barcelona 1.609 true)).
+		
+	expected rowNames: #(A).
+	expected columnNames: #(City Population BeenThere).
+		
+	df removeRows: #(B C).
+	self assert: df equals: expected.
+]
+
+{ #category : #removing }
+DataFrameTest >> testRemoveRowsAt [
+	| expected |
+	
+	expected := DataFrame withRows: #(
+		(Barcelona 1.609 true)).
+		
+	expected rowNames: #(A).
+	expected columnNames: #(City Population BeenThere).
+		
+	df removeRowsAt: #(2 3).
+	self assert: df equals: expected.
+]
+
+{ #category : #removing }
 DataFrameTest >> testRemoveRowsOfColumnElementsSatisfingOnColumn [
 
 	| expected aBlock |
@@ -3125,7 +3185,7 @@ DataFrameTest >> testRemoveRowsOfColumnElementsSatisfingOnColumn [
 	self assert: (df removeRowsOfColumnElementsSatisfing: aBlock onColumn: 2) equals: expected.
 ]
 
-{ #category : #tests }
+{ #category : #removing }
 DataFrameTest >> testRemoveRowsOfColumnElementsSatisfingOnColumnAllTrue [
 
 	| expected aBlock |
@@ -3136,7 +3196,7 @@ DataFrameTest >> testRemoveRowsOfColumnElementsSatisfingOnColumnAllTrue [
 	self assert: (df removeRowsOfColumnElementsSatisfing: aBlock onColumn: 2) equals: expected.
 ]
 
-{ #category : #tests }
+{ #category : #removing }
 DataFrameTest >> testRemoveRowsOfColumnElementsSatisfingOnColumnNamed [
 
 	| expected aBlock |
@@ -3159,7 +3219,7 @@ DataFrameTest >> testRemoveRowsOfColumnElementsSatisfingOnColumnNamed [
 	self assert: (df removeRowsOfColumnElementsSatisfing: aBlock onColumnNamed: #Y) equals: expected.
 ]
 
-{ #category : #tests }
+{ #category : #removing }
 DataFrameTest >> testRemoveRowsWithNilsAtColumn [
 
 	| expected |
@@ -3180,7 +3240,7 @@ DataFrameTest >> testRemoveRowsWithNilsAtColumn [
 	self assert: (df removeRowsWithNilsAtColumn: 3) equals: expected.
 ]
 
-{ #category : #tests }
+{ #category : #removing }
 DataFrameTest >> testRemoveRowsWithNilsAtColumnNamed [
 
 	| expected |
@@ -3201,7 +3261,7 @@ DataFrameTest >> testRemoveRowsWithNilsAtColumnNamed [
 	self assert: (df removeRowsWithNilsAtColumnNamed: #BeenThere) equals: expected.
 ]
 
-{ #category : #tests }
+{ #category : #removing }
 DataFrameTest >> testRemoveRowsWithNilsAtColumnOutOfRange [
 	self should: [ df removeRowsWithNilsAtColumn: 100 ] raise: SubscriptOutOfBounds.
 ]

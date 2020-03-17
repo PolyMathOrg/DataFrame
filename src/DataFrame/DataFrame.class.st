@@ -1194,6 +1194,20 @@ DataFrame >> removeColumnAt: columnNumber [
 ]
 
 { #category : #removing }
+DataFrame >> removeColumns: aCollectionOfColumnNames [
+	aCollectionOfColumnNames do: [ :each |
+		self removeColumn: each ].
+]
+
+{ #category : #removing }
+DataFrame >> removeColumnsAt: aCollectionOfColumnIndices [
+	| columnNamesToRemove |
+	columnNamesToRemove := aCollectionOfColumnIndices collect: [ :i |
+		columnNames at: i ].
+	self removeColumns: columnNamesToRemove
+]
+
+{ #category : #removing }
 DataFrame >> removeColumnsOfRowElementsSatisfing: aBlock onRow: rowNumber [
 
 	| columnNamesCopy |
@@ -1243,6 +1257,20 @@ DataFrame >> removeRowAt: rowNumber [
 		
 	contents removeRowAt: rowNumber.
 	rowNames := rowNames copyWithoutIndex: rowNumber.
+]
+
+{ #category : #removing }
+DataFrame >> removeRows: aCollectionOfRowNames [
+	aCollectionOfRowNames do: [ :each |
+		self removeRow: each ]
+]
+
+{ #category : #removing }
+DataFrame >> removeRowsAt: aCollectionOfRowIndices [
+	| rowNamesToRemove |
+	rowNamesToRemove := aCollectionOfRowIndices collect: [ :i |
+		rowNames at: i ].
+	self removeRows: rowNamesToRemove
 ]
 
 { #category : #removing }
