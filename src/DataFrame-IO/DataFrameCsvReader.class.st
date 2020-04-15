@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'separator',
 		'includeRowNames',
-		'shouldParseTypes',
+		'shouldInferTypes',
 		'rowNames',
 		'rows',
 		'columnNames'
@@ -36,7 +36,7 @@ DataFrameCsvReader >> defaultSeparator [
 ]
 
 { #category : #accessing }
-DataFrameCsvReader >> defaultShouldParseTypes [
+DataFrameCsvReader >> defaultShouldInferTypes [
 	^ true
 ]
 
@@ -55,7 +55,7 @@ DataFrameCsvReader >> initialize [
 	super initialize.
 	separator := self defaultSeparator.
 	includeRowNames := self defaultIncludeRowNames.
-	shouldParseTypes := self defaultShouldParseTypes.
+	shouldInferTypes := self defaultShouldInferTypes.
 ]
 
 { #category : #reading }
@@ -80,7 +80,7 @@ DataFrameCsvReader >> readFrom: aFileReference [
 	reader close.
 	
 	df := self createDataFrame.
-	shouldParseTypes ifTrue: [
+	shouldInferTypes ifTrue: [
 		DataFrameTypeDetector new detectTypesAndConvert: df ].
 	^ df
 	
@@ -124,11 +124,11 @@ DataFrameCsvReader >> separator: anObject [
 ]
 
 { #category : #accessing }
-DataFrameCsvReader >> shouldParseTypes [
-	^ shouldParseTypes
+DataFrameCsvReader >> shouldInferTypes [
+	^ shouldInferTypes
 ]
 
 { #category : #accessing }
-DataFrameCsvReader >> shouldParseTypes: aBoolean [
-	shouldParseTypes := aBoolean
+DataFrameCsvReader >> shouldInferTypes: anObject [
+	shouldInferTypes := anObject
 ]

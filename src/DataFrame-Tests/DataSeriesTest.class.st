@@ -1555,7 +1555,7 @@ DataSeriesTest >> testRemoveNilsOnNamedSeries [
 	self assert: series removeNils equals: expected.
 ]
 
-{ #category : #replacing }
+{ #category : #'missing values' }
 DataSeriesTest >> testReplaceNilsWith [
 
 	| expected |
@@ -1572,7 +1572,7 @@ DataSeriesTest >> testReplaceNilsWith [
 	self assert: (series replaceNilsWith: 0.0) equals: expected.
 ]
 
-{ #category : #replacing }
+{ #category : #'missing values' }
 DataSeriesTest >> testReplaceNilsWithAverage [
 
 	| expected |
@@ -1589,7 +1589,7 @@ DataSeriesTest >> testReplaceNilsWithAverage [
 	self assert: series replaceNilsWithAverage equals: expected.
 ]
 
-{ #category : #replacing }
+{ #category : #'missing values' }
 DataSeriesTest >> testReplaceNilsWithFloat [
 
 	| expected |
@@ -1606,7 +1606,7 @@ DataSeriesTest >> testReplaceNilsWithFloat [
 	self assert: (series replaceNilsWith: 3.14) equals: expected.
 ]
 
-{ #category : #replacing }
+{ #category : #'missing values' }
 DataSeriesTest >> testReplaceNilsWithMedian [
 
 	| expected |
@@ -1623,7 +1623,7 @@ DataSeriesTest >> testReplaceNilsWithMedian [
 	self assert: series replaceNilsWithMedian equals: expected.
 ]
 
-{ #category : #replacing }
+{ #category : #'missing values' }
 DataSeriesTest >> testReplaceNilsWithMode [
 
 	| expected |
@@ -1640,7 +1640,7 @@ DataSeriesTest >> testReplaceNilsWithMode [
 	self assert: series replaceNilsWithMode equals: expected.
 ]
 
-{ #category : #replacing }
+{ #category : #'missing values' }
 DataSeriesTest >> testReplaceNilsWithString [
 
 	| expected |
@@ -1657,7 +1657,7 @@ DataSeriesTest >> testReplaceNilsWithString [
 	self assert: (series replaceNilsWith: 'abc') equals: expected.
 ]
 
-{ #category : #replacing }
+{ #category : #'missing values' }
 DataSeriesTest >> testReplaceNilsWithZero [
 
 	| expected |
