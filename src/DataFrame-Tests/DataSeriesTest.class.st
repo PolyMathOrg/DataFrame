@@ -1239,6 +1239,20 @@ DataSeriesTest >> testGroupByAggregateUsingSizeMismatch [
 		raise: SizeMismatch.
 ]
 
+{ #category : #'missing values' }
+DataSeriesTest >> testHasNil [
+	| numbers |
+	numbers := #(1 2 nil 3 4) asDataSeries.
+	self assert: numbers hasNil.
+]
+
+{ #category : #'missing values' }
+DataSeriesTest >> testHasNilFalse [
+	| numbers |
+	numbers := #(1 2 3 4) asDataSeries.
+	self deny: numbers hasNil.
+]
+
 { #category : #'head/tail' }
 DataSeriesTest >> testHead [
 	| expected actual |

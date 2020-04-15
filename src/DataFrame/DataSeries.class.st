@@ -291,6 +291,12 @@ DataSeries >> groupBy: otherSeries aggregateUsing: aBlock as: aNewName [
 		name: aNewName
 ]
 
+{ #category : #testing }
+DataSeries >> hasNil [
+	"return true if data series has at least one nil value"
+	^ self includes: nil. 
+]
+
 { #category : #slicing }
 DataSeries >> head [ 
 	^ self head: self defaultHeadTailSize.
