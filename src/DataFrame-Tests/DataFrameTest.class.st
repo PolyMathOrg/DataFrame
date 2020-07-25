@@ -2871,6 +2871,11 @@ DataFrameTest >> testPrintOn [
 ]
 
 { #category : #tests }
+DataFrameTest >> testRangeError [
+	self should: [ df range ] raise: MessageNotUnderstood	"Instance of Character did not understand #Barcelona"
+]
+
+{ #category : #tests }
 DataFrameTest >> testReject [
 	| actual expected |
 
