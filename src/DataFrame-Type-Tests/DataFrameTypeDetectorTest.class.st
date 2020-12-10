@@ -32,6 +32,15 @@ DataFrameTypeDetectorTest >> testBooleanColumnWithNils [
 ]
 
 { #category : #tests }
+DataFrameTypeDetectorTest >> testBooleanColumnWithNilsMixedCase [
+	| column expected actual |
+	column := #('TRUE' 'False' 'true' nil) asDataSeries.
+	expected := #(true false true nil) asDataSeries.
+	actual := detector detectColumnTypeAndConvert: column.
+	self assert: actual equals: expected
+]
+
+{ #category : #tests }
 DataFrameTypeDetectorTest >> testColumnAllNils [
 	| column expected actual |
 	column := #(nil nil nil nil) asDataSeries.
