@@ -41,6 +41,26 @@ DataFrameTypeDetectorTest >> testBooleanColumnWithNilsMixedCase [
 ]
 
 { #category : #tests }
+DataFrameTypeDetectorTest >> testBooleanColumnWithNumbers [
+	"Make sure that our boolean type detector doesn't return true for numbers"
+	| column expected actual |
+	column := #(1 2 3 4 5) asDataSeries.
+	expected := false.
+	actual := detector canAllBeBoolean: column.
+	self assert: actual equals: expected
+]
+
+{ #category : #tests }
+DataFrameTypeDetectorTest >> testBooleanColumnWithStrings [
+	"Make sure that our boolean type detector doesn't return true for strings that aren't true or false"
+	| column expected actual |
+	column := #('this' 'should' 'be' 'false') asDataSeries.
+	expected := false.
+	actual := detector canAllBeBoolean: column.
+	self assert: actual equals: expected
+]
+
+{ #category : #tests }
 DataFrameTypeDetectorTest >> testColumnAllNils [
 	| column expected actual |
 	column := #(nil nil nil nil) asDataSeries.

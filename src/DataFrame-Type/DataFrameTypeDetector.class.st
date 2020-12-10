@@ -17,8 +17,8 @@ DataFrameTypeDetector >> canAllBeBoolean: aDataSeries [
 	^ aDataSeries
 		detect: [ :each | 
 			|eachLower | 
-			eachLower := [each asLowercase] on: Error do: [eachLower := nil].
-			(eachLower ~= 'true') & (eachLower ~= 'false') & (eachLower isNotNil) . 
+			eachLower := [each asLowercase] on: Error do: [eachLower := each].
+			((eachLower = 'true') | (eachLower = 'false') | (eachLower isNil)) not . 
 			]
 		ifFound: [ false ]
 		ifNone: [ true ].

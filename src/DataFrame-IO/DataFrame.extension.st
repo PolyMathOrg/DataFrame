@@ -11,9 +11,18 @@ DataFrame class >> readFrom: aLocation using: aDataFrameReader missingValuesStri
 	"Read data frame from a given location using a given DataFrameReader. Location can be a file reference, a database connection, or something else (depending on the implementation of the reader).
 	 Replaces the elements of aSet present in dataframe with nil"
 	
-	| df |
+	| df infer |
+	
+	"The readFrom method will infer types by default but we want this to happen after we convert things to nil
+	 so here we temporarily force it to false so that we can infer later 
+	"
+	aDataFrameReader shouldInferTypes ifTrue: [ infer := true  ].
+	aDataFrameReader shouldInferTypes: false.
 	df := aDataFrameReader readFrom: aLocation.
+	
 	df contents replaceMissingValuesStrings: aSet.
+	infer ifTrue: [  
+		DataFrameTypeDetector new detectTypesAndConvert: df].
 	^ df
 ]
 
