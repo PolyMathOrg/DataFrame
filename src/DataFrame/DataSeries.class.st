@@ -112,7 +112,7 @@ DataSeries >> asDataFrame [
 { #category : #accessing }
 DataSeries >> at: aKey transform: aBlock [
 	"Evaluate aBlock on the value at aKey and replace that value with the result. Signal an exception if aKey was not found"
-	self at: aKey transform: aBlock ifAbsent: NotFoundError.
+	self at: aKey transform: aBlock ifAbsent: [ self errorKeyNotFound: aKey ].
 ]
 
 { #category : #accessing }
@@ -226,6 +226,12 @@ DataSeries >> eighth [
 	"Answer the eighth element of the receiver.
 	Raise an error if there are not enough elements."
 	^ self atIndex: 8
+]
+
+{ #category : #private }
+DataSeries >> errorKeyNotFound: aKey [
+
+	KeyNotFound signalFor: aKey
 ]
 
 { #category : #errors }
