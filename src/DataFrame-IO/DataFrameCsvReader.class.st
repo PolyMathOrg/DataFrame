@@ -69,6 +69,17 @@ DataFrameCsvReader >> readColumnNamesWith: aReader [
 { #category : #reading }
 DataFrameCsvReader >> readFrom: aFileReference [
 	"Read data frame from a CSV file"
+	| df | 
+	df := self readFromInternal: aFileReference .
+	shouldInferTypes ifTrue: [
+		DataFrameTypeDetector new detectTypesAndConvert: df ].
+	^ df
+	
+]
+
+{ #category : #reading }
+DataFrameCsvReader >> readFromInternal: aFileReference [
+	"Read data frame from a CSV file"
 	| stream reader df |
 	stream := aFileReference readStream.
 	reader := NeoCSVReader on: stream.
@@ -80,8 +91,6 @@ DataFrameCsvReader >> readFrom: aFileReference [
 	reader close.
 	
 	df := self createDataFrame.
-	shouldInferTypes ifTrue: [
-		DataFrameTypeDetector new detectTypesAndConvert: df ].
 	^ df
 	
 ]

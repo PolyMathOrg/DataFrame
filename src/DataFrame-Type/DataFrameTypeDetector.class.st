@@ -13,8 +13,13 @@ Class {
 
 { #category : #testing }
 DataFrameTypeDetector >> canAllBeBoolean: aDataSeries [
+   "Checks to see if all of the values in the column are strings of true or false (case insensitive) or nil"
 	^ aDataSeries
-		detect: [ :each | (each ~= 'true') & (each ~= 'false') & (each isNotNil)]
+		detect: [ :each | 
+			|eachLower | 
+			eachLower := [each asLowercase] on: Error do: [eachLower := each].
+			((eachLower = 'true') | (eachLower = 'false') | (eachLower isNil)) not . 
+			]
 		ifFound: [ false ]
 		ifNone: [ true ].
 ]
@@ -28,13 +33,17 @@ DataFrameTypeDetector >> canAllBeDateAndTime: aDataSeries [
 
 { #category : #testing }
 DataFrameTypeDetector >> canAllBeNumber: aDataSeries [
+
 	| regex |
 	regex := '^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$' asRegex.
-	
+
 	^ aDataSeries
-		detect: [ :each | [ each isNil ifTrue: [ false ] ifFalse: [ (regex matches: each) not ]] on: Error do: [ ^ false ] ]
-		ifFound: [ false ]
-		ifNone: [ true ]
+		  detect: [ :each | 
+			  [ each ifNil: [ false ] ifNotNil: [ (regex matches: each) not ] ]
+				  on: Error
+				  do: [ ^ false ] ]
+		  ifFound: [ false ]
+		  ifNone: [ true ]
 ]
 
 { #category : #testing }
@@ -56,7 +65,7 @@ DataFrameTypeDetector >> canAnyBeFloat: aDataSeries [
 DataFrameTypeDetector >> convertToBoolean: aDataSeries [
 	^ aDataSeries collect: [ :each |
 		each isNil
-			ifFalse: [ each = 'true' ] ]
+			ifFalse: [ each asLowercase = 'true' ] ]
 ]
 
 { #category : #converting }
