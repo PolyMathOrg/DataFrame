@@ -7,10 +7,27 @@ Class {
 		'shouldInferTypes',
 		'rowNames',
 		'rows',
-		'columnNames'
+		'columnNames',
+		'columnTypes'
 	],
 	#category : #'DataFrame-IO'
 }
+
+{ #category : #accessing }
+DataFrameCsvReader >> columnTypes [
+
+	^ columnTypes
+]
+
+{ #category : #accessing }
+DataFrameCsvReader >> columnTypes: columnTypeDefinition [
+	"column type definition can be a collection of blocks that take a string as an argument
+	 and convert it to another object.
+	"
+
+	columnTypes := columnTypeDefinition.
+	self shouldInferTypes: false.
+]
 
 { #category : #reading }
 DataFrameCsvReader >> createDataFrame [
@@ -51,11 +68,11 @@ DataFrameCsvReader >> includeRowNames: anObject [
 ]
 
 { #category : #initialization }
-DataFrameCsvReader >> initialize [ 
+DataFrameCsvReader >> initialize [
 	super initialize.
 	separator := self defaultSeparator.
 	includeRowNames := self defaultIncludeRowNames.
-	shouldInferTypes := self defaultShouldInferTypes.
+	shouldInferTypes := self defaultShouldInferTypes
 ]
 
 { #category : #reading }
@@ -80,19 +97,21 @@ DataFrameCsvReader >> readFrom: aFileReference [
 { #category : #reading }
 DataFrameCsvReader >> readFromInternal: aFileReference [
 	"Read data frame from a CSV file"
+
 	| stream reader df |
 	stream := aFileReference readStream.
 	reader := NeoCSVReader on: stream.
 	reader separator: self separator.
-	
+
+	"Assume that the columnTypes are a collection of neocsv methods like 
+	 addFloatField, or addIgnoredField"
+	columnTypes
+		ifNotNil: [ columnTypes do: [ :each | reader perform: each asSymbol ] ].
 	self readColumnNamesWith: reader.
 	self readRowsWith: reader.
-	
 	reader close.
-	
 	df := self createDataFrame.
 	^ df
-	
 ]
 
 { #category : #reading }
