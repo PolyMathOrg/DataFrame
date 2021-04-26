@@ -12,15 +12,31 @@ in which case I skip detection and just convert. To set the types use my `column
     detector columnTypes: { 'columnName1' -> 'string'. 'columnName2' -> 'boolean' } asDictionary.
 
     detector detectTypesAndConvert: aDataFrame
-	
-If a column name isn't specified in the columnTypes then I will guess the type. As well as the 
-standard types I can also perform custom type conversion if the value is a block.
 
-    detector columnTypes: { 'columnName1' -> [:series | series collect: [:each | each asCustomType]]. 'columnName2' -> 'boolean' } asDictionary.	
+The keys of this mapping must be the column name and the values can be either a block (to perform custom type conversion) or one of the following strings that implement one of my standard type conversions:
+
+- string: this does not perform any conversion.
+- integer: convert to an Integer object.
+- float: convert to a Float object.
+- boolean: convert to a Boolean object.
+- date: convert to a DateAndTime object.
+- time: convert to a Time object.
+- dateandtime: alias for dateandtime.
+- guess: will attempt to guess the type of the column from one of the listed types above. This is the default if no conversion is given.
+	
+As well as the standard types I can also perform custom type conversion if the value is a block.
+
+    types := { 'columnName' -> [:series | series collect: [:each | each asCustomType]]. } asDictionary.
+    detector columnTypes: types	
     detector detectTypesAndConvert: aDataFrame
 
 The block takes a single argument, the column, and should return the column as well. I also handle 
-mixing the standard conversion types and custom converters.    
+mixing the standard conversion types and custom converters in the provided types dictionary:
+
+    types := { 'columnName2' -> 'integer' . 'columnName2' -> [:series | series collect: [:each | each asCustomType]]. } asDictionary.
+    detector columnTypes: types	
+    detector detectTypesAndConvert: aDataFrame
+ 
 "
 Class {
 	#name : #DataFrameTypeDetector,
