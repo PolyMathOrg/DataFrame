@@ -133,6 +133,26 @@ DataFrameTypeDetectorTest >> testExplicitTypeCustomConversion [
 ]
 
 { #category : #tests }
+DataFrameTypeDetectorTest >> testExplicitTypeMissing [
+	"Test that DataFrameTypeDetector can be convert types with guessing"
+	| df expected |
+	df := DataFrame
+		withColumns:
+			#(#('2.4' '0.5' '-1.2' '-2.3' '3.2') #('true' 'true' 'true' 'false' 'true') #('rain' 'rain' 'snow' '-' 'rain')).
+	df columnNames: #(temperature precipitation type).
+	detector
+		columnTypes:
+			{('precipitation' -> 'boolean').
+			('type' -> 'string')} asDictionary.
+	expected := DataFrame
+		withColumns:
+			#(#(2.4 0.5 -1.2 -2.3 3.2) #(true true true false true) #('rain' 'rain' 'snow' '-' 'rain')).
+	expected columnNames: #(temperature precipitation type).
+	detector detectTypesAndConvert: df.
+	self assert: df equals: expected
+]
+
+{ #category : #tests }
 DataFrameTypeDetectorTest >> testFloatColumn [
 	| column expected actual |
 	column := #('1.2' '3.3' '-10.1' '0.0') asDataSeries.

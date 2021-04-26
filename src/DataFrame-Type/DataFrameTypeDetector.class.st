@@ -163,7 +163,7 @@ DataFrameTypeDetector >> detectTypesAndConvert: aDataFrame [
 			 given then use the default type detection"
 			thisColumnType := columnTypes
 				at: columnName
-				ifAbsent: [ :array | self detectColumnTypeAndConvert: array ].
+				ifAbsent: [ [:array | self detectColumnTypeAndConvert: array ]].
 			"We allow users to submit either a string which is one of the standard 
 			 types that we know how to convert or a block which is for custom type
 			 conversion. Test if it's a block here and if not assume that we can
