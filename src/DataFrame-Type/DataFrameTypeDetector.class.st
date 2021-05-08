@@ -9,20 +9,19 @@ Instead of guessing the column types I can also be given a mapping of the column
 in which case I skip detection and just convert. To set the types use my `columnTypes:` message.
 
     detector := DataFrameTypeDetector new.
-    detector columnTypes: { 'columnName1' -> 'string'. 'columnName2' -> 'boolean' } asDictionary.
+    detector columnTypes: { 'columnName1' -> String. 'columnName2' -> Boolean } asDictionary.
 
     detector detectTypesAndConvert: aDataFrame
 
 The keys of this mapping must be the column name and the values can be either a block (to perform custom type conversion) or one of the following strings that implement one of my standard type conversions:
 
-- string: this does not perform any conversion.
-- integer: convert to an Integer object.
-- float: convert to a Float object.
-- boolean: convert to a Boolean object.
-- date: convert to a DateAndTime object.
-- time: convert to a Time object.
-- dateandtime: alias for dateandtime.
-- guess: will attempt to guess the type of the column from one of the listed types above. This is the default if no conversion is given.
+- String: this does not perform any conversion.
+- Integer: convert to an Integer object.
+- Float: convert to a Float object.
+- Boolean: convert to a Boolean object.
+- DateAndTime: convert to a DateAndTime object.
+- Time: convert to a Time object.
+- nil: will attempt to guess the type of the column from one of the listed types above. This is the default if no conversion is given.
 	
 As well as the standard types I can also perform custom type conversion if the value is a block.
 
@@ -33,7 +32,7 @@ As well as the standard types I can also perform custom type conversion if the v
 The block takes a single argument, the column, and should return the column as well. I also handle 
 mixing the standard conversion types and custom converters in the provided types dictionary:
 
-    types := { 'columnName2' -> 'integer' . 'columnName2' -> [:series | series collect: [:each | each asCustomType]]. } asDictionary.
+    types := { 'columnName2' -> Integer . 'columnName2' -> [:series | series collect: [:each | each asCustomType]]. } asDictionary.
     detector columnTypes: types	
     detector detectTypesAndConvert: aDataFrame
  
@@ -185,13 +184,11 @@ DataFrameTypeDetector >> initialize [
 	columnTypes := Dictionary new.
 	typeMapping := Dictionary
 		newFrom:
-			{('boolean' -> [ :array | self convertToBoolean: array ]).
-			('float' -> [ :array | self convertToFloat: array ]).
-			('integer' -> [ :array | self convertToInteger: array ]).
-			('time' -> [ :array | self convertToTime: array ]).
-			('date' -> [ :array | self convertToDateAndTime: array ]).
-			('string' -> [ :array | array ]).
-			('guess' -> [ :array | self detectColumnTypeAndConvert: array ])}.
-	"Alias dateandtime to date"
-	typeMapping at: 'dateandtime' put: (typeMapping at: 'date')
+			{(Boolean -> [ :array | self convertToBoolean: array ]).
+			(Float -> [ :array | self convertToFloat: array ]).
+			(Integer -> [ :array | self convertToInteger: array ]).
+			(Time -> [ :array | self convertToTime: array ]).
+			(DateAndTime -> [ :array | self convertToDateAndTime: array ]).
+			(String -> [ :array | array ]).
+			(nil -> [ :array | self detectColumnTypeAndConvert: array ])}.
 ]

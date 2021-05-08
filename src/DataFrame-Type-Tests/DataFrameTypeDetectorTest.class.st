@@ -97,9 +97,9 @@ DataFrameTypeDetectorTest >> testExplicitType [
 	df columnNames: #(temperature precipitation type).
 	detector
 		columnTypes:
-			{('temperature' -> 'float').
-			('precipitation' -> 'boolean').
-			('type' -> 'string')} asDictionary.
+			{('temperature' -> Float).
+			('precipitation' -> Boolean).
+			('type' -> String)} asDictionary.
 	expected := DataFrame
 		withColumns:
 			#(#(2.4 0.5 -1.2 -2.3 3.2) #(true true true false true) #('rain' 'rain' 'snow' '-' 'rain')).
@@ -120,10 +120,10 @@ DataFrameTypeDetectorTest >> testExplicitTypeCustomConversion [
 	df columnNames: #(temperature precipitation type).
 	detector
 		columnTypes:
-			{('temperature' -> 'float').
+			{('temperature' -> Float).
 			('precipitation'
 				-> [ :array | array collect: [ :each | each asInteger = 1 ] ]).
-			('type' -> 'string')} asDictionary.
+			('type' -> String)} asDictionary.
 	expected := DataFrame
 		withColumns:
 			#(#(2.4 0.5 -1.2 -2.3 3.2) #(true true true false true) #('rain' 'rain' 'snow' '-' 'rain')).
@@ -142,9 +142,9 @@ DataFrameTypeDetectorTest >> testExplicitTypeGuess [
 	df columnNames: #(temperature precipitation type).
 	detector
 		columnTypes:
-			{('temperature' -> 'guess').
-			('precipitation' -> 'boolean').
-			('type' -> 'string')} asDictionary.
+			{('temperature' -> nil).
+			('precipitation' -> Boolean).
+			('type' -> String)} asDictionary.
 	expected := DataFrame
 		withColumns:
 			#(#(2.4 0.5 -1.2 -2.3 3.2) #(true true true false true) #('rain' 'rain' 'snow' '-' 'rain')).
@@ -163,8 +163,8 @@ DataFrameTypeDetectorTest >> testExplicitTypeMissing [
 	df columnNames: #(temperature precipitation type).
 	detector
 		columnTypes:
-			{('precipitation' -> 'boolean').
-			('type' -> 'string')} asDictionary.
+			{('precipitation' -> Boolean).
+			('type' -> String)} asDictionary.
 	expected := DataFrame
 		withColumns:
 			#(#(2.4 0.5 -1.2 -2.3 3.2) #(true true true false true) #('rain' 'rain' 'snow' '-' 'rain')).
