@@ -186,6 +186,18 @@ DataSeries >> collectWithNotNils: aBlock [
 		]
 ]
 
+{ #category : #'as yet unclassified' }
+DataSeries >> correlationWith: otherSeries [
+	"Calculate the Pearson correlation coefficient between self and the other series"
+	^ self correlationWith: otherSeries using: DataPearsonCorrelationCoefficient
+]
+
+{ #category : #'as yet unclassified' }
+DataSeries >> correlationWith: otherSeries using: aCorrelationCoefficient [
+	"Calculate the correlation coefficient between self and the other series using the given method"
+	^ aCorrelationCoefficient between: self and: otherSeries
+]
+
 { #category : #statistics }
 DataSeries >> crossTabulateWith: aSeries [
 	| df |

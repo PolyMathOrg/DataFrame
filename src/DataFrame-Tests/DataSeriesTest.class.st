@@ -1354,6 +1354,17 @@ DataSeriesTest >> testMathAbs [
 ]
 
 { #category : #'math functions' }
+DataSeriesTest >> testMathCorrelationWith [
+	| age income correlationCoefficient |
+	
+	age := #(20 30 40 50) asDataSeries.
+	income := #(1500 3000 5000 7500) asDataSeries.
+	
+	correlationCoefficient := age correlationWith: income.
+	self assert: correlationCoefficient closeTo: 0.99380799.
+]
+
+{ #category : #'math functions' }
 DataSeriesTest >> testMathCos [
 
 	| a b pi |

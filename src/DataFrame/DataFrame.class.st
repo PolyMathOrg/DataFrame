@@ -681,6 +681,43 @@ DataFrame >> contents [
 	^ contents
 ]
 
+{ #category : #statistics }
+DataFrame >> correlationMatrix [
+	"Calculate a correlation matrix (correlation of every column with every column) using Pearson's correlation coefficient"
+	^ self correlationMatrixUsing: DataPearsonCorrelationCoefficient
+]
+
+{ #category : #statistics }
+DataFrame >> correlationMatrixUsing: aCorrelationCoefficient [
+	"Calculate a correlation matrix (correlation of every column with every column) using the given correlation coefficient"
+	
+	| numericalColumnNames correlationMatrix firstColumn secondColumn correlation |
+	
+	numericalColumnNames := self columnNames select: [ :columnName |
+		(self column: columnName) isNumerical ].
+	
+	numericalColumnNames ifEmpty: [
+		Error signal: 'This data frame does not have any numerical columns' ].
+	
+	correlationMatrix := self class
+		withRowNames: numericalColumnNames
+		columnNames: numericalColumnNames.
+		
+	1 to: numericalColumnNames size do: [ :i |
+		1 to: i - 1 do: [ :j |
+			firstColumn := self column: (numericalColumnNames at: i).
+			secondColumn := self column: (numericalColumnNames at: j).
+			correlation := firstColumn correlationWith: secondColumn using: aCorrelationCoefficient.
+			
+			correlationMatrix at: i at: j put: correlation.
+			correlationMatrix at: j at: i put: correlation ] ].
+	
+	1 to: numericalColumnNames size do: [ :i |
+		correlationMatrix at: i at: i put: 1 ].
+		
+	^ correlationMatrix
+]
+
 { #category : #accessing }
 DataFrame >> crossTabulate: colName1 with: colName2 [
 
