@@ -120,7 +120,9 @@ DataFrameInternalTest >> testAtAtPut [
 	actual := DataFrameInternal fromArray2D: array2D.
 	actual at: 2 at: 2 put: 10.
 	
-	array2D at: 2 at: 2 put: 10.
+	array2D := Array2D rows: 3 columns: 2
+		contents: #(1 2 3 10 5 6).
+		
 	expected := DataFrameInternal fromArray2D: array2D.
 	
 	self assert: actual equals: expected.
