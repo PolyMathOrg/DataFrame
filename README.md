@@ -1,5 +1,5 @@
 # Pharo DataFrame
-![Build status](https://github.com/PolyMathOrg/DataFrame/workflows/CI/badge.svg)
+[![Build status](https://github.com/PolyMathOrg/DataFrame/workflows/CI/badge.svg)](https://github.com/PolyMathOrg/DataFrame/actions/workflows/test.yml)
 [![Coverage Status](https://coveralls.io/repos/github/PolyMathOrg/DataFrame/badge.svg?branch=master)](https://coveralls.io/github/PolyMathOrg/DataFrame?branch=master)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/PolyMathOrg/DataFrame/master/LICENSE)
 
