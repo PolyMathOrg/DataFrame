@@ -1,6 +1,6 @@
 Class {
 	#name : #DataPearsonCorrelationCoefficient,
-	#superclass : #DataCorrelationCoefficient,
+	#superclass : #DataCorrelationMethod,
 	#category : #'DataFrame-Math'
 }
 
