@@ -684,7 +684,7 @@ DataFrame >> contents [
 { #category : #statistics }
 DataFrame >> correlationMatrix [
 	"Calculate a correlation matrix (correlation of every column with every column) using Pearson's correlation coefficient"
-	^ self correlationMatrixUsing: DataPearsonCorrelationCoefficient
+	^ self correlationMatrixUsing: DataPearsonCorrelationMethod
 ]
 
 { #category : #statistics }

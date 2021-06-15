@@ -1,11 +1,11 @@
 Class {
-	#name : #DataPearsonCorrelationCoefficient,
+	#name : #DataPearsonCorrelationMethod,
 	#superclass : #DataCorrelationMethod,
 	#category : #'DataFrame-Math'
 }
 
 { #category : #comparing }
-DataPearsonCorrelationCoefficient class >> between: x and: y [
+DataPearsonCorrelationMethod class >> between: x and: y [
 	"Calcualte the Pearson correlation coefficient between two data series"
 	
 	| xDeviation yDeviation |
