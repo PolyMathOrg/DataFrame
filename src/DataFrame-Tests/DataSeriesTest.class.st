@@ -1861,7 +1861,7 @@ DataSeriesTest >> testStatsCumulativeSum [
 	actual:= DataSeries withValues: #(3 4 2 1 6 7 9 8).
 	expected := DataSeries withValues: #(3 7 9 10 16 23 32 40).
 	expected name: #CumulativeSum; keys: (actual values).
-	self assert: (actual cumulativeSum) equals: expected.
+	self assert: (actual cumulativeSum) closeTo: expected.
 ]
 
 { #category : #statistics }
