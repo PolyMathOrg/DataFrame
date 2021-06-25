@@ -218,6 +218,22 @@ DataSeries >> crossTabulateWith: aSeries [
 	^ df
 ]
 
+{ #category : #accessing }
+DataSeries >> dataType [
+
+	| collectionOfClasses commonSuperclass |
+	collectionOfClasses  := OrderedCollection new.
+	self do: [ :each | collectionOfClasses  add: each class. ].
+	
+	commonSuperclass := collectionOfClasses  first.
+	2 to: collectionOfClasses  size do: [ :i |
+		commonSuperclass := self
+			leastCommonSuperclassOf: (collectionOfClasses  at: i)
+				and: commonSuperclass. ].
+	
+	^ commonSuperclass.
+]
+
 { #category : #defaults }
 DataSeries >> defaultHeadTailSize [
 	^ 5
@@ -375,6 +391,28 @@ DataSeries >> last [
 	"Answer the last element of the receiver.
 	Raise an error if there are not enough elements."
 	^ self atIndex: self size
+]
+
+{ #category : #accessing }
+DataSeries >> leastCommonSuperclassOf: firstClass and: secondClass [
+"Determines the closest element of class hierarchy which is the common ancestor of two given classes"
+
+	| classA classB |
+	classA := firstClass.
+	classB := secondClass.
+	
+	[ classA = Object or: (classB = Object) ]
+		whileFalse: [ 
+			(classA inheritsFromOrEqualTo: classB)
+				ifTrue: [ ^ classB ].
+				
+			(classB inheritsFrom: classA)
+				ifTrue: [ ^ classA ].
+				
+			classA := classA superclass.
+			classB := classB superclass. ].
+	
+	^ Object.
 ]
 
 { #category : #'math functions' }

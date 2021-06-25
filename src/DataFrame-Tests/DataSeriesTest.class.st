@@ -1108,6 +1108,13 @@ DataSeriesTest >> testCreateEmptyDataSeries [
 	self assert: dataSeries name equals: '(no name)'.
 ]
 
+{ #category : #accessing }
+DataSeriesTest >> testDataType [
+
+
+	self assert: series dataType equals: SmallInteger.
+]
+
 { #category : #enumerating }
 DataSeriesTest >> testDetect [
 
@@ -2192,11 +2199,4 @@ DataSeriesTest >> testWithKeySelect [
 		
 	actual := series withKeySelect: [ :x :k | x < 10 and: (#(a c g) includes: k) ].
 	self assert: actual equals: expected.
-]
-
-{ #category : #accessing }
-DataSeriesTest >> testdataType [
-
-
-	self assert: series dataType equals: SmallInteger.
 ]

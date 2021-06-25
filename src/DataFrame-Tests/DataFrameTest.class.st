@@ -1206,6 +1206,34 @@ DataFrameTest >> testCrossTabulation [
 ]
 
 { #category : #tests }
+DataFrameTest >> testDataTypeOfColumn [
+
+			
+	
+	self assert: (df dataTypeOfColumn: #BeenThere) equals: Boolean.
+]
+
+{ #category : #tests }
+DataFrameTest >> testDataTypeOfColumnAt [
+
+			
+	
+	self assert: (df dataTypeOfColumnAt: 3) equals: Boolean.
+]
+
+{ #category : #tests }
+DataFrameTest >> testDataTypes [
+
+			
+	| expected |
+	expected:= { #City ->  ByteString.
+					#Population -> SmallFloat64.
+					#BeenThere -> Boolean }
+					asDictionary .
+	self assert: df dataTypes equals: expected.
+]
+
+{ #category : #tests }
 DataFrameTest >> testDetect [
 	| actual expected |
 
