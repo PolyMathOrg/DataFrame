@@ -224,7 +224,7 @@ DataSeries >> dataType [
 	| collectionOfClasses commonSuperclass |
 	collectionOfClasses  := OrderedCollection new.
 	self do: [ :each | collectionOfClasses  add: each class. ].
-	
+
 	commonSuperclass := collectionOfClasses  first.
 	2 to: collectionOfClasses  size do: [ :i |
 		commonSuperclass := self

@@ -1226,7 +1226,7 @@ DataFrameTest >> testDataTypes [
 
 			
 	| expected |
-	expected:= { #City ->  ByteString.
+	expected:= { #City ->  ByteSymbol.
 					#Population -> SmallFloat64.
 					#BeenThere -> Boolean }
 					asDictionary .

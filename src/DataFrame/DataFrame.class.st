@@ -744,6 +744,19 @@ DataFrame >> dataTypeOfColumnAt: anIndex [
 ]
 
 { #category : #accessing }
+DataFrame >> dataTypes [
+
+
+	| dictionaryOfClasses |
+	
+	dictionaryOfClasses := Dictionary  new.
+	(self columnNames) do: [
+		 :each | dictionaryOfClasses at: each put: (self dataTypeOfColumn: each).].
+	
+	^dictionaryOfClasses.
+]
+
+{ #category : #accessing }
 DataFrame >> defaultHeadTailSize [
 
 	^ 5
