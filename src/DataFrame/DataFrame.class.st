@@ -730,6 +730,20 @@ DataFrame >> crossTabulate: colName1 with: colName2 [
 ]
 
 { #category : #accessing }
+DataFrame >> dataTypeOfColumn: aColumnName [
+
+
+	^(self column: aColumnName) dataType.
+]
+
+{ #category : #accessing }
+DataFrame >> dataTypeOfColumnAt: anIndex [
+
+
+	^(self columnAt: anIndex) dataType.
+]
+
+{ #category : #accessing }
 DataFrame >> defaultHeadTailSize [
 
 	^ 5
