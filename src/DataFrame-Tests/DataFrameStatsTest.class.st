@@ -37,6 +37,26 @@ DataFrameStatsTest >> testAverage [
 	self assert: actual closeTo: expected.
 ]
 
+{ #category : #tests }
+DataFrameStatsTest >> testCorrelationMatrix [
+
+	| expectedCorrelationMatrix actualCorrelationMatrix |
+	expectedCorrelationMatrix := DataFrame withRows: #((1 0.311398 0.538922 0.454601)
+																	(0.311398 1 -0.321281 -0.308023)
+																	(0.538922	 -0.321281 1 0.982956)
+																	(0.454601 -0.308023 0.982956 1)).
+	expectedCorrelationMatrix columnNames: #(sepalLength sepalWidth petalLength petalWidth).												
+	expectedCorrelationMatrix rowNames: #(sepalLength sepalWidth petalLength petalWidth).	
+	actualCorrelationMatrix  := df correlationMatrix.
+	self assert: actualCorrelationMatrix rowNames equals: expectedCorrelationMatrix rowNames.
+	self assert: actualCorrelationMatrix columnNames equals: expectedCorrelationMatrix columnNames. 
+	
+	(1 to: actualCorrelationMatrix numberOfColumns) do: [ :j |
+		
+		(1 to: actualCorrelationMatrix numberOfRows) do: [ :i |
+			self assert: (actualCorrelationMatrix at: i at: j) closeTo: (expectedCorrelationMatrix at:i at:j). ]]
+]
+
 { #category : #initialization }
 DataFrameStatsTest >> testFirstQuartile [
 
