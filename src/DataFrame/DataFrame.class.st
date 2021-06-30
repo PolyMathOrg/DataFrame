@@ -746,7 +746,6 @@ DataFrame >> dataTypeOfColumnAt: anIndex [
 { #category : #accessing }
 DataFrame >> dataTypes [
 
-
 	| dictionaryOfClasses |
 	
 	dictionaryOfClasses := Dictionary  new.
