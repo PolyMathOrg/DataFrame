@@ -144,6 +144,17 @@ DataSeries >> atIndex: aNumber transform: aBlock [
 	self at: key transform: aBlock
 ]
 
+{ #category : #'data-types' }
+DataSeries >> calculateDataType [
+
+	| classes |
+	
+	classes := self collect: [ :each | each class. ].
+	
+	^ classes inject: classes first into: [ :commonSuperclass :each |
+		self leastCommonSuperclassOf: commonSuperclass and: each ].
+]
+
 { #category : #comparing }
 DataSeries >> closeTo: anObject [
 	^ self closeTo: anObject precision: self defaultPrecision.
@@ -216,22 +227,6 @@ DataSeries >> crossTabulateWith: aSeries [
 	df rowNames: self uniqueValues.
 	df columnNames: aSeries uniqueValues.
 	^ df
-]
-
-{ #category : #accessing }
-DataSeries >> dataType [
-
-	| collectionOfClasses commonSuperclass |
-	collectionOfClasses  := OrderedCollection new.
-	self do: [ :each | collectionOfClasses  add: each class. ].
-
-	commonSuperclass := collectionOfClasses  first.
-	2 to: collectionOfClasses  size do: [ :i |
-		commonSuperclass := self
-			leastCommonSuperclassOf: (collectionOfClasses  at: i)
-				and: commonSuperclass. ].
-	
-	^ commonSuperclass.
 ]
 
 { #category : #defaults }
@@ -393,7 +388,7 @@ DataSeries >> last [
 	^ self atIndex: self size
 ]
 
-{ #category : #accessing }
+{ #category : #private }
 DataSeries >> leastCommonSuperclassOf: firstClass and: secondClass [
 "Determines the closest element of class hierarchy which is the common ancestor of two given classes"
 

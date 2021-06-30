@@ -401,6 +401,90 @@ DataFrameTest >> testAtTransform [
 	self assert: df equals: expected
 ]
 
+{ #category : #'data-types' }
+DataFrameTest >> testCalculateDataTypeOfColumn [
+			
+	| newDataTypes expected |
+
+	newDataTypes := {
+		'City' ->  String.
+		'Population' -> Integer.
+		'BeenThere' -> Float
+	} asDictionary.
+	
+	df dataTypes: newDataTypes.
+	df calculateDataTypeOfColumn: 'BeenThere'.
+	
+	expected := {
+		'City' ->  String.
+		'Population' -> Integer.
+		'BeenThere' -> Boolean
+	} asDictionary.
+	
+	self assert: df dataTypes equals: expected.
+]
+
+{ #category : #'data-types' }
+DataFrameTest >> testCalculateDataTypeOfColumnAt [
+			
+	| newDataTypes expected |
+
+	newDataTypes := {
+		'City' ->  String.
+		'Population' -> Integer.
+		'BeenThere' -> Float
+	} asDictionary.
+	
+	df dataTypes: newDataTypes.
+	df calculateDataTypeOfColumnAt: 3.
+	
+	expected := {
+		'City' ->  String.
+		'Population' -> Integer.
+		'BeenThere' -> Boolean
+	} asDictionary.
+	
+	self assert: df dataTypes equals: expected.
+]
+
+{ #category : #'data-types' }
+DataFrameTest >> testCalculateDataTypes [
+			
+	| newDataTypes expected |
+
+	newDataTypes := {
+		'City' ->  String.
+		'Population' -> Integer.
+		'BeenThere' -> Float
+	} asDictionary.
+	
+	df dataTypes: newDataTypes.
+	df calculateDataTypes.
+	
+	expected := {
+		'City' ->  ByteSymbol.
+		'Population' -> SmallFloat64.
+		'BeenThere' -> Boolean
+	} asDictionary.
+	
+	self assert: df dataTypes equals: expected.
+]
+
+{ #category : #'data-types' }
+DataFrameTest >> testChangeDataTypes [
+			
+	| newDataTypes |
+
+	newDataTypes := {
+		'City' ->  String.
+		'Population' -> Integer.
+		'BeenThere' -> Float
+	} asDictionary.
+	
+	df dataTypes: newDataTypes.
+	self assert: df dataTypes equals: newDataTypes.
+]
+
 { #category : #tests }
 DataFrameTest >> testCollect [
 	| expectedDf expectedResult actualResult |
@@ -1205,31 +1289,132 @@ DataFrameTest >> testCrossTabulation [
 	self assert: (dataFrame crossTabulate: #Gender with: #Age) equals: expected.
 ]
 
-{ #category : #tests }
+{ #category : #'data-types' }
 DataFrameTest >> testDataTypeOfColumn [
 
-			
-	
-	self assert: (df dataTypeOfColumn: #BeenThere) equals: Boolean.
+	self assert: (df dataTypeOfColumn: 'BeenThere') equals: Boolean.
 ]
 
-{ #category : #tests }
+{ #category : #'data-types' }
 DataFrameTest >> testDataTypeOfColumnAt [
 
-			
-	
 	self assert: (df dataTypeOfColumnAt: 3) equals: Boolean.
 ]
 
-{ #category : #tests }
-DataFrameTest >> testDataTypes [
+{ #category : #'data-types' }
+DataFrameTest >> testDataTypeOfColumnAtPut [
+	
+	df dataTypeOfColumnAt: 3 put: String.
+	self assert: (df dataTypeOfColumnAt: 3) equals: String.
+]
 
+{ #category : #'data-types' }
+DataFrameTest >> testDataTypeOfColumnPut [
+	
+	df dataTypeOfColumn: 'BeenThere' put: String.
+	self assert: (df dataTypeOfColumn: 'BeenThere') equals: String.
+]
+
+{ #category : #'data-types' }
+DataFrameTest >> testDataTypes [
 			
 	| expected |
-	expected:= { #City ->  ByteSymbol.
-					#Population -> SmallFloat64.
-					#BeenThere -> Boolean }
-					asDictionary .
+
+	expected:= {
+		'City' ->  ByteSymbol.
+		'Population' -> SmallFloat64.
+		'BeenThere' -> Boolean
+	} asDictionary.
+	
+	self assert: df dataTypes equals: expected.
+]
+
+{ #category : #'data-types' }
+DataFrameTest >> testDataTypesOfEmptyDataFrame [
+			
+	self
+		assert: DataFrame new dataTypes
+		equals: Dictionary new.
+]
+
+{ #category : #'data-types' }
+DataFrameTest >> testDataTypesOfEmptyDataFrameWithColumnNames [
+
+	| dataFrame expected |
+	
+	dataFrame := DataFrame withColumnNames: #(a b c).
+	
+	expected := { 
+		'a' -> nil .
+		'b' -> nil .
+		'c' -> nil
+	} asDictionary.
+			
+	self assert: dataFrame dataTypes equals: expected.
+]
+
+{ #category : #'data-types' }
+DataFrameTest >> testDataTypesWhenColumnIsAdded [
+			
+	| column expected |
+	
+	column := DataSeries withValues: #(2015 2010 2017) name: #Year.
+	df addColumn: column.
+
+	expected:= {
+		'City' ->  ByteSymbol .
+		'Population' -> SmallFloat64 .
+		'BeenThere' -> Boolean .
+		'Year' -> Integer
+	} asDictionary.
+	
+	self assert: df dataTypes equals: expected.
+]
+
+{ #category : #'data-types' }
+DataFrameTest >> testDataTypesWhenColumnIsRemoved [
+			
+	| expected |
+
+	df removeColumn: 'Population'.
+
+	expected:= {
+		'City' ->  ByteSymbol .
+		'BeenThere' -> Boolean 
+	} asDictionary.
+	
+	self assert: df dataTypes equals: expected.
+]
+
+{ #category : #'data-types' }
+DataFrameTest >> testDataTypesWhenColumnsAreRenamed [
+			
+	| expected |
+	
+	df columnNames: #(city population visited).
+
+	expected:= {
+		'city' ->  ByteSymbol.
+		'population' -> SmallFloat64.
+		'visited' -> Boolean
+	} asDictionary.
+	
+	self assert: df dataTypes equals: expected.
+]
+
+{ #category : #'data-types' }
+DataFrameTest >> testDataTypesWhenSingleColumnIsRenamed [
+			
+	| expected |
+	
+	df renameColumn: 'BeenThere' to: 'Visited'.
+
+	expected:= {
+		'City' ->  ByteSymbol.
+		'Population' -> SmallFloat64.
+		'Visited' -> Boolean
+	} asDictionary.
+	
 	self assert: df dataTypes equals: expected.
 ]
 

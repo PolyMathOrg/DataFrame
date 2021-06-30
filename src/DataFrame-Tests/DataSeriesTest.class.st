@@ -793,6 +793,12 @@ DataSeriesTest >> testBooleanLessThanWithSeriesDifferentNames [
 	self assert: firstSeries < secondSeries equals: expected.
 ]
 
+{ #category : #'as yet unclassified' }
+DataSeriesTest >> testCalculateDataType [
+	
+	self assert: series calculateDataType equals: SmallInteger.
+]
+
 { #category : #arithmetic }
 DataSeriesTest >> testCategoricalCanBeMadeCategorical [
 
@@ -1106,13 +1112,6 @@ DataSeriesTest >> testCreateEmptyDataSeries [
 	self assert: dataSeries asArray equals: #().
 	self assert: dataSeries keys equals: #().
 	self assert: dataSeries name equals: '(no name)'.
-]
-
-{ #category : #accessing }
-DataSeriesTest >> testDataType [
-
-
-	self assert: series dataType equals: SmallInteger.
 ]
 
 { #category : #enumerating }

@@ -153,7 +153,8 @@ Class {
 	#instVars : [
 		'contents',
 		'rowNames',
-		'columnNames'
+		'columnNames',
+		'dataTypes'
 	],
 	#category : #'DataFrame-Core'
 }
@@ -469,6 +470,25 @@ DataFrame >> average [
 	^ self applyToAllColumns: #average
 ]
 
+{ #category : #'data-types' }
+DataFrame >> calculateDataTypeOfColumn: aColumnName [
+	
+	dataTypes at: aColumnName put: (self column: aColumnName) calculateDataType.
+]
+
+{ #category : #'data-types' }
+DataFrame >> calculateDataTypeOfColumnAt: aNumber [
+	
+	self calculateDataTypeOfColumn: (self columnNames at: aNumber).
+]
+
+{ #category : #'data-types' }
+DataFrame >> calculateDataTypes [
+
+	self columnNames do: [ :columnName |
+		self calculateDataTypeOfColumn: columnName ].
+]
+
 { #category : #comparing }
 DataFrame >> closeTo: aDataFrame [
 
@@ -729,30 +749,44 @@ DataFrame >> crossTabulate: colName1 with: colName2 [
 	^ col1 crossTabulateWith: col2.
 ]
 
-{ #category : #accessing }
+{ #category : #'data-types' }
 DataFrame >> dataTypeOfColumn: aColumnName [
 
-
-	^(self column: aColumnName) dataType.
+	| index |
+	index := self indexOfColumnNamed: aColumnName.
+	^ self dataTypeOfColumnAt: index.
 ]
 
-{ #category : #accessing }
-DataFrame >> dataTypeOfColumnAt: anIndex [
+{ #category : #'data-types' }
+DataFrame >> dataTypeOfColumn: aColumnName put: aDataType [
 
+	| index |
+	index := self indexOfColumnNamed: aColumnName.
+	^ self dataTypeOfColumnAt: index put: aDataType.
+]
 
-	^(self columnAt: anIndex) dataType.
+{ #category : #'data-types' }
+DataFrame >> dataTypeOfColumnAt: aNumber [
+
+	^ dataTypes at: aNumber
+]
+
+{ #category : #'data-types' }
+DataFrame >> dataTypeOfColumnAt: aNumber put: aDataType [
+
+	^ dataTypes at: aNumber put: aDataType
 ]
 
 { #category : #accessing }
 DataFrame >> dataTypes [
+	
+	^ dataTypes 
+]
 
-	| dictionaryOfClasses |
-	
-	dictionaryOfClasses := Dictionary  new.
-	(self columnNames) do: [
-		 :each | dictionaryOfClasses at: each put: (self dataTypeOfColumn: each).].
-	
-	^dictionaryOfClasses.
+{ #category : #accessing }
+DataFrame >> dataTypes: anObject [
+
+	dataTypes := anObject
 ]
 
 { #category : #accessing }
