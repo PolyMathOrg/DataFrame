@@ -507,7 +507,7 @@ DataFrameTest >> testColumnIfAbsent [
 	
 	exceptionBlockEvaluated := false.
 	
-	df column: #NoSuchColumn
+	df column: 'NoSuchColumn'
 		ifAbsent: [ exceptionBlockEvaluated := true ].
 		
 	self assert: exceptionBlockEvaluated.
@@ -542,7 +542,7 @@ DataFrameTest >> testColumnNamesSizeMismatch [
 { #category : #tests }
 DataFrameTest >> testColumnNotFound [
 	self
-		should: [ df column: #NoSuchColumn ]
+		should: [ df column: 'NoSuchColumn' ]
 		raise: LibrarySymbolNotFoundError.
 ]
 
@@ -592,7 +592,7 @@ DataFrameTest >> testColumnPutIfAbsent [
 { #category : #tests }
 DataFrameTest >> testColumnPutNotFound [
 	self
-		should: [ df column: #NoSuchColumn put: #(0 0 0) ]
+		should: [ df column: 'NoSuchColumn' put: #(0 0 0) ]
 		raise: LibrarySymbolNotFoundError.
 ]
 
@@ -609,7 +609,7 @@ DataFrameTest >> testColumnTransform [
 		rowNames: #(A B C)
 		columnNames: #(City Population BeenThere).
 		
-	df column: #Population transform: [ :column | column at: #B put: 0; yourself ].
+	df column: 'Population' transform: [ :column | column at: 'B' put: 0; yourself ].
 	self assert: df equals: expected
 ]
 
@@ -628,8 +628,8 @@ DataFrameTest >> testColumnTransformIfAbsent [
 		rowNames: #(A B C)
 		columnNames: #(City Population BeenThere).
 		
-	df column: #NoSuchColumn
-		transform: [ :column | column at: #B put: 0 ]
+	df column: 'NoSuchColumn'
+		transform: [ :column | column at: 'B' put: 0 ]
 		ifAbsent: [ exceptionBlockEvaluated := true ].
 		
 	self assert: df equals: expected.
@@ -651,7 +651,7 @@ DataFrameTest >> testColumnTransformNotFound [
 		
 	self
 		should: [
-			df column: #NoSuchColumn
+			df column: 'NoSuchColumn'
 				transform: [ :column | column at: #B put: 0 ] ]
 		raise: LibrarySymbolNotFoundError.
 		
