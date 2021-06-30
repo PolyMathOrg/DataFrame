@@ -752,29 +752,25 @@ DataFrame >> crossTabulate: colName1 with: colName2 [
 { #category : #'data-types' }
 DataFrame >> dataTypeOfColumn: aColumnName [
 
-	| index |
-	index := self indexOfColumnNamed: aColumnName.
-	^ self dataTypeOfColumnAt: index.
+	^ dataTypes at: aColumnName
 ]
 
 { #category : #'data-types' }
 DataFrame >> dataTypeOfColumn: aColumnName put: aDataType [
 
-	| index |
-	index := self indexOfColumnNamed: aColumnName.
-	^ self dataTypeOfColumnAt: index put: aDataType.
+	dataTypes at: aColumnName put: aDataType
 ]
 
 { #category : #'data-types' }
 DataFrame >> dataTypeOfColumnAt: aNumber [
 
-	^ dataTypes at: aNumber
+	^ self dataTypeOfColumn: (columnNames at: aNumber)
 ]
 
 { #category : #'data-types' }
 DataFrame >> dataTypeOfColumnAt: aNumber put: aDataType [
 
-	^ dataTypes at: aNumber put: aDataType
+	^ self dataTypeOfColumn: (columnNames at: aNumber) put: aDataType
 ]
 
 { #category : #accessing }
