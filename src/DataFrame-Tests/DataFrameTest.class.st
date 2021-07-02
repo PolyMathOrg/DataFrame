@@ -462,7 +462,7 @@ DataFrameTest >> testCalculateDataTypes [
 	df calculateDataTypes.
 	
 	expected := {
-		'City' ->  ByteSymbol.
+		'City' ->  ByteString.
 		'Population' -> SmallFloat64.
 		'BeenThere' -> Boolean
 	} asDictionary.
@@ -1292,12 +1292,13 @@ DataFrameTest >> testCrossTabulation [
 { #category : #'data-types' }
 DataFrameTest >> testDataTypeOfColumn [
 
-	self assert: (df dataTypeOfColumn: 'BeenThere') equals: Boolean.
+	self assert: (df dataTypeOfColumn: 'Population') equals: SmallFloat64.
 ]
 
 { #category : #'data-types' }
 DataFrameTest >> testDataTypeOfColumnAt [
 
+	"df calculateDataTypes."
 	self assert: (df dataTypeOfColumnAt: 3) equals: Boolean.
 ]
 
@@ -1321,7 +1322,7 @@ DataFrameTest >> testDataTypes [
 	| expected |
 
 	expected:= {
-		'City' ->  ByteSymbol.
+		'City' ->  ByteString.
 		'Population' -> SmallFloat64.
 		'BeenThere' -> Boolean
 	} asDictionary.
@@ -1342,8 +1343,8 @@ DataFrameTest >> testDataTypesOfEmptyDataFrameWithColumnNames [
 
 	| dataFrame expected |
 	
-	dataFrame := DataFrame withColumnNames: #(a b c).
-	
+	dataFrame := DataFrame withColumnNames: #('a' 'b' 'c').
+	dataFrame dataTypes.
 	expected := { 
 		'a' -> nil .
 		'b' -> nil .

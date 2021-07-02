@@ -153,6 +153,8 @@ DataSeries >> calculateDataType [
 	
 	^ classes inject: classes first into: [ :commonSuperclass :each |
 		self leastCommonSuperclassOf: commonSuperclass and: each ].
+	
+	
 ]
 
 { #category : #comparing }

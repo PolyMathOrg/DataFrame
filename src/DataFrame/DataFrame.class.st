@@ -618,7 +618,7 @@ DataFrame >> columnNames: anArray [
 	anArray asSet size = anArray size
 		ifFalse: [ Error signal: 'All column names must be distinct' ].
 		
-	columnNames := anArray asOrderedCollection
+	columnNames := anArray asOrderedCollection.
 ]
 
 { #category : #accessing }
@@ -752,7 +752,7 @@ DataFrame >> crossTabulate: colName1 with: colName2 [
 { #category : #'data-types' }
 DataFrame >> dataTypeOfColumn: aColumnName [
 
-	^ dataTypes at: aColumnName
+	^ dataTypes at: aColumnName.
 ]
 
 { #category : #'data-types' }
@@ -960,6 +960,8 @@ DataFrame >> initialize [
 	
 	contents := DataFrameInternal new.
 	self setDefaultRowColumnNames.
+	dataTypes := Dictionary new.
+	self calculateDataTypes.
 ]
 
 { #category : #initialization }
@@ -969,6 +971,8 @@ DataFrame >> initialize: aPoint [
 	
 	contents := DataFrameInternal new: aPoint.
 	self setDefaultRowColumnNames.
+	dataTypes := Dictionary new.
+	self calculateDataTypes.
 ]
 
 { #category : #initialization }
