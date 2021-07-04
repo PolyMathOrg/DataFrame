@@ -980,6 +980,7 @@ DataFrame >> initializeColumns: anArrayOfArrays [
 
 	contents := DataFrameInternal withColumns: anArrayOfArrays.
 	self setDefaultRowColumnNames.
+	self calculateDataTypes.
 ]
 
 { #category : #initialization }
@@ -990,6 +991,7 @@ DataFrame >> initializeContents: aDataFrameInternal rowNames: rows columnNames: 
 	contents := aDataFrameInternal.
 	self rowNames: rows.
 	self columnNames: columns.
+	self calculateDataTypes.
 ]
 
 { #category : #initialization }
@@ -997,6 +999,7 @@ DataFrame >> initializeRows: anArrayOfArrays [
 
 	contents := DataFrameInternal withRows: anArrayOfArrays.
 	self setDefaultRowColumnNames.
+	self calculateDataTypes.
 ]
 
 { #category : #enumerating }
