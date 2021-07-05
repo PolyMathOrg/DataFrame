@@ -41,10 +41,11 @@ DataFrameStatsTest >> testAverage [
 DataFrameStatsTest >> testCorrelationMatrix [
 
 	| expectedCorrelationMatrix actualCorrelationMatrix |
-	expectedCorrelationMatrix := DataFrame withRows: #((1 0.311398 0.538922 0.454601)
+	expectedCorrelationMatrix := DataFrame withRows: #(
+	(1 0.311398 0.538922 0.454601)
 	(0.311398 1 -0.321281 -0.308023)
-	(0.538922	 -0.321281 1 0.982956)
-		(0.454601 -0.308023 0.982956 1)).
+	(0.538922 -0.321281 1 0.982956)
+	(0.454601 -0.308023 0.982956 1)).
 	expectedCorrelationMatrix columnNames: #(sepalLength sepalWidth petalLength petalWidth).												
 	expectedCorrelationMatrix rowNames: #(sepalLength sepalWidth petalLength petalWidth).	
 	actualCorrelationMatrix  := df correlationMatrix.
