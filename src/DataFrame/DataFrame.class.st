@@ -473,7 +473,7 @@ DataFrame >> average [
 { #category : #'data-types' }
 DataFrame >> calculateDataTypeOfColumn: aColumnName [
 	
-	dataTypes at: aColumnName put: (self column: aColumnName) calculateDataType.
+	self dataTypes at: aColumnName put: (self column: aColumnName) calculateDataType.
 ]
 
 { #category : #'data-types' }
@@ -612,6 +612,7 @@ DataFrame >> columnNames [
 
 { #category : #accessing }
 DataFrame >> columnNames: anArray [
+	| value |
 	anArray size = self numberOfColumns 
 		ifFalse: [ SizeMismatch signal: 'Wrong number of column names' ].
 		
@@ -619,6 +620,11 @@ DataFrame >> columnNames: anArray [
 		ifFalse: [ Error signal: 'All column names must be distinct' ].
 		
 	columnNames := anArray asOrderedCollection.
+	
+	(self dataTypes keys) withIndexDo: [ :key :i |
+    value := (self dataTypes) at: key.
+    (self dataTypes) removeKey: key.
+    (self dataTypes) at: (self columnNames at: i) put: value ].
 ]
 
 { #category : #accessing }
