@@ -317,6 +317,7 @@ DataFrame >> add: aDataSeries [
 DataFrame >> addColumn: aDataSeries [
 	"Add DataSeries as a new column at the end"
 	self addColumn: aDataSeries named: aDataSeries name.
+	(self dataTypes ) at: aDataSeries name put: aDataSeries calculateDataType.
 ]
 
 { #category : #adding }
@@ -1292,6 +1293,7 @@ DataFrame >> removeColumn: columnName [
 	| index |
 	index := self indexOfColumnNamed: columnName.
 	self removeColumnAt: index.
+	self dataTypes removeKey: columnName.
 ]
 
 { #category : #removing }
@@ -1301,12 +1303,15 @@ DataFrame >> removeColumnAt: columnNumber [
 
 	contents removeColumnAt: columnNumber.
 	columnNames := columnNames copyWithoutIndex: columnNumber.
+	self dataTypes removeKey: (self columnAt: columnNumber) name.
 ]
 
 { #category : #removing }
 DataFrame >> removeColumns: aCollectionOfColumnNames [
 	aCollectionOfColumnNames do: [ :each |
-		self removeColumn: each ].
+		self removeColumn: each.
+		self dataTypes removeKey: each.
+		].
 ]
 
 { #category : #removing }

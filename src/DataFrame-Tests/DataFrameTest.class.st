@@ -1365,10 +1365,10 @@ DataFrameTest >> testDataTypesWhenColumnIsAdded [
 	df addColumn: column.
 
 	expected:= {
-		'City' ->  ByteSymbol .
-		'Population' -> SmallFloat64 .
-		'BeenThere' -> Boolean .
-		'Year' -> Integer
+		'City' ->  ByteString.
+		'Population' -> SmallFloat64.
+		'BeenThere' -> Boolean.
+		'Year' -> SmallInteger 
 	} asDictionary.
 	
 	self assert: df dataTypes equals: expected.
@@ -1382,7 +1382,7 @@ DataFrameTest >> testDataTypesWhenColumnIsRemoved [
 	df removeColumn: 'Population'.
 
 	expected:= {
-		'City' ->  ByteSymbol .
+		'City' ->  ByteString .
 		'BeenThere' -> Boolean 
 	} asDictionary.
 	
