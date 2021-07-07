@@ -604,9 +604,7 @@ DataFrameTest >> testColumnNames [
 	df columnNames: newNames.
 	self assert: df columnNames equals: newNames asOrderedCollection.
 	
-	self assert: (df dataTypes class) equals: Dictionary.
-	self assert: (df dataTypes size) equals: 3.
-	self assert: (df dataTypes keys) equals: #( 1 2 3).
+	self assert: (df dataTypes keys) equals: #( X Y Z).
 ]
 
 { #category : #tests }
@@ -1302,7 +1300,7 @@ DataFrameTest >> testDataTypeOfColumn [
 { #category : #'data-types' }
 DataFrameTest >> testDataTypeOfColumnAt [
 
-	"df calculateDataTypes."
+
 	self assert: (df dataTypeOfColumnAt: 3) equals: Boolean.
 ]
 
@@ -1332,25 +1330,6 @@ DataFrameTest >> testDataTypes [
 	} asDictionary.
 	
 	self assert: df dataTypes equals: expected.
-]
-
-{ #category : #'data-types' }
-DataFrameTest >> testDataTypesCreation [
-	
-	| value expected |
-	expected:= {
-		'City' ->  ByteString.
-		'Population' -> SmallFloat64.
-		'BeenThere' -> Boolean
-	} asDictionary.
-	self assert: (df dataTypes class) equals: Dictionary .
-	self assert: (df dataTypes keys) equals: #(1 2 3).
-	
-	(df dataTypes keys) withIndexDo: [ :key :i |
-    value := (df dataTypes) at: key.
-    (df dataTypes) removeKey: key.
-    (df dataTypes) at: (df columnNames at: i) put: value ].
-	self assert: (df dataTypes) equals: expected.
 ]
 
 { #category : #'data-types' }

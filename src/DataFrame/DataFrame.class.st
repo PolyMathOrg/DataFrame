@@ -965,9 +965,9 @@ DataFrame >> initialize [
 
 	super initialize.
 	
+	dataTypes := Dictionary new.
 	contents := DataFrameInternal new.
 	self setDefaultRowColumnNames.
-	dataTypes := Dictionary new.
 	self calculateDataTypes.
 ]
 
@@ -976,9 +976,9 @@ DataFrame >> initialize: aPoint [
 
 	super initialize.
 	
+	dataTypes := Dictionary new.
 	contents := DataFrameInternal new: aPoint.
 	self setDefaultRowColumnNames.
-	dataTypes := Dictionary new.
 	self calculateDataTypes.
 ]
 
@@ -986,8 +986,8 @@ DataFrame >> initialize: aPoint [
 DataFrame >> initializeColumns: anArrayOfArrays [
 
 	contents := DataFrameInternal withColumns: anArrayOfArrays.
-	self setDefaultRowColumnNames.
 	dataTypes := Dictionary new.
+	self setDefaultRowColumnNames.
 	self calculateDataTypes.
 ]
 
@@ -996,10 +996,10 @@ DataFrame >> initializeContents: aDataFrameInternal rowNames: rows columnNames: 
 
 	super initialize.
 	
+	dataTypes := Dictionary new.
 	contents := aDataFrameInternal.
 	self rowNames: rows.
 	self columnNames: columns.
-	dataTypes := Dictionary new.
 	self calculateDataTypes.
 ]
 
@@ -1007,8 +1007,8 @@ DataFrame >> initializeContents: aDataFrameInternal rowNames: rows columnNames: 
 DataFrame >> initializeRows: anArrayOfArrays [
 
 	contents := DataFrameInternal withRows: anArrayOfArrays.
-	self setDefaultRowColumnNames.
 	dataTypes:= Dictionary new.
+	self setDefaultRowColumnNames.
 	self calculateDataTypes.
 ]
 
