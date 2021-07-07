@@ -1335,6 +1335,25 @@ DataFrameTest >> testDataTypes [
 ]
 
 { #category : #'data-types' }
+DataFrameTest >> testDataTypesCreation [
+	
+	| value expected |
+	expected:= {
+		'City' ->  ByteString.
+		'Population' -> SmallFloat64.
+		'BeenThere' -> Boolean
+	} asDictionary.
+	self assert: (df dataTypes class) equals: Dictionary .
+	self assert: (df dataTypes keys) equals: #(1 2 3).
+	
+	(df dataTypes keys) withIndexDo: [ :key :i |
+    value := (df dataTypes) at: key.
+    (df dataTypes) removeKey: key.
+    (df dataTypes) at: (df columnNames at: i) put: value ].
+	self assert: (df dataTypes) equals: expected.
+]
+
+{ #category : #'data-types' }
 DataFrameTest >> testDataTypesOfEmptyDataFrame [
 			
 	self
