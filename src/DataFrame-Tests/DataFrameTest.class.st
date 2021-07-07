@@ -602,7 +602,11 @@ DataFrameTest >> testColumnNames [
 	| newNames |
 	newNames := #(X Y Z).
 	df columnNames: newNames.
-	self assert: df columnNames equals: newNames asOrderedCollection
+	self assert: df columnNames equals: newNames asOrderedCollection.
+	
+	self assert: (df dataTypes class) equals: Dictionary.
+	self assert: (df dataTypes size) equals: 3.
+	self assert: (df dataTypes keys) equals: #( 1 2 3).
 ]
 
 { #category : #tests }
