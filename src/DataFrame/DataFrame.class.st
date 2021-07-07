@@ -612,7 +612,8 @@ DataFrame >> columnNames [
 
 { #category : #accessing }
 DataFrame >> columnNames: anArray [
-	| value |
+	
+	"| value |"
 	anArray size = self numberOfColumns 
 		ifFalse: [ SizeMismatch signal: 'Wrong number of column names' ].
 		
@@ -621,10 +622,10 @@ DataFrame >> columnNames: anArray [
 		
 	columnNames := anArray asOrderedCollection.
 	
-	(self dataTypes keys) withIndexDo: [ :key :i |
+	"(self dataTypes keys) withIndexDo: [ :key :i |
     value := (self dataTypes) at: key.
     (self dataTypes) removeKey: key.
-    (self dataTypes) at: (self columnNames at: i) put: value ].
+    (self dataTypes) at: (self columnNames at: i) put: value ]."
 ]
 
 { #category : #accessing }
