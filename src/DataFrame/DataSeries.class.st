@@ -151,9 +151,11 @@ DataSeries >> calculateDataType [
 	
 	classes := self collect: [ :each | each class. ].
 	
-	^ classes inject: classes first into: [ :commonSuperclass :each |
-		self leastCommonSuperclassOf: commonSuperclass and: each ].
-	
+	(classes isEmpty) ifFalse: [ 
+		^ classes inject: classes first into: [ :commonSuperclass :each |
+			self leastCommonSuperclassOf: commonSuperclass and: each ].
+		].
+	^nil.
 	
 ]
 

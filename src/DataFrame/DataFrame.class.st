@@ -626,7 +626,7 @@ DataFrame >> columnNames: anArray [
 	(dataTypes keys) withIndexDo: [ :key :i |
     value := (dataTypes) at: key.
     (dataTypes) removeKey: key.
-    (dataTypes) at: (anArray at: i) put: value ].
+    (dataTypes) at: (columnNames at: i) put: value ].
 ]
 
 { #category : #accessing }
