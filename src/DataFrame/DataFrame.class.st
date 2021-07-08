@@ -626,7 +626,7 @@ DataFrame >> columnNames: anArray [
 	(dataTypes keys) withIndexDo: [ :key :i |
     value := (dataTypes) at: key.
     (dataTypes) removeKey: key.
-    (dataTypes) at: (columnNames at: i) put: value ].
+    (dataTypes) at: (anArray at: i) put: value ].
 ]
 
 { #category : #accessing }
@@ -1293,24 +1293,24 @@ DataFrame >> removeColumn: columnName [
 	| index |
 	index := self indexOfColumnNamed: columnName.
 	self removeColumnAt: index.
-	self dataTypes removeKey: columnName.
 ]
 
 { #category : #removing }
 DataFrame >> removeColumnAt: columnNumber [
 	(columnNumber < 1 or: [ columnNumber > self numberOfColumns ])
 		ifTrue: [ SubscriptOutOfBounds signalFor: columnNumber ].
-
+		
+	self dataTypes removeKey: (self columnAt: columnNumber) name.
+	
 	contents removeColumnAt: columnNumber.
 	columnNames := columnNames copyWithoutIndex: columnNumber.
-	self dataTypes removeKey: (self columnAt: columnNumber) name.
+	
 ]
 
 { #category : #removing }
 DataFrame >> removeColumns: aCollectionOfColumnNames [
 	aCollectionOfColumnNames do: [ :each |
 		self removeColumn: each.
-		self dataTypes removeKey: each.
 		].
 ]
 
@@ -1429,6 +1429,9 @@ DataFrame >> renameColumn: oldName to: newName [
 	| index |
 	index := self indexOfColumnNamed: oldName.
 	self columnNames at: index put: newName.
+	
+	self dataTypes at: newName put: (self dataTypes at: oldName).
+	self dataTypes removeKey: oldName.
 ]
 
 { #category : #renaming }

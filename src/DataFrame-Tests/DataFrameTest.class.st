@@ -1413,7 +1413,7 @@ DataFrameTest >> testDataTypesWhenSingleColumnIsRenamed [
 	df renameColumn: 'BeenThere' to: 'Visited'.
 
 	expected:= {
-		'City' ->  ByteSymbol.
+		'City' ->  ByteString.
 		'Population' -> SmallFloat64.
 		'Visited' -> Boolean
 	} asDictionary.
