@@ -1392,7 +1392,7 @@ DataFrameTest >> testDataTypesWhenColumnIsRemoved [
 { #category : #'data-types' }
 DataFrameTest >> testDataTypesWhenColumnsAreRenamed [
 			
-	| expected |
+	"| expected |"
 	self assert: df dataTypes keys equals: #('City' 'Population' 'BeenThere').
 	"df columnNames: #('city' 'population' 'visited').
 	expected:= {
@@ -1402,6 +1402,22 @@ DataFrameTest >> testDataTypesWhenColumnsAreRenamed [
 	} asDictionary.
 	
 	self assert: df dataTypes equals: expected."
+]
+
+{ #category : #'data-types' }
+DataFrameTest >> testDataTypesWhenEmptyColumnIsAdded [
+			
+	| expected |
+	
+	df addEmptyColumnNamed: 'EmptyColumn'.
+	expected:= {
+		'City' ->  ByteString.
+		'Population' -> SmallFloat64.
+		'BeenThere' -> Boolean.
+		'EmptyColumn' -> UndefinedObject. 
+	} asDictionary.
+	
+	self assert: df dataTypes equals: expected.
 ]
 
 { #category : #'data-types' }

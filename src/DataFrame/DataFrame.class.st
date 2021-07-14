@@ -340,6 +340,7 @@ DataFrame >> addColumn: anArray named: aString atPosition: aNumber [
 	
 	contents addColumn: anArray asArray atPosition: aNumber.
 	columnNames add: aString afterIndex: aNumber - 1.
+	dataTypes at: aString put: (anArray asDataSeries calculateDataType).
 ]
 
 { #category : #adding }
