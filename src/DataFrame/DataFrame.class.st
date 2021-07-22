@@ -613,21 +613,22 @@ DataFrame >> columnNames [
 ]
 
 { #category : #accessing }
-DataFrame >> columnNames: anArray [
+DataFrame >> columnNames: aCollection [
 	
-	| value |
-	anArray size = self numberOfColumns 
+	| type |
+	aCollection size = self numberOfColumns 
 		ifFalse: [ SizeMismatch signal: 'Wrong number of column names' ].
 		
-	anArray asSet size = anArray size
+	aCollection asSet size = aCollection size
 		ifFalse: [ Error signal: 'All column names must be distinct' ].
-		
-	columnNames := anArray asOrderedCollection.
 	
-	(dataTypes keys) withIndexDo: [ :key :i |
-    value := (dataTypes) at: key.
-    (dataTypes) removeKey: key.
-    (dataTypes) at: (columnNames at: i) put: value ].
+	self columnNames ifNotNil: [
+		self columnNames withIndexDo: [ :currentColumnName :i |
+			type := dataTypes at: currentColumnName.
+			dataTypes removeKey: currentColumnName.
+			dataTypes at: (aCollection at: i) put: type ] ].
+	
+	columnNames := aCollection asOrderedCollection.
 ]
 
 { #category : #accessing }
@@ -978,7 +979,6 @@ DataFrame >> initialize: aPoint [
 
 	super initialize.
 	
-	dataTypes := Dictionary new.
 	contents := DataFrameInternal new: aPoint.
 	self setDefaultRowColumnNames.
 	self calculateDataTypes.
@@ -988,7 +988,6 @@ DataFrame >> initialize: aPoint [
 DataFrame >> initializeColumns: anArrayOfArrays [
 
 	contents := DataFrameInternal withColumns: anArrayOfArrays.
-	dataTypes := Dictionary new.
 	self setDefaultRowColumnNames.
 	self calculateDataTypes.
 ]
@@ -998,7 +997,6 @@ DataFrame >> initializeContents: aDataFrameInternal rowNames: rows columnNames: 
 
 	super initialize.
 	
-	dataTypes := Dictionary new.
 	contents := aDataFrameInternal.
 	self rowNames: rows.
 	self columnNames: columns.
@@ -1009,7 +1007,6 @@ DataFrame >> initializeContents: aDataFrameInternal rowNames: rows columnNames: 
 DataFrame >> initializeRows: anArrayOfArrays [
 
 	contents := DataFrameInternal withRows: anArrayOfArrays.
-	dataTypes:= Dictionary new.
 	self setDefaultRowColumnNames.
 	self calculateDataTypes.
 ]
