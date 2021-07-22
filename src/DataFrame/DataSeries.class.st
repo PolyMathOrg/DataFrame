@@ -189,7 +189,7 @@ DataSeries >> collectWithNotNils: aBlock [
 { #category : #'as yet unclassified' }
 DataSeries >> correlationWith: otherSeries [
 	"Calculate the Pearson correlation coefficient between self and the other series"
-	^ self correlationWith: otherSeries using: DataPearsonCorrelationCoefficient
+	^ self correlationWith: otherSeries using: DataPearsonCorrelationMethod
 ]
 
 { #category : #'as yet unclassified' }
