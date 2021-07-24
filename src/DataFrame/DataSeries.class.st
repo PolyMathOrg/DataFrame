@@ -501,7 +501,7 @@ DataSeries >> replaceNilsWithPreviousValue [
 	
 	|value|
 	self withIndexDo: [ :ele :index |
-		index > 0 
+		index > 1 
 			ifTrue: [ 
 				ele ifNil: [ self atIndex: index put: value ].
 				 ].
