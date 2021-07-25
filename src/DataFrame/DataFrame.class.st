@@ -1336,6 +1336,18 @@ DataFrame >> removeRowsOfColumnElementsSatisfing: aBlock onColumnNamed: columnNa
 ]
 
 { #category : #removing }
+DataFrame >> removeRowsWithNils [
+	
+	1 to: self numberOfColumns do: [ :i |
+		1 to: self numberOfRows do: [ :j |
+			(self at: j at: i) ifNil: [ 
+				self removeRowAt: j.
+				 ].
+			].
+		 ].
+]
+
+{ #category : #removing }
 DataFrame >> removeRowsWithNilsAtColumn: columnNumber [
 	self removeRowsOfColumnElementsSatisfing: [ :ele | ele isNil ] onColumn: columnNumber.
 ]

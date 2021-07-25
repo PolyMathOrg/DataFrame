@@ -3225,6 +3225,27 @@ DataFrameTest >> testRemoveRowsOfColumnElementsSatisfingOnColumnNamed [
 ]
 
 { #category : #removing }
+DataFrameTest >> testRemoveRowsWithNils [
+	| actual expected |
+	
+	actual := DataFrame withRows: #(
+		(Barcelona 1.609 true)
+		(Dubai 2.789 nil)
+   		(nil 8.788 false)).
+		
+	actual rowNames: #(A B C).
+	actual columnNames: #(City Population BeenThere).
+		
+	expected:= DataFrame withRows: #(
+		(Barcelona 1.609 true)).
+		
+	expected rowNames: #(A).
+	expected columnNames: #(City Population BeenThere).
+	
+	self assert: actual removeRowsWithNils equals: expected.
+]
+
+{ #category : #removing }
 DataFrameTest >> testRemoveRowsWithNilsAtColumn [
 
 	| expected |
