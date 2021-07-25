@@ -1373,6 +1373,74 @@ DataFrame >> renameRow: oldName to: newName [
 	self rowNames at: index put: newName.
 ]
 
+{ #category : #replacing }
+DataFrame >> replaceNilsWith: anObject [
+			
+	1 to: self numberOfColumns do: [ :i |
+		1 to: self numberOfRows do: [ :j |
+			(self at: j at: i) ifNil:
+				[ self at: j at: i put: anObject ] ]
+		].
+]
+
+{ #category : #replacing }
+DataFrame >> replaceNilsWithAverage [
+	
+	| averageOfColumn |		
+	1 to: self numberOfColumns do: [ :i |
+		averageOfColumn := ((self columnAt: i) select: [ :ele | ele isNotNil ]) average.
+		1 to: self numberOfRows do: [ :j |
+			(self at: j at: i) ifNil: [
+				self at: j at: i put: averageOfColumn  ] ].
+		].
+]
+
+{ #category : #replacing }
+DataFrame >> replaceNilsWithMedian [
+			
+	| medianOfColumn |		
+	1 to: self numberOfColumns do: [ :i |
+		medianOfColumn := ((self columnAt: i) select: [ :ele | ele isNotNil ]) median.
+		1 to: self numberOfRows do: [ :j |
+			(self at: j at: i) ifNil: [
+				self at: j at: i put: medianOfColumn  ] ].
+		].
+]
+
+{ #category : #replacing }
+DataFrame >> replaceNilsWithMode [
+			
+	| modeOfColumn |		
+	1 to: self numberOfColumns do: [ :i |
+		modeOfColumn := ((self columnAt: i) select: [ :ele | ele isNotNil ]) mode.
+		1 to: self numberOfRows do: [ :j |
+			(self at: j at: i) ifNil: [
+				self at: j at: i put: modeOfColumn  ] ].
+		].
+]
+
+{ #category : #replacing }
+DataFrame >> replaceNilsWithPreviousRowValue [
+	
+	|value|		
+	1 to: self numberOfColumns do: [ :i |
+		1 to: self numberOfRows do: [ :j |
+			
+			j > 1 
+				ifTrue: [ 
+					(self at: j at: i) ifNil: [ self at: j at: i put: value ].
+				 	].
+			value:= self at: j at: i.
+		].
+	].
+]
+
+{ #category : #replacing }
+DataFrame >> replaceNilsWithZero [
+			
+	self replaceNilsWith: 0.
+]
+
 { #category : #splitjoin }
 DataFrame >> rightJoin: aDataFrame [
 	"Performs right join on aDataFrame with rowNames as keys"
