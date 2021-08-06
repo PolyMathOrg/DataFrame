@@ -1855,6 +1855,18 @@ DataSeriesTest >> testStatsAverage [
 ]
 
 { #category : #statistics }
+DataSeriesTest >> testStatsCumulativeSum [
+
+	| actual expected |
+	actual := DataSeries withValues: #( nil 3 4 7 nil 2 4 0 3 nil 2 9 ).
+	expected := DataSeries withValues:
+		            #( 0 3 7 14 14 16 20 20 23 23 25 34 ).
+	expected name: #cumulativeSum.
+
+	self assert: actual cumulativeSum equals: expected
+]
+
+{ #category : #statistics }
 DataSeriesTest >> testStatsFirstQuartile [
 
 	self assert: series firstQuartile equals: 7.

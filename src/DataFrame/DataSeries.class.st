@@ -218,6 +218,22 @@ DataSeries >> crossTabulateWith: aSeries [
 	^ df
 ]
 
+{ #category : #statistics }
+DataSeries >> cumulativeSum [
+
+	"calculates cumulative sum of a dataseries and returns a new dataseries with keys as self keys and values as cumulative sum"
+
+	| sum cumulativeSumSeries |
+	sum := 0.
+
+	cumulativeSumSeries := DataSeries withValues:
+		                       (self collect: [ :each | 
+			                        each ifNotNil: [ sum := sum + each ].
+			                        sum ]).
+	cumulativeSumSeries name: #cumulativeSum.
+	^ cumulativeSumSeries
+]
+
 { #category : #defaults }
 DataSeries >> defaultHeadTailSize [
 	^ 5
