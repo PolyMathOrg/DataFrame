@@ -661,21 +661,10 @@ DataFrameTest >> testColumnTransformNotFound [
 { #category : #tests }
 DataFrameTest >> testColumns [
 
-	| columnNames actualDataFrame expectedDataFrame |
-	
-	columnNames := #(City BeenThere).
-	
-	expectedDataFrame := DataFrame withRows: #(
-		(Barcelona true)
-   		(Dubai true)
-   		(London false)).
-		
-	expectedDataFrame rowNames: df rowNames.
-	expectedDataFrame columnNames: columnNames.
-	
-	actualDataFrame := df columns: columnNames.
-	
-	self assert: actualDataFrame equals: expectedDataFrame.
+	| expected |
+	expected := #( #( Barcelona Dubai London )
+	               #( 1.609 2.789 8.788 ) #( true true false ) ).
+	self assert: df columns equals: expected
 ]
 
 { #category : #tests }
