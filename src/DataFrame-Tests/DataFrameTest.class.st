@@ -823,6 +823,25 @@ DataFrameTest >> testColumnsPut [
 	self assert: dataFrame equals: expected.
 ]
 
+{ #category : #replacing }
+DataFrameTest >> testCountOfNils [
+
+	| expected |
+	df := DataFrame withRows:
+		      #( #( nil 1.609 true ) #( Dubai 2.789 nil )
+		         #( nil 8.788 false ) ).
+	df rowNames: #( A B C ).
+	df columnNames: #( City Population BeenThere ).
+
+	expected := Dictionary newFrom: { 
+			            (#City -> 2).
+			            (#Population -> 0).
+			            (#BeenThere -> 1) }.
+
+
+	self assert: df countOfNils equals: expected
+]
+
 { #category : #tests }
 DataFrameTest >> testCreateDataFrameWith3ColumnsAndNoRows [
 	| dataFrame |

@@ -718,6 +718,17 @@ DataFrame >> correlationMatrixUsing: aCorrelationCoefficient [
 	^ correlationMatrix
 ]
 
+{ #category : #replacing }
+DataFrame >> countOfNils [
+
+	| dictionary count |
+	dictionary := Dictionary new.
+	self columnNames do: [ :each | 
+		count := (self column: each) count: [ :each2 | each2 isNil ].
+		dictionary at: each put: count ].
+	^ dictionary 
+]
+
 { #category : #accessing }
 DataFrame >> crossTabulate: colName1 with: colName2 [
 
