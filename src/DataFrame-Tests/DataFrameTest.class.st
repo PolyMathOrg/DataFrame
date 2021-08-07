@@ -1350,6 +1350,23 @@ DataFrameTest >> testFindAllIndicesOfAtColumnFloat [
 	self assert: (df findAllIndicesOf: 2.789 atColumn: 'Population') equals: #(2 4) asOrderedCollection.
 ]
 
+{ #category : #replacing }
+DataFrameTest >> testHasNils [
+
+	| expected |
+	df := DataFrame withRows:
+		      #( #( nil 1.609 true ) #( Dubai 2.789 nil )
+		         #( London 8.788 false ) ).
+	df rowNames: #( A B C ).
+	df columnNames: #( City Population BeenThere ).
+
+	expected := Dictionary newFrom: { 
+			            (#City -> true).
+			            (#Population -> false).
+			            (#BeenThere -> true) }.
+	self assert: df hasNils equals: expected
+]
+
 { #category : #tests }
 DataFrameTest >> testIndexOfColumnNamed [
 	| expected actual |

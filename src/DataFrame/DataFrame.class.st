@@ -847,6 +847,18 @@ DataFrame >> gtInspectorItemsIn: composite [
 		when: [ false ].
 ]
 
+{ #category : #replacing }
+DataFrame >> hasNils [
+
+	"Returns a ditctionary which indictes the presence of any nil values"
+
+	| dictionary |
+	dictionary := Dictionary new.
+	self columnNames do: [ :each | 
+		dictionary at: each put: (self column: each) hasNil ].
+	^ dictionary
+]
+
 { #category : #accessing }
 DataFrame >> head [ 
 
