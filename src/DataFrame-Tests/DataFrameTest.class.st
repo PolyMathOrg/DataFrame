@@ -3225,6 +3225,27 @@ DataFrameTest >> testRemoveRowsOfColumnElementsSatisfingOnColumnNamed [
 ]
 
 { #category : #removing }
+DataFrameTest >> testRemoveRowsWithNils [
+	| actual expected |
+	
+	actual := DataFrame withRows: #(
+		(Barcelona 1.609 true)
+		(Dubai 2.789 nil)
+   		(nil 8.788 false)).
+		
+	actual rowNames: #(A B C).
+	actual columnNames: #(City Population BeenThere).
+		
+	expected:= DataFrame withRows: #(
+		(Barcelona 1.609 true)).
+		
+	expected rowNames: #(A).
+	expected columnNames: #(City Population BeenThere).
+	
+	self assert: actual removeRowsWithNils equals: expected.
+]
+
+{ #category : #removing }
 DataFrameTest >> testRemoveRowsWithNilsAtColumn [
 
 	| expected |
@@ -3313,6 +3334,168 @@ DataFrameTest >> testRenameRowToNotFound [
 	self
 		should: [ df renameRow: #NoSuchRow to: #Sth ]
 		raise: LibrarySymbolNotFoundError.
+]
+
+{ #category : #replacing }
+DataFrameTest >> testReplaceNilsWith [ 
+	
+	|expected|
+	
+	df := DataFrame withRows: #(
+		(7 1.5 nil)
+   		(9 nil nil)
+   		(nil 5.5 43)).
+		
+	df rowNames: #(A B C).
+	df columnNames: #(Column1 Column2 Column3).
+	
+	expected := DataFrame withRows: #(
+		(7 1.5 1)
+   		(9 1 1)
+   		(1 5.5 43)).
+		
+	expected rowNames: #(A B C).
+	expected columnNames: #(Column1 Column2 Column3).
+	
+	self assert: (df replaceNilsWith: 1.0) equals: expected.
+	
+
+
+]
+
+{ #category : #replacing }
+DataFrameTest >> testReplaceNilsWithAverage [
+	
+	|expected|
+	
+	df := DataFrame withRows: #(
+		(7 1 nil)
+   		(9 nil nil)
+   		(nil 5 43)).
+		
+	df rowNames: #(A B C).
+	df columnNames: #(Column1 Column2 Column3).
+	
+	expected := DataFrame withRows: #(
+		(7 1 43)
+   		(9 3 43)
+   		(8 5 43)).
+		
+	expected rowNames: #(A B C).
+	expected columnNames: #(Column1 Column2 Column3).
+	
+	self assert: (df replaceNilsWithAverage) equals: expected.
+	
+
+
+]
+
+{ #category : #replacing }
+DataFrameTest >> testReplaceNilsWithMedian [
+	
+	|expected|
+	
+	df := DataFrame withRows: #(
+		(7 1 nil)
+   		(9 nil nil)
+   		(nil 5 43)).
+		
+	df rowNames: #(A B C).
+	df columnNames: #(Column1 Column2 Column3).
+	
+	expected := DataFrame withRows: #(
+		(7 1 43)
+   		(9 3 43)
+   		(8 5 43)).
+		
+	expected rowNames: #(A B C).
+	expected columnNames: #(Column1 Column2 Column3).
+	
+	self assert: (df replaceNilsWithAverage) equals: expected.
+	
+
+
+]
+
+{ #category : #replacing }
+DataFrameTest >> testReplaceNilsWithMode [
+	
+	|expected|
+	
+	df := DataFrame withRows: #(
+		(7 1 nil)
+   		(8 nil nil)
+   		(nil 1 43)).
+		
+	df rowNames: #(A B C).
+	df columnNames: #(Column1 Column2 Column3).
+	
+	expected := DataFrame withRows: #(
+		(7 1 43)
+   		(8 1 43)
+   		(7 1 43)).
+		
+	expected rowNames: #(A B C).
+	expected columnNames: #(Column1 Column2 Column3).
+	
+	self assert: (df replaceNilsWithMode) equals: expected.
+	
+
+
+]
+
+{ #category : #replacing }
+DataFrameTest >> testReplaceNilsWithPreviousRowValue [
+	
+	|expected|
+	
+	df := DataFrame withRows: #(
+		(7 1 nil)
+   		(8 nil 3)
+   		(nil 2 nil)).
+		
+	df rowNames: #(A B C).
+	df columnNames: #(Column1 Column2 Column3).
+	
+	expected := DataFrame withRows: #(
+		(7 1 nil)
+   		(8 1 3)
+   		(8 2 3)).
+		
+	expected rowNames: #(A B C).
+	expected columnNames: #(Column1 Column2 Column3).
+	
+	self assert: (df replaceNilsWithPreviousRowValue) equals: expected.
+	
+
+
+]
+
+{ #category : #replacing }
+DataFrameTest >> testReplaceNilsWithZero [
+	
+	|expected|
+	
+	df := DataFrame withRows: #(
+		(7 1.5 nil)
+   		(9 nil nil)
+   		(nil 5.5 43)).
+		
+	df rowNames: #(A B C).
+	df columnNames: #(Column1 Column2 Column3).
+	
+	expected := DataFrame withRows: #(
+		(7 1.5 0)
+   		(9 0 0)
+   		(0 5.5 43)).
+		
+	expected rowNames: #(A B C).
+	expected columnNames: #(Column1 Column2 Column3).
+	
+	self assert: (df replaceNilsWithZero) equals: expected.
+	
+
+
 ]
 
 { #category : #splitjoin }

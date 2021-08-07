@@ -1666,6 +1666,23 @@ DataSeriesTest >> testReplaceNilsWithMode [
 ]
 
 { #category : #'missing values' }
+DataSeriesTest >> testReplaceNilsWithPreviousValue [
+
+	| sampleSeries expected |
+	sampleSeries := DataSeries
+		                withKeys: keyArray
+		                values: #( nil 3 nil 20 nil 9 8 nil 15 nil nil )
+		                name: 'ExampleSeries'.
+	expected := DataSeries
+		            withKeys: keyArray
+		            values: #( nil 3 3 20 20 9 8 8 15 15 15 )
+		            name: 'ExampleSeries'.
+	self
+		assert: sampleSeries replaceNilsWithPreviousValue
+		equals: expected
+]
+
+{ #category : #'missing values' }
 DataSeriesTest >> testReplaceNilsWithString [
 
 	| expected |
