@@ -823,25 +823,6 @@ DataFrameTest >> testColumnsPut [
 	self assert: dataFrame equals: expected.
 ]
 
-{ #category : #replacing }
-DataFrameTest >> testCountOfNils [
-
-	| expected |
-	df := DataFrame withRows:
-		      #( #( nil 1.609 true ) #( Dubai 2.789 nil )
-		         #( nil 8.788 false ) ).
-	df rowNames: #( A B C ).
-	df columnNames: #( City Population BeenThere ).
-
-	expected := Dictionary newFrom: { 
-			            (#City -> 2).
-			            (#Population -> 0).
-			            (#BeenThere -> 1) }.
-
-
-	self assert: df countOfNils equals: expected
-]
-
 { #category : #tests }
 DataFrameTest >> testCreateDataFrameWith3ColumnsAndNoRows [
 	| dataFrame |
@@ -1372,6 +1353,28 @@ DataFrameTest >> testFindAllIndicesOfAtColumnFloat [
 { #category : #replacing }
 DataFrameTest >> testHasNils [
 
+	| df1 df2 |
+	df1 := DataFrame withRows:
+		       #( #( nil 1.609 true ) #( Dubai 2.789 nil )
+		          #( nil 8.788 false ) ).
+	df1 rowNames: #( A B C ).
+	df1 columnNames: #( City Population BeenThere ).
+
+	self assert: df1 hasNils.
+
+	df2 := DataFrame withRows:
+		       #( #( Barcelona 1.609 true ) #( Dubai 2.789 true )
+		          #( London 8.788 false ) ).
+
+	df2 rowNames: #( A B C ).
+	df2 columnNames: #( City Population BeenThere ).
+
+	self assert: df2 hasNils equals: false
+]
+
+{ #category : #replacing }
+DataFrameTest >> testHasNilsByColumn [
+
 	| expected |
 	df := DataFrame withRows:
 		      #( #( nil 1.609 true ) #( Dubai 2.789 nil )
@@ -1383,7 +1386,7 @@ DataFrameTest >> testHasNils [
 			            (#City -> true).
 			            (#Population -> false).
 			            (#BeenThere -> true) }.
-	self assert: df hasNils equals: expected
+	self assert: df hasNilsByColumn equals: expected
 ]
 
 { #category : #tests }
@@ -2412,6 +2415,25 @@ DataFrameTest >> testLeftJoinSameColumnNames [
 		columnNames: #(City Population_x BeenThere Capital Population_y).
 	
 	self assert: (df leftJoin: df2) equals: expected.
+]
+
+{ #category : #replacing }
+DataFrameTest >> testNumberOfNils [
+
+	| expected |
+	df := DataFrame withRows:
+		      #( #( nil 1.609 true ) #( Dubai 2.789 nil )
+		         #( nil 8.788 false ) ).
+	df rowNames: #( A B C ).
+	df columnNames: #( City Population BeenThere ).
+
+	expected := Dictionary newFrom: { 
+			            (#City -> 2).
+			            (#Population -> 0).
+			            (#BeenThere -> 1) }.
+
+
+	self assert: df numberOfNils equals: expected
 ]
 
 { #category : #splitjoin }

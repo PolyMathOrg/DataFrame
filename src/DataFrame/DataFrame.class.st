@@ -718,17 +718,6 @@ DataFrame >> correlationMatrixUsing: aCorrelationCoefficient [
 	^ correlationMatrix
 ]
 
-{ #category : #replacing }
-DataFrame >> countOfNils [
-
-	| dictionary count |
-	dictionary := Dictionary new.
-	self columnNames do: [ :each | 
-		count := (self column: each) count: [ :each2 | each2 isNil ].
-		dictionary at: each put: count ].
-	^ dictionary 
-]
-
 { #category : #accessing }
 DataFrame >> crossTabulate: colName1 with: colName2 [
 
@@ -861,7 +850,15 @@ DataFrame >> gtInspectorItemsIn: composite [
 { #category : #replacing }
 DataFrame >> hasNils [
 
-	"Returns a ditctionary which indictes the presence of any nil values"
+	1 to: self numberOfColumns do: [ :each | 
+	^ true ifTrue: [ (self columnAt: each) hasNil ] ].
+	^ false
+]
+
+{ #category : #replacing }
+DataFrame >> hasNilsByColumn [
+
+	"Returns a dictionary which indicates the presence of any nil values column wise"
 
 	| dictionary |
 	dictionary := Dictionary new.
@@ -1127,6 +1124,17 @@ DataFrame >> mode [
 DataFrame >> numberOfColumns [
 
 	^ contents numberOfColumns
+]
+
+{ #category : #replacing }
+DataFrame >> numberOfNils [
+
+	| dictionary count |
+	dictionary := Dictionary new.
+	self columnNames do: [ :each | 
+		count := (self column: each) count: [ :each2 | each2 isNil ].
+		dictionary at: each put: count ].
+	^ dictionary 
 ]
 
 { #category : #accessing }
