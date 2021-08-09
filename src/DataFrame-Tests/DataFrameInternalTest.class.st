@@ -304,7 +304,7 @@ DataFrameInternalTest >> testRemoveColumnAt [
 ]
 
 { #category : #tests }
-DataFrameInternalTest >> testRemoveColumnsOfRowElementsSatisfingOnRow [
+DataFrameInternalTest >> testRemoveColumnsOfRowElementsSatisfyingOnRow [
 
 	| expected |
 	
@@ -322,7 +322,7 @@ DataFrameInternalTest >> testRemoveColumnsOfRowElementsSatisfingOnRow [
 		('Washington')
 		('Delhi')).
 	
-	self assert: (df removeColumnsOfRowElementsSatisfing: [ :ele | ele isNil ] onRow: 3) equals: expected.
+	self assert: (df removeColumnsOfRowElementsSatisfying: [ :ele | ele isNil ] onRow: 3) equals: expected.
 ]
 
 { #category : #tests }
@@ -342,7 +342,7 @@ DataFrameInternalTest >> testRemoveRowAt [
 ]
 
 { #category : #tests }
-DataFrameInternalTest >> testRemoveRowsOfColumnElementsSatisfingOnColumn [
+DataFrameInternalTest >> testRemoveRowsOfColumnElementsSatisfyingOnColumn [
 
 	| expected |
 	
@@ -357,7 +357,7 @@ DataFrameInternalTest >> testRemoveRowsOfColumnElementsSatisfingOnColumn [
    		('Dubai' 2.789 true)
 		('Washington' nil true)).
 	
-	self assert: (df removeRowsOfColumnElementsSatisfing: [ :ele | ele isNil ] onColumn: 3) equals: expected.
+	self assert: (df removeRowsOfColumnElementsSatisfying: [ :ele | ele isNil ] onColumn: 3) equals: expected.
 
 
 ]

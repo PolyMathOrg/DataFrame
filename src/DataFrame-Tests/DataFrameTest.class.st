@@ -3042,31 +3042,6 @@ DataFrameTest >> testRemoveColumnsAt [
 ]
 
 { #category : #removing }
-DataFrameTest >> testRemoveColumnsOfRowElementsSatisfingOnRow [
-
-	| expected aBlock |
-	df := DataFrame withRows: #(
-		(1 2 3)
-   		(Dubai 4 5.0)
-   		(nil 8.788 false)).
-		
-	df rowNames: #(A B C).
-	df columnNames: #(X Y Z).
-	
-	expected := DataFrame withRows: #(
-		(2)
-   		(4)
-   		(8.788)).
-		
-	expected rowNames: #(A B C).
-	expected columnNames: #(Y).
-	
-	aBlock := [ :rowElement | rowElement ~= 4 ].
-	
-	self assert: (df removeColumnsOfRowElementsSatisfing: aBlock onRow: 2) equals: expected.
-]
-
-{ #category : #removing }
 DataFrameTest >> testRemoveColumnsOfRowElementsSatisfingOnRowAllTrue [
 
 	| expected aBlock |
@@ -3074,7 +3049,7 @@ DataFrameTest >> testRemoveColumnsOfRowElementsSatisfingOnRowAllTrue [
 	expected := DataFrame withRows: #().
 	aBlock := [ :rowElement | true ].
 	
-	self assert: (df removeColumnsOfRowElementsSatisfing: aBlock onRow: 2) equals: expected.
+	self assert: (df removeColumnsOfRowElementsSatisfying: aBlock onRow: 2) equals: expected.
 ]
 
 { #category : #removing }
@@ -3100,6 +3075,31 @@ DataFrameTest >> testRemoveColumnsOfRowElementsSatisfingOnRowNamed [
 	aBlock := [ :rowElement | rowElement ~= 4 ].
 	
 	self assert: (df removeColumnsOfRowElementsSatisfing: aBlock onRowNamed: 'B') equals: expected.
+]
+
+{ #category : #removing }
+DataFrameTest >> testRemoveColumnsOfRowElementsSatisfyingOnRow [
+
+	| expected aBlock |
+	df := DataFrame withRows: #(
+		(1 2 3)
+   		(Dubai 4 5.0)
+   		(nil 8.788 false)).
+		
+	df rowNames: #(A B C).
+	df columnNames: #(X Y Z).
+	
+	expected := DataFrame withRows: #(
+		(2)
+   		(4)
+   		(8.788)).
+		
+	expected rowNames: #(A B C).
+	expected columnNames: #(Y).
+	
+	aBlock := [ :rowElement | rowElement ~= 4 ].
+	
+	self assert: (df removeColumnsOfRowElementsSatisfying: aBlock onRow: 2) equals: expected.
 ]
 
 { #category : #removing }
@@ -3226,29 +3226,6 @@ DataFrameTest >> testRemoveRowsAt [
 ]
 
 { #category : #removing }
-DataFrameTest >> testRemoveRowsOfColumnElementsSatisfingOnColumn [
-
-	| expected aBlock |
-	df := DataFrame withRows: #(
-		(1 2 3)
-   		(Dubai 4 5.0)
-   		(nil 8.788 false)).
-		
-	df rowNames: #(A B C).
-	df columnNames: #(X Y Z).
-	
-	expected := DataFrame withRows: #(
-		(Dubai 4 5.0)).
-		
-	expected rowNames: #(B).
-	expected columnNames: #(X Y Z).
-	
-	aBlock := [ :rowElement | rowElement ~= 4 ].
-	
-	self assert: (df removeRowsOfColumnElementsSatisfing: aBlock onColumn: 2) equals: expected.
-]
-
-{ #category : #removing }
 DataFrameTest >> testRemoveRowsOfColumnElementsSatisfingOnColumnAllTrue [
 
 	| expected aBlock |
@@ -3256,7 +3233,7 @@ DataFrameTest >> testRemoveRowsOfColumnElementsSatisfingOnColumnAllTrue [
 	expected := DataFrame withColumns: #().	
 	aBlock := [ :rowElement | true ].
 	
-	self assert: (df removeRowsOfColumnElementsSatisfing: aBlock onColumn: 2) equals: expected.
+	self assert: (df removeRowsOfColumnElementsSatisfying: aBlock onColumn: 2) equals: expected.
 ]
 
 { #category : #removing }
@@ -3280,6 +3257,29 @@ DataFrameTest >> testRemoveRowsOfColumnElementsSatisfingOnColumnNamed [
 	aBlock := [ :rowElement | rowElement ~= 4 ].
 	
 	self assert: (df removeRowsOfColumnElementsSatisfing: aBlock onColumnNamed: #Y) equals: expected.
+]
+
+{ #category : #removing }
+DataFrameTest >> testRemoveRowsOfColumnElementsSatisfyingOnColumn [
+
+	| expected aBlock |
+	df := DataFrame withRows: #(
+		(1 2 3)
+   		(Dubai 4 5.0)
+   		(nil 8.788 false)).
+		
+	df rowNames: #(A B C).
+	df columnNames: #(X Y Z).
+	
+	expected := DataFrame withRows: #(
+		(Dubai 4 5.0)).
+		
+	expected rowNames: #(B).
+	expected columnNames: #(X Y Z).
+	
+	aBlock := [ :rowElement | rowElement ~= 4 ].
+	
+	self assert: (df removeRowsOfColumnElementsSatisfying: aBlock onColumn: 2) equals: expected.
 ]
 
 { #category : #removing }

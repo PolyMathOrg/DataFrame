@@ -1276,7 +1276,15 @@ DataFrame >> removeColumnsAt: aCollectionOfColumnIndices [
 ]
 
 { #category : #removing }
-DataFrame >> removeColumnsOfRowElementsSatisfing: aBlock onRow: rowNumber [
+DataFrame >> removeColumnsOfRowElementsSatisfing: aBlock onRowNamed: rowName [
+
+	| index |
+	index := self indexOfRowNamed: rowName.
+	self removeColumnsOfRowElementsSatisfying: aBlock onRow: index.
+]
+
+{ #category : #removing }
+DataFrame >> removeColumnsOfRowElementsSatisfying: aBlock onRow: rowNumber [
 
 	| columnNamesCopy |
 	(rowNumber < 1 or: [ rowNumber > self numberOfRows ])
@@ -1287,22 +1295,14 @@ DataFrame >> removeColumnsOfRowElementsSatisfing: aBlock onRow: rowNumber [
 	columnNamesCopy withIndexDo: [ :columnName :j |
 		(aBlock value: (contents at: rowNumber at: j))
 			ifFalse: [ columnNames add: columnName ]].
-	contents removeColumnsOfRowElementsSatisfing: aBlock onRow: rowNumber.
+	contents removeColumnsOfRowElementsSatisfying: aBlock onRow: rowNumber.
 	
 	self numberOfColumns = 0 ifTrue: [ rowNames removeAll ].
 ]
 
 { #category : #removing }
-DataFrame >> removeColumnsOfRowElementsSatisfing: aBlock onRowNamed: rowName [
-
-	| index |
-	index := self indexOfRowNamed: rowName.
-	self removeColumnsOfRowElementsSatisfing: aBlock onRow: index.
-]
-
-{ #category : #removing }
 DataFrame >> removeColumnsWithNilsAtRow: rowNumber [
-	self removeColumnsOfRowElementsSatisfing: [ :ele | ele isNil ] onRow: rowNumber.
+	self removeColumnsOfRowElementsSatisfying: [ :ele | ele isNil ] onRow: rowNumber.
 ]
 
 { #category : #removing }
@@ -1342,7 +1342,15 @@ DataFrame >> removeRowsAt: aCollectionOfRowIndices [
 ]
 
 { #category : #removing }
-DataFrame >> removeRowsOfColumnElementsSatisfing: aBlock onColumn: columnNumber [
+DataFrame >> removeRowsOfColumnElementsSatisfing: aBlock onColumnNamed: columnName [
+
+	| index |
+	index := self indexOfColumnNamed: columnName.
+	self removeRowsOfColumnElementsSatisfying: aBlock onColumn: index.
+]
+
+{ #category : #removing }
+DataFrame >> removeRowsOfColumnElementsSatisfying: aBlock onColumn: columnNumber [
 	
 	| rowNamesCopy |
 	(columnNumber < 1 or: [ columnNumber > self numberOfColumns ])
@@ -1353,17 +1361,9 @@ DataFrame >> removeRowsOfColumnElementsSatisfing: aBlock onColumn: columnNumber 
 	rowNamesCopy withIndexDo: [ :rowName :i |
 		(aBlock value: (contents at: i at: columnNumber))
 			ifFalse: [ rowNames add: rowName ] ].
-	contents removeRowsOfColumnElementsSatisfing: aBlock onColumn: columnNumber.
+	contents removeRowsOfColumnElementsSatisfying: aBlock onColumn: columnNumber.
 	
 	self numberOfRows = 0 ifTrue: [ columnNames removeAll ].
-]
-
-{ #category : #removing }
-DataFrame >> removeRowsOfColumnElementsSatisfing: aBlock onColumnNamed: columnName [
-
-	| index |
-	index := self indexOfColumnNamed: columnName.
-	self removeRowsOfColumnElementsSatisfing: aBlock onColumn: index.
 ]
 
 { #category : #removing }
@@ -1371,13 +1371,13 @@ DataFrame >> removeRowsWithNils [
 
 	1 to: self numberOfColumns do: [ :i | 
 		self
-			removeRowsOfColumnElementsSatisfing: [ :ele | ele isNil ]
+			removeRowsOfColumnElementsSatisfying: [ :ele | ele isNil ]
 			onColumn: i ]
 ]
 
 { #category : #removing }
 DataFrame >> removeRowsWithNilsAtColumn: columnNumber [
-	self removeRowsOfColumnElementsSatisfing: [ :ele | ele isNil ] onColumn: columnNumber.
+	self removeRowsOfColumnElementsSatisfying: [ :ele | ele isNil ] onColumn: columnNumber.
 ]
 
 { #category : #removing }
