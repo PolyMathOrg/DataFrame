@@ -1466,30 +1466,6 @@ DataFrameTest >> testInequality [
 	self assert: (df5 = df1) not.
 ]
 
-{ #category : #tests }
-DataFrameTest >> testInjectInto [
-	| numericDataFrame actual expected |
-	
-	numericDataFrame := DataFrame 
-		withRows: #(
-			(4.5 86 24)
-			(2.3 60 14)
-			(1.2 56 16)
-			(-1.0 12 18))
-		rowNames: #(A B C D)
-		columnNames: #(temperature humidity wind).
-
-	expected := DataSeries
-		withKeys: #(temperature humidity wind)
-		values: #(7.0 214 72)
-		name: '(no name)'.
-		
-	actual := numericDataFrame inject: 0 into:
-		[ :sum :each | sum + each ].
-	
-	self assert: actual equals: expected.
-]
-
 { #category : #splitjoin }
 DataFrameTest >> testInnerJoin [
 	| df2 expected |
