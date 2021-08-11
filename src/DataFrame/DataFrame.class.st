@@ -632,6 +632,14 @@ DataFrame >> columnNames: aCollection [
 ]
 
 { #category : #accessing }
+DataFrame >> columns [
+
+	"Returns a collection of all columns"
+
+	^ self asArrayOfColumns
+]
+
+{ #category : #accessing }
 DataFrame >> columns: anArrayOfNames [
 	
 	| anArrayOfNumbers |
