@@ -1857,13 +1857,19 @@ DataSeriesTest >> testStatsAverage [
 { #category : #statistics }
 DataSeriesTest >> testStatsCumulativeSum [
 
-	| actual expected |
-	actual := DataSeries withValues: #( nil 3 4 7 nil 2 4 0 3 nil 2 9 ).
-	expected := DataSeries withValues:
-		            #( 0 3 7 14 14 16 20 20 23 23 25 34 ).
-	expected name: #cumulativeSum.
+	| seriesWithNils expected |
+	
+	seriesWithNils := DataSeries
+		withKeys: #(a b c d e f g h i j k l)
+		values: #(nil 3 4 7 nil 2 4 0 3 nil 2 9)
+		name: 'numbers'.
+		
+	expected := DataSeries
+		withKeys: #(a b c d e f g h i j k l)
+		values: #(0 3 7 14 14 16 20 20 23 23 25 34)
+		name: 'numbers'.
 
-	self assert: actual cumulativeSum equals: expected
+	self assert: seriesWithNils cumulativeSum equals: expected
 ]
 
 { #category : #statistics }

@@ -220,18 +220,14 @@ DataSeries >> crossTabulateWith: aSeries [
 
 { #category : #statistics }
 DataSeries >> cumulativeSum [
+	"Calculate the cumulative sum of a data series and return a new data series with keys as self keys and values as cumulative sum"
 
-	"calculates cumulative sum of a dataseries and returns a new dataseries with keys as self keys and values as cumulative sum"
-
-	| sum cumulativeSumSeries |
+	| sum |
 	sum := 0.
 
-	cumulativeSumSeries := DataSeries withValues:
-		                       (self collect: [ :each | 
-			                        each ifNotNil: [ sum := sum + each ].
-			                        sum ]).
-	cumulativeSumSeries name: #cumulativeSum.
-	^ cumulativeSumSeries
+	^ self collect: [ :each |
+		each ifNotNil: [ sum := sum + each ].
+		sum ].
 ]
 
 { #category : #defaults }
