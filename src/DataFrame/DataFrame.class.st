@@ -837,24 +837,6 @@ DataFrame >> groupBy: columnName aggregate: anArrayOfUsingAsStatements [
 		columnNames: (aggregatedColumns collect: #name)
 ]
 
-{ #category : #'gt-inspector-extension' }
-DataFrame >> gtInspectorFastTableIn: composite [
-	<gtInspectorPresentationOrder: 0>
-	<gtInspectorTag: #basic>
-	
-	composite morph
-		title: 'Fast Table';
-		display: [ self showWithGlamourIn: composite ].
-]
-
-{ #category : #'gt-inspector-extension' }
-DataFrame >> gtInspectorItemsIn: composite [
-"Hide Items from inspector"
-
-	composite fastTable
-		when: [ false ].
-]
-
 { #category : #accessing }
 DataFrame >> head [ 
 
@@ -1013,6 +995,28 @@ DataFrame >> innerJoin: aDataFrame onLeft: leftColumn onRight: rightColumn [
 		].
 	
 	^ outputDf
+]
+
+{ #category : #newtools }
+DataFrame >> inspectionItems: aBuilder [
+	<inspectorPresentationOrder: 0 title: 'Items'> 
+
+	| table |
+	table := aBuilder newTable.
+
+	table addColumn: (SpStringTableColumn
+		title: '#'
+		evaluated: [ :rowIndex | self rowNames at: rowIndex ]).
+
+	self columnNames doWithIndex: [ :each :columnIndex |
+		table addColumn: (SpStringTableColumn
+			title: each
+			evaluated: [ :rowIndex |
+				self at: rowIndex at: columnIndex ]) ].
+
+	table items: (1 to: self size).
+
+	^ table
 ]
 
 { #category : #statistics }
@@ -1632,26 +1636,6 @@ DataFrame >> setDefaultRowColumnNames [
 
 	self rowNames: (1 to: self numberOfRows).
 	self columnNames: (1 to: self numberOfColumns).
-]
-
-{ #category : #'gt-inspector-extension' }
-DataFrame >> showWithGlamourIn: composite [
-	| table headerNames |
-	table := FTTableMorph new.
-	"extent: 650@500"
-	table
-		beResizable;
-		intercellSpacing: 1;
-		dataSource: (DataFrameFTData elements: self);
-		onAnnouncement: FTSelectionChanged
-			do: [ :ann | (self rowAt: ann newSelectedIndexes first) inspect ].
-
-	"		onAnnouncement: FTSelectionChanged 
-			do: [ :ann | (self rowsAt: ann newSelectedRowIndexes) gtInspectorItemsIn: composite ];"
-	headerNames := #('#') , self columnNames.
-	table
-		columns: (headerNames collect: [ :name | (FTColumn id: name) width: 100 ]).
-	^ table
 ]
 
 { #category : #accessing }
