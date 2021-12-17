@@ -878,7 +878,7 @@ DataFrame >> indexOfColumnNamed: columnName [
 	"Answer the index of a column with a given name or signal an exception if the column with that name was not found"
 	^ self
 		indexOfColumnNamed: columnName
-		ifAbsent: [ LibrarySymbolNotFoundError signal: ('Column ', columnName, ' was not found') ].
+		ifAbsent: [ self error: ('Column ', columnName, ' was not found') ].
 ]
 
 { #category : #accessing }
@@ -894,7 +894,7 @@ DataFrame >> indexOfRowNamed: rowName [
 	"Answer the index of a row with a given name or signal an exception if the row with that name was not found"
 	^ self
 		indexOfRowNamed: rowName
-		ifAbsent: [ LibrarySymbolNotFoundError signal: ('Row ', rowName, ' was not found') ].
+		ifAbsent: [ self error: ('Row ', rowName, ' was not found') ].
 ]
 
 { #category : #accessing }
