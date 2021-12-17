@@ -322,7 +322,7 @@ DataFrameTest >> testAsArrayOfRows [
    		#('London' 8.788 false) asDataSeries name: 'C'; keys: df columnNames; yourself
 	}.
 	
-	self assert: df asArrayOfRows equals: expected.
+	self assert: df asArrayOfRows equals: (expected collect: [ :e | e asArray ]).
 	
 
 ]
