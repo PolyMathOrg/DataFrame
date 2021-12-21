@@ -297,6 +297,12 @@ DataFrameTest >> testAddRowSizeMismatch [
 ]
 
 { #category : #tests }
+DataFrameTest >> testAsArray [
+
+	self testAsArrayOfRows
+]
+
+{ #category : #tests }
 DataFrameTest >> testAsArrayOfColumns [
 
 	| expected |

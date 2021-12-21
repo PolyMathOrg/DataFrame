@@ -417,6 +417,14 @@ DataFrame >> applyToAllColumns: aSymbol [
 ]
 
 { #category : #converting }
+DataFrame >> asArray [
+
+	"Converts DataFrame to the array of rows"
+
+	^ self asArrayOfRows
+]
+
+{ #category : #converting }
 DataFrame >> asArrayOfColumns [
 	"Converts DataFrame to the array of columns"
 
@@ -1106,6 +1114,24 @@ DataFrame >> min [
 DataFrame >> mode [
 
 	^ self applyToAllColumns: #mode
+]
+
+{ #category : #normalization }
+DataFrame >> normalized: normalizerClass [
+
+	"This methods returns a new DataFrame, without altering this one, that has all the columns normalized."
+
+	| normalizers normalizedColumns newDF  |
+	normalizers := (1 to: self anyOne size) collect: [ :e |  normalizerClass new ].
+
+	normalizedColumns := self columns
+		with: normalizers
+		collect: [ :col :normalizer | col normalizedUsing: normalizer ].
+	
+	^ self class withColumns: normalizedColumns columnNames: self columnNames
+
+	
+
 ]
 
 { #category : #accessing }
