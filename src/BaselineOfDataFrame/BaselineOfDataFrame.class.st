@@ -18,10 +18,13 @@ BaselineOfDataFrame >> baseline: spec [
 		spec
 			baseline: 'AINormalization'
 			with: [ spec repository: 'github://pharo-ai/normalization/src' ].
+		spec
+			baseline: 'RandomPartitioner'
+			with: [ spec repository: 'github://pharo-ai/RandomPartitioner/src' ].
 				
 		"Packages"
 		spec 
-			package: 'DataFrame' with: [ spec requires: #('AINormalization') ];
+			package: 'DataFrame' with: [ spec requires: #('AINormalization' 'RandomPartitioner') ];
 			package: 'DataFrame-Tests' with: [ spec requires: #('DataFrame') ];
 			package: 'DataFrame-Type' with: [ spec requires: #('DataFrame') ];
 			package: 'DataFrame-Type-Tests' with: [ spec requires: #('DataFrame-Type') ];
