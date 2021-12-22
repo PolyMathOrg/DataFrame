@@ -158,6 +158,12 @@ Class {
 	#category : #'DataFrame-Core'
 }
 
+{ #category : #defaults }
+DataFrame class >> defaultNormalizer [
+
+	^ AIMinMaxNormalizer
+]
+
 { #category : #'instance creation' }
 DataFrame class >> new [
 	
@@ -1117,11 +1123,29 @@ DataFrame >> mode [
 ]
 
 { #category : #normalization }
+DataFrame >> normalized [
+
+	"This methods returns a new DataFrame, without altering this one, that has all the columns normalized."
+
+	| normalizers normalizedColumns |
+	normalizers := (1 to: self anyOne size) collect: [ :e |  self class defaultNormalizer new ].
+
+	normalizedColumns := self columns
+		with: normalizers
+		collect: [ :col :normalizer | col normalizedUsing: normalizer ].
+	
+	^ self class withColumns: normalizedColumns columnNames: self columnNames
+
+	
+
+]
+
+{ #category : #normalization }
 DataFrame >> normalized: normalizerClass [
 
 	"This methods returns a new DataFrame, without altering this one, that has all the columns normalized."
 
-	| normalizers normalizedColumns newDF  |
+	| normalizers normalizedColumns |
 	normalizers := (1 to: self anyOne size) collect: [ :e |  normalizerClass new ].
 
 	normalizedColumns := self columns

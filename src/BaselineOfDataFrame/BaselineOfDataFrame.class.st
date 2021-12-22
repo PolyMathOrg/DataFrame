@@ -15,10 +15,13 @@ BaselineOfDataFrame >> baseline: spec [
 		spec
 			baseline: 'NeoJSON'
 			with: [ spec repository: 'github://svenvc/NeoJSON/repository' ].
+		spec
+			baseline: 'AINormalization'
+			with: [ spec repository: 'github://pharo-ai/normalization/src' ].
 				
 		"Packages"
 		spec 
-			package: 'DataFrame';
+			package: 'DataFrame' with: [ spec requires: #('AINormalization') ];
 			package: 'DataFrame-Tests' with: [ spec requires: #('DataFrame') ];
 			package: 'DataFrame-Type' with: [ spec requires: #('DataFrame') ];
 			package: 'DataFrame-Type-Tests' with: [ spec requires: #('DataFrame-Type') ];
