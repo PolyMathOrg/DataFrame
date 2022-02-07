@@ -445,6 +445,19 @@ DataFrame >> asArrayOfRows [
 		(self at: i) asArray ]
 ]
 
+{ #category : #converting }
+DataFrame >> asArrayOfRowsWithName [
+	"Answer an OrderedCollection where each item is an Array with:
+	- the name of that row, in first place,
+	- the contents of that row.
+	"
+
+	^ self rowNames withIndexCollect: [ :name :index |
+		Array streamContents: [ :stream |
+			stream nextPut: name;
+				nextPutAll: (self at: index) ] ]
+]
+
 { #category : #accessing }
 DataFrame >> at: aNumber [
 
@@ -1018,17 +1031,12 @@ DataFrame >> inspectionItems: aBuilder [
 	| table |
 	table := aBuilder newTable.
 
-	table addColumn: (SpStringTableColumn
-		title: '#'
-		evaluated: [ :rowIndex | self rowNames at: rowIndex ]).
-
-	self columnNames doWithIndex: [ :each :columnIndex |
+	({'#'}, self columnNames) doWithIndex: [ :headerName :columnIndex |
 		table addColumn: (SpStringTableColumn
-			title: each
-			evaluated: [ :rowIndex |
-				self at: rowIndex at: columnIndex ]) ].
+			title: headerName
+			evaluated: [ :rowWithName | rowWithName at: columnIndex ]) ].
 
-	table items: (1 to: self size).
+	table items: self asArrayOfRowsWithName.
 
 	^ table
 ]
