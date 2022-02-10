@@ -1327,12 +1327,12 @@ DataFrame >> removeColumnsOfRowElementsSatisfing: aBlock onRowNamed: rowName [
 	self removeColumnsOfRowElementsSatisfing: aBlock onRow: index.
 ]
 
-{ #category : #removing }
+{ #category : #'handling nils' }
 DataFrame >> removeColumnsWithNilsAtRow: rowNumber [
 	self removeColumnsOfRowElementsSatisfing: [ :ele | ele isNil ] onRow: rowNumber.
 ]
 
-{ #category : #removing }
+{ #category : #'handling nils' }
 DataFrame >> removeColumnsWithNilsAtRowNamed: rowName [
 	self removeColumnsOfRowElementsSatisfing: [ :ele | ele isNil ] onRowNamed: rowName.
 ]
@@ -1393,12 +1393,12 @@ DataFrame >> removeRowsOfColumnElementsSatisfing: aBlock onColumnNamed: columnNa
 	self removeRowsOfColumnElementsSatisfing: aBlock onColumn: index.
 ]
 
-{ #category : #removing }
+{ #category : #'handling nils' }
 DataFrame >> removeRowsWithNilsAtColumn: columnNumber [
 	self removeRowsOfColumnElementsSatisfing: [ :ele | ele isNil ] onColumn: columnNumber.
 ]
 
-{ #category : #removing }
+{ #category : #'handling nils' }
 DataFrame >> removeRowsWithNilsAtColumnNamed: columnName [
 	self removeRowsOfColumnElementsSatisfing: [ :ele | ele isNil ] onColumnNamed: columnName.
 ]
@@ -1417,6 +1417,13 @@ DataFrame >> renameRow: oldName to: newName [
 	| index |
 	index := self indexOfRowNamed: oldName.
 	self rowNames at: index put: newName.
+]
+
+{ #category : #'handling nils' }
+DataFrame >> replaceAllNilsWithZeros [
+
+	self columnNames do: [ :name | 
+		self column: name put: (self column: name) replaceNilsWithZeros ]
 ]
 
 { #category : #splitjoin }

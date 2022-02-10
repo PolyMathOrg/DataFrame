@@ -3334,6 +3334,27 @@ DataFrameTest >> testRenameRowToNotFound [
 		raise: LibrarySymbolNotFoundError.
 ]
 
+{ #category : #tests }
+DataFrameTest >> testReplaceAllNilsWithZeros [
+
+	| expected |
+	df := DataFrame withRows: #(
+		(Barcelona 1.609 nil)
+   		(Dubai nil nil)
+   		(nil 8.788 false)).
+		
+	df columnNames: #(City Population BeenThere).
+	
+	expected := DataFrame withRows: #(
+		(Barcelona 1.609 0)
+   		(Dubai 0 0)
+   		(0 8.788 false)).
+	
+	expected columnNames: #(City Population BeenThere).
+	
+	self assert: df replaceAllNilsWithZeros equals: expected.
+]
+
 { #category : #splitjoin }
 DataFrameTest >> testRightJoin [
 	| df2 expected |
