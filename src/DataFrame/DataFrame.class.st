@@ -445,6 +445,19 @@ DataFrame >> asArrayOfRows [
 		(self at: i) asArray ]
 ]
 
+{ #category : #converting }
+DataFrame >> asArrayOfRowsWithName [
+	"Answer an OrderedCollection where each item is an Array with:
+	- the name of that row, in first place,
+	- the contents of that row.
+	"
+
+	^ self rowNames withIndexCollect: [ :name :index |
+		Array streamContents: [ :stream |
+			stream nextPut: name;
+				nextPutAll: (self at: index) ] ]
+]
+
 { #category : #accessing }
 DataFrame >> at: aNumber [
 
@@ -851,24 +864,6 @@ DataFrame >> groupBy: columnName aggregate: anArrayOfUsingAsStatements [
 		columnNames: (aggregatedColumns collect: #name)
 ]
 
-{ #category : #'gt-inspector-extension' }
-DataFrame >> gtInspectorFastTableIn: composite [
-	<gtInspectorPresentationOrder: 0>
-	<gtInspectorTag: #basic>
-	
-	composite morph
-		title: 'Fast Table';
-		display: [ self showWithGlamourIn: composite ].
-]
-
-{ #category : #'gt-inspector-extension' }
-DataFrame >> gtInspectorItemsIn: composite [
-"Hide Items from inspector"
-
-	composite fastTable
-		when: [ false ].
-]
-
 { #category : #accessing }
 DataFrame >> head [ 
 
@@ -1027,6 +1022,23 @@ DataFrame >> innerJoin: aDataFrame onLeft: leftColumn onRight: rightColumn [
 		].
 	
 	^ outputDf
+]
+
+{ #category : #newtools }
+DataFrame >> inspectionItems: aBuilder [
+	<inspectorPresentationOrder: 0 title: 'Items'> 
+
+	| table |
+	table := aBuilder newTable.
+
+	({'#'}, self columnNames) doWithIndex: [ :headerName :columnIndex |
+		table addColumn: (SpStringTableColumn
+			title: headerName
+			evaluated: [ :rowWithName | rowWithName at: columnIndex ]) ].
+
+	table items: self asArrayOfRowsWithName.
+
+	^ table
 ]
 
 { #category : #statistics }
@@ -1689,26 +1701,6 @@ DataFrame >> setDefaultRowColumnNames [
 
 	self rowNames: (1 to: self numberOfRows).
 	self columnNames: (1 to: self numberOfColumns).
-]
-
-{ #category : #'gt-inspector-extension' }
-DataFrame >> showWithGlamourIn: composite [
-	| table headerNames |
-	table := FTTableMorph new.
-	"extent: 650@500"
-	table
-		beResizable;
-		intercellSpacing: 1;
-		dataSource: (DataFrameFTData elements: self);
-		onAnnouncement: FTSelectionChanged
-			do: [ :ann | (self rowAt: ann newSelectedIndexes first) inspect ].
-
-	"		onAnnouncement: FTSelectionChanged 
-			do: [ :ann | (self rowsAt: ann newSelectedRowIndexes) gtInspectorItemsIn: composite ];"
-	headerNames := #('#') , self columnNames.
-	table
-		columns: (headerNames collect: [ :name | (FTColumn id: name) width: 100 ]).
-	^ table
 ]
 
 { #category : #accessing }
