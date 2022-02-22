@@ -804,6 +804,12 @@ DataFrame >> findAllIndicesOf: anObject atColumn: columnName [
 	^ output
 ]
 
+{ #category : #accessing }
+DataFrame >> first [
+
+	^ self at: 1
+]
+
 { #category : #statistics }
 DataFrame >> firstQuartile [
 
