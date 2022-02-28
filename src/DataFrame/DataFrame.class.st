@@ -314,8 +314,12 @@ DataFrame >> = aDataFrame [
 
 { #category : #adding }
 DataFrame >> add: aDataSeries [
+
 	"Add DataSeries as a new row at the end"
-	self addRow: aDataSeries.
+
+	self flag:
+		'This mathod name is not correct. It is misleading. We should think if we should delete it or keep it'.
+	self addRow: aDataSeries
 ]
 
 { #category : #adding }
