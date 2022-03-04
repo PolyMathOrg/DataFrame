@@ -1683,22 +1683,12 @@ DataFrame >> select: aBlock [
 	Collect into a new collection like the receiver, only those elements for 
 	which aBlock evaluates to true. Answer the new collection."
 
-	| rows selectedRows selectedRowNames selectedColumnNames selectedRowsAsArrays df |
+	| selectedIndexes |
 	
-	rows := self asArrayOfRows.
-	selectedRows := rows select: aBlock.
-	selectedRowNames := (selectedRows isEmpty)
-		ifTrue: [ #() ] ifFalse: [ selectedRows collect: #name ].
-	selectedColumnNames := (selectedRows isEmpty)
-		ifTrue: [ #() ] ifFalse: [ self columnNames ].
-	selectedRowsAsArrays := selectedRows collect: #asArray.
+	selectedIndexes := (1 to: self numberOfRows) select: [ :index |
+		aBlock value: (self at: index) ].
 	
-	df := self class
-		withRows: selectedRowsAsArrays
-		rowNames: selectedRowNames
-		columnNames: selectedColumnNames.
-	
-	^ df
+	^ self rowsAt: selectedIndexes
 ]
 
 { #category : #private }
@@ -1853,23 +1843,15 @@ DataFrame >> withIndexReject: elementAndIndexBlock [
 ]
 
 { #category : #enumerating }
-DataFrame >> withIndexSelect: elementAndIndexBlock [ 
+DataFrame >> withIndexSelect: aBlock [ 
 	"Evaluate aBlock with each of the receiver's elements and index as the arguments. 
 	Collect into a new collection like the receiver, only those elements for 
 	which aBlock evaluates to true. Answer the new collection."
 
-	| rows selectedRowIndices selectedRowNames selectedRowsAsArrays df |
+	| selectedIndexes |
 	
-	rows := self asArrayOfRows.
-	selectedRowIndices := (1 to: rows size) select: [ :i |
-		elementAndIndexBlock value: (rows at: i) value: i ].
-	selectedRowNames := selectedRowIndices collect: [ :i | self rowNames at: i ].
-	selectedRowsAsArrays := selectedRowIndices collect: [ :i | (rows at: i) asArray ].
+	selectedIndexes := (1 to: self numberOfRows) select: [ :index |
+		aBlock value: (self at: index) value: index ].
 	
-	df := self class
-		withRows: selectedRowsAsArrays
-		rowNames: selectedRowNames
-		columnNames: self columnNames.
-	
-	^ df
+	^ self rowsAt: selectedIndexes
 ]

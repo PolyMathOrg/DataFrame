@@ -2915,8 +2915,7 @@ DataFrameTest >> testReject [
 DataFrameTest >> testRejectEntireDataFrame [
 	| actual expected |
 
-	expected := DataFrame
-		withRows: #().
+	expected := DataFrame withColumnNames: df columnNames.
 		
 	actual := df reject:
 		[ :row | (row at: #Population) < 10 ].
@@ -4225,7 +4224,7 @@ DataFrameTest >> testSelect [
 DataFrameTest >> testSelectEmptyDataFrame [
 	| actual expected |
 
-	expected := DataFrame withRows: #().
+	expected := DataFrame withColumnNames: df columnNames.
 		
 	actual := df select:
 		[ :row | (row at: #Population) > 10 ].
