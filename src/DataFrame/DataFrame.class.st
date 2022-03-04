@@ -189,6 +189,23 @@ DataFrame class >> withColumnNames: anArrayOfColumnNames [
 ]
 
 { #category : #'instance creation' }
+DataFrame class >> withColumnNames: anArrayOfColumnNames withRowNames: anArrayOfRowNames [
+	"Create an empty data frame with given column and row names"
+
+	| numberOfColumns numberOfRows df |
+	
+	numberOfColumns := anArrayOfColumnNames size.
+	numberOfRows := anArrayOfRowNames size.
+	df := self new: numberOfRows @ numberOfColumns.
+	
+	df columnNames: anArrayOfColumnNames.
+	df rowNames: anArrayOfRowNames.
+	^ df
+
+
+]
+
+{ #category : #'instance creation' }
 DataFrame class >> withColumns: anArrayOfArrays [
 
 	^ self new initializeColumns: anArrayOfArrays.

@@ -4394,6 +4394,21 @@ DataFrameTest >> testVarSizeInstanceCreation [
 ]
 
 { #category : #tests }
+DataFrameTest >> testWithColumnsNamesWithRowNames [
+	| dataframe |
+	dataframe := DataFrame
+		withColumnNames: #(A B)
+		withRowNames: #('one' 'two' 'three').
+	self
+		assert: dataframe rowNames asArray
+		equals: #('one' 'two' 'three').
+	self
+		assert: dataframe columnNames asArray
+		equals: #(A B).
+
+]
+
+{ #category : #tests }
 DataFrameTest >> testWithColumnsRowNames [
 	| dataframe |
 	dataframe := DataFrame
