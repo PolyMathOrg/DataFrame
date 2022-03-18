@@ -1053,15 +1053,21 @@ DataFrame >> innerJoin: aDataFrame onLeft: leftColumn onRight: rightColumn [
 
 { #category : #newtools }
 DataFrame >> inspectionItems: aBuilder [
-	<inspectorPresentationOrder: 0 title: 'Items'> 
+	<inspectorPresentationOrder: 0 title: 'DataFrame'> 
 
 	| table |
 	table := aBuilder newTable.
 
-	({'#'}, self columnNames) doWithIndex: [ :headerName :columnIndex |
+	table addColumn: (SpIndexTableColumn new
+		title: '#';
+		sortFunction: #yourself ascending;
+		beNotExpandable;
+		yourself).
+	
+	(self columnNames) doWithIndex: [ :headerName :columnIndex |
 		table addColumn: (SpStringTableColumn
 			title: headerName
-			evaluated: [ :rowWithName | rowWithName at: columnIndex ]) ].
+			evaluated: [ :rowWithName | rowWithName at: columnIndex + 1 ]) ].
 
 	table items: self asArrayOfRowsWithName.
 
