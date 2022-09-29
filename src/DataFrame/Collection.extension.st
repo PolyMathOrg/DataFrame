@@ -9,7 +9,7 @@ Collection >> ** arg [
 { #category : #'*DataFrame-Core-Base' }
 Collection >> asDataSeries [
 
-	^ self as: DataSeries
+	^ DataSeries newFrom: self
 
 
 ]
