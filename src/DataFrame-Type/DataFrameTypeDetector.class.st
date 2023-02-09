@@ -44,29 +44,14 @@ Class {
 		'columnTypes',
 		'typeMapping'
 	],
-	#classVars : [
-		'Booleans'
-	],
 	#category : #'DataFrame-Type'
 }
-
-{ #category : #accessing }
-DataFrameTypeDetector class >> booleans [
-
-	^ Booleans ifNil: [ Booleans := #( 'true' 'false' ) ]
-]
-
-{ #category : #accessing }
-DataFrameTypeDetector >> booleans [
-
-	^ self class booleans
-]
 
 { #category : #testing }
 DataFrameTypeDetector >> canAllBeBoolean: aDataSeries [
 	"Checks to see if all of the values in the column are strings of true or false (case insensitive) or nil"
 
-	^ aDataSeries allSatisfy: [ :each | each isNil or: [ self booleans includes: each asString asLowercase ] ]
+	^ aDataSeries allSatisfy: [ :each | each isNil or: [ (each sameAs: 'true') | (each sameAs: 'false') ] ]
 ]
 
 { #category : #testing }
