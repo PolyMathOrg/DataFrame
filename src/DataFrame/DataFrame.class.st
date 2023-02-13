@@ -1483,8 +1483,9 @@ DataFrame >> renameRow: oldName to: newName [
 { #category : #'handling nils' }
 DataFrame >> replaceAllNilsWithZeros [
 
-	self columnNames do: [ :name | 
-		self column: name put: (self column: name) replaceNilsWithZeros ]
+	self deprecated: 'Use #replaceNilsWithZero instead.' transformWith: '`@receiver replaceAllNilsWithZeros' -> '`@receiver replaceNilsWithZero'.
+
+	self replaceNilsWithZero
 ]
 
 { #category : #replacing }
