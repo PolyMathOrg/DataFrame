@@ -297,6 +297,12 @@ DataFrameTest >> testAddRowSizeMismatch [
 ]
 
 { #category : #tests }
+DataFrameTest >> testAsArray [
+
+	self testAsArrayOfRows
+]
+
+{ #category : #tests }
 DataFrameTest >> testAsArrayOfColumns [
 
 	| expected |
@@ -322,7 +328,7 @@ DataFrameTest >> testAsArrayOfRows [
    		#('London' 8.788 false) asDataSeries name: 'C'; keys: df columnNames; yourself
 	}.
 	
-	self assert: df asArrayOfRows equals: expected.
+	self assert: df asArrayOfRows equals: (expected collect: [ :e | e asArray ]).
 	
 
 ]
@@ -543,7 +549,7 @@ DataFrameTest >> testColumnNamesSizeMismatch [
 DataFrameTest >> testColumnNotFound [
 	self
 		should: [ df column: #NoSuchColumn ]
-		raise: LibrarySymbolNotFoundError.
+		raise: Error.
 ]
 
 { #category : #tests }
@@ -593,7 +599,7 @@ DataFrameTest >> testColumnPutIfAbsent [
 DataFrameTest >> testColumnPutNotFound [
 	self
 		should: [ df column: #NoSuchColumn put: #(0 0 0) ]
-		raise: LibrarySymbolNotFoundError.
+		raise: Error.
 ]
 
 { #category : #tests }
@@ -653,7 +659,7 @@ DataFrameTest >> testColumnTransformNotFound [
 		should: [
 			df column: #NoSuchColumn
 				transform: [ :column | column at: #B put: 0 ] ]
-		raise: LibrarySymbolNotFoundError.
+		raise: Error.
 		
 	self assert: df equals: expected.
 ]
@@ -1439,7 +1445,7 @@ DataFrameTest >> testIndexOfColumnNamedIfAbsentNotFound [
 DataFrameTest >> testIndexOfColumnNamedNotFound [
 	self
 		should: [ df indexOfColumnNamed: #NoSuchColumn ]
-		raise: LibrarySymbolNotFoundError
+		raise: Error
 ]
 
 { #category : #tests }
@@ -1479,7 +1485,7 @@ DataFrameTest >> testIndexOfRowNamedIfAbsentNotFound [
 DataFrameTest >> testIndexOfRowNamedNotFound [
 	self
 		should: [ df indexOfRowNamed: #NoSuchRow ]
-		raise: LibrarySymbolNotFoundError
+		raise: Error
 ]
 
 { #category : #tests }
@@ -2967,8 +2973,7 @@ DataFrameTest >> testReject [
 DataFrameTest >> testRejectEntireDataFrame [
 	| actual expected |
 
-	expected := DataFrame
-		withRows: #().
+	expected := DataFrame withColumnNames: df columnNames.
 		
 	actual := df reject:
 		[ :row | (row at: #Population) < 10 ].
@@ -3019,7 +3024,7 @@ DataFrameTest >> testRemoveColumnAtOutOfRange [
 
 { #category : #removing }
 DataFrameTest >> testRemoveColumnNotFound [
-	self should: [ df removeColumn: #NoSuchColumn ] raise: LibrarySymbolNotFoundError.
+	self should: [ df removeColumn: #NoSuchColumn ] raise: Error.
 ]
 
 { #category : #removing }
@@ -3207,7 +3212,7 @@ DataFrameTest >> testRemoveRowAtOutOfRange [
 
 { #category : #removing }
 DataFrameTest >> testRemoveRowNotFound [
-	self should: [ df removeRow: #NoSuchRow ] raise: LibrarySymbolNotFoundError.
+	self should: [ df removeRow: #NoSuchRow ] raise: Error.
 ]
 
 { #category : #removing }
@@ -3380,7 +3385,7 @@ DataFrameTest >> testRenameColumnTo [
 DataFrameTest >> testRenameColumnToNotFound [
 	self
 		should: [ df renameColumn: #NoSuchColumn to: #Sth ]
-		raise: LibrarySymbolNotFoundError.
+		raise: Error.
 ]
 
 { #category : #tests }
@@ -3402,7 +3407,28 @@ DataFrameTest >> testRenameRowTo [
 DataFrameTest >> testRenameRowToNotFound [
 	self
 		should: [ df renameRow: #NoSuchRow to: #Sth ]
-		raise: LibrarySymbolNotFoundError.
+		raise: Error.
+]
+
+{ #category : #tests }
+DataFrameTest >> testReplaceAllNilsWithZeros [
+
+	| expected |
+	df := DataFrame withRows: #(
+		(Barcelona 1.609 nil)
+   		(Dubai nil nil)
+   		(nil 8.788 false)).
+		
+	df columnNames: #(City Population BeenThere).
+	
+	expected := DataFrame withRows: #(
+		(Barcelona 1.609 0)
+   		(Dubai 0 0)
+   		(0 8.788 false)).
+	
+	expected columnNames: #(City Population BeenThere).
+	
+	self assert: df replaceAllNilsWithZeros equals: expected.
 ]
 
 { #category : #replacing }
@@ -4137,7 +4163,7 @@ DataFrameTest >> testRowNamesSizeMismatch [
 DataFrameTest >> testRowNotFound [
 	self
 		should: [ df row: #NoSuchRow ]
-		raise: LibrarySymbolNotFoundError.
+		raise: Error.
 ]
 
 { #category : #tests }
@@ -4186,7 +4212,7 @@ DataFrameTest >> testRowPutIfAbsent [
 DataFrameTest >> testRowPutNotFound [
 	self
 		should: [ df row: #NoSuchRow put: #(0 0 0) ]
-		raise: LibrarySymbolNotFoundError.
+		raise: Error.
 ]
 
 { #category : #tests }
@@ -4246,7 +4272,7 @@ DataFrameTest >> testRowTransformNotFound [
 		should: [
 			df row: #NoSuchRow
 				transform: [ :row | row at: #Population put: 0 ] ]
-		raise: LibrarySymbolNotFoundError.
+		raise: Error.
 		
 	self assert: df equals: expected.
 ]
@@ -4437,7 +4463,7 @@ DataFrameTest >> testSelect [
 DataFrameTest >> testSelectEmptyDataFrame [
 	| actual expected |
 
-	expected := DataFrame withRows: #().
+	expected := DataFrame withColumnNames: df columnNames.
 		
 	actual := df select:
 		[ :row | (row at: #Population) > 10 ].
@@ -4603,6 +4629,21 @@ DataFrameTest >> testVarSizeInstanceCreation [
 	
 	self assert: dataFrame rowNames equals: #(1 2 3) asOrderedCollection.
 	self assert: dataFrame columnNames equals: #(1 2) asOrderedCollection.
+]
+
+{ #category : #tests }
+DataFrameTest >> testWithColumnsNamesWithRowNames [
+	| dataframe |
+	dataframe := DataFrame
+		withColumnNames: #(A B)
+		withRowNames: #('one' 'two' 'three').
+	self
+		assert: dataframe rowNames asArray
+		equals: #('one' 'two' 'three').
+	self
+		assert: dataframe columnNames asArray
+		equals: #(A B).
+
 ]
 
 { #category : #tests }
