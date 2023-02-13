@@ -146,7 +146,7 @@ DataFrameTypeDetector >> detectColumnTypeAndConvert: aDataSeries [
 { #category : #'public API' }
 DataFrameTypeDetector >> detectTypesAndConvert: aDataFrame [
 
-	aDataFrame columnNames do: [ :columnName |
+	aDataFrame columns with: aDataFrame columnNames do: [ :column :columnName |
 		| thisColumnType |
 		"Get the user given column type for this column name and if it wasn't
 			 given then use the default type detection"
@@ -159,7 +159,7 @@ DataFrameTypeDetector >> detectTypesAndConvert: aDataFrame [
 		thisColumnType isBlock ifFalse: [ thisColumnType := typeMapping at: thisColumnType ].
 		"Assign the column with the converted type by passing the original
 			 column to the block for type conversion"
-		aDataFrame column: columnName put: (thisColumnType value: (aDataFrame column: columnName)) asArray ].
+		aDataFrame column: columnName put: (thisColumnType value: column) asArray ].
 	aDataFrame rowNames: (self detectColumnTypeAndConvert: aDataFrame rowNames)
 ]
 
