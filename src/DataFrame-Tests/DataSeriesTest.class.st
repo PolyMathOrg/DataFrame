@@ -1692,7 +1692,7 @@ DataSeriesTest >> testReplaceNilsWithString [
 ]
 
 { #category : #'missing values' }
-DataSeriesTest >> testReplaceNilsWithZero [
+DataSeriesTest >> testReplaceNilsWithZeros [
 
 	| expected |
 	series := DataSeries
@@ -1705,7 +1705,7 @@ DataSeriesTest >> testReplaceNilsWithZero [
 		values: #(3 7 0 20 8 9 8 0 15 0 16)
 		name: 'ExampleSeries'.
 	
-	self assert: (series replaceNilsWithZero) equals: expected.
+	self assert: (series replaceNilsWithZeros) equals: expected.
 ]
 
 { #category : #accessing }

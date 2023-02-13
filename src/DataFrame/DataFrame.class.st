@@ -159,6 +159,12 @@ Class {
 	#category : #'DataFrame-Core'
 }
 
+{ #category : #defaults }
+DataFrame class >> defaultNormalizer [
+
+	^ AIMinMaxNormalizer
+]
+
 { #category : #'instance creation' }
 DataFrame class >> new [
 	
@@ -181,6 +187,23 @@ DataFrame class >> withColumnNames: anArrayOfColumnNames [
 	
 	df columnNames: anArrayOfColumnNames.
 	^ df
+]
+
+{ #category : #'instance creation' }
+DataFrame class >> withColumnNames: anArrayOfColumnNames withRowNames: anArrayOfRowNames [
+	"Create an empty data frame with given column and row names"
+
+	| numberOfColumns numberOfRows df |
+	
+	numberOfColumns := anArrayOfColumnNames size.
+	numberOfRows := anArrayOfRowNames size.
+	df := self new: numberOfRows @ numberOfColumns.
+	
+	df columnNames: anArrayOfColumnNames.
+	df rowNames: anArrayOfRowNames.
+	^ df
+
+
 ]
 
 { #category : #'instance creation' }
@@ -309,8 +332,12 @@ DataFrame >> = aDataFrame [
 
 { #category : #adding }
 DataFrame >> add: aDataSeries [
+
 	"Add DataSeries as a new row at the end"
-	self addRow: aDataSeries.
+
+	self flag:
+		'This mathod name is not correct. It is misleading. We should think if we should delete it or keep it'.
+	self addRow: aDataSeries
 ]
 
 { #category : #adding }
@@ -420,6 +447,14 @@ DataFrame >> applyToAllColumns: aSymbol [
 ]
 
 { #category : #converting }
+DataFrame >> asArray [
+
+	"Converts DataFrame to the array of rows"
+
+	^ self asArrayOfRows
+]
+
+{ #category : #converting }
 DataFrame >> asArrayOfColumns [
 	"Converts DataFrame to the array of columns"
 
@@ -431,7 +466,20 @@ DataFrame >> asArrayOfRows [
 	"Converts DataFrame to the array of rows"
 	
 	^ (1 to: self numberOfRows) collect: [ :i |
-		self at: i ]
+		(self at: i) asArray ]
+]
+
+{ #category : #converting }
+DataFrame >> asArrayOfRowsWithName [
+	"Answer an OrderedCollection where each item is an Array with:
+	- the name of that row, in first place,
+	- the contents of that row.
+	"
+
+	^ self rowNames withIndexCollect: [ :name :index |
+		Array streamContents: [ :stream |
+			stream nextPut: name;
+				nextPutAll: (self at: index) ] ]
 ]
 
 { #category : #accessing }
@@ -843,6 +891,12 @@ DataFrame >> findAllIndicesOf: anObject atColumn: columnName [
 	^ output
 ]
 
+{ #category : #accessing }
+DataFrame >> first [
+
+	^ self at: 1
+]
+
 { #category : #statistics }
 DataFrame >> firstQuartile [
 
@@ -903,24 +957,6 @@ DataFrame >> groupBy: columnName aggregate: anArrayOfUsingAsStatements [
 		columnNames: (aggregatedColumns collect: #name)
 ]
 
-{ #category : #'gt-inspector-extension' }
-DataFrame >> gtInspectorFastTableIn: composite [
-	<gtInspectorPresentationOrder: 0>
-	<gtInspectorTag: #basic>
-	
-	composite morph
-		title: 'Fast Table';
-		display: [ self showWithGlamourIn: composite ].
-]
-
-{ #category : #'gt-inspector-extension' }
-DataFrame >> gtInspectorItemsIn: composite [
-"Hide Items from inspector"
-
-	composite fastTable
-		when: [ false ].
-]
-
 { #category : #accessing }
 DataFrame >> head [ 
 
@@ -944,7 +980,7 @@ DataFrame >> indexOfColumnNamed: columnName [
 	"Answer the index of a column with a given name or signal an exception if the column with that name was not found"
 	^ self
 		indexOfColumnNamed: columnName
-		ifAbsent: [ LibrarySymbolNotFoundError signal: ('Column ', columnName, ' was not found') ].
+		ifAbsent: [ self error: ('Column ', columnName, ' was not found') ].
 ]
 
 { #category : #accessing }
@@ -960,7 +996,7 @@ DataFrame >> indexOfRowNamed: rowName [
 	"Answer the index of a row with a given name or signal an exception if the row with that name was not found"
 	^ self
 		indexOfRowNamed: rowName
-		ifAbsent: [ LibrarySymbolNotFoundError signal: ('Row ', rowName, ' was not found') ].
+		ifAbsent: [ self error: ('Row ', rowName, ' was not found') ].
 ]
 
 { #category : #accessing }
@@ -1087,6 +1123,29 @@ DataFrame >> innerJoin: aDataFrame onLeft: leftColumn onRight: rightColumn [
 	^ outputDf
 ]
 
+{ #category : #newtools }
+DataFrame >> inspectionItems: aBuilder [
+	<inspectorPresentationOrder: 0 title: 'DataFrame'> 
+
+	| table |
+	table := aBuilder newTable.
+
+	table addColumn: (SpIndexTableColumn new
+		title: '#';
+		sortFunction: #yourself ascending;
+		beNotExpandable;
+		yourself).
+	
+	(self columnNames) doWithIndex: [ :headerName :columnIndex |
+		table addColumn: (SpStringTableColumn
+			title: headerName
+			evaluated: [ :rowWithName | rowWithName at: columnIndex + 1 ]) ].
+
+	table items: self asArrayOfRowsWithName.
+
+	^ table
+]
+
 { #category : #statistics }
 DataFrame >> interquartileRange [
 
@@ -1178,6 +1237,20 @@ DataFrame >> min [
 DataFrame >> mode [
 
 	^ self applyToAllColumns: #mode
+]
+
+{ #category : #converting }
+DataFrame >> normalized [ 
+	"This methods returns a new DataFrame, without altering this one, that has all the columns normalized."
+
+	| normalizers normalizedColumns |
+	normalizers := (1 to: self anyOne size) collect: [ :e |  self class defaultNormalizer new ].
+
+	normalizedColumns := self columns
+		with: normalizers
+		collect: [ :col :normalizer | col normalizedUsing: normalizer ].
+
+	^ self class withColumns: normalizedColumns columnNames: self columnNames
 ]
 
 { #category : #accessing }
@@ -1353,12 +1426,12 @@ DataFrame >> removeColumnsOfRowElementsSatisfing: aBlock onRowNamed: rowName [
 	self removeColumnsOfRowElementsSatisfing: aBlock onRow: index.
 ]
 
-{ #category : #removing }
+{ #category : #'handling nils' }
 DataFrame >> removeColumnsWithNilsAtRow: rowNumber [
 	self removeColumnsOfRowElementsSatisfing: [ :ele | ele isNil ] onRow: rowNumber.
 ]
 
-{ #category : #removing }
+{ #category : #'handling nils' }
 DataFrame >> removeColumnsWithNilsAtRowNamed: rowName [
 	self removeColumnsOfRowElementsSatisfing: [ :ele | ele isNil ] onRowNamed: rowName.
 ]
@@ -1419,12 +1492,12 @@ DataFrame >> removeRowsOfColumnElementsSatisfing: aBlock onColumnNamed: columnNa
 	self removeRowsOfColumnElementsSatisfing: aBlock onColumn: index.
 ]
 
-{ #category : #removing }
+{ #category : #'handling nils' }
 DataFrame >> removeRowsWithNilsAtColumn: columnNumber [
 	self removeRowsOfColumnElementsSatisfing: [ :ele | ele isNil ] onColumn: columnNumber.
 ]
 
-{ #category : #removing }
+{ #category : #'handling nils' }
 DataFrame >> removeRowsWithNilsAtColumnNamed: columnName [
 	self removeRowsOfColumnElementsSatisfing: [ :ele | ele isNil ] onColumnNamed: columnName.
 ]
@@ -1446,6 +1519,13 @@ DataFrame >> renameRow: oldName to: newName [
 	| index |
 	index := self indexOfRowNamed: oldName.
 	self rowNames at: index put: newName.
+]
+
+{ #category : #'handling nils' }
+DataFrame >> replaceAllNilsWithZeros [
+
+	self columnNames do: [ :name | 
+		self column: name put: (self column: name) replaceNilsWithZeros ]
 ]
 
 { #category : #splitjoin }
@@ -1688,22 +1768,12 @@ DataFrame >> select: aBlock [
 	Collect into a new collection like the receiver, only those elements for 
 	which aBlock evaluates to true. Answer the new collection."
 
-	| rows selectedRows selectedRowNames selectedColumnNames selectedRowsAsArrays df |
+	| selectedIndexes |
 	
-	rows := self asArrayOfRows.
-	selectedRows := rows select: aBlock.
-	selectedRowNames := (selectedRows isEmpty)
-		ifTrue: [ #() ] ifFalse: [ selectedRows collect: #name ].
-	selectedColumnNames := (selectedRows isEmpty)
-		ifTrue: [ #() ] ifFalse: [ self columnNames ].
-	selectedRowsAsArrays := selectedRows collect: #asArray.
+	selectedIndexes := (1 to: self numberOfRows) select: [ :index |
+		aBlock value: (self at: index) ].
 	
-	df := self class
-		withRows: selectedRowsAsArrays
-		rowNames: selectedRowNames
-		columnNames: selectedColumnNames.
-	
-	^ df
+	^ self rowsAt: selectedIndexes
 ]
 
 { #category : #private }
@@ -1711,26 +1781,6 @@ DataFrame >> setDefaultRowColumnNames [
 
 	self rowNames: (1 to: self numberOfRows).
 	self columnNames: (1 to: self numberOfColumns).
-]
-
-{ #category : #'gt-inspector-extension' }
-DataFrame >> showWithGlamourIn: composite [
-	| table headerNames |
-	table := FTTableMorph new.
-	"extent: 650@500"
-	table
-		beResizable;
-		intercellSpacing: 1;
-		dataSource: (DataFrameFTData elements: self);
-		onAnnouncement: FTSelectionChanged
-			do: [ :ann | (self rowAt: ann newSelectedIndexes first) inspect ].
-
-	"		onAnnouncement: FTSelectionChanged 
-			do: [ :ann | (self rowsAt: ann newSelectedRowIndexes) gtInspectorItemsIn: composite ];"
-	headerNames := #('#') , self columnNames.
-	table
-		columns: (headerNames collect: [ :name | (FTColumn id: name) width: 100 ]).
-	^ table
 ]
 
 { #category : #accessing }
@@ -1878,23 +1928,15 @@ DataFrame >> withIndexReject: elementAndIndexBlock [
 ]
 
 { #category : #enumerating }
-DataFrame >> withIndexSelect: elementAndIndexBlock [ 
+DataFrame >> withIndexSelect: aBlock [ 
 	"Evaluate aBlock with each of the receiver's elements and index as the arguments. 
 	Collect into a new collection like the receiver, only those elements for 
 	which aBlock evaluates to true. Answer the new collection."
 
-	| rows selectedRowIndices selectedRowNames selectedRowsAsArrays df |
+	| selectedIndexes |
 	
-	rows := self asArrayOfRows.
-	selectedRowIndices := (1 to: rows size) select: [ :i |
-		elementAndIndexBlock value: (rows at: i) value: i ].
-	selectedRowNames := selectedRowIndices collect: [ :i | self rowNames at: i ].
-	selectedRowsAsArrays := selectedRowIndices collect: [ :i | (rows at: i) asArray ].
+	selectedIndexes := (1 to: self numberOfRows) select: [ :index |
+		aBlock value: (self at: index) value: index ].
 	
-	df := self class
-		withRows: selectedRowsAsArrays
-		rowNames: selectedRowNames
-		columnNames: self columnNames.
-	
-	^ df
+	^ self rowsAt: selectedIndexes
 ]

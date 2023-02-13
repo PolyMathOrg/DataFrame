@@ -545,7 +545,7 @@ DataSeries >> replaceNilsWithMode [
 ]
 
 { #category : #replacing }
-DataSeries >> replaceNilsWithZero [
+DataSeries >> replaceNilsWithZeros [
 	"Replaces nils inplace with zero"
 	
 	self replaceNilsWith: 0.

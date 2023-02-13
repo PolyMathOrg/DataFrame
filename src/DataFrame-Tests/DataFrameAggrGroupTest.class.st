@@ -65,7 +65,7 @@ DataFrameAggrGroupTest >> testGroupByAggregateArrayUsingAsNoSuchAggregateColumnE
 		should: [
 			df groupBy: #sex
 				aggregate: { #NoSuchColumn using: #sum as: #total } ]
-		raise: LibrarySymbolNotFoundError.
+		raise: Error.
 ]
 
 { #category : #initialization }
@@ -74,7 +74,7 @@ DataFrameAggrGroupTest >> testGroupByAggregateArrayUsingAsNoSuchGroupColumnError
 		should: [
 			df groupBy: #NoSuchColumn
 				aggregate: { #total_bill using: #sum as: #total } ]
-		raise: LibrarySymbolNotFoundError.
+		raise: Error.
 ]
 
 { #category : #initialization }
@@ -160,7 +160,7 @@ DataFrameAggrGroupTest >> testGroupByAggregateUsingAsNoSuchAggregateColumnError 
 				by: #sex
 				aggregateUsing: #sum
 				as: #total ]
-		raise: LibrarySymbolNotFoundError.
+		raise: Error.
 ]
 
 { #category : #initialization }
@@ -171,7 +171,7 @@ DataFrameAggrGroupTest >> testGroupByAggregateUsingAsNoSuchGroupColumnError [
 				by: #NoSuchColumn
 				aggregateUsing: #sum
 				as: #total ]
-		raise: LibrarySymbolNotFoundError.
+		raise: Error.
 ]
 
 { #category : #initialization }
@@ -227,7 +227,7 @@ DataFrameAggrGroupTest >> testGroupByAggregateUsingNoSuchAggregateColumnError [
 			df group: #NoSuchColumn
 				by: #sex
 				aggregateUsing: #sum ]
-		raise: LibrarySymbolNotFoundError.
+		raise: Error.
 ]
 
 { #category : #initialization }
@@ -237,7 +237,7 @@ DataFrameAggrGroupTest >> testGroupByAggregateUsingNoSuchGroupColumnError [
 			df group: #sex
 				by: #NoSuchColumn
 				aggregateUsing: #sum ]
-		raise: LibrarySymbolNotFoundError.
+		raise: Error.
 ]
 
 { #category : #initialization }
