@@ -1485,6 +1485,19 @@ DataFrameTest >> testInequality [
 	self assert: (df5 = df1) not.
 ]
 
+{ #category : #splitjoin }
+DataFrameTest >> testInfo [
+
+	self assert: df info equals: 'DataFrame: 3 entries
+Data columns (total 3 columns):
+ # | Column | Non-nil count
+-----------------------
+1 | City | 3 non-nil
+2 | Population | 3 non-nil
+3 | BeenThere | 3 non-nil
+'
+]
+
 { #category : #tests }
 DataFrameTest >> testInjectInto [
 	| numericDataFrame actual expected |
