@@ -608,11 +608,9 @@ DataFrame >> column: columnName transform: aBlock ifAbsent: exceptionBlock [
 { #category : #accessing }
 DataFrame >> columnAt: aNumber [
 
-	| series |
-	series := (contents columnAt: aNumber) asDataSeries.
-	series name: (self columnNames at: aNumber).
-	series keys: self rowNames.
-	^ series
+	^ (DataSeries withKeys: self rowNames values: (contents columnAt: aNumber))
+		  name: (self columnNames at: aNumber);
+		  yourself
 ]
 
 { #category : #accessing }
