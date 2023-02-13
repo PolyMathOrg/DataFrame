@@ -147,11 +147,11 @@ DataSeries >> atIndex: aNumber transform: aBlock [
 { #category : #'data-types' }
 DataSeries >> calculateDataType [
 
-	(self values
+	(self
 		 reject: #isNil
 		 thenCollect: [ :each | each class ]) ifNotEmpty: [ :classes |
 		^ classes inject: classes first into: [ :commonSuperclass :each | self leastCommonSuperclassOf: commonSuperclass and: each ] ].
-	^ nil
+	^ UndefinedObject
 ]
 
 { #category : #comparing }
