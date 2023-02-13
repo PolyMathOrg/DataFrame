@@ -1369,6 +1369,45 @@ DataFrameTest >> testFindAllIndicesOfAtColumnFloat [
 	self assert: (df findAllIndicesOf: 2.789 atColumn: 'Population') equals: #(2 4) asOrderedCollection.
 ]
 
+{ #category : #replacing }
+DataFrameTest >> testHasNils [
+
+	| df1 df2 |
+	df1 := DataFrame withRows:
+		       #( #( nil 1.609 true ) #( Dubai 2.789 nil )
+		          #( nil 8.788 false ) ).
+	df1 rowNames: #( A B C ).
+	df1 columnNames: #( City Population BeenThere ).
+
+	self assert: df1 hasNils.
+
+	df2 := DataFrame withRows:
+		       #( #( Barcelona 1.609 true ) #( Dubai 2.789 true )
+		          #( London 8.788 false ) ).
+
+	df2 rowNames: #( A B C ).
+	df2 columnNames: #( City Population BeenThere ).
+
+	self assert: df2 hasNils equals: false
+]
+
+{ #category : #replacing }
+DataFrameTest >> testHasNilsByColumn [
+
+	| expected |
+	df := DataFrame withRows:
+		      #( #( nil 1.609 true ) #( Dubai 2.789 nil )
+		         #( London 8.788 false ) ).
+	df rowNames: #( A B C ).
+	df columnNames: #( City Population BeenThere ).
+
+	expected := Dictionary newFrom: { 
+			            (#City -> true).
+			            (#Population -> false).
+			            (#BeenThere -> true) }.
+	self assert: df hasNilsByColumn equals: expected
+]
+
 { #category : #tests }
 DataFrameTest >> testIndexOfColumnNamed [
 	| expected actual |
@@ -2410,6 +2449,25 @@ DataFrameTest >> testLeftJoinSameColumnNames [
 	self assert: (df leftJoin: df2) equals: expected.
 ]
 
+{ #category : #replacing }
+DataFrameTest >> testNumberOfNils [
+
+	| expected |
+	df := DataFrame withRows:
+		      #( #( nil 1.609 true ) #( Dubai 2.789 nil )
+		         #( nil 8.788 false ) ).
+	df rowNames: #( A B C ).
+	df columnNames: #( City Population BeenThere ).
+
+	expected := Dictionary newFrom: { 
+			            (#City -> 2).
+			            (#Population -> 0).
+			            (#BeenThere -> 1) }.
+
+
+	self assert: df numberOfNils equals: expected
+]
+
 { #category : #splitjoin }
 DataFrameTest >> testOuterJoin [
 	| df2 expected |
@@ -3015,31 +3073,6 @@ DataFrameTest >> testRemoveColumnsAt [
 ]
 
 { #category : #removing }
-DataFrameTest >> testRemoveColumnsOfRowElementsSatisfingOnRow [
-
-	| expected aBlock |
-	df := DataFrame withRows: #(
-		(1 2 3)
-   		(Dubai 4 5.0)
-   		(nil 8.788 false)).
-		
-	df rowNames: #(A B C).
-	df columnNames: #(X Y Z).
-	
-	expected := DataFrame withRows: #(
-		(2)
-   		(4)
-   		(8.788)).
-		
-	expected rowNames: #(A B C).
-	expected columnNames: #(Y).
-	
-	aBlock := [ :rowElement | rowElement ~= 4 ].
-	
-	self assert: (df removeColumnsOfRowElementsSatisfing: aBlock onRow: 2) equals: expected.
-]
-
-{ #category : #removing }
 DataFrameTest >> testRemoveColumnsOfRowElementsSatisfingOnRowAllTrue [
 
 	| expected aBlock |
@@ -3047,7 +3080,7 @@ DataFrameTest >> testRemoveColumnsOfRowElementsSatisfingOnRowAllTrue [
 	expected := DataFrame withRows: #().
 	aBlock := [ :rowElement | true ].
 	
-	self assert: (df removeColumnsOfRowElementsSatisfing: aBlock onRow: 2) equals: expected.
+	self assert: (df removeColumnsOfRowElementsSatisfying: aBlock onRow: 2) equals: expected.
 ]
 
 { #category : #removing }
@@ -3073,6 +3106,31 @@ DataFrameTest >> testRemoveColumnsOfRowElementsSatisfingOnRowNamed [
 	aBlock := [ :rowElement | rowElement ~= 4 ].
 	
 	self assert: (df removeColumnsOfRowElementsSatisfing: aBlock onRowNamed: 'B') equals: expected.
+]
+
+{ #category : #removing }
+DataFrameTest >> testRemoveColumnsOfRowElementsSatisfyingOnRow [
+
+	| expected aBlock |
+	df := DataFrame withRows: #(
+		(1 2 3)
+   		(Dubai 4 5.0)
+   		(nil 8.788 false)).
+		
+	df rowNames: #(A B C).
+	df columnNames: #(X Y Z).
+	
+	expected := DataFrame withRows: #(
+		(2)
+   		(4)
+   		(8.788)).
+		
+	expected rowNames: #(A B C).
+	expected columnNames: #(Y).
+	
+	aBlock := [ :rowElement | rowElement ~= 4 ].
+	
+	self assert: (df removeColumnsOfRowElementsSatisfying: aBlock onRow: 2) equals: expected.
 ]
 
 { #category : #removing }
@@ -3199,29 +3257,6 @@ DataFrameTest >> testRemoveRowsAt [
 ]
 
 { #category : #removing }
-DataFrameTest >> testRemoveRowsOfColumnElementsSatisfingOnColumn [
-
-	| expected aBlock |
-	df := DataFrame withRows: #(
-		(1 2 3)
-   		(Dubai 4 5.0)
-   		(nil 8.788 false)).
-		
-	df rowNames: #(A B C).
-	df columnNames: #(X Y Z).
-	
-	expected := DataFrame withRows: #(
-		(Dubai 4 5.0)).
-		
-	expected rowNames: #(B).
-	expected columnNames: #(X Y Z).
-	
-	aBlock := [ :rowElement | rowElement ~= 4 ].
-	
-	self assert: (df removeRowsOfColumnElementsSatisfing: aBlock onColumn: 2) equals: expected.
-]
-
-{ #category : #removing }
 DataFrameTest >> testRemoveRowsOfColumnElementsSatisfingOnColumnAllTrue [
 
 	| expected aBlock |
@@ -3229,7 +3264,7 @@ DataFrameTest >> testRemoveRowsOfColumnElementsSatisfingOnColumnAllTrue [
 	expected := DataFrame withColumns: #().	
 	aBlock := [ :rowElement | true ].
 	
-	self assert: (df removeRowsOfColumnElementsSatisfing: aBlock onColumn: 2) equals: expected.
+	self assert: (df removeRowsOfColumnElementsSatisfying: aBlock onColumn: 2) equals: expected.
 ]
 
 { #category : #removing }
@@ -3253,6 +3288,48 @@ DataFrameTest >> testRemoveRowsOfColumnElementsSatisfingOnColumnNamed [
 	aBlock := [ :rowElement | rowElement ~= 4 ].
 	
 	self assert: (df removeRowsOfColumnElementsSatisfing: aBlock onColumnNamed: #Y) equals: expected.
+]
+
+{ #category : #removing }
+DataFrameTest >> testRemoveRowsOfColumnElementsSatisfyingOnColumn [
+
+	| expected aBlock |
+	df := DataFrame withRows: #(
+		(1 2 3)
+   		(Dubai 4 5.0)
+   		(nil 8.788 false)).
+		
+	df rowNames: #(A B C).
+	df columnNames: #(X Y Z).
+	
+	expected := DataFrame withRows: #(
+		(Dubai 4 5.0)).
+		
+	expected rowNames: #(B).
+	expected columnNames: #(X Y Z).
+	
+	aBlock := [ :rowElement | rowElement ~= 4 ].
+	
+	self assert: (df removeRowsOfColumnElementsSatisfying: aBlock onColumn: 2) equals: expected.
+]
+
+{ #category : #removing }
+DataFrameTest >> testRemoveRowsWithNils [
+
+	| actual expected |
+	actual := DataFrame withRows:
+		          #( #( Barcelona 1.609 true ) #( Dubai 2.789 nil )
+		             #( nil 8.788 false ) ).
+
+	actual rowNames: #( A B C ).
+	actual columnNames: #( City Population BeenThere ).
+
+	expected := DataFrame withRows: #( #( Barcelona 1.609 true ) ).
+
+	expected rowNames: #( A ).
+	expected columnNames: #( City Population BeenThere ).
+
+	self assert: actual removeRowsWithNils equals: expected
 ]
 
 { #category : #removing }
@@ -3365,6 +3442,168 @@ DataFrameTest >> testReplaceAllNilsWithZeros [
 	expected columnNames: #(City Population BeenThere).
 	
 	self assert: df replaceAllNilsWithZeros equals: expected.
+]
+
+{ #category : #replacing }
+DataFrameTest >> testReplaceNilsWith [ 
+	
+	|expected|
+	
+	df := DataFrame withRows: #(
+		(7 1.5 nil)
+   		(9 nil nil)
+   		(nil 5.5 43)).
+		
+	df rowNames: #(A B C).
+	df columnNames: #(Column1 Column2 Column3).
+	
+	expected := DataFrame withRows: #(
+		(7 1.5 1)
+   		(9 1 1)
+   		(1 5.5 43)).
+		
+	expected rowNames: #(A B C).
+	expected columnNames: #(Column1 Column2 Column3).
+	
+	self assert: (df replaceNilsWith: 1.0) equals: expected.
+	
+
+
+]
+
+{ #category : #replacing }
+DataFrameTest >> testReplaceNilsWithAverage [
+	
+	|expected|
+	
+	df := DataFrame withRows: #(
+		(7 1 nil)
+   		(9 nil nil)
+   		(nil 5 43)).
+		
+	df rowNames: #(A B C).
+	df columnNames: #(Column1 Column2 Column3).
+	
+	expected := DataFrame withRows: #(
+		(7 1 43)
+   		(9 3 43)
+   		(8 5 43)).
+		
+	expected rowNames: #(A B C).
+	expected columnNames: #(Column1 Column2 Column3).
+	
+	self assert: (df replaceNilsWithAverage) equals: expected.
+	
+
+
+]
+
+{ #category : #replacing }
+DataFrameTest >> testReplaceNilsWithMedian [
+	
+	|expected|
+	
+	df := DataFrame withRows: #(
+		(7 1 nil)
+   		(9 nil nil)
+   		(nil 5 43)).
+		
+	df rowNames: #(A B C).
+	df columnNames: #(Column1 Column2 Column3).
+	
+	expected := DataFrame withRows: #(
+		(7 1 43)
+   		(9 3 43)
+   		(8 5 43)).
+		
+	expected rowNames: #(A B C).
+	expected columnNames: #(Column1 Column2 Column3).
+	
+	self assert: (df replaceNilsWithAverage) equals: expected.
+	
+
+
+]
+
+{ #category : #replacing }
+DataFrameTest >> testReplaceNilsWithMode [
+	
+	|expected|
+	
+	df := DataFrame withRows: #(
+		(7 1 nil)
+   		(8 nil nil)
+   		(nil 1 43)).
+		
+	df rowNames: #(A B C).
+	df columnNames: #(Column1 Column2 Column3).
+	
+	expected := DataFrame withRows: #(
+		(7 1 43)
+   		(8 1 43)
+   		(7 1 43)).
+		
+	expected rowNames: #(A B C).
+	expected columnNames: #(Column1 Column2 Column3).
+	
+	self assert: (df replaceNilsWithMode) equals: expected.
+	
+
+
+]
+
+{ #category : #replacing }
+DataFrameTest >> testReplaceNilsWithPreviousRowValue [
+	
+	|expected|
+	
+	df := DataFrame withRows: #(
+		(7 1 nil)
+   		(8 nil 3)
+   		(nil 2 nil)).
+		
+	df rowNames: #(A B C).
+	df columnNames: #(Column1 Column2 Column3).
+	
+	expected := DataFrame withRows: #(
+		(7 1 nil)
+   		(8 1 3)
+   		(8 2 3)).
+		
+	expected rowNames: #(A B C).
+	expected columnNames: #(Column1 Column2 Column3).
+	
+	self assert: (df replaceNilsWithPreviousRowValue) equals: expected.
+	
+
+
+]
+
+{ #category : #replacing }
+DataFrameTest >> testReplaceNilsWithZero [
+	
+	|expected|
+	
+	df := DataFrame withRows: #(
+		(7 1.5 nil)
+   		(9 nil nil)
+   		(nil 5.5 43)).
+		
+	df rowNames: #(A B C).
+	df columnNames: #(Column1 Column2 Column3).
+	
+	expected := DataFrame withRows: #(
+		(7 1.5 0)
+   		(9 0 0)
+   		(0 5.5 43)).
+		
+	expected rowNames: #(A B C).
+	expected columnNames: #(Column1 Column2 Column3).
+	
+	self assert: (df replaceNilsWithZero) equals: expected.
+	
+
+
 ]
 
 { #category : #splitjoin }
