@@ -51,7 +51,7 @@ Class {
 DataFrameTypeDetector >> canAllBeBoolean: aDataSeries [
 	"Checks to see if all of the values in the column are strings of true or false (case insensitive) or nil"
 
-	^ aDataSeries allSatisfy: [ :each | each isNil or: [ (each sameAs: 'true') | (each sameAs: 'false') ] ]
+	^ aDataSeries allSatisfy: [ :each | each isNil or: [ each isString and: [ (each sameAs: 'true') | (each sameAs: 'false') ] ] ]
 ]
 
 { #category : #testing }
