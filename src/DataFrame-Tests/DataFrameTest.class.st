@@ -1455,6 +1455,24 @@ DataFrameTest >> testDataTypesWhenSingleColumnIsRenamed [
 	self assert: df dataTypes equals: expected.
 ]
 
+{ #category : #'data-types' }
+DataFrameTest >> testDataTypesWithNil [
+			
+	| column expected |
+	
+	column := DataSeries withValues: #(2015 nil 2017) name: #Year.
+	df addColumn: column.
+
+	expected:= {
+		'City' ->  ByteString.
+		'Population' -> SmallFloat64.
+		'BeenThere' -> Boolean.
+		'Year' -> SmallInteger 
+	} asDictionary.
+	
+	self assert: df dataTypes equals: expected.
+]
+
 { #category : #tests }
 DataFrameTest >> testDetect [
 	| actual expected |
