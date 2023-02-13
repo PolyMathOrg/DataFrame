@@ -608,11 +608,9 @@ DataFrame >> column: columnName transform: aBlock ifAbsent: exceptionBlock [
 { #category : #accessing }
 DataFrame >> columnAt: aNumber [
 
-	| series |
-	series := (contents columnAt: aNumber) asDataSeries.
-	series name: (self columnNames at: aNumber).
-	series keys: self rowNames.
-	^ series
+	^ (DataSeries withKeys: self rowNames values: (contents columnAt: aNumber))
+		  name: (self columnNames at: aNumber);
+		  yourself
 ]
 
 { #category : #accessing }
@@ -1381,14 +1379,6 @@ DataFrame >> removeColumnsOfRowElementsSatisfying: aBlock onRow: rowNumber [
 	self numberOfColumns = 0 ifTrue: [ rowNames removeAll ].
 ]
 
-{ #category : #removing }
-DataFrame >> removeColumnsOfRowElementsSatisfing: aBlock onRowNamed: rowName [
-
-	| index |
-	index := self indexOfRowNamed: rowName.
-	self removeColumnsOfRowElementsSatisfing: aBlock onRow: index.
-]
-
 { #category : #'handling nils' }
 DataFrame >> removeColumnsWithNilsAtRow: rowNumber [
 	self removeColumnsOfRowElementsSatisfying: [ :ele | ele isNil ] onRow: rowNumber.
@@ -1490,6 +1480,13 @@ DataFrame >> renameRow: oldName to: newName [
 	self rowNames at: index put: newName.
 ]
 
+{ #category : #'handling nils' }
+DataFrame >> replaceAllNilsWithZeros [
+
+	self columnNames do: [ :name | 
+		self column: name put: (self column: name) replaceNilsWithZeros ]
+]
+
 { #category : #replacing }
 DataFrame >> replaceNilsWith: anObject [
 			
@@ -1556,13 +1553,6 @@ DataFrame >> replaceNilsWithPreviousRowValue [
 DataFrame >> replaceNilsWithZero [
 			
 	self replaceNilsWith: 0
-]
-
-{ #category : #'handling nils' }
-DataFrame >> replaceAllNilsWithZeros [
-
-	self columnNames do: [ :name | 
-		self column: name put: (self column: name) replaceNilsWithZeros ]
 ]
 
 { #category : #splitjoin }
