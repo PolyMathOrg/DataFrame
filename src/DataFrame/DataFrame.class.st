@@ -891,6 +891,26 @@ DataFrame >> groupBy: columnName aggregate: anArrayOfUsingAsStatements [
 		columnNames: (aggregatedColumns collect: #name)
 ]
 
+{ #category : #replacing }
+DataFrame >> hasNils [
+
+	1 to: self numberOfColumns do: [ :each | 
+	^ true ifTrue: [ (self columnAt: each) hasNil ] ].
+	^ false
+]
+
+{ #category : #replacing }
+DataFrame >> hasNilsByColumn [
+
+	"Returns a dictionary which indicates the presence of any nil values column wise"
+
+	| dictionary |
+	dictionary := Dictionary new.
+	self columnNames do: [ :each | 
+		dictionary at: each put: (self column: each) hasNil ].
+	^ dictionary
+]
+
 { #category : #accessing }
 DataFrame >> head [ 
 
@@ -1187,6 +1207,17 @@ DataFrame >> numberOfColumns [
 	^ contents numberOfColumns
 ]
 
+{ #category : #replacing }
+DataFrame >> numberOfNils [
+
+	| dictionary count |
+	dictionary := Dictionary new.
+	self columnNames do: [ :each | 
+		count := (self column: each) count: [ :each2 | each2 isNil ].
+		dictionary at: each put: count ].
+	^ dictionary 
+]
+
 { #category : #accessing }
 DataFrame >> numberOfRows [
 
@@ -1326,7 +1357,15 @@ DataFrame >> removeColumnsAt: aCollectionOfColumnIndices [
 ]
 
 { #category : #removing }
-DataFrame >> removeColumnsOfRowElementsSatisfing: aBlock onRow: rowNumber [
+DataFrame >> removeColumnsOfRowElementsSatisfing: aBlock onRowNamed: rowName [
+
+	| index |
+	index := self indexOfRowNamed: rowName.
+	self removeColumnsOfRowElementsSatisfying: aBlock onRow: index.
+]
+
+{ #category : #removing }
+DataFrame >> removeColumnsOfRowElementsSatisfying: aBlock onRow: rowNumber [
 
 	| columnNamesCopy |
 	(rowNumber < 1 or: [ rowNumber > self numberOfRows ])
@@ -1337,7 +1376,7 @@ DataFrame >> removeColumnsOfRowElementsSatisfing: aBlock onRow: rowNumber [
 	columnNamesCopy withIndexDo: [ :columnName :j |
 		(aBlock value: (contents at: rowNumber at: j))
 			ifFalse: [ columnNames add: columnName ]].
-	contents removeColumnsOfRowElementsSatisfing: aBlock onRow: rowNumber.
+	contents removeColumnsOfRowElementsSatisfying: aBlock onRow: rowNumber.
 	
 	self numberOfColumns = 0 ifTrue: [ rowNames removeAll ].
 ]
@@ -1352,7 +1391,7 @@ DataFrame >> removeColumnsOfRowElementsSatisfing: aBlock onRowNamed: rowName [
 
 { #category : #'handling nils' }
 DataFrame >> removeColumnsWithNilsAtRow: rowNumber [
-	self removeColumnsOfRowElementsSatisfing: [ :ele | ele isNil ] onRow: rowNumber.
+	self removeColumnsOfRowElementsSatisfying: [ :ele | ele isNil ] onRow: rowNumber.
 ]
 
 { #category : #'handling nils' }
@@ -1392,7 +1431,15 @@ DataFrame >> removeRowsAt: aCollectionOfRowIndices [
 ]
 
 { #category : #removing }
-DataFrame >> removeRowsOfColumnElementsSatisfing: aBlock onColumn: columnNumber [
+DataFrame >> removeRowsOfColumnElementsSatisfing: aBlock onColumnNamed: columnName [
+
+	| index |
+	index := self indexOfColumnNamed: columnName.
+	self removeRowsOfColumnElementsSatisfying: aBlock onColumn: index.
+]
+
+{ #category : #removing }
+DataFrame >> removeRowsOfColumnElementsSatisfying: aBlock onColumn: columnNumber [
 	
 	| rowNamesCopy |
 	(columnNumber < 1 or: [ columnNumber > self numberOfColumns ])
@@ -1403,22 +1450,23 @@ DataFrame >> removeRowsOfColumnElementsSatisfing: aBlock onColumn: columnNumber 
 	rowNamesCopy withIndexDo: [ :rowName :i |
 		(aBlock value: (contents at: i at: columnNumber))
 			ifFalse: [ rowNames add: rowName ] ].
-	contents removeRowsOfColumnElementsSatisfing: aBlock onColumn: columnNumber.
+	contents removeRowsOfColumnElementsSatisfying: aBlock onColumn: columnNumber.
 	
 	self numberOfRows = 0 ifTrue: [ columnNames removeAll ].
 ]
 
 { #category : #removing }
-DataFrame >> removeRowsOfColumnElementsSatisfing: aBlock onColumnNamed: columnName [
+DataFrame >> removeRowsWithNils [
 
-	| index |
-	index := self indexOfColumnNamed: columnName.
-	self removeRowsOfColumnElementsSatisfing: aBlock onColumn: index.
+	1 to: self numberOfColumns do: [ :i | 
+		self
+			removeRowsOfColumnElementsSatisfying: [ :ele | ele isNil ]
+			onColumn: i ]
 ]
 
 { #category : #'handling nils' }
 DataFrame >> removeRowsWithNilsAtColumn: columnNumber [
-	self removeRowsOfColumnElementsSatisfing: [ :ele | ele isNil ] onColumn: columnNumber.
+	self removeRowsOfColumnElementsSatisfying: [ :ele | ele isNil ] onColumn: columnNumber.
 ]
 
 { #category : #'handling nils' }
@@ -1440,6 +1488,74 @@ DataFrame >> renameRow: oldName to: newName [
 	| index |
 	index := self indexOfRowNamed: oldName.
 	self rowNames at: index put: newName.
+]
+
+{ #category : #replacing }
+DataFrame >> replaceNilsWith: anObject [
+			
+	1 to: self numberOfColumns do: [ :i |
+		1 to: self numberOfRows do: [ :j |
+			(self at: j at: i) ifNil:
+				[ self at: j at: i put: anObject ] ]
+		].
+]
+
+{ #category : #replacing }
+DataFrame >> replaceNilsWithAverage [
+	
+	| averageOfColumn |		
+	1 to: self numberOfColumns do: [ :i |
+		averageOfColumn := ((self columnAt: i) select: [ :ele | ele isNotNil ]) average.
+		1 to: self numberOfRows do: [ :j |
+			(self at: j at: i) ifNil: [
+				self at: j at: i put: averageOfColumn  ] ].
+		].
+]
+
+{ #category : #replacing }
+DataFrame >> replaceNilsWithMedian [
+			
+	| medianOfColumn |		
+	1 to: self numberOfColumns do: [ :i |
+		medianOfColumn := ((self columnAt: i) select: [ :ele | ele isNotNil ]) median.
+		1 to: self numberOfRows do: [ :j |
+			(self at: j at: i) ifNil: [
+				self at: j at: i put: medianOfColumn  ] ].
+		].
+]
+
+{ #category : #replacing }
+DataFrame >> replaceNilsWithMode [
+			
+	| modeOfColumn |		
+	1 to: self numberOfColumns do: [ :i |
+		modeOfColumn := ((self columnAt: i) select: [ :ele | ele isNotNil ]) mode.
+		1 to: self numberOfRows do: [ :j |
+			(self at: j at: i) ifNil: [
+				self at: j at: i put: modeOfColumn  ] ].
+		].
+]
+
+{ #category : #replacing }
+DataFrame >> replaceNilsWithPreviousRowValue [
+	
+	|value|		
+	1 to: self numberOfColumns do: [ :i |
+		1 to: self numberOfRows do: [ :j |
+			
+			j > 1 
+				ifTrue: [ 
+					(self at: j at: i) ifNil: [ self at: j at: i put: value ].
+				 	].
+			value:= self at: j at: i.
+		].
+	].
+]
+
+{ #category : #replacing }
+DataFrame >> replaceNilsWithZero [
+			
+	self replaceNilsWith: 0
 ]
 
 { #category : #'handling nils' }

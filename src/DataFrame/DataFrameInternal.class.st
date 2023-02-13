@@ -301,7 +301,7 @@ DataFrameInternal >> removeColumnAt: columnNumber [
 ]
 
 { #category : #removing }
-DataFrameInternal >> removeColumnsOfRowElementsSatisfing: aBlock onRow: rowNumber [
+DataFrameInternal >> removeColumnsOfRowElementsSatisfying: aBlock onRow: rowNumber [
 	"Executes aBlock for all elements in specified rowNumber and deletes the column
 	 which satisfied condition given in aBlock."
 
@@ -352,7 +352,7 @@ DataFrameInternal >> removeRowAt: rowNumber [
 ]
 
 { #category : #removing }
-DataFrameInternal >> removeRowsOfColumnElementsSatisfing: aBlock onColumn: columnNumber [
+DataFrameInternal >> removeRowsOfColumnElementsSatisfying: aBlock onColumn: columnNumber [
 	"Removes all rows having a nil value at the column columnNumber"
 
 	| newContents rowsToDrop k |

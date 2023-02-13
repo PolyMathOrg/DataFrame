@@ -508,6 +508,17 @@ DataSeries >> replaceNilsWithMode [
 ]
 
 { #category : #replacing }
+DataSeries >> replaceNilsWithPreviousValue [
+
+	"Replaces nils inplace with previous non-nil value"
+
+	| value |
+	self withIndexDo: [ :ele :index | 
+		index > 1 ifTrue: [ ele ifNil: [ self atIndex: index put: value ] ].
+		value := self atIndex: index ]
+]
+
+{ #category : #replacing }
 DataSeries >> replaceNilsWithZeros [
 	"Replaces nils inplace with zero"
 	
