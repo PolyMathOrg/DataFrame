@@ -799,7 +799,7 @@ DataSeriesTest >> testCalculateDataType [
 	| newSeries |
 	self assert: series calculateDataType equals: SmallInteger.
 	newSeries := DataSeries new.
-	self assert: newSeries calculateDataType equals: nil.
+	self assert: newSeries calculateDataType equals: UndefinedObject.
 ]
 
 { #category : #arithmetic }

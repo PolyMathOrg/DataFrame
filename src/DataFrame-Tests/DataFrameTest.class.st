@@ -1367,9 +1367,9 @@ DataFrameTest >> testDataTypesOfEmptyDataFrameWithColumnNames [
 	dataFrame := DataFrame withColumnNames: #('a' 'b' 'c').
 	dataFrame dataTypes.
 	expected := { 
-		'a' -> nil .
-		'b' -> nil .
-		'c' -> nil
+		'a' -> UndefinedObject .
+		'b' -> UndefinedObject .
+		'c' -> UndefinedObject
 	} asDictionary.
 			
 	self assert: dataFrame dataTypes equals: expected.
