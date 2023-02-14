@@ -6,7 +6,12 @@ Array >> calculateDataType [
 	(self
 		 reject: #isNil
 		 thenCollect: [ :each | each class ]) ifNotEmpty: [ :classes |
-		^ classes inject: classes first into: [ :commonSuperclass :each | self leastCommonSuperclassOf: commonSuperclass and: each ] ].
+		| result |
+		result := classes inject: classes first into: [ :commonSuperclass :each | self leastCommonSuperclassOf: commonSuperclass and: each ].
+		"If we cannot detect the type, we configure it as Object."
+		^ result isString
+			  ifTrue: [ Object ]
+			  ifFalse: [ result ] ].
 	^ UndefinedObject
 ]
 
