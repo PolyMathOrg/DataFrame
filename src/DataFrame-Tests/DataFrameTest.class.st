@@ -422,7 +422,7 @@ DataFrameTest >> testCalculateDataTypes [
 	df calculateDataTypes.
 	
 	expected := {
-		'City' ->  ByteString.
+		'City' ->  Object.
 		'Population' -> SmallFloat64.
 		'BeenThere' -> Boolean
 	} asDictionary.
@@ -1297,7 +1297,7 @@ DataFrameTest >> testDataTypes [
 	| expected |
 
 	expected:= {
-		'City' ->  ByteString.
+		'City' ->  Object.
 		'Population' -> SmallFloat64.
 		'BeenThere' -> Boolean
 	} asDictionary.
@@ -1338,7 +1338,7 @@ DataFrameTest >> testDataTypesWhenColumnIsAdded [
 	df addColumn: column.
 
 	expected:= {
-		'City' ->  ByteString.
+		'City' ->  Object.
 		'Population' -> SmallFloat64.
 		'BeenThere' -> Boolean.
 		'Year' -> SmallInteger 
@@ -1355,7 +1355,7 @@ DataFrameTest >> testDataTypesWhenColumnIsRemoved [
 	df removeColumn: 'Population'.
 
 	expected:= {
-		'City' ->  ByteString .
+		'City' ->  Object .
 		'BeenThere' -> Boolean 
 	} asDictionary.
 	
@@ -1369,7 +1369,7 @@ DataFrameTest >> testDataTypesWhenColumnsAreRenamed [
 	"self assert: df dataTypes keys equals: #('City' 'Population' 'BeenThere')."
 	df columnNames: #('city' 'population' 'visited').
 	expected:= {
-		'city' ->  ByteString.
+		'city' ->  Object.
 		'population' -> SmallFloat64.
 		'visited' -> Boolean
 	} asDictionary.
@@ -1384,7 +1384,7 @@ DataFrameTest >> testDataTypesWhenEmptyColumnIsAdded [
 	
 	df addEmptyColumnNamed: 'EmptyColumn'.
 	expected:= {
-		'City' ->  ByteString.
+		'City' ->  Object.
 		'Population' -> SmallFloat64.
 		'BeenThere' -> Boolean.
 		'EmptyColumn' -> UndefinedObject. 
@@ -1401,7 +1401,7 @@ DataFrameTest >> testDataTypesWhenSingleColumnIsRenamed [
 	df renameColumn: 'BeenThere' to: 'Visited'.
 
 	expected:= {
-		'City' ->  ByteString.
+		'City' ->  Object.
 		'Population' -> SmallFloat64.
 		'Visited' -> Boolean
 	} asDictionary.
@@ -1418,7 +1418,7 @@ DataFrameTest >> testDataTypesWithNil [
 	df addColumn: column.
 
 	expected:= {
-		'City' ->  ByteString.
+		'City' ->  Object.
 		'Population' -> SmallFloat64.
 		'BeenThere' -> Boolean.
 		'Year' -> SmallInteger 
@@ -1732,11 +1732,11 @@ DataFrameTest >> testInfo [
 
 	self assert: df info equals: 'DataFrame: 3 entries
 Data columns (total 3 columns):
- # | Column | Non-nil count
------------------------
-1 | City | 3 non-nil
-2 | Population | 3 non-nil
-3 | BeenThere | 3 non-nil
+ # | Column | Non-nil count | Dtype
+---------------------------------------------------
+1 | City | 3 non-nil | Object
+2 | Population | 3 non-nil | SmallFloat64
+3 | BeenThere | 3 non-nil | Boolean
 '
 ]
 
