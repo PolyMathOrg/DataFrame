@@ -147,11 +147,7 @@ DataSeries >> atIndex: aNumber transform: aBlock [
 { #category : #'data-types' }
 DataSeries >> calculateDataType [
 
-	(self
-		 reject: #isNil
-		 thenCollect: [ :each | each class ]) ifNotEmpty: [ :classes |
-		^ classes inject: classes first into: [ :commonSuperclass :each | self leastCommonSuperclassOf: commonSuperclass and: each ] ].
-	^ UndefinedObject
+	^ self values calculateDataType
 ]
 
 { #category : #comparing }
@@ -397,28 +393,6 @@ DataSeries >> last [
 	"Answer the last element of the receiver.
 	Raise an error if there are not enough elements."
 	^ self atIndex: self size
-]
-
-{ #category : #private }
-DataSeries >> leastCommonSuperclassOf: firstClass and: secondClass [
-"Determines the closest element of class hierarchy which is the common ancestor of two given classes"
-
-	| classA classB |
-	classA := firstClass.
-	classB := secondClass.
-	
-	[ classA = Object or: (classB = Object) ]
-		whileFalse: [ 
-			(classA inheritsFromOrEqualTo: classB)
-				ifTrue: [ ^ classB ].
-				
-			(classB inheritsFrom: classA)
-				ifTrue: [ ^ classA ].
-				
-			classA := classA superclass.
-			classB := classB superclass. ].
-	
-	^ Object.
 ]
 
 { #category : #'math functions' }

@@ -408,52 +408,6 @@ DataFrameTest >> testAtTransform [
 ]
 
 { #category : #'data-types' }
-DataFrameTest >> testCalculateDataTypeOfColumn [
-			
-	| newDataTypes expected |
-
-	newDataTypes := {
-		'City' ->  String.
-		'Population' -> Integer.
-		'BeenThere' -> Float
-	} asDictionary.
-	
-	df dataTypes: newDataTypes.
-	df calculateDataTypeOfColumn: 'BeenThere'.
-	
-	expected := {
-		'City' ->  String.
-		'Population' -> Integer.
-		'BeenThere' -> Boolean
-	} asDictionary.
-	
-	self assert: df dataTypes equals: expected.
-]
-
-{ #category : #'data-types' }
-DataFrameTest >> testCalculateDataTypeOfColumnAt [
-			
-	| newDataTypes expected |
-
-	newDataTypes := {
-		'City' ->  String.
-		'Population' -> Integer.
-		'BeenThere' -> Float
-	} asDictionary.
-	
-	df dataTypes: newDataTypes.
-	df calculateDataTypeOfColumnAt: 3.
-	
-	expected := {
-		'City' ->  String.
-		'Population' -> Integer.
-		'BeenThere' -> Boolean
-	} asDictionary.
-	
-	self assert: df dataTypes equals: expected.
-]
-
-{ #category : #'data-types' }
 DataFrameTest >> testCalculateDataTypes [
 			
 	| newDataTypes expected |

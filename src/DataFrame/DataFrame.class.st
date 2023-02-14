@@ -521,22 +521,9 @@ DataFrame >> average [
 ]
 
 { #category : #'data-types' }
-DataFrame >> calculateDataTypeOfColumn: aColumnName [
-	
-	self dataTypes at: aColumnName put: (self column: aColumnName) calculateDataType.
-]
-
-{ #category : #'data-types' }
-DataFrame >> calculateDataTypeOfColumnAt: aNumber [
-	
-	self calculateDataTypeOfColumn: (self columnNames at: aNumber).
-]
-
-{ #category : #'data-types' }
 DataFrame >> calculateDataTypes [
 
-	self columnNames do: [ :columnName |
-		self calculateDataTypeOfColumn: columnName ].
+	self columns doWithIndex: [ :column :i | self dataTypes at: (self columnNames at: i) put: column calculateDataType ]
 ]
 
 { #category : #comparing }
