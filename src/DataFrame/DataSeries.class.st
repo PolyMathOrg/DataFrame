@@ -380,7 +380,7 @@ DataSeries >> isSequenceable [
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : #private }
 DataSeries >> keys: anArrayOfKeys [
 	| keys |
 	keys := anArrayOfKeys asArray deepCopy.

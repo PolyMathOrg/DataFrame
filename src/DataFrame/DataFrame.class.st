@@ -617,11 +617,9 @@ DataFrame >> column: columnName transform: aBlock ifAbsent: exceptionBlock [
 { #category : #accessing }
 DataFrame >> columnAt: aNumber [
 
-	| series |
-	series := (contents columnAt: aNumber) asDataSeries.
-	series name: (self columnNames at: aNumber).
-	series keys: self rowNames.
-	^ series
+	^ (DataSeries withKeys: self rowNames values: (contents columnAt: aNumber))
+		  name: (self columnNames at: aNumber);
+		  yourself
 ]
 
 { #category : #accessing }
@@ -1551,8 +1549,9 @@ DataFrame >> renameRow: oldName to: newName [
 { #category : #'handling nils' }
 DataFrame >> replaceAllNilsWithZeros [
 
-	self columnNames do: [ :name | 
-		self column: name put: (self column: name) replaceNilsWithZeros ]
+	self deprecated: 'Use #replaceNilsWithZero instead.' transformWith: '`@receiver replaceAllNilsWithZeros' -> '`@receiver replaceNilsWithZero'.
+
+	self replaceNilsWithZero
 ]
 
 { #category : #replacing }
