@@ -1248,6 +1248,14 @@ DataSeriesTest >> testGroupByAggregateUsingSizeMismatch [
 		raise: SizeMismatch.
 ]
 
+{ #category : #grouping }
+DataSeriesTest >> testGroupByUniqueValuesAndAggregateUsing [
+
+	series := DataSeries withValues: #( Male Female Male Male Female ) name: #sex.
+
+	self assert: (series groupByUniqueValuesAndAggregateUsing: #size) equals: (DataSeries withKeys: #( #Female #Male ) values: #( 2 3 ) name: #sex)
+]
+
 { #category : #'missing values' }
 DataSeriesTest >> testHasNil [
 	| numbers |
