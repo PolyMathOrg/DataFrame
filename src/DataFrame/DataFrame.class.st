@@ -153,7 +153,8 @@ Class {
 	#instVars : [
 		'contents',
 		'rowNames',
-		'columnNames'
+		'columnNames',
+		'dataTypes'
 	],
 	#category : #'DataFrame-Core'
 }
@@ -343,6 +344,7 @@ DataFrame >> add: aDataSeries [
 DataFrame >> addColumn: aDataSeries [
 	"Add DataSeries as a new column at the end"
 	self addColumn: aDataSeries named: aDataSeries name.
+	(self dataTypes ) at: aDataSeries name put: aDataSeries calculateDataType.
 ]
 
 { #category : #adding }
@@ -365,6 +367,7 @@ DataFrame >> addColumn: anArray named: aString atPosition: aNumber [
 	
 	contents addColumn: anArray asArray atPosition: aNumber.
 	columnNames add: aString afterIndex: aNumber - 1.
+	dataTypes at: aString put: (anArray asDataSeries calculateDataType).
 ]
 
 { #category : #adding }
@@ -517,6 +520,12 @@ DataFrame >> average [
 	^ self applyToAllColumns: #average
 ]
 
+{ #category : #'data-types' }
+DataFrame >> calculateDataTypes [
+
+	self columns doWithIndex: [ :column :i | self dataTypes at: (self columnNames at: i) put: column calculateDataType ]
+]
+
 { #category : #comparing }
 DataFrame >> closeTo: aDataFrame [
 
@@ -637,14 +646,22 @@ DataFrame >> columnNames [
 ]
 
 { #category : #accessing }
-DataFrame >> columnNames: anArray [
-	anArray size = self numberOfColumns 
+DataFrame >> columnNames: aCollection [
+	
+	| type |
+	aCollection size = self numberOfColumns 
 		ifFalse: [ SizeMismatch signal: 'Wrong number of column names' ].
 		
-	anArray asSet size = anArray size
+	aCollection asSet size = aCollection size
 		ifFalse: [ Error signal: 'All column names must be distinct' ].
-		
-	columnNames := anArray asOrderedCollection
+	
+	self columnNames ifNotNil: [
+		self columnNames withIndexDo: [ :currentColumnName :i |
+			type := dataTypes at: currentColumnName.
+			dataTypes removeKey: currentColumnName.
+			dataTypes at: (aCollection at: i) put: type ] ].
+	
+	columnNames := aCollection asOrderedCollection.
 ]
 
 { #category : #accessing }
@@ -781,6 +798,42 @@ DataFrame >> crossTabulate: colName1 with: colName2 [
 	col2 := self column: colName2.
 	
 	^ col1 crossTabulateWith: col2.
+]
+
+{ #category : #'data-types' }
+DataFrame >> dataTypeOfColumn: aColumnName [
+
+	^ dataTypes at: aColumnName.
+]
+
+{ #category : #'data-types' }
+DataFrame >> dataTypeOfColumn: aColumnName put: aDataType [
+
+	dataTypes at: aColumnName put: aDataType
+]
+
+{ #category : #'data-types' }
+DataFrame >> dataTypeOfColumnAt: aNumber [
+
+	^ self dataTypeOfColumn: (columnNames at: aNumber)
+]
+
+{ #category : #'data-types' }
+DataFrame >> dataTypeOfColumnAt: aNumber put: aDataType [
+
+	^ self dataTypeOfColumn: (columnNames at: aNumber) put: aDataType
+]
+
+{ #category : #accessing }
+DataFrame >> dataTypes [
+	
+	^ dataTypes 
+]
+
+{ #category : #accessing }
+DataFrame >> dataTypes: anObject [
+
+	dataTypes := anObject
 ]
 
 { #category : #accessing }
@@ -964,8 +1017,10 @@ DataFrame >> initialize [
 
 	super initialize.
 	
+	dataTypes := Dictionary new.
 	contents := DataFrameInternal new.
 	self setDefaultRowColumnNames.
+	self calculateDataTypes.
 ]
 
 { #category : #initialization }
@@ -975,6 +1030,7 @@ DataFrame >> initialize: aPoint [
 	
 	contents := DataFrameInternal new: aPoint.
 	self setDefaultRowColumnNames.
+	self calculateDataTypes.
 ]
 
 { #category : #initialization }
@@ -982,6 +1038,7 @@ DataFrame >> initializeColumns: anArrayOfArrays [
 
 	contents := DataFrameInternal withColumns: anArrayOfArrays.
 	self setDefaultRowColumnNames.
+	self calculateDataTypes.
 ]
 
 { #category : #initialization }
@@ -992,6 +1049,7 @@ DataFrame >> initializeContents: aDataFrameInternal rowNames: rows columnNames: 
 	contents := aDataFrameInternal.
 	self rowNames: rows.
 	self columnNames: columns.
+	self calculateDataTypes.
 ]
 
 { #category : #initialization }
@@ -999,6 +1057,7 @@ DataFrame >> initializeRows: anArrayOfArrays [
 
 	contents := DataFrameInternal withRows: anArrayOfArrays.
 	self setDefaultRowColumnNames.
+	self calculateDataTypes.
 ]
 
 { #category : #enumerating }
@@ -1335,15 +1394,19 @@ DataFrame >> removeColumn: columnName [
 DataFrame >> removeColumnAt: columnNumber [
 	(columnNumber < 1 or: [ columnNumber > self numberOfColumns ])
 		ifTrue: [ SubscriptOutOfBounds signalFor: columnNumber ].
-
+		
+	self dataTypes removeKey: (self columnAt: columnNumber) name.
+	
 	contents removeColumnAt: columnNumber.
 	columnNames := columnNames copyWithoutIndex: columnNumber.
+	
 ]
 
 { #category : #removing }
 DataFrame >> removeColumns: aCollectionOfColumnNames [
 	aCollectionOfColumnNames do: [ :each |
-		self removeColumn: each ].
+		self removeColumn: each.
+		].
 ]
 
 { #category : #removing }
@@ -1470,6 +1533,9 @@ DataFrame >> renameColumn: oldName to: newName [
 	| index |
 	index := self indexOfColumnNamed: oldName.
 	self columnNames at: index put: newName.
+	
+	self dataTypes at: newName put: (self dataTypes at: oldName).
+	self dataTypes removeKey: oldName.
 ]
 
 { #category : #renaming }

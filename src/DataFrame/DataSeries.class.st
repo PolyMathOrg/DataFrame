@@ -144,6 +144,12 @@ DataSeries >> atIndex: aNumber transform: aBlock [
 	self at: key transform: aBlock
 ]
 
+{ #category : #'data-types' }
+DataSeries >> calculateDataType [
+
+	^ self values calculateDataType
+]
+
 { #category : #comparing }
 DataSeries >> closeTo: anObject [
 	^ self closeTo: anObject precision: self defaultPrecision.
