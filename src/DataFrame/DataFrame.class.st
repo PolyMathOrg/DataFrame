@@ -1025,9 +1025,9 @@ DataFrame >> info [
 			  print: self columnNames size;
 			  nextPutAll: ' columns):';
 			  cr;
-			  nextPutAll: ' # | Column | Non-nil count';
+			  nextPutAll: ' # | Column | Non-nil count | Dtype';
 			  cr;
-			  nextPutAll: '-----------------------';
+			  nextPutAll: '---------------------------------------------------';
 			  cr.
 		  self columnNames doWithIndex: [ :col :index |
 			  aStream
@@ -1036,7 +1036,8 @@ DataFrame >> info [
 				  nextPutAll: col;
 				  nextPutAll: ' | ';
 				  print: ((self columnAt: index) reject: #isNil) size;
-				  nextPutAll: ' non-nil';
+				  nextPutAll: ' non-nil | ';
+				  print: (self dataTypes at: col);
 				  cr ] ]
 ]
 
