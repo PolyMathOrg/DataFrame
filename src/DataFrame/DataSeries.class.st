@@ -308,23 +308,34 @@ DataSeries >> groupBy: otherSeries aggregateUsing: aBlock [
 
 { #category : #grouping }
 DataSeries >> groupBy: otherSeries aggregateUsing: aBlock as: aNewName [
-	"Group my values by the unique values of otherSeries, aggregate them using aBlock, and answer a new DataSeries with unique values of otherSeries (group keys) as keys, aggregated values of myself as values, and aNewName as name"
-	| groupKeys groups |
-	
-	self size = otherSeries size
-		ifFalse: [ SizeMismatch signal ].
-		
-	groupKeys := otherSeries uniqueValues.
-	
-	groups := groupKeys collect: [ :each |
-		(1 to: self size)
-			select: [ :i | (otherSeries atIndex: i) = each ]
-			thenCollect: [ :i | self atIndex: i ] ].
-	
-	^ DataSeries
-		withKeys: groupKeys
-		values: (groups collect: aBlock)
-		name: aNewName
+	"Group my values by the unique values of otherSeries, aggregate them using aBlock, and answer a new DataSeries with unique values of otherSeries as keys, aggregated values of myself as values, and aNewName as name"
+
+	| groupMap |
+	self size = otherSeries size ifFalse: [ SizeMismatch signal ].
+
+	groupMap := (otherSeries uniqueValues collect: [ :e | e -> OrderedCollection new ]) asOrderedDictionary.
+
+	1 to: self size do: [ :index | (groupMap at: (otherSeries atIndex: index)) add: (self atIndex: index) ].
+
+	^ self class withKeys: groupMap keys values: (groupMap values collect: aBlock) name: aNewName
+]
+
+{ #category : #grouping }
+DataSeries >> groupByUniqueValuesAndAggregateUsing: aBlock [
+	"Group my values by their unique values and aggregate them using aBlock. Use my name by default"
+	^ self groupByUniqueValuesAndAggregateUsing: aBlock as: self name
+]
+
+{ #category : #grouping }
+DataSeries >> groupByUniqueValuesAndAggregateUsing: aBlock as: aNewName [
+	"Group my values by unique values, aggregate them using aBlock, and answer a new DataSeries with theunique values as keys, aggregated values of myself as values, and aNewName as name"
+
+	| groupMap |
+	groupMap := (self uniqueValues collect: [ :e | e -> OrderedCollection new ]) asOrderedDictionary.
+
+	self do: [ :each | (groupMap at: each) add: each ].
+
+	^ self class withKeys: groupMap keys values: (groupMap values collect: aBlock) name: aNewName
 ]
 
 { #category : #testing }
@@ -667,7 +678,8 @@ DataSeries >> uniqueValues [
 
 { #category : #statistics }
 DataSeries >> valueCounts [
-	^ (self groupBy: self aggregateUsing: #size) sortDescending
+
+	^ (self groupByUniqueValuesAndAggregateUsing: #size) sortDescending
 ]
 
 { #category : #statistics }
