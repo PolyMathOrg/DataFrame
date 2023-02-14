@@ -3,7 +3,11 @@ Extension { #name : #DataFrame }
 { #category : #'*DataFrame-IO' }
 DataFrame class >> readFrom: aLocation using: aDataFrameReader [
 	"Read data frame from a given location using a given DataFrameReader. Location can be a file reference, a database connection, or something else (depending on the implementation of the reader)"
-	^ aDataFrameReader readFrom: aLocation
+	
+	| df |
+	df := aDataFrameReader readFrom: aLocation.
+	df calculateDataTypes.
+	^ df
 ]
 
 { #category : #'*DataFrame-IO' }

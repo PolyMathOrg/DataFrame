@@ -11,12 +11,12 @@ Class {
 DataFrameTest >> setUp [
 
 	df := DataFrame withRows: #(
-		(Barcelona 1.609 true)
-   		(Dubai 2.789 true)
-   		(London 8.788 false)).
+		('Barcelona' 1.609 true)
+   		('Dubai' 2.789 true)
+   		('London' 8.788 false)).
 		
-	df rowNames: #(A B C).
-	df columnNames: #(City Population BeenThere).
+	df rowNames: #('A' 'B' 'C').
+	df columnNames: #('City' 'Population' 'BeenThere').
 ]
 
 { #category : #tests }
@@ -44,7 +44,7 @@ DataFrameTest >> testAddColumn [
 
 	| column expected |
 	
-	column := DataSeries withValues: #(2015 2010 2017) name: #Year.
+	column := DataSeries withValues: #(2015 2010 2017) name: 'Year'.
 	df addColumn: column.
 	
 	expected := DataFrame withRows: #(
@@ -62,7 +62,7 @@ DataFrameTest >> testAddColumn [
 DataFrameTest >> testAddColumnAtPosition [
 	| column expected |
 	
-	column := DataSeries withValues: #(2015 2010 2017) name: #Year.
+	column := DataSeries withValues: #(2015 2010 2017) name: 'Year'.
 	df addColumn: column atPosition: 3.
 	
 	expected := DataFrame withRows: #(
@@ -80,7 +80,7 @@ DataFrameTest >> testAddColumnAtPosition [
 DataFrameTest >> testAddColumnNameMustBeDistinct [
 
 	| series |
-	series := DataSeries withValues: #(1 2 3) name: #City.
+	series := DataSeries withValues: #(1 2 3) name: 'City'.
 	self should: [ df addColumn: series ] raise: Error.
 ]
 
@@ -88,7 +88,7 @@ DataFrameTest >> testAddColumnNameMustBeDistinct [
 DataFrameTest >> testAddColumnNamed [
 	| expected |
 	
-	df addColumn: #(2015 2010 2017) named: #Year.
+	df addColumn: #(2015 2010 2017) named: 'Year'.
 	
 	expected := DataFrame withRows: #(
 		(Barcelona 1.609 true 2015)
@@ -105,7 +105,7 @@ DataFrameTest >> testAddColumnNamed [
 DataFrameTest >> testAddColumnNamedAtPosition [
 	| expected |
 	
-	df addColumn: #(2015 2010 2017) named: #Year atPosition: 3.
+	df addColumn: #(2015 2010 2017) named: 'Year' atPosition: 3.
 	
 	expected := DataFrame withRows: #(
 		(Barcelona 1.609 2015 true)
@@ -121,7 +121,7 @@ DataFrameTest >> testAddColumnNamedAtPosition [
 { #category : #tests }
 DataFrameTest >> testAddColumnNamedNameMustBeDistinct [
 
-	self should: [ df addColumn: #(1 2 3) named: #City ] raise: Error.
+	self should: [ df addColumn: #(1 2 3) named: 'City' ] raise: Error.
 ]
 
 { #category : #tests }
@@ -137,7 +137,7 @@ DataFrameTest >> testAddEmptyColumnNamed [
 	expected rowNames: #(A B C).
 	expected columnNames: #(City Population BeenThere EmptyColumn).
 		
-	df addEmptyColumnNamed: #EmptyColumn.
+	df addEmptyColumnNamed: 'EmptyColumn'.
 	
 	self assert: df equals: expected.
 ]
@@ -155,7 +155,7 @@ DataFrameTest >> testAddEmptyColumnNamedAtPosition [
 	expected rowNames: #(A B C).
 	expected columnNames: #(City Population EmptyColumn BeenThere).
 		
-	df addEmptyColumnNamed: #EmptyColumn atPosition: 3.
+	df addEmptyColumnNamed: 'EmptyColumn' atPosition: 3.
 	
 	self assert: df equals: expected.
 ]
@@ -174,7 +174,7 @@ DataFrameTest >> testAddEmptyRowNamed [
 	expected rowNames: #(A B C X).
 	expected columnNames: #(City Population BeenThere).
 		
-	df addEmptyRowNamed: #X.
+	df addEmptyRowNamed: 'X'.
 	
 	self assert: df equals: expected.
 ]
@@ -193,7 +193,7 @@ DataFrameTest >> testAddEmptyRowNamedAtPosition [
 	expected rowNames: #(A B X C).
 	expected columnNames: #(City Population BeenThere).
 		
-	df addEmptyRowNamed: #X atPosition: 3.
+	df addEmptyRowNamed: 'X' atPosition: 3.
 	
 	self assert: df equals: expected.
 ]
@@ -203,7 +203,7 @@ DataFrameTest >> testAddRow [
 
 	| row expected |
 	
-	row := DataSeries withValues: #(Paris 2.141 true) name: #X.
+	row := DataSeries withValues: #(Paris 2.141 true) name: 'X'.
 	df addRow: row.
 	
 	expected := DataFrame withRows: #(
@@ -222,7 +222,7 @@ DataFrameTest >> testAddRow [
 DataFrameTest >> testAddRowAtPosition [
 	| row expected |
 	
-	row := DataSeries withValues: #(Paris 2.141 true) name: #X.
+	row := DataSeries withValues: #(Paris 2.141 true) name: 'X'.
 	df addRow: row atPosition: 2.
 	
 	expected := DataFrame withRows: #(
@@ -241,7 +241,7 @@ DataFrameTest >> testAddRowAtPosition [
 DataFrameTest >> testAddRowNameMustBeDistinct [
 
 	| series |
-	series := DataSeries withValues: #(1 2 3) name: #A.
+	series := DataSeries withValues: #(1 2 3) name: 'A'.
 	self should: [ df addRow: series ] raise: Error.
 ]
 
@@ -249,7 +249,7 @@ DataFrameTest >> testAddRowNameMustBeDistinct [
 DataFrameTest >> testAddRowNamed [
 	| expected |
 	
-	df addRow: #(Paris 2.141 true) named: #X.
+	df addRow: #(Paris 2.141 true) named: 'X'.
 	
 	expected := DataFrame withRows: #(
 		(Barcelona 1.609 true)
@@ -267,7 +267,7 @@ DataFrameTest >> testAddRowNamed [
 DataFrameTest >> testAddRowNamedAtPosition [
 	| expected |
 	
-	df addRow: #(Paris 2.141 true) named: #X atPosition: 2.
+	df addRow: #(Paris 2.141 true) named: 'X' atPosition: 2.
 	
 	expected := DataFrame withRows: #(
 		(Barcelona 1.609 true)
@@ -284,14 +284,14 @@ DataFrameTest >> testAddRowNamedAtPosition [
 { #category : #tests }
 DataFrameTest >> testAddRowNamedNameMustBeDistinct [
 
-	self should: [ df addRow: #(1 2 3) named: #A ] raise: Error.
+	self should: [ df addRow: #(1 2 3) named: 'A' ] raise: Error.
 ]
 
 { #category : #tests }
 DataFrameTest >> testAddRowSizeMismatch [
 
 	| aBlock |
-	aBlock := [ df addRow: #(1 2) named: #TooSmall ].
+	aBlock := [ df addRow: #(1 2) named: 'TooSmall' ].
 	
 	self should: aBlock raise: SizeMismatch.
 ]
@@ -341,7 +341,7 @@ DataFrameTest >> testAt [
 	expected := DataSeries withValues:
 		#('Dubai' 2.789 true).
 		
-	expected name: #B.
+	expected name: 'B'.
 	expected keys: df columnNames.
 	
 	actual := df at: 2.
@@ -403,8 +403,46 @@ DataFrameTest >> testAtTransform [
 		rowNames: #(A B C)
 		columnNames: #(City Population BeenThere).
 		
-	df at: 2 transform: [ :row | row at: #Population put: 0; yourself ].
+	df at: 2 transform: [ :row | row at: 'Population' put: 0; yourself ].
 	self assert: df equals: expected
+]
+
+{ #category : #'data-types' }
+DataFrameTest >> testCalculateDataTypes [
+			
+	| newDataTypes expected |
+
+	newDataTypes := {
+		'City' ->  String.
+		'Population' -> Integer.
+		'BeenThere' -> Float
+	} asDictionary.
+	
+	df dataTypes: newDataTypes.
+	df calculateDataTypes.
+	
+	expected := {
+		'City' ->  ByteString.
+		'Population' -> SmallFloat64.
+		'BeenThere' -> Boolean
+	} asDictionary.
+	
+	self assert: df dataTypes equals: expected.
+]
+
+{ #category : #'data-types' }
+DataFrameTest >> testChangeDataTypes [
+			
+	| newDataTypes |
+
+	newDataTypes := {
+		'City' ->  String.
+		'Population' -> Integer.
+		'BeenThere' -> Float
+	} asDictionary.
+	
+	df dataTypes: newDataTypes.
+	self assert: df dataTypes equals: newDataTypes.
 ]
 
 { #category : #tests }
@@ -513,7 +551,7 @@ DataFrameTest >> testColumnIfAbsent [
 	
 	exceptionBlockEvaluated := false.
 	
-	df column: #NoSuchColumn
+	df column: 'NoSuchColumn'
 		ifAbsent: [ exceptionBlockEvaluated := true ].
 		
 	self assert: exceptionBlockEvaluated.
@@ -524,7 +562,9 @@ DataFrameTest >> testColumnNames [
 	| newNames |
 	newNames := #(X Y Z).
 	df columnNames: newNames.
-	self assert: df columnNames equals: newNames asOrderedCollection
+	self assert: df columnNames equals: newNames asOrderedCollection.
+	
+	self assert: (df dataTypes keys) equals: #( X Y Z).
 ]
 
 { #category : #tests }
@@ -549,7 +589,7 @@ DataFrameTest >> testColumnNamesSizeMismatch [
 DataFrameTest >> testColumnNotFound [
 	self
 		should: [ df column: #NoSuchColumn ]
-		raise: Error.
+		raise: Error
 ]
 
 { #category : #tests }
@@ -599,7 +639,7 @@ DataFrameTest >> testColumnPutIfAbsent [
 DataFrameTest >> testColumnPutNotFound [
 	self
 		should: [ df column: #NoSuchColumn put: #(0 0 0) ]
-		raise: Error.
+		raise: Error
 ]
 
 { #category : #tests }
@@ -615,7 +655,7 @@ DataFrameTest >> testColumnTransform [
 		rowNames: #(A B C)
 		columnNames: #(City Population BeenThere).
 		
-	df column: #Population transform: [ :column | column at: #B put: 0; yourself ].
+	df column: 'Population' transform: [ :column | column at: 'B' put: 0; yourself ].
 	self assert: df equals: expected
 ]
 
@@ -634,8 +674,8 @@ DataFrameTest >> testColumnTransformIfAbsent [
 		rowNames: #(A B C)
 		columnNames: #(City Population BeenThere).
 		
-	df column: #NoSuchColumn
-		transform: [ :column | column at: #B put: 0 ]
+	df column: 'NoSuchColumn'
+		transform: [ :column | column at: 'B' put: 0 ]
 		ifAbsent: [ exceptionBlockEvaluated := true ].
 		
 	self assert: df equals: expected.
@@ -657,7 +697,7 @@ DataFrameTest >> testColumnTransformNotFound [
 		
 	self
 		should: [
-			df column: #NoSuchColumn
+			df column: 'NoSuchColumn'
 				transform: [ :column | column at: #B put: 0 ] ]
 		raise: Error.
 		
@@ -1222,6 +1262,169 @@ DataFrameTest >> testCrossTabulation [
 	expected columnNames: #(Old Young).	
 	
 	self assert: (dataFrame crossTabulate: #Gender with: #Age) equals: expected.
+]
+
+{ #category : #'data-types' }
+DataFrameTest >> testDataTypeOfColumn [
+
+	self assert: (df dataTypeOfColumn: 'Population') equals: SmallFloat64.
+]
+
+{ #category : #'data-types' }
+DataFrameTest >> testDataTypeOfColumnAt [
+
+
+	self assert: (df dataTypeOfColumnAt: 3) equals: Boolean.
+]
+
+{ #category : #'data-types' }
+DataFrameTest >> testDataTypeOfColumnAtPut [
+	
+	df dataTypeOfColumnAt: 3 put: String.
+	self assert: (df dataTypeOfColumnAt: 3) equals: String.
+]
+
+{ #category : #'data-types' }
+DataFrameTest >> testDataTypeOfColumnPut [
+	
+	df dataTypeOfColumn: 'BeenThere' put: String.
+	self assert: (df dataTypeOfColumn: 'BeenThere') equals: String.
+]
+
+{ #category : #'data-types' }
+DataFrameTest >> testDataTypes [
+			
+	| expected |
+
+	expected:= {
+		'City' ->  ByteString.
+		'Population' -> SmallFloat64.
+		'BeenThere' -> Boolean
+	} asDictionary.
+	
+	self assert: df dataTypes equals: expected.
+]
+
+{ #category : #'data-types' }
+DataFrameTest >> testDataTypesOfEmptyDataFrame [
+			
+	self
+		assert: DataFrame new dataTypes
+		equals: Dictionary new.
+]
+
+{ #category : #'data-types' }
+DataFrameTest >> testDataTypesOfEmptyDataFrameWithColumnNames [
+
+	| dataFrame expected |
+	
+	dataFrame := DataFrame withColumnNames: #('a' 'b' 'c').
+	dataFrame dataTypes.
+	expected := { 
+		'a' -> UndefinedObject .
+		'b' -> UndefinedObject .
+		'c' -> UndefinedObject
+	} asDictionary.
+			
+	self assert: dataFrame dataTypes equals: expected.
+]
+
+{ #category : #'data-types' }
+DataFrameTest >> testDataTypesWhenColumnIsAdded [
+			
+	| column expected |
+	
+	column := DataSeries withValues: #(2015 2010 2017) name: #Year.
+	df addColumn: column.
+
+	expected:= {
+		'City' ->  ByteString.
+		'Population' -> SmallFloat64.
+		'BeenThere' -> Boolean.
+		'Year' -> SmallInteger 
+	} asDictionary.
+	
+	self assert: df dataTypes equals: expected.
+]
+
+{ #category : #'data-types' }
+DataFrameTest >> testDataTypesWhenColumnIsRemoved [
+			
+	| expected |
+
+	df removeColumn: 'Population'.
+
+	expected:= {
+		'City' ->  ByteString .
+		'BeenThere' -> Boolean 
+	} asDictionary.
+	
+	self assert: df dataTypes equals: expected.
+]
+
+{ #category : #'data-types' }
+DataFrameTest >> testDataTypesWhenColumnsAreRenamed [
+			
+	| expected |
+	"self assert: df dataTypes keys equals: #('City' 'Population' 'BeenThere')."
+	df columnNames: #('city' 'population' 'visited').
+	expected:= {
+		'city' ->  ByteString.
+		'population' -> SmallFloat64.
+		'visited' -> Boolean
+	} asDictionary.
+	
+	self assert: df dataTypes equals: expected.
+]
+
+{ #category : #'data-types' }
+DataFrameTest >> testDataTypesWhenEmptyColumnIsAdded [
+			
+	| expected |
+	
+	df addEmptyColumnNamed: 'EmptyColumn'.
+	expected:= {
+		'City' ->  ByteString.
+		'Population' -> SmallFloat64.
+		'BeenThere' -> Boolean.
+		'EmptyColumn' -> UndefinedObject. 
+	} asDictionary.
+	
+	self assert: df dataTypes equals: expected.
+]
+
+{ #category : #'data-types' }
+DataFrameTest >> testDataTypesWhenSingleColumnIsRenamed [
+			
+	| expected |
+	
+	df renameColumn: 'BeenThere' to: 'Visited'.
+
+	expected:= {
+		'City' ->  ByteString.
+		'Population' -> SmallFloat64.
+		'Visited' -> Boolean
+	} asDictionary.
+	
+	self assert: df dataTypes equals: expected.
+]
+
+{ #category : #'data-types' }
+DataFrameTest >> testDataTypesWithNil [
+			
+	| column expected |
+	
+	column := DataSeries withValues: #(2015 nil 2017) name: #Year.
+	df addColumn: column.
+
+	expected:= {
+		'City' ->  ByteString.
+		'Population' -> SmallFloat64.
+		'BeenThere' -> Boolean.
+		'Year' -> SmallInteger 
+	} asDictionary.
+	
+	self assert: df dataTypes equals: expected.
 ]
 
 { #category : #tests }
@@ -3421,27 +3624,6 @@ DataFrameTest >> testRenameRowToNotFound [
 	self
 		should: [ df renameRow: #NoSuchRow to: #Sth ]
 		raise: Error.
-]
-
-{ #category : #tests }
-DataFrameTest >> testReplaceAllNilsWithZeros [
-
-	| expected |
-	df := DataFrame withRows: #(
-		(Barcelona 1.609 nil)
-   		(Dubai nil nil)
-   		(nil 8.788 false)).
-		
-	df columnNames: #(City Population BeenThere).
-	
-	expected := DataFrame withRows: #(
-		(Barcelona 1.609 0)
-   		(Dubai 0 0)
-   		(0 8.788 false)).
-	
-	expected columnNames: #(City Population BeenThere).
-	
-	self assert: df replaceAllNilsWithZeros equals: expected.
 ]
 
 { #category : #replacing }

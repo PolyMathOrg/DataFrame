@@ -793,6 +793,15 @@ DataSeriesTest >> testBooleanLessThanWithSeriesDifferentNames [
 	self assert: firstSeries < secondSeries equals: expected.
 ]
 
+{ #category : #'as yet unclassified' }
+DataSeriesTest >> testCalculateDataType [
+	
+	| newSeries |
+	self assert: series calculateDataType equals: SmallInteger.
+	newSeries := DataSeries new.
+	self assert: newSeries calculateDataType equals: UndefinedObject.
+]
+
 { #category : #arithmetic }
 DataSeriesTest >> testCategoricalCanBeMadeCategorical [
 
