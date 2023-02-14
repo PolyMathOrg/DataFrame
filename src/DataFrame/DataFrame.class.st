@@ -1012,6 +1012,35 @@ DataFrame >> indexOfRowNamed: rowName ifAbsent: exceptionBlock [
 		ifAbsent: exceptionBlock.
 ]
 
+{ #category : #printing }
+DataFrame >> info [
+
+	^ String streamContents: [ :aStream |
+		  aStream
+			  nextPutAll: 'DataFrame: ';
+			  print: self size;
+			  nextPutAll: ' entries';
+			  cr;
+			  nextPutAll: 'Data columns (total ';
+			  print: self columnNames size;
+			  nextPutAll: ' columns):';
+			  cr;
+			  nextPutAll: ' # | Column | Non-nil count | Dtype';
+			  cr;
+			  nextPutAll: '---------------------------------------------------';
+			  cr.
+		  self columnNames doWithIndex: [ :col :index |
+			  aStream
+				  print: index;
+				  nextPutAll: ' | ';
+				  nextPutAll: col;
+				  nextPutAll: ' | ';
+				  print: ((self columnAt: index) reject: #isNil) size;
+				  nextPutAll: ' non-nil | ';
+				  print: (self dataTypes at: col);
+				  cr ] ]
+]
+
 { #category : #initialization }
 DataFrame >> initialize [
 

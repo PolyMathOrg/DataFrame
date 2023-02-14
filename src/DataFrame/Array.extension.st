@@ -9,7 +9,8 @@ Array >> calculateDataType [
 		| result |
 		result := classes inject: classes first into: [ :commonSuperclass :each | self leastCommonSuperclassOf: commonSuperclass and: each ].
 		"If we cannot detect the type, we configure it as Object."
-		^ result isString
+
+		^ (result withAllSuperclasses includes: String)
 			  ifTrue: [ Object ]
 			  ifFalse: [ result ] ].
 	^ UndefinedObject
