@@ -208,7 +208,8 @@ DataFrameCsvReader >> separator: anObject [
 DataFrameCsvReader >> setDefaultColumnsWith: reader [
 	"Set numbered columns"
 	
-	columnNames := (1 to: reader readHeader size) asArray
+	columnNames := (1 to: reader next size) asArray.
+	reader resetStream.
 ]
 
 { #category : #accessing }

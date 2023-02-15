@@ -110,6 +110,9 @@ DataFrameCsvReaderTest >> testReadFromStringWithSeparatorWithHeader [
 		withSeparator: $$
 		withHeader: false.
 
-	self assert: df dimensions equals: 5 @ 13.
-	self assertCollection: df columnNames hasSameElements: (1 to: 13) asArray
+	self assert: df dimensions equals: 6 @ 13.
+	self assertCollection: df columnNames hasSameElements: (1 to: 13) asArray.
+	self
+		assertCollection: df first values
+		hasSameElements: #('Given' 'a' 'text' 'file' 'of' 'many' 'lines,' 'where' 'fields' 'within' 'a' 'line' nil)
 ]
