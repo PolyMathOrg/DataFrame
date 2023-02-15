@@ -50,7 +50,7 @@ DataFrameCsvReader >> createDataFrame [
 		columnNames: columnNames.
 		
 	self includeRowNames ifTrue: [ 
-		df rowNames: rowNames ].
+		df privateRowNames: rowNames ].
 	
 	^ df
 ]

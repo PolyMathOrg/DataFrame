@@ -48,99 +48,99 @@ Class {
 }
 
 { #category : #testing }
-DataFrameTypeDetector >> canAllBeBoolean: aDataSeries [
+DataFrameTypeDetector >> canAllBeBoolean: anArray [
 	"Checks to see if all of the values in the column are strings of true or false (case insensitive) or nil"
 
-	^ aDataSeries allSatisfy: [ :each | each isNil or: [ each isString and: [ (each sameAs: 'true') | (each sameAs: 'false') ] ] ]
+	^ anArray allSatisfy: [ :each | each isNil or: [ each isString and: [ (each sameAs: 'true') | (each sameAs: 'false') ] ] ]
 ]
 
 { #category : #testing }
-DataFrameTypeDetector >> canAllBeDateAndTime: aDataSeries [
+DataFrameTypeDetector >> canAllBeDateAndTime: anArray [
 
-	[ aDataSeries do: [ :ele | ele ifNotNil: [ ele asDateAndTime ] ] ]
+	[ anArray do: [ :ele | ele ifNotNil: [ ele asDateAndTime ] ] ]
 		on: Error
 		do: [ ^ false ].
 	^ true
 ]
 
 { #category : #testing }
-DataFrameTypeDetector >> canAllBeNumber: aDataSeries [
+DataFrameTypeDetector >> canAllBeNumber: anArray [
 
-	^ aDataSeries allSatisfy: [ :each | each isNil or: [ each isNumber or: [ NumberParser isNumber: each ] ] ]
+	^ anArray allSatisfy: [ :each | each isNil or: [ each isNumber or: [ NumberParser isNumber: each ] ] ]
 ]
 
 { #category : #testing }
-DataFrameTypeDetector >> canAllBeTime: aDataSeries [
+DataFrameTypeDetector >> canAllBeTime: anArray [
 
-	[ aDataSeries do: [ :ele | ele ifNotNil: [ ele asTime ] ] ]
+	[ anArray do: [ :ele | ele ifNotNil: [ ele asTime ] ] ]
 		on: Error
 		do: [ ^ false ].
 	^ true
 ]
 
 { #category : #testing }
-DataFrameTypeDetector >> canAnyBeFloat: aDataSeries [
+DataFrameTypeDetector >> canAnyBeFloat: anArray [
 
-	^ aDataSeries anySatisfy: [ :each | each isNil or: [ each asNumber isFloat ] ]
+	^ anArray anySatisfy: [ :each | each isNil or: [ each asNumber isFloat ] ]
 ]
 
 { #category : #accessing }
 DataFrameTypeDetector >> columnTypes [
-	^columnTypes
+
+	^ columnTypes
 ]
 
 { #category : #accessing }
 DataFrameTypeDetector >> columnTypes: aCollection [
+
 	columnTypes := aCollection
 ]
 
 { #category : #converting }
-DataFrameTypeDetector >> convertToBoolean: aDataSeries [
+DataFrameTypeDetector >> convertToBoolean: anArray [
 
-	^ aDataSeries collect: [ :each | each ifNotNil: [ each asLowercase = 'true' ] ]
+	^ anArray collect: [ :each | each ifNotNil: [ each asLowercase = 'true' ] ]
 ]
 
 { #category : #converting }
-DataFrameTypeDetector >> convertToDateAndTime: aDataSeries [
+DataFrameTypeDetector >> convertToDateAndTime: anArray [
 
-	^ aDataSeries collect: [ :ele | ele ifNotNil: [ ele asDateAndTime ] ]
+	^ anArray collect: [ :ele | ele ifNotNil: [ ele asDateAndTime ] ]
 ]
 
 { #category : #converting }
-DataFrameTypeDetector >> convertToFloat: aDataSeries [
+DataFrameTypeDetector >> convertToFloat: anArray [
 
-	^ aDataSeries collect: [ :each | each ifNotNil: [ each asNumber asFloat ] ]
+	^ anArray collect: [ :each | each ifNotNil: [ each asNumber asFloat ] ]
 ]
 
 { #category : #converting }
-DataFrameTypeDetector >> convertToInteger: aDataSeries [
+DataFrameTypeDetector >> convertToInteger: anArray [
 
-	^ aDataSeries collect: [ :each | each ifNotNil: [ each asNumber asInteger ] ]
+	^ anArray collect: [ :each | each ifNotNil: [ each asNumber asInteger ] ]
 ]
 
 { #category : #converting }
-DataFrameTypeDetector >> convertToTime: aDataSeries [
+DataFrameTypeDetector >> convertToTime: anArray [
 
-	^ aDataSeries collect: [ :ele | ele ifNotNil: [ ele asTime ] ]
+	^ anArray collect: [ :ele | ele ifNotNil: [ ele asTime ] ]
 ]
 
 { #category : #'public API' }
-DataFrameTypeDetector >> detectColumnTypeAndConvert: aDataSeries [
-	(self canAllBeNumber: aDataSeries) ifTrue: [ 
-		^ (self canAnyBeFloat: aDataSeries)
-			ifTrue: [ self convertToFloat: aDataSeries ]
-			ifFalse: [ self convertToInteger: aDataSeries ] ].
-		
-	(self canAllBeBoolean: aDataSeries) ifTrue: [ 
-		^ self convertToBoolean: aDataSeries ].
-	
-	(self canAllBeDateAndTime: aDataSeries) ifTrue: [ 
-		^ self convertToDateAndTime: aDataSeries ].
-	
-	(self canAllBeTime: aDataSeries) ifTrue: [ 
-		^ self convertToTime: aDataSeries ].
-	
-	^ aDataSeries
+DataFrameTypeDetector >> detectColumnTypeAndConvert: anArray [
+
+	(self canAllBeNumber: anArray) ifTrue: [
+		^ (self canAnyBeFloat: anArray)
+			  ifTrue: [ self convertToFloat: anArray ]
+			  ifFalse: [ self convertToInteger: anArray ] ].
+
+	(self canAllBeBoolean: anArray) ifTrue: [ ^ self convertToBoolean: anArray ].
+
+	(self canAllBeDateAndTime: anArray) ifTrue: [ ^ self convertToDateAndTime: anArray ].
+
+	(self canAllBeTime: anArray) ifTrue: [ ^ self convertToTime: anArray ].
+
+	^ anArray
 ]
 
 { #category : #'public API' }
@@ -159,7 +159,7 @@ DataFrameTypeDetector >> detectTypesAndConvert: aDataFrame [
 		thisColumnType isBlock ifFalse: [ thisColumnType := typeMapping at: thisColumnType ].
 		"Assign the column with the converted type by passing the original
 			 column to the block for type conversion"
-		aDataFrame column: columnName put: (thisColumnType value: column) asArray ].
+		aDataFrame column: columnName put: (thisColumnType value: column) ].
 	aDataFrame rowNames: (self detectColumnTypeAndConvert: aDataFrame rowNames)
 ]
 

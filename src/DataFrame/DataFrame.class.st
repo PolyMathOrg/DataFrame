@@ -1399,6 +1399,13 @@ DataFrame >> printOn: aStream [
 		nextPutAll: self dimensions asString.
 ]
 
+{ #category : #private }
+DataFrame >> privateRowNames: anArray [
+	"I am a private method skipping the assertions when my internal mecanisms know they can skip them."
+
+	rowNames := anArray asOrderedCollection
+]
+
 { #category : #statistics }
 DataFrame >> range [
 
@@ -1802,13 +1809,12 @@ DataFrame >> rowNames [
 
 { #category : #accessing }
 DataFrame >> rowNames: anArray [
-	anArray size = self numberOfRows 
-		ifFalse: [ SizeMismatch signal: 'Wrong number of row names' ].
-		
-	anArray asSet size = anArray size
-		ifFalse: [ Error signal: 'All row names must be distinct' ].
-		
-	rowNames := anArray asOrderedCollection
+
+	anArray size = self numberOfRows ifFalse: [ SizeMismatch signal: 'Wrong number of row names' ].
+
+	anArray asSet size = anArray size ifFalse: [ Error signal: 'All row names must be distinct' ].
+
+	self privateRowNames: anArray
 ]
 
 { #category : #accessing }
@@ -1896,8 +1902,8 @@ DataFrame >> select: aBlock [
 { #category : #private }
 DataFrame >> setDefaultRowColumnNames [
 
-	self rowNames: (1 to: self numberOfRows).
-	self columnNames: (1 to: self numberOfColumns).
+	self privateRowNames: (1 to: self numberOfRows).
+	self columnNames: (1 to: self numberOfColumns)
 ]
 
 { #category : #accessing }

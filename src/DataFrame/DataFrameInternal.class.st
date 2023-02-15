@@ -240,20 +240,15 @@ DataFrameInternal >> do: aBlock [
 
 { #category : #initialization }
 DataFrameInternal >> initialize [
-	
+
 	super initialize.
-	contents := Array2D new.
-	^ self.
+	contents := Array2D new
 ]
 
 { #category : #initialization }
 DataFrameInternal >> initialize: aPoint [
-	
-	contents := Array2D
-		rows: aPoint x
-		columns: aPoint y.
-		
-	^ self.
+
+	contents := Array2D rows: aPoint x columns: aPoint y
 ]
 
 { #category : #accessing }

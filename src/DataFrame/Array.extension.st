@@ -3,11 +3,13 @@ Extension { #name : #Array }
 { #category : #'*DataFrame' }
 Array >> calculateDataType [
 
-	(self
-		 reject: #isNil
-		 thenCollect: [ :each | each class ]) ifNotEmpty: [ :classes |
+	| types |
+	types := Set new.
+	self do: [ :elem | elem ifNotNil: [ types add: elem class ] ].
+
+	types ifNotEmpty: [ :classes |
 		| result |
-		result := classes inject: classes first into: [ :commonSuperclass :each | self leastCommonSuperclassOf: commonSuperclass and: each ].
+		result := classes inject: classes anyOne into: [ :commonSuperclass :each | self leastCommonSuperclassOf: commonSuperclass and: each ].
 		"If we cannot detect the type, we configure it as Object."
 
 		^ (result withAllSuperclasses includes: String)
