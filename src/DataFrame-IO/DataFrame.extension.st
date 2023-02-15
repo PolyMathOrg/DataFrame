@@ -129,3 +129,21 @@ DataFrame >> writeToPrettyJson: aFileReference orient: orient [
 	writer pretty: true.
 	self writeTo: aFileReference using: writer.
 ]
+
+{ #category : #'*DataFrame-IO' }
+DataFrame >> writeToTextAlignedLeft [
+	"Answer a <String> with the receiver's aligning each element to left direction"
+
+	^ DataFrameTextWriter new
+		padRight;
+		write: self
+]
+
+{ #category : #'*DataFrame-IO' }
+DataFrame >> writeToTextAlignedRight [
+	"Answer a <String> with the receiver's aligning each element to right direction"
+
+	^ DataFrameTextWriter new
+		padLeft;
+		write: self
+]
