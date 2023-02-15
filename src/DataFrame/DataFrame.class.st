@@ -166,12 +166,6 @@ DataFrame class >> defaultNormalizer [
 ]
 
 { #category : #'instance creation' }
-DataFrame class >> new [
-	
-	^ super new initialize.
-]
-
-{ #category : #'instance creation' }
 DataFrame class >> new: aPoint [
 	
 	^ super new initialize: aPoint.
