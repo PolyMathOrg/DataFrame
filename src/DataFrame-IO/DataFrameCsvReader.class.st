@@ -125,6 +125,49 @@ DataFrameCsvReader >> readFromInternal: aFileReference [
 ]
 
 { #category : #reading }
+DataFrameCsvReader >> readFromString: aString [
+	"Read data frame from aString"
+
+	^ self
+		readFromString: aString
+		withSeparator: self separator
+]
+
+{ #category : #reading }
+DataFrameCsvReader >> readFromString: aString withSeparator: aSeparator [
+	"Read data frame from aString"
+
+	| reader df |
+
+	reader := NeoCSVReader on: aString readStream.
+	reader separator: aSeparator.
+
+	self readColumnNamesWith: reader.
+	self readRowsWith: reader.
+	reader close.
+	df := self createDataFrame.
+	^ df
+]
+
+{ #category : #reading }
+DataFrameCsvReader >> readFromString: aString withSeparator: aSeparator withHeader: hasHeader [
+	"Read data frame from aString"
+
+	| reader df |
+
+	reader := NeoCSVReader on: aString readStream.
+	reader separator: aSeparator.
+
+	hasHeader
+		ifTrue: [ self readColumnNamesWith: reader ]
+		ifFalse: [ self setDefaultColumnsWith: reader ].
+	self readRowsWith: reader.
+	reader close.
+	df := self createDataFrame.
+	^ df
+]
+
+{ #category : #reading }
 DataFrameCsvReader >> readOnlyRowsWith: aReader [
 	rows := OrderedCollection new.
 	
@@ -159,6 +202,13 @@ DataFrameCsvReader >> separator [
 { #category : #accessing }
 DataFrameCsvReader >> separator: anObject [
 	separator := anObject
+]
+
+{ #category : #reading }
+DataFrameCsvReader >> setDefaultColumnsWith: reader [
+	"Set numbered columns"
+	
+	columnNames := (1 to: reader readHeader size) asArray
 ]
 
 { #category : #accessing }

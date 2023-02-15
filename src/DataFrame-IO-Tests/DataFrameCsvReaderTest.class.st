@@ -86,3 +86,30 @@ DataFrameCsvReaderTest >> testReadCsvWithSeparatorTab [
 	self assert: actualDataFrame equals: dataFrameWithoutRowNames.
 	
 ]
+
+{ #category : #tests }
+DataFrameCsvReaderTest >> testReadFromString [
+
+	| actualDataFrame |
+	actualDataFrame := DataFrameCsvReader new readFromString: TestCsvStrings commaCsvString.
+
+	self
+		assertCollection: actualDataFrame columns first
+		hasSameElements: #('1:10 am' '1:30 am' '1:50 am' '2:10 am' '2:30 am').
+	self
+		assertCollection: actualDataFrame columns last
+		hasSameElements: #('rain' 'rain' 'snow' '-' 'rain')
+]
+
+{ #category : #tests }
+DataFrameCsvReaderTest >> testReadFromStringWithSeparatorWithHeader [
+
+	| df |
+	df := DataFrameCsvReader new
+		readFromString: TestCsvStrings dollarSignCsvString
+		withSeparator: $$
+		withHeader: false.
+
+	self assert: df dimensions equals: 5 @ 13.
+	self assertCollection: df columnNames hasSameElements: (1 to: 13) asArray
+]
