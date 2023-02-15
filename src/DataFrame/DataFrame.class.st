@@ -429,6 +429,16 @@ DataFrame >> applyElementwise: aBlock [
 	self toColumns: self columnNames applyElementwise: aBlock.
 ]
 
+{ #category : #enumerating }
+DataFrame >> applySize [
+	"Answer a new instance of the receiver with the size of each element at each element position"
+
+	^ self collectWithIndex: [ :r :i |
+		DataSeries
+			withValues: (r values collect: [ : e | e ifNil: [ 0 ] ifNotNil: [ e size ]])
+			name: i ]
+]
+
 { #category : #private }
 DataFrame >> applyToAllColumns: aSymbol [
 "Sends the unary selector, aSymbol, to all columns of DataFrame and collects the result into a DataSeries object. Used by statistical functions of DataFrame"
@@ -557,6 +567,19 @@ DataFrame >> collect: aBlock [
 	newDataFrame columnNames: firstRow keys.
 	
 	self do: [:each | newDataFrame add: (aBlock value: each copy)].
+	^ newDataFrame
+]
+
+{ #category : #enumerating }
+DataFrame >> collectWithIndex: aBlock [
+	"Overrides the Collection>>collect to create DataFrame with the same number of columns as values in the first row"
+	| firstRow newDataFrame |
+
+	firstRow := aBlock value: (self rowAt: 1) copy value: 1.
+	newDataFrame := self class new: 0@firstRow size.
+	newDataFrame columnNames: firstRow keys.
+
+	self doWithIndex: [ : each : index | newDataFrame add: (aBlock value: each copy value: index) ].
 	^ newDataFrame
 ]
 
