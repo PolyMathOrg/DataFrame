@@ -350,6 +350,27 @@ DataFrameTest >> testAt [
 ]
 
 { #category : #tests }
+DataFrameTest >> testAtAll [
+
+	| rowNumbers actualDataFrame expectedDataFrame |
+
+	rowNumbers := #(1 3).
+
+	expectedDataFrame := DataFrame withRows: #(
+		(Barcelona 1.609 true)
+   		(London 8.788 false)).
+
+	expectedDataFrame rowNames:
+		(rowNumbers collect: [ :i |
+			df rowNames at: i ]).
+	expectedDataFrame columnNames: df columnNames.
+
+	actualDataFrame := df atAll: rowNumbers.
+
+	self assert: actualDataFrame equals: expectedDataFrame
+]
+
+{ #category : #tests }
 DataFrameTest >> testAtAt [
 
 	self assert: (df at: 2 at: 1) equals: 'Dubai'.

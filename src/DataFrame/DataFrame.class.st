@@ -518,6 +518,13 @@ DataFrame >> at: aNumber transform: aBlock [
 	^ self rowAt: aNumber transform: aBlock
 ]
 
+{ #category : #accessing }
+DataFrame >> atAll: indexes [
+	"For polymorphisme with other collections."
+
+	^ self rowsAt: indexes
+]
+
 { #category : #statistics }
 DataFrame >> average [
 
