@@ -127,6 +127,12 @@ DataSeries >> at: aKey transform: aBlock ifAbsent: exceptionBlock [
 ]
 
 { #category : #accessing }
+DataSeries >> atAll: aCollectionOfIndexes [
+
+	^ self withIndexSelect: [ :each :index | aCollectionOfIndexes includes: index ]
+]
+
+{ #category : #accessing }
 DataSeries >> atIndex: aNumber [
 	^ self at: (self keys at: aNumber)
 ]
