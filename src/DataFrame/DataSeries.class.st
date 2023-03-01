@@ -327,6 +327,29 @@ DataSeries >> groupBy: otherSeries aggregateUsing: aBlock as: aNewName [
 ]
 
 { #category : #grouping }
+DataSeries >> groupByBins: bins [
+
+	^ self groupByBins: bins labelled: (1 to: bins size - 1)
+]
+
+{ #category : #grouping }
+DataSeries >> groupByBins: bins labelled: aCollection [
+	"I receive two parameters:
+	- A collection of bins that will determine intervals to group the values
+	- A collection of labels to apply for each intervals of the bins
+
+	I return a new DataSeries associating each key to a label corresponding to the bin they match."
+
+	| labelledIntervals |
+	bins size = (aCollection size + 1) ifFalse: [ SizeMismatch signal: 'The labels should have one less elements than the bins.' ].
+
+	labelledIntervals := OrderedDictionary new.
+	bins overlappingPairsWithIndexDo: [ :min :max :index | labelledIntervals at: (aCollection at: index) put: min -> max ].
+
+	^ self collect: [ :each | labelledIntervals keyAtValue: (labelledIntervals values detect: [ :asso | each between: asso key and: asso value ]) ]
+]
+
+{ #category : #grouping }
 DataSeries >> groupByUniqueValuesAndAggregateUsing: aBlock [
 	"Group my values by their unique values and aggregate them using aBlock. Use my name by default"
 	^ self groupByUniqueValuesAndAggregateUsing: aBlock as: self name

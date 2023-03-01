@@ -1249,6 +1249,42 @@ DataSeriesTest >> testGroupByAggregateUsingSizeMismatch [
 ]
 
 { #category : #grouping }
+DataSeriesTest >> testGroupByBins [
+
+	| actual expected |
+	actual := series groupByBins: { 0 . 5 . 10 . 15 . Float infinity }.
+	expected := DataSeries withKeys: keyArray values: #( 1 2 2 4 2 2 2 2 3 3 4 ) name: 'ExampleSeries'.
+	self assert: actual equals: expected
+]
+
+{ #category : #grouping }
+DataSeriesTest >> testGroupByBinsLabelled [
+
+	| actual expected |
+	actual := series
+		          groupByBins: { 0 . 5 . 10 . 15 . Float infinity }
+		          labelled: #( 0 5 10 15 ).
+	expected := DataSeries withKeys: keyArray values: #( 0 5 5 15 5 5 5 5 10 10 15 ) name: 'ExampleSeries'.
+	self assert: actual equals: expected
+]
+
+{ #category : #grouping }
+DataSeriesTest >> testGroupByBinsLabelledWithSizeProblem [
+
+	self
+		should: [
+			series
+				groupByBins: {
+						0.
+						5.
+						10.
+						15.
+						Float infinity }
+				labelled: #( 0 5 10 ) ]
+		raise: SizeMismatch
+]
+
+{ #category : #grouping }
 DataSeriesTest >> testGroupByUniqueValuesAndAggregateUsing [
 
 	series := DataSeries withValues: #( Male Female Male Male Female ) name: #sex.
