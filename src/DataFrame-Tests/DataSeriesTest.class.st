@@ -1274,12 +1274,7 @@ DataSeriesTest >> testGroupByBinsLabelledWithSizeProblem [
 	self
 		should: [
 			series
-				groupByBins: {
-						0.
-						5.
-						10.
-						15.
-						Float infinity }
+				groupByBins: { 0 . 5 . 10 . 15 . Float infinity }
 				labelled: #( 0 5 10 ) ]
 		raise: SizeMismatch
 ]
