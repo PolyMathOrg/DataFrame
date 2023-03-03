@@ -1761,6 +1761,21 @@ Data columns (total 3 columns):
 '
 ]
 
+{ #category : #splitjoin }
+DataFrameTest >> testInfoWithNumericalColumnNames [
+
+	df := DataFrame withRows: #( #( 2.4 true rain ) #( 0.5 true rain ) #( -1.2 true snow ) #( -2.3 false - ) #( 3.2 true rain ) ).
+
+	self assert: df info equals: 'DataFrame: 5 entries
+Data columns (total 3 columns):
+ # | Column | Non-nil count | Dtype
+---------------------------------------------------
+1 | 1 | 5 non-nil | SmallFloat64
+2 | 2 | 5 non-nil | Boolean
+3 | 3 | 5 non-nil | Object
+'
+]
+
 { #category : #tests }
 DataFrameTest >> testInjectInto [
 	| numericDataFrame actual expected |

@@ -1057,7 +1057,7 @@ DataFrame >> info [
 			  aStream
 				  print: index;
 				  nextPutAll: ' | ';
-				  nextPutAll: col;
+				  print: col;
 				  nextPutAll: ' | ';
 				  print: ((self columnAt: index) reject: #isNil) size;
 				  nextPutAll: ' non-nil | ';
