@@ -59,6 +59,30 @@ weather := DataFrame withRows: #(
   (3.2 true rain)).
 ```
 
+### Removing the third row of the data frame
+
+```Smalltalk
+weather removeRowAt: 3.
+```
+
+### Adding a row to the data frame
+
+```Smalltalk
+weather addRow: #(-1.2 true snow) named:''.
+```
+
+### Replacing the data in the first row and third column with 'snow'
+
+```Smalltalk
+weather at:1 at:3 put:#snow.
+```
+
+### Transpose of the data frame
+
+```Smalltalk
+weather transposed.
+```
+
 ## DataFrame Booklet
 
 For more information, please read [Data Analysis Made Simple with Pharo DataFrame](https://github.com/SquareBracketAssociates/Booklet-DataFrame) - a booklet that serves as the main source of documentation for the DataFrame project. It describes the complete API of DataFrame and DataSeries data structures, and provides examples for each method.
