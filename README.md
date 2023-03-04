@@ -64,24 +64,28 @@ weather := DataFrame withRows: #(
 ```Smalltalk
 weather removeRowAt: 3.
 ```
+<img width="700" src="img/weatherDfRemoveRow.png">
 
 ### Adding a row to the data frame
 
 ```Smalltalk
 weather addRow: #(-1.2 true snow) named:''.
 ```
+<img width="700" src="img/weatherDfAddRow.png">
 
 ### Replacing the data in the first row and third column with 'snow'
 
 ```Smalltalk
 weather at:1 at:3 put:#snow.
 ```
+<img width="700" src="img/weatherDfReplaceData.png">
 
 ### Transpose of the data frame
 
 ```Smalltalk
 weather transposed.
 ```
+<img width="700" src="img/weatherDfTranspose.png">
 
 ## DataFrame Booklet
 
