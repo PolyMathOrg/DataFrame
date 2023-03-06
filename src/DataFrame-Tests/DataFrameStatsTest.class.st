@@ -7,7 +7,7 @@ Class {
 	#category : #'DataFrame-Tests'
 }
 
-{ #category : #initialization }
+{ #category : #running }
 DataFrameStatsTest >> setUp [
 
 	df := DataFrame withRows: #(
@@ -24,7 +24,7 @@ DataFrameStatsTest >> setUp [
 	df columnNames: #(sepalLength sepalWidth petalLength petalWidth).
 ]
 
-{ #category : #initialization }
+{ #category : #tests }
 DataFrameStatsTest >> testAverage [
 
 	| expected actual |
@@ -66,7 +66,7 @@ DataFrameStatsTest >> testCorrelationMatrix [
 				closeTo: (expectedCorrelationMatrix at: i at: j) ] ]
 ]
 
-{ #category : #initialization }
+{ #category : #tests }
 DataFrameStatsTest >> testFirstQuartile [
 
 	| expected actual |
@@ -79,7 +79,7 @@ DataFrameStatsTest >> testFirstQuartile [
 	self assert: actual equals: expected.
 ]
 
-{ #category : #initialization }
+{ #category : #tests }
 DataFrameStatsTest >> testInterquartileRange [
 
 	| expected actual |
@@ -92,7 +92,7 @@ DataFrameStatsTest >> testInterquartileRange [
 	self assert: actual closeTo: expected.
 ]
 
-{ #category : #initialization }
+{ #category : #tests }
 DataFrameStatsTest >> testMax [
 
 	| expected actual |
@@ -105,7 +105,7 @@ DataFrameStatsTest >> testMax [
 	self assert: actual equals: expected.
 ]
 
-{ #category : #initialization }
+{ #category : #tests }
 DataFrameStatsTest >> testMedian [
 
 	| expected actual |
@@ -118,7 +118,7 @@ DataFrameStatsTest >> testMedian [
 	self assert: actual equals: expected.
 ]
 
-{ #category : #initialization }
+{ #category : #tests }
 DataFrameStatsTest >> testMin [
 
 	| expected actual |
@@ -131,7 +131,7 @@ DataFrameStatsTest >> testMin [
 	self assert: actual equals: expected.
 ]
 
-{ #category : #initialization }
+{ #category : #tests }
 DataFrameStatsTest >> testMode [
 
 	| expected actual |
@@ -144,7 +144,7 @@ DataFrameStatsTest >> testMode [
 	self assert: actual equals: expected.
 ]
 
-{ #category : #initialization }
+{ #category : #tests }
 DataFrameStatsTest >> testRange [
 
 	| expected actual |
@@ -157,7 +157,7 @@ DataFrameStatsTest >> testRange [
 	self assert: actual closeTo: expected.
 ]
 
-{ #category : #initialization }
+{ #category : #tests }
 DataFrameStatsTest >> testStdev [
 
 	| expected actual |
@@ -171,7 +171,7 @@ DataFrameStatsTest >> testStdev [
 	self assert: actual closeTo: expected.
 ]
 
-{ #category : #initialization }
+{ #category : #tests }
 DataFrameStatsTest >> testThirdQuartile [
 
 	| expected actual |
@@ -184,7 +184,7 @@ DataFrameStatsTest >> testThirdQuartile [
 	self assert: actual equals: expected.
 ]
 
-{ #category : #initialization }
+{ #category : #tests }
 DataFrameStatsTest >> testVariance [
 
 	| expected actual |

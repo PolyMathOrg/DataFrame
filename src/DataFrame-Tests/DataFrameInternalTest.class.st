@@ -7,7 +7,7 @@ Class {
 	#category : #'DataFrame-Tests'
 }
 
-{ #category : #initialization }
+{ #category : #running }
 DataFrameInternalTest >> setUp [
 
 	df := DataFrameInternal withRows: #(

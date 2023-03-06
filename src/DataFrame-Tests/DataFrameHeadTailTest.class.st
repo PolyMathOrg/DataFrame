@@ -8,7 +8,7 @@ Class {
 	#category : #'DataFrame-Tests'
 }
 
-{ #category : #initialization }
+{ #category : #running }
 DataFrameHeadTailTest >> setUp [
 
 	df := DataFrame withRows: #(

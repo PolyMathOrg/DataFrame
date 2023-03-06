@@ -8,7 +8,7 @@ Class {
 	#category : #'DataFrame-Tests'
 }
 
-{ #category : #initialization }
+{ #category : #running }
 DataSeriesTest >> setUp [
 	keyArray := #(a b c d e f g h i j k).
 	
