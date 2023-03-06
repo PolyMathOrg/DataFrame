@@ -4904,26 +4904,21 @@ DataFrameTest >> testWithColumnsRowNamesColumnNames [
 
 { #category : #tests }
 DataFrameTest >> testWithColumnsRowNamesColumnNames_emptyColumns [
+
 	| dataframe |
-	dataframe := DataFrame
-		withColumns: #()
-		rowNames: #('1' '2')
-		columnNames: #().
-	self assert: dataframe rowNames asArray equals: #('1' '2').
-	self assert: (dataframe row: '1') isEmpty.
-	self assert: (dataframe row: '2') isEmpty
+	dataframe := DataFrame withColumns: #(  ) rowNames: #( '1' '2' ) columnNames: #(  ).
+	self assert: dataframe rowNames asArray equals: #( '1' '2' ).
+	self assertEmpty: (dataframe row: '1').
+	self assertEmpty: (dataframe row: '2')
 ]
 
 { #category : #tests }
 DataFrameTest >> testWithColumnsRowNames_emptyColumns [
+
 	| dataframe |
-	dataframe := DataFrame
-		withColumns: #()
-		rowNames: #('one' 'two' 'three').
-	self
-		assert: dataframe rowNames asArray
-		equals: #('one' 'two' 'three').
-	self assert: (dataframe row: 'one') isEmpty
+	dataframe := DataFrame withColumns: #(  ) rowNames: #( 'one' 'two' 'three' ).
+	self assert: dataframe rowNames asArray equals: #( 'one' 'two' 'three' ).
+	self assertEmpty: (dataframe row: 'one')
 ]
 
 { #category : #tests }
@@ -5042,14 +5037,11 @@ DataFrameTest >> testWithRowsColumnNames [
 
 { #category : #tests }
 DataFrameTest >> testWithRowsColumnNames_emptyRows [
+
 	| dataframe |
-	dataframe := DataFrame
-		withRows: #()
-		columnNames: #('one' 'two' 'three').
-	self
-		assert: dataframe columnNames asArray
-		equals: #('one' 'two' 'three').
-	self assert: (dataframe column: 'one') isEmpty
+	dataframe := DataFrame withRows: #(  ) columnNames: #( 'one' 'two' 'three' ).
+	self assert: dataframe columnNames asArray equals: #( 'one' 'two' 'three' ).
+	self assertEmpty: (dataframe column: 'one')
 ]
 
 { #category : #tests }
@@ -5072,13 +5064,9 @@ DataFrameTest >> testWithRowsRowNamesColumnNames [
 
 { #category : #tests }
 DataFrameTest >> testWithRowsRowNamesColumnNames_emptyRows [
+
 	| dataframe |
-	dataframe := DataFrame
-		withRows: #()
-		rowNames: #()
-		columnNames: #('one' 'two' 'three').
-	self
-		assert: dataframe columnNames asArray
-		equals: #('one' 'two' 'three').
-	self assert: (dataframe column: 'one') isEmpty
+	dataframe := DataFrame withRows: #(  ) rowNames: #(  ) columnNames: #( 'one' 'two' 'three' ).
+	self assert: dataframe columnNames asArray equals: #( 'one' 'two' 'three' ).
+	self assertEmpty: (dataframe column: 'one')
 ]
