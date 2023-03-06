@@ -10,12 +10,11 @@ Class {
 
 { #category : #running }
 DataSeriesTest >> setUp [
-	keyArray := #(a b c d e f g h i j k).
-	
-	series := DataSeries
-		withKeys: keyArray
-		values: #(3 7 6 20 8 9 8 10 15 13 16)
-		name: 'ExampleSeries'.
+
+	super setUp.
+	keyArray := #( a b c d e f g h i j k ).
+
+	series := DataSeries withKeys: keyArray values: #( 3 7 6 20 8 9 8 10 15 13 16 ) name: 'ExampleSeries'
 ]
 
 { #category : #arithmetic }
