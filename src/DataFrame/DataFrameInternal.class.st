@@ -300,28 +300,22 @@ DataFrameInternal >> removeColumnsOfRowElementsSatisfying: aBlock onRow: rowNumb
 
 	| newContents columnsToDrop k |
 	"columnsToDrop has 1 at i if i-th column needs to be dropped, else 0"
-	columnsToDrop := (self rowAt: rowNumber) collect: [ :ele |
-		(aBlock value: ele) ifTrue: [ true ] ifFalse: [ false ] ].
-	
-	newContents := Array2D
-		rows: (self numberOfRows)
-		columns: (self numberOfColumns - (columnsToDrop select: [ :ele | ele ]) size).
-	
-	(newContents numberOfColumns = 0) ifTrue: [ 
+	columnsToDrop := (self rowAt: rowNumber) collect: [ :ele | aBlock value: ele ].
+
+	newContents := Array2D rows: self numberOfRows columns: self numberOfColumns - (columnsToDrop select: [ :ele | ele ]) size.
+
+	newContents numberOfColumns = 0 ifTrue: [
 		contents := Array2D rows: 0 columns: 0.
-		^ self.
-		].
-		
+		^ self ].
+
 	1 to: self numberOfRows do: [ :i |
 		k := 0.
 		1 to: self numberOfColumns do: [ :j |
 			(columnsToDrop at: j)
 				ifTrue: [ k := k + 1 ]
-				ifFalse: [
-				newContents at: i at: j - k put:
-					(contents at: i at: j) ]]].
-		
-	contents := newContents.
+				ifFalse: [ newContents at: i at: j - k put: (contents at: i at: j) ] ] ].
+
+	contents := newContents
 ]
 
 { #category : #removing }
@@ -350,27 +344,21 @@ DataFrameInternal >> removeRowsOfColumnElementsSatisfying: aBlock onColumn: colu
 
 	| newContents rowsToDrop k |
 	"rowsToDrop has 1 at i if i-th row needs to be dropped, else 0"
-	rowsToDrop := (self columnAt: columnNumber) collect: [ :ele |
-		(aBlock value: ele) ifTrue: [ true ] ifFalse: [ false ] ].
-	newContents := Array2D
-		rows: (self numberOfRows - (rowsToDrop select: [ :ele | ele ]) size)
-		columns: (self numberOfColumns).
-		
-	(newContents numberOfRows = 0) ifTrue: [ 
+	rowsToDrop := (self columnAt: columnNumber) collect: [ :ele | aBlock value: ele ].
+	newContents := Array2D rows: self numberOfRows - (rowsToDrop select: [ :ele | ele ]) size columns: self numberOfColumns.
+
+	newContents numberOfRows = 0 ifTrue: [
 		contents := Array2D rows: 0 columns: 0.
-		^ self.
-		].
-	
+		^ self ].
+
 	1 to: self numberOfColumns do: [ :j |
 		k := 0.
 		1 to: self numberOfRows do: [ :i |
 			(rowsToDrop at: i)
 				ifTrue: [ k := k + 1 ]
-				ifFalse: [
-				newContents at: i - k at: j put:
-					(contents at: i at: j) ]]].
-		
-	contents := newContents.
+				ifFalse: [ newContents at: i - k at: j put: (contents at: i at: j) ] ] ].
+
+	contents := newContents
 ]
 
 { #category : #filling }

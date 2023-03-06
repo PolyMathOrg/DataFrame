@@ -194,10 +194,7 @@ DataSeries >> collect: aBlock [
 DataSeries >> collectWithNotNils: aBlock [
 	"Applies aBlock to every non-nil element"
 
-	^ self collect: [ :each |
-		  each
-			  ifNil: [ nil ]
-			  ifNotNil: [ aBlock value: each ] ]
+	^ self collect: [ :each | each ifNotNil: [ aBlock value: each ] ]
 ]
 
 { #category : #'as yet unclassified' }
