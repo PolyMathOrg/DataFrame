@@ -10,7 +10,7 @@ Class {
 	#category : #'DataFrame-IO-Tests'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #running }
 DataFrameCsvWriterTest >> readFile: aFileReference [
 	| stream contents |
 	stream := aFileReference readStream.

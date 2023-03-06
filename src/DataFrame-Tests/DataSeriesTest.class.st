@@ -792,7 +792,7 @@ DataSeriesTest >> testBooleanLessThanWithSeriesDifferentNames [
 	self assert: firstSeries < secondSeries equals: expected.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 DataSeriesTest >> testCalculateDataType [
 	
 	| newSeries |
