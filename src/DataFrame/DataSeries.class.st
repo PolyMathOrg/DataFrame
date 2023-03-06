@@ -193,9 +193,11 @@ DataSeries >> collect: aBlock [
 { #category : #enumerating }
 DataSeries >> collectWithNotNils: aBlock [
 	"Applies aBlock to every non-nil element"
+
 	^ self collect: [ :each |
-		each isNil ifTrue: [ nil ] ifFalse: [ aBlock value: each ]
-		]
+		  each
+			  ifNil: [ nil ]
+			  ifNotNil: [ aBlock value: each ] ]
 ]
 
 { #category : #'as yet unclassified' }
@@ -520,10 +522,8 @@ DataSeries >> removeNils [
 { #category : #replacing }
 DataSeries >> replaceNilsWith: anObject [
 	"Replaces nils inplace with anObject"
-	
-	self withIndexDo: [ :ele :index |
-		ele isNil
-			ifTrue: [ self atIndex: index put: anObject ] ]
+
+	self withIndexDo: [ :ele :index | ele ifNil: [ self atIndex: index put: anObject ] ]
 ]
 
 { #category : #replacing }

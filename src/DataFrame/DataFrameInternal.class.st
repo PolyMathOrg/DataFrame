@@ -254,19 +254,17 @@ DataFrameInternal >> initialize: aPoint [
 { #category : #accessing }
 DataFrameInternal >> numberOfColumns [
 
-	contents numberOfColumns isNil
-		ifTrue: [ ^ 0 ].
-		
-	^ contents numberOfColumns.
+	contents numberOfColumns ifNil: [ ^ 0 ].
+
+	^ contents numberOfColumns
 ]
 
 { #category : #accessing }
 DataFrameInternal >> numberOfRows [
 
-	contents numberOfRows isNil
-		ifTrue: [ ^ 0 ].
-		
-	^ contents numberOfRows.
+	contents numberOfRows ifNil: [ ^ 0 ].
+
+	^ contents numberOfRows
 ]
 
 { #category : #printing }
