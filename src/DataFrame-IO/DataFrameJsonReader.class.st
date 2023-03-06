@@ -182,13 +182,10 @@ DataFrameJsonReader >> parseFromValues: anArrayOfArrays [
 { #category : #reading }
 DataFrameJsonReader >> read: json [
 	"Loads parsed json"
-	
-	json isEmpty
-		ifTrue: [ rows := #() ]
-		ifFalse: [
-			orient = 'auto' ifTrue: [ self inferOrientFromJson: json ].
-			(parseMap at: orient) value: json.
-			].
+
+	json ifEmpty: [ rows := #(  ) ] ifNotEmpty: [
+		orient = 'auto' ifTrue: [ self inferOrientFromJson: json ].
+		(parseMap at: orient) value: json ]
 ]
 
 { #category : #reading }
