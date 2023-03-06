@@ -1056,8 +1056,11 @@ DataFrame >> info [
 		  self columnNames doWithIndex: [ :col :index |
 			  aStream
 				  print: index;
-				  nextPutAll: ' | ';
-				  print: col;
+				  nextPutAll: ' | '.
+			  col isString
+				  ifTrue: [ aStream nextPutAll: col ]
+				  ifFalse: [ aStream print: col ].
+			  aStream
 				  nextPutAll: ' | ';
 				  print: ((self columnAt: index) reject: #isNil) size;
 				  nextPutAll: ' non-nil | ';
