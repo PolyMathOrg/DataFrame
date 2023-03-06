@@ -995,13 +995,7 @@ DataFrame >> head [
 { #category : #accessing }
 DataFrame >> head: aNumber [
 
-	| n |
-	
-	self numberOfRows  > aNumber
-		ifTrue: [ n := aNumber ]
-		ifFalse: [ n := self numberOfRows ].
-		
-	^ self rowsAt: (1 to: n).
+	^ self rowsAt: (1 to: (self numberOfRows min: aNumber))
 ]
 
 { #category : #accessing }
@@ -1987,15 +1981,10 @@ DataFrame >> tail [
 { #category : #accessing }
 DataFrame >> tail: aNumber [
 
-	| n rows |
-	
+	| rows |
 	rows := self numberOfRows.
-	
-	rows > aNumber
-		ifTrue: [ n := aNumber ]
-		ifFalse: [ n := rows ].
-			
-	^ self rowsAt: ((rows - n + 1) to: rows).
+
+	^ self rowsAt: (rows - (rows min: aNumber) + 1 to: rows)
 ]
 
 { #category : #statistics }
