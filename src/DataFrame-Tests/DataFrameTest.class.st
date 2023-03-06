@@ -1543,12 +1543,11 @@ DataFrameTest >> testDoCanModifyRows [
 DataFrameTest >> testEquality [
 
 	| df1 df2 |
-	
-	df1 := DataFrame withRows: #((1 2)(3 4)).
-	df2 := DataFrame withRows: #((1 2)(3 4)).
-	
+	df1 := DataFrame withRows: #( #( 1 2 ) #( 3 4 ) ).
+	df2 := DataFrame withRows: #( #( 1 2 ) #( 3 4 ) ).
+
 	self assert: df1 equals: df2.
-	self assert: (df1 = df2).
+	self assert: df1 equals: df2
 ]
 
 { #category : #'find-select' }
@@ -1597,22 +1596,18 @@ DataFrameTest >> testFindAllIndicesOfAtColumnFloat [
 DataFrameTest >> testHasNils [
 
 	| df1 df2 |
-	df1 := DataFrame withRows:
-		       #( #( nil 1.609 true ) #( Dubai 2.789 nil )
-		          #( nil 8.788 false ) ).
+	df1 := DataFrame withRows: #( #( nil 1.609 true ) #( Dubai 2.789 nil ) #( nil 8.788 false ) ).
 	df1 rowNames: #( A B C ).
 	df1 columnNames: #( City Population BeenThere ).
 
 	self assert: df1 hasNils.
 
-	df2 := DataFrame withRows:
-		       #( #( Barcelona 1.609 true ) #( Dubai 2.789 true )
-		          #( London 8.788 false ) ).
+	df2 := DataFrame withRows: #( #( Barcelona 1.609 true ) #( Dubai 2.789 true ) #( London 8.788 false ) ).
 
 	df2 rowNames: #( A B C ).
 	df2 columnNames: #( City Population BeenThere ).
 
-	self assert: df2 hasNils equals: false
+	self deny: df2 hasNils
 ]
 
 { #category : #replacing }
@@ -1740,10 +1735,10 @@ DataFrameTest >> testInequality [
 	df5 := DataFrame withRows: #( #( 1 2 ) #( 3 5 ) ).
 	df5 rowNames: #( a b ).
 	df5 columnNames: #( x z ).
-	self deny: df2 = df1.
-	self deny: df3 = df1.
-	self deny: df4 = df1.
-	self deny: df5 = df1
+	self deny: df2 equals: df1.
+	self deny: df3 equals: df1.
+	self deny: df4 equals: df1.
+	self deny: df5 equals: df1
 ]
 
 { #category : #splitjoin }

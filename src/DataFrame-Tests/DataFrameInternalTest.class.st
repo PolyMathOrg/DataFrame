@@ -229,11 +229,10 @@ DataFrameInternalTest >> testCreateDataFrameInternalWithRows [
 DataFrameInternalTest >> testDeepCopy [
 
 	| dfCopy |
-	
 	dfCopy := df deepCopy.
-	
+
 	self assert: df equals: dfCopy.
-	self deny: df == dfCopy.
+	self deny: df identicalTo: dfCopy
 ]
 
 { #category : #tests }
