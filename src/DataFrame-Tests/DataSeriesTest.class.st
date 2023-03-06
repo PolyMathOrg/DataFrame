@@ -2016,6 +2016,16 @@ DataSeriesTest >> testStatsQuartile [
 ]
 
 { #category : #statistics }
+DataSeriesTest >> testStatsQuartileWithNil [
+	series atIndex: 2 put: nil.
+	self assert: (series quartile: 0) equals: 3.
+	self assert: (series quartile: 1) equals: 8.
+	self assert: (series quartile: 2) equals: 9.
+	self assert: (series quartile: 3) equals: 15.
+	self assert: (series quartile: 4) equals: 20.
+]
+
+{ #category : #statistics }
 DataSeriesTest >> testStatsRange [
 
 	self assert: series range equals: 17.

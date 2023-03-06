@@ -401,7 +401,7 @@ DataSeries >> initialize: aCapacity [
 
 { #category : #statistics }
 DataSeries >> interquartileRange [
-	^ self thirdQuartile - self firstQuartile 
+	^ self thirdQuartile - self firstQuartile
 ]
 
 { #category : #'categorical-numerical' }
@@ -479,14 +479,14 @@ DataSeries >> ninth [
 
 { #category : #statistics }
 DataSeries >> quantile: aNumber [
+
 	| sortedSeries index |
-	sortedSeries := self sorted.
-	
-	aNumber = 0
-		ifTrue: [ ^ sortedSeries first ].
-	
+	sortedSeries := self withoutNils sorted.
+
+	aNumber = 0 ifTrue: [ ^ sortedSeries first ].
+
 	index := (sortedSeries size * (aNumber / 100)) ceiling.
-	^ sortedSeries atIndex: index.
+	^ sortedSeries atIndex: index
 ]
 
 { #category : #statistics }
@@ -854,6 +854,12 @@ DataSeries >> withSeries: otherDataSeries collect: twoArgBlock [
 			value: (self at: key)
 			value: (otherDataSeries at: key))].
 	^ result
+]
+
+{ #category : #private }
+DataSeries >> withoutNils [
+
+	^ self reject: #isNil
 ]
 
 { #category : #statistics }
