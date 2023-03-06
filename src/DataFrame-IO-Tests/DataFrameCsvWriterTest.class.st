@@ -41,7 +41,7 @@ DataFrameCsvWriterTest >> testWriteToCsv [
 	dataFrame writeToCsv: commaQuoteCsvFile.
 	actual := self readFile: commaQuoteCsvFile.
 	expected := TestCsvStrings commaQuoteCsvString.
-	self assert: actual lines equals: expected lines.
+	self assert: actual lines equals: expected lines
 ]
 
 { #category : #tests }
@@ -52,7 +52,7 @@ DataFrameCsvWriterTest >> testWriteToCsvLineEndLf [
 	dataFrame writeTo: commaQuoteCsvFile using: writer.
 	actual := self readFile: commaQuoteCsvFile.
 	expected := String lf join: TestCsvStrings commaQuoteCsvString lines.
-	self assert: actual lines equals: expected lines.
+	self assert: actual lines equals: expected lines
 ]
 
 { #category : #tests }
@@ -61,5 +61,5 @@ DataFrameCsvWriterTest >> testWriteToCsvWithSeparatorTab [
 	dataFrame writeToCsv: tabQuoteCsvFile withSeparator: Character tab.
 	actual := self readFile: tabQuoteCsvFile.
 	expected := TestCsvStrings tabQuoteCsvString.
-	self assertCollection: actual lines equals: expected lines.
+	self assertCollection: actual lines equals: expected lines
 ]

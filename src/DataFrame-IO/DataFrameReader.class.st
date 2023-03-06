@@ -19,7 +19,7 @@ DataFrameReader >> columnTypes: columnTypeDefinition [
 	 and convert it to another object.
 	"
 
-	columnTypes := columnTypeDefinition.
+	columnTypes := columnTypeDefinition
 ]
 
 { #category : #reading }

@@ -14,16 +14,16 @@ DataSeries class >> newFrom: aCollection [
 
 	(aCollection species == self)
 		ifTrue: [ ^ super newFrom: aCollection associations ].
-		
+
 	"If it's a collection of associations use the superclass implementation"
 	^ super newFrom: ((aCollection anyOne respondsTo: #key)
 		ifTrue: [ aCollection ]
-		ifFalse: [ aCollection withIndexCollect: [ :each :i | i -> each ] ]).
+		ifFalse: [ aCollection withIndexCollect: [ :each :i | i -> each ] ])
 ]
 
 { #category : #'instance creation' }
 DataSeries class >> withKeys: keys values: values [
-	^ self newFromKeys: keys andValues: values 
+	^ self newFromKeys: keys andValues: values
 ]
 
 { #category : #'instance creation' }
@@ -34,14 +34,14 @@ DataSeries class >> withKeys: keys values: values name: aName [
 { #category : #'instance creation' }
 DataSeries class >> withValues: values [
 	| keys |
-	keys := (1 to: values size) asArray. 
-	^ self withKeys: keys values: values 
+	keys := (1 to: values size) asArray.
+	^ self withKeys: keys values: values
 ]
 
 { #category : #'instance creation' }
 DataSeries class >> withValues: values name: aName [
 	| keys |
-	keys := (1 to: values size) asArray. 
+	keys := (1 to: values size) asArray.
 	^ (self withKeys: keys values: values) name: aName; yourself
 ]
 
@@ -51,7 +51,6 @@ DataSeries >> < arg [
 	 Does not consider keys for comparision."
 
 	^ arg adaptToCollection: self andSend: #<
-	
 ]
 
 { #category : #comparing }
@@ -66,7 +65,7 @@ DataSeries >> <= arg [
 DataSeries >> = anObject [
 	(super = anObject)
 		ifFalse: [ ^ false ].
-		
+
 	^ anObject name = self name
 		"order of keys"
 		and: [ anObject keys = self keys ]
@@ -78,7 +77,6 @@ DataSeries >> > arg [
 	 Does not consider keys for comparision."
 
 	^ arg adaptToCollection: self andSend: #>
-	
 ]
 
 { #category : #comparing }
@@ -87,7 +85,6 @@ DataSeries >> >= arg [
 	 Does not consider keys for comparision."
 
 	^ arg adaptToCollection: self andSend: #>=
-	
 ]
 
 { #category : #adapting }
@@ -106,13 +103,13 @@ DataSeries >> asDataFrame [
 	^ DataFrame
 		withColumns: {  self values }
 		rowNames: self keys
-		columnNames: { self name }.
+		columnNames: { self name }
 ]
 
 { #category : #accessing }
 DataSeries >> at: aKey transform: aBlock [
 	"Evaluate aBlock on the value at aKey and replace that value with the result. Signal an exception if aKey was not found"
-	self at: aKey transform: aBlock ifAbsent: [ self errorKeyNotFound: aKey ].
+	self at: aKey transform: aBlock ifAbsent: [ self errorKeyNotFound: aKey ]
 ]
 
 { #category : #accessing }
@@ -122,8 +119,8 @@ DataSeries >> at: aKey transform: aBlock ifAbsent: exceptionBlock [
 	oldValue := self at: aKey ifAbsent: [
 		exceptionBlock value.
 		^ self ].
-	
-	self at: aKey put: (aBlock value: oldValue).
+
+	self at: aKey put: (aBlock value: oldValue)
 ]
 
 { #category : #accessing }
@@ -158,7 +155,7 @@ DataSeries >> calculateDataType [
 
 { #category : #comparing }
 DataSeries >> closeTo: anObject [
-	^ self closeTo: anObject precision: self defaultPrecision.
+	^ self closeTo: anObject precision: self defaultPrecision
 ]
 
 { #category : #comparing }
@@ -169,10 +166,10 @@ DataSeries >> closeTo: anObject precision: aPrecision [
 	(self species == anObject species
 		and: [self size = anObject size])
 		ifFalse: [^ false].
-		
+
 	(anObject name = self name)
 		ifFalse: [ ^ false ].
-		
+
 	(anObject keys = self keys)
 		ifFalse: [ ^ false ].
 
@@ -212,18 +209,18 @@ DataSeries >> correlationWith: otherSeries using: aCorrelationCoefficient [
 { #category : #statistics }
 DataSeries >> crossTabulateWith: aSeries [
 	| df |
-	
+
 	(self size = aSeries size)
 		ifFalse: [ SizeMismatch signal ].
-	
-	df := DataFrame withRows: 
+
+	df := DataFrame withRows:
 		(self uniqueValues collect: [ :each1 |
 			aSeries uniqueValues collect: [ :each2 |
 				(1 to: self size) inject: 0 into: [ :accum :i |
 					(((self atIndex: i) = each1) and: ((aSeries atIndex: i) = each2))
 						ifTrue: [ accum + 1 ]
 						ifFalse: [ accum ] ] ] ]).
-		
+
 	df rowNames: self uniqueValues.
 	df columnNames: aSeries uniqueValues.
 	^ df
@@ -238,7 +235,7 @@ DataSeries >> cumulativeSum [
 
 	^ self collect: [ :each |
 		each ifNotNil: [ sum := sum + each ].
-		sum ].
+		sum ]
 ]
 
 { #category : #defaults }
@@ -282,7 +279,7 @@ DataSeries >> fifth [
 ]
 
 { #category : #accessing }
-DataSeries >> first [ 
+DataSeries >> first [
 	"Answer the first element of the receiver.
 	Raise an error if there are not enough elements."
 	^ self atIndex: 1
@@ -369,12 +366,12 @@ DataSeries >> groupByUniqueValuesAndAggregateUsing: aBlock as: aNewName [
 { #category : #testing }
 DataSeries >> hasNil [
 	"return true if data series has at least one nil value"
-	^ self includes: nil. 
+	^ self includes: nil.
 ]
 
 { #category : #slicing }
-DataSeries >> head [ 
-	^ self head: self defaultHeadTailSize.
+DataSeries >> head [
+	^ self head: self defaultHeadTailSize
 ]
 
 { #category : #slicing }
@@ -382,20 +379,20 @@ DataSeries >> head: aNumber [
 	^ self species
 		withKeys: (self keys copyFrom: 1 to: aNumber)
 		values: (self values copyFrom: 1 to: aNumber)
-		name: self name.
+		name: self name
 ]
 
 { #category : #initialization }
-DataSeries >> initialize [ 
+DataSeries >> initialize [
 	super initialize.
-	name := self defaultName.
+	name := self defaultName
 ]
 
 { #category : #initialization }
 DataSeries >> initialize: aCapacity [
 	"Make sure that initialize is called and the default name is set"
 	self initialize.
-	^ super initialize: aCapacity.
+	^ super initialize: aCapacity
 ]
 
 { #category : #statistics }
@@ -411,7 +408,6 @@ DataSeries >> isCategorical [
 { #category : #'categorical-numerical' }
 DataSeries >> isNumerical [
 	^ forcedIsNumerical ifNil: [self uniqueValues allSatisfy: [:each|each isNumber]]
-		
 ]
 
 { #category : #testing }
@@ -424,7 +420,7 @@ DataSeries >> keys: anArrayOfKeys [
 	| keys |
 	keys := anArrayOfKeys asArray deepCopy.
 	dictionary := self dictionaryClass newFromKeys: keys andValues: self values.
-	orderedKeys := keys.
+	orderedKeys := keys
 ]
 
 { #category : #accessing }
@@ -442,13 +438,11 @@ DataSeries >> log: base [
 { #category : #'categorical-numerical' }
 DataSeries >> makeCategorical [
 	forcedIsNumerical := false
-		
 ]
 
 { #category : #'categorical-numerical' }
 DataSeries >> makeNumerical [
 	forcedIsNumerical := true
-		
 ]
 
 { #category : #accessing }
@@ -456,7 +450,7 @@ DataSeries >> mode [
 	| valueCounts maxCount |
 	valueCounts := self valueCounts.
 	maxCount := valueCounts max.
-	^ valueCounts keyAtValue: maxCount.
+	^ valueCounts keyAtValue: maxCount
 ]
 
 { #category : #accessing }
@@ -526,28 +520,28 @@ DataSeries >> replaceNilsWith: anObject [
 { #category : #replacing }
 DataSeries >> replaceNilsWithAverage [
 	"Replaces nils inplace with average"
-	
+
 	| mean |
 	mean := (self select: [ :ele | ele isNotNil ]) average.
-	self replaceNilsWith: mean.
+	self replaceNilsWith: mean
 ]
 
 { #category : #replacing }
 DataSeries >> replaceNilsWithMedian [
 	"Replaces nils inplace with median"
-	
+
 	| median |
 	median := (self select: [ :ele | ele isNotNil ]) median.
-	self replaceNilsWith: median.
+	self replaceNilsWith: median
 ]
 
 { #category : #replacing }
 DataSeries >> replaceNilsWithMode [
 	"Replaces nils inplace with mode"
-	
+
 	| mode |
 	mode := (self select: [ :ele | ele isNotNil ]) mode.
-	self replaceNilsWith: mode.
+	self replaceNilsWith: mode
 ]
 
 { #category : #replacing }
@@ -556,7 +550,7 @@ DataSeries >> replaceNilsWithPreviousValue [
 	"Replaces nils inplace with previous non-nil value"
 
 	| value |
-	self withIndexDo: [ :ele :index | 
+	self withIndexDo: [ :ele :index |
 		index > 1 ifTrue: [ ele ifNil: [ self atIndex: index put: value ] ].
 		value := self atIndex: index ]
 ]
@@ -564,8 +558,8 @@ DataSeries >> replaceNilsWithPreviousValue [
 { #category : #replacing }
 DataSeries >> replaceNilsWithZeros [
 	"Replaces nils inplace with zero"
-	
-	self replaceNilsWith: 0.
+
+	self replaceNilsWith: 0
 ]
 
 { #category : #accessing }
@@ -619,7 +613,7 @@ DataSeries >> sortAssociations: aBlock [
 	| sortedAssociations |
 	sortedAssociations := self associations sort: aBlock.
 	self removeAll.
-	self addAll: sortedAssociations.
+	self addAll: sortedAssociations
 ]
 
 { #category : #sorting }
@@ -656,7 +650,7 @@ DataSeries >> summary [
 	| summary |
 	summary := self species new.
 	summary name: self name.
-	
+
 	summary
 		at: 'Min' put: self min;
 		at: '1st Qu.' put: self firstQuartile;
@@ -664,13 +658,13 @@ DataSeries >> summary [
 		at: 'Average' put: self average;
 		at: '3rd Qu.' put: self thirdQuartile;
 		at: 'Max' put: self max.
-		
+
 	^ summary
 ]
 
 { #category : #slicing }
 DataSeries >> tail [
-	^ self tail: self defaultHeadTailSize.
+	^ self tail: self defaultHeadTailSize
 ]
 
 { #category : #slicing }
@@ -678,7 +672,7 @@ DataSeries >> tail: aNumber [
 	^ self species
 		withKeys: (self keys copyFrom: self size - aNumber + 1 to: self size)
 		values: (self values copyFrom: self size - aNumber + 1 to: self size)
-		name: self name.
+		name: self name
 ]
 
 { #category : #accessing }
@@ -697,9 +691,9 @@ DataSeries >> thirdQuartile [
 DataSeries >> uniqueValues [
 	| v |
 	v := self asSet asArray.
-	
+
 	"Sort if possible"
-	^ [ v sort ] on: Error do: [ v ].
+	^ [ v sort ] on: Error do: [ v ]
 ]
 
 { #category : #statistics }
@@ -717,14 +711,14 @@ DataSeries >> valueFrequencies [
 ]
 
 { #category : #enumerating }
-DataSeries >> with: aCollection collect: twoArgBlock [ 
+DataSeries >> with: aCollection collect: twoArgBlock [
 	"Collect and return the result of evaluating twoArgBlock with corresponding elements from this series and aCollection."
 	| result |
 	aCollection size = self size ifFalse: [self errorSizeMismatch].
-	
+
 	result := self species new: self size.
 	result name: self name.
-	
+
 	self keys withIndexDo: [ :key :i |
 		result at: key put:
 		(twoArgBlock
@@ -745,20 +739,20 @@ DataSeries >> withIndexCollect: aBlock [
 
 { #category : #enumerating }
 DataSeries >> withIndexDetect: aBlock [
-	
-	^ self withIndexDetect: aBlock ifNone: [ NotFound signal ].
+
+	^ self withIndexDetect: aBlock ifNone: [ NotFound signal ]
 ]
 
 { #category : #enumerating }
 DataSeries >> withIndexDetect: aBlock ifNone: exceptionBlock [
-	
+
 	| selectedIndex |
-	
+
 	selectedIndex := (1 to: self size)
 		detect: [ :i | aBlock value: (self atIndex: i) value: i ]
 		ifNone: [ ^ exceptionBlock value ].
-		
-	^ self atIndex: selectedIndex.
+
+	^ self atIndex: selectedIndex
 ]
 
 { #category : #enumerating }
@@ -774,14 +768,14 @@ DataSeries >> withIndexReject: aBlock [
 { #category : #enumerating }
 DataSeries >> withIndexSelect: aBlock [
 	| selectedIndices |
-	
+
 	selectedIndices := (1 to: self size) select: [ :i |
 		aBlock value: (self atIndex: i) value: i ].
-	
+
 	^ DataSeries
 		withKeys: (selectedIndices collect: [ :i | self keys at: i ])
 		values: (selectedIndices collect: [ :i | self atIndex: i ])
-		name: self name.
+		name: self name
 ]
 
 { #category : #enumerating }
@@ -796,20 +790,20 @@ DataSeries >> withKeyCollect: aBlock [
 
 { #category : #enumerating }
 DataSeries >> withKeyDetect: aBlock [
-	
-	^ self withKeyDetect: aBlock ifNone: [ NotFound signal ].
+
+	^ self withKeyDetect: aBlock ifNone: [ NotFound signal ]
 ]
 
 { #category : #enumerating }
 DataSeries >> withKeyDetect: aBlock ifNone: exceptionBlock [
-	
+
 	| selectedKey |
-	
+
 	selectedKey := self keys
 		detect: [ :key | aBlock value: (self at: key) value: key ]
 		ifNone: [ ^ exceptionBlock value ].
-		
-	^ self at: selectedKey.
+
+	^ self at: selectedKey
 ]
 
 { #category : #enumerating }
@@ -825,26 +819,26 @@ DataSeries >> withKeyReject: aBlock [
 { #category : #enumerating }
 DataSeries >> withKeySelect: aBlock [
 	| selectedKeys |
-	
+
 	selectedKeys := self keys select: [ :key |
 		aBlock value: (self at: key) value: key ].
-	
+
 	^ DataSeries
 		withKeys: selectedKeys
 		values: (selectedKeys collect: [ :key | self at: key ])
-		name: self name.
+		name: self name
 ]
 
 { #category : #enumerating }
-DataSeries >> withSeries: otherDataSeries collect: twoArgBlock [ 
+DataSeries >> withSeries: otherDataSeries collect: twoArgBlock [
 	"Collect and return the result of evaluating twoArgBlock with corresponding elements from this series and otherDataSeries."
 	| result |
 	otherDataSeries size = self size ifFalse: [self errorSizeMismatch].
 	otherDataSeries keys = self keys ifFalse: [ self errorKeysMismatch ].
-	
+
 	result := self species new: self size.
 	result name: self name.
-	
+
 	self keysDo: [ :key |
 		result at: key put:
 		(twoArgBlock

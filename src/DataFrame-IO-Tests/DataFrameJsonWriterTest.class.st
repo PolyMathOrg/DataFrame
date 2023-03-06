@@ -22,23 +22,23 @@ DataFrameJsonWriterTest >> setUp [
 	super setUp.
 	directory := FileSystem memory workingDirectory / 'testDataForJson'.
 	directory createDirectory.
-	
+
 	df := DataFrame withRows: #(
 		(1 2 nil nil)
 		(nil 2 3 nil)
 		(nil nil nil 5)
 		(1 nil 2 nil))
 	rowNames: #('row1' 'row2' 'row3' 'row4')
-	columnNames: #('col1' 'col2' 'col3' 'col4').
+	columnNames: #('col1' 'col2' 'col3' 'col4')
 ]
 
 { #category : #tests }
 DataFrameJsonWriterTest >> testWriteAsString [
 	| actual expected |.
 	actual := DataFrameJsonWriter new writeAsString: df.
-	expected := '' join: (TestJsonStrings recordsJsonString 
+	expected := '' join: (TestJsonStrings recordsJsonString
 		regex: '[^\s]+' matchesCollect: [:x|x]).
-	self assert: actual equals: expected.
+	self assert: actual equals: expected
 ]
 
 { #category : #tests }
@@ -47,9 +47,9 @@ DataFrameJsonWriterTest >> testWriteTo [
 	file := directory / 'output.json'.
 	DataFrameJsonWriter new write: df to: file.
 	actual := self readFile: file.
-	expected := '' join: (TestJsonStrings recordsJsonString 
+	expected := '' join: (TestJsonStrings recordsJsonString
 		regex: '[^\s]+' matchesCollect: [:x|x]).
-	self assert: actual lines equals: expected lines.
+	self assert: actual lines equals: expected lines
 ]
 
 { #category : #tests }
@@ -58,9 +58,9 @@ DataFrameJsonWriterTest >> testWriteToJson [
 	file := directory / 'output.json'.
 	df writeToJson: file.
 	actual := self readFile: file.
-	expected := '' join: (TestJsonStrings recordsJsonString 
+	expected := '' join: (TestJsonStrings recordsJsonString
 		regex: '[^\s]+' matchesCollect: [:x|x]).
-	self assert: actual lines equals: expected lines.
+	self assert: actual lines equals: expected lines
 ]
 
 { #category : #tests }
@@ -69,7 +69,7 @@ DataFrameJsonWriterTest >> testWriteToJsonOrient [
 	file := directory / 'output.json'.
 	df writeToJson: file orient: 'values'.
 	actual := self readFile: file.
-	expected := '' join: (TestJsonStrings valuesJsonString 
+	expected := '' join: (TestJsonStrings valuesJsonString
 		regex: '[^\s]+' matchesCollect: [:x|x]).
-	self assert: actual lines equals: expected lines.
+	self assert: actual lines equals: expected lines
 ]

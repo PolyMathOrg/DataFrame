@@ -10,7 +10,7 @@ Class {
 { #category : #running }
 DataFrameTypeDetectorTest >> setUp [
 	super setUp.
-	detector := DataFrameTypeDetector new.
+	detector := DataFrameTypeDetector new
 ]
 
 { #category : #tests }

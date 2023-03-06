@@ -15,25 +15,25 @@ Class {
 { #category : #adding }
 DataFrameJsonReader >> addDict: aDict [
 	"Adds aDict while respecting columnNames positions"
-	
+
 	| newCols |
-	
+
 	newCols := aDict keys difference: columnNames.
 	columnNames addAll: newCols.
-	
-	rows add: (columnNames collect: [ :col | aDict at: col ifAbsent: nil ]).
+
+	rows add: (columnNames collect: [ :col | aDict at: col ifAbsent: nil ])
 ]
 
 { #category : #reading }
 DataFrameJsonReader >> createDataFrame [
 	| df |
-	
+
 	df := DataFrame withRows: rows.
 	rowNames ifNotNil: [ df rowNames: rowNames ].
 	columnNames ifNotNil: [ df columnNames: columnNames  ].
-	
+
 	DataFrameTypeDetector new detectTypesAndConvert: df.
-	
+
 	^ df
 ]
 
@@ -51,7 +51,7 @@ DataFrameJsonReader >> inferOrientFromJson: json [
 			((json at: (json keys first)) isKindOf: SequenceableCollection)
 				ifTrue: [ self orient: 'split' ]
 				ifFalse: [ self orient: 'columns' ].
-			].
+			]
 ]
 
 { #category : #initialization }
@@ -65,7 +65,7 @@ DataFrameJsonReader >> initialize [
 		'index'->[ :json | self parseFromRowNames: json ].
 		'values'->[ :json | self parseFromValues: json ].
 		'split'->[ :json | self parseFromSplit: json ].
-		}.
+		}
 ]
 
 { #category : #accessing }
@@ -88,20 +88,20 @@ DataFrameJsonReader >> parseFromColumns: aDict [
 	"Private. Accessed when orient = 'columns'.
 	 Slower if uniform is set to false.
 	 Incoming json format is:
-		
+
 		{
 		 column->{
 					 rowName->data
 					}
 		}
-		
+
 	"
 	| colIndex rowIndex |
 
 	columnNames := OrderedCollection newFrom: aDict keys.
 	rowNames := OrderedCollection new.
 	rows := OrderedCollection new.
-	
+
 	aDict keysAndValuesDo: [ :col :rowNamesDict |
 		colIndex := columnNames indexOf: col.
 		rowNamesDict keysAndValuesDo: [ :rowName :val |
@@ -113,7 +113,7 @@ DataFrameJsonReader >> parseFromColumns: aDict [
 					)	at: colIndex
 						ifAbsentPut: val.
 			].
-		].
+		]
 ]
 
 { #category : #parsing }
@@ -124,14 +124,14 @@ DataFrameJsonReader >> parseFromRecords: anArray [
 			{column->data},
 		]
 	"
-	
+
 	rows := OrderedCollection new: anArray size.
 	columnNames := OrderedCollection new.
 	rowNames := nil.
-	
+
 	anArray do: [ :record |
 		self addDict: record
-		].
+		]
 ]
 
 { #category : #parsing }
@@ -149,11 +149,11 @@ DataFrameJsonReader >> parseFromRowNames: aDict [
 	columnNames := OrderedCollection new.
 	rowNames := OrderedCollection new: (aDict keys) size.
 	rows := OrderedCollection new: (aDict keys) size.
-	
+
 	aDict keysAndValuesDo: [ :rowName :rowNamesDict |
 		rowNames add: rowName.
 		self addDict: rowNamesDict.
-		].
+		]
 ]
 
 { #category : #parsing }
@@ -166,17 +166,17 @@ DataFrameJsonReader >> parseFromSplit: aDict [
 			data->[data]
 		}
 	"
-	
+
 	rows := aDict at: 'data'.
 	rowNames := aDict at: 'index'.
-	columnNames := aDict at: 'columns'.
+	columnNames := aDict at: 'columns'
 ]
 
 { #category : #parsing }
 DataFrameJsonReader >> parseFromValues: anArrayOfArrays [
 	"Private. Accessed when orient = 'values'"
-	
-	rows := anArrayOfArrays.
+
+	rows := anArrayOfArrays
 ]
 
 { #category : #reading }
@@ -191,23 +191,22 @@ DataFrameJsonReader >> read: json [
 { #category : #reading }
 DataFrameJsonReader >> readFrom: aFileReference [
 	| reader |
-	
+
 	reader := NeoJSONReader on: aFileReference readStream.
 	self read: reader next.
 	reader close.
-	
+
 	^ self createDataFrame
-	
 ]
 
 { #category : #reading }
 DataFrameJsonReader >> readFromString: aString [
 	"Read dataframe from a string"
 	| json |
-	
+
 	json := NeoJSONReader fromString: aString.
 	self read: json.
-	
+
 	^ self createDataFrame
 ]
 
