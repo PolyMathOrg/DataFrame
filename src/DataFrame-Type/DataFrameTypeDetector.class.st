@@ -165,14 +165,15 @@ DataFrameTypeDetector >> detectTypesAndConvert: aDataFrame [
 
 { #category : #initialization }
 DataFrameTypeDetector >> initialize [
+
+	super initialize.
 	columnTypes := Dictionary new.
-	typeMapping := Dictionary
-		newFrom:
-			{(Boolean -> [ :array | self convertToBoolean: array ]).
-			(Float -> [ :array | self convertToFloat: array ]).
-			(Integer -> [ :array | self convertToInteger: array ]).
-			(Time -> [ :array | self convertToTime: array ]).
-			(DateAndTime -> [ :array | self convertToDateAndTime: array ]).
-			(String -> [ :array | array ]).
-			(nil -> [ :array | self detectColumnTypeAndConvert: array ])}.
+	typeMapping := Dictionary newFrom: {
+			               (Boolean -> [ :array | self convertToBoolean: array ]).
+			               (Float -> [ :array | self convertToFloat: array ]).
+			               (Integer -> [ :array | self convertToInteger: array ]).
+			               (Time -> [ :array | self convertToTime: array ]).
+			               (DateAndTime -> [ :array | self convertToDateAndTime: array ]).
+			               (String -> [ :array | array ]).
+			               (nil -> [ :array | self detectColumnTypeAndConvert: array ]) }
 ]

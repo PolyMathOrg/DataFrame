@@ -40,14 +40,14 @@ DataFrameTextWriter >> padDirection: anObject [
 { #category : #accessing }
 DataFrameTextWriter >> padLeft [
 	"Set the receiver to pad elements to left"
-	
+
 	self padDirection: #padLeftTo:
 ]
 
 { #category : #accessing }
 DataFrameTextWriter >> padRight [
 	"Set the receiver to pad elements to left"
-	
+
 	self padDirection: #padRightTo:
 ]
 

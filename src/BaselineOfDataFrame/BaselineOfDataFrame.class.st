@@ -7,7 +7,7 @@ Class {
 { #category : #baselines }
 BaselineOfDataFrame >> baseline: spec [
 	<baseline>
-	spec for: #common do: [	
+	spec for: #common do: [
 		"External dependencies"
 		spec
 			baseline: 'NeoCSV'
@@ -18,9 +18,9 @@ BaselineOfDataFrame >> baseline: spec [
 		spec
 			baseline: 'AINormalization'
 			with: [ spec repository: 'github://pharo-ai/normalization/src' ].
-				
+
 		"Packages"
-		spec 
+		spec
 			package: 'DataFrame' with: [ spec requires: #('AINormalization') ];
 			package: 'DataFrame-Tests' with: [ spec requires: #('DataFrame') ];
 			package: 'DataFrame-Type' with: [ spec requires: #('DataFrame') ];
@@ -29,17 +29,17 @@ BaselineOfDataFrame >> baseline: spec [
 			package: 'DataFrame-IO-Tests' with: [ spec requires: #('DataFrame-IO') ];
 			package: 'DataFrame-Math';
 			package: 'DataFrame-Math-Tests' with: [ spec requires: #('DataFrame-Math') ] ].
-		
+
 		spec
 			for: #'pharo7.x'
 			do: [
 				spec
 					package: 'DataFrame-Pharo67' ].
-		
+
 		spec
 			for: #'pharo6.x'
 			do: [
 				spec
 					package: 'DataFrame-Pharo6';
-					package: 'DataFrame-Pharo67' ].
+					package: 'DataFrame-Pharo67' ]
 ]

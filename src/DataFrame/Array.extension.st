@@ -25,17 +25,17 @@ Array >> leastCommonSuperclassOf: firstClass and: secondClass [
 	| classA classB |
 	classA := firstClass.
 	classB := secondClass.
-	
+
 	[ classA = Object or: (classB = Object) ]
-		whileFalse: [ 
+		whileFalse: [
 			(classA inheritsFromOrEqualTo: classB)
 				ifTrue: [ ^ classB ].
-				
+
 			(classB inheritsFrom: classA)
 				ifTrue: [ ^ classA ].
-				
+
 			classA := classA superclass.
 			classB := classB superclass. ].
-	
-	^ Object.
+
+	^ Object
 ]

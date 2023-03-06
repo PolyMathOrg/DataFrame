@@ -48,10 +48,10 @@ DataFrameCsvReader >> createDataFrame [
 	df := DataFrame
 		withRows: rows
 		columnNames: columnNames.
-		
-	self includeRowNames ifTrue: [ 
+
+	self includeRowNames ifTrue: [
 		df privateRowNames: rowNames ].
-	
+
 	^ df
 ]
 
@@ -86,26 +86,25 @@ DataFrameCsvReader >> initialize [
 	separator := self defaultSeparator.
 	includeRowNames := self defaultIncludeRowNames.
 	shouldInferTypes := self defaultShouldInferTypes.
-	columnTypes := Dictionary new.
+	columnTypes := Dictionary new
 ]
 
 { #category : #reading }
 DataFrameCsvReader >> readColumnNamesWith: aReader [
 	columnNames := aReader readHeader.
-	
+
 	self includeRowNames ifTrue: [
-		columnNames := columnNames copyWithoutFirst ].
+		columnNames := columnNames copyWithoutFirst ]
 ]
 
 { #category : #reading }
 DataFrameCsvReader >> readFrom: aFileReference [
 	"Read data frame from a CSV file"
-	| df | 
+	| df |
 	df := self readFromInternal: aFileReference .
 	shouldInferTypes ifTrue: [
 		DataFrameTypeDetector new columnTypes: columnTypes; detectTypesAndConvert: df ].
 	^ df
-	
 ]
 
 { #category : #reading }
@@ -170,9 +169,9 @@ DataFrameCsvReader >> readFromString: aString withSeparator: aSeparator withHead
 { #category : #reading }
 DataFrameCsvReader >> readOnlyRowsWith: aReader [
 	rows := OrderedCollection new.
-	
-	[ aReader atEnd ] whileFalse: [ 
-		rows add: aReader next ].
+
+	[ aReader atEnd ] whileFalse: [
+		rows add: aReader next ]
 ]
 
 { #category : #reading }
@@ -180,18 +179,18 @@ DataFrameCsvReader >> readRowsAndRowNamesWith: aReader [
 	| line |
 	rowNames := OrderedCollection new.
 	rows := OrderedCollection new.
-	
-	[ aReader atEnd ] whileFalse: [ 
+
+	[ aReader atEnd ] whileFalse: [
 		line := aReader next.
 		rowNames add: line first.
-		rows add: line copyWithoutFirst ].
+		rows add: line copyWithoutFirst ]
 ]
 
 { #category : #reading }
 DataFrameCsvReader >> readRowsWith: aReader [
 	^ self includeRowNames
 		ifTrue: [ self readRowsAndRowNamesWith: aReader ]
-		ifFalse: [ self readOnlyRowsWith: aReader ].
+		ifFalse: [ self readOnlyRowsWith: aReader ]
 ]
 
 { #category : #accessing }
@@ -207,9 +206,9 @@ DataFrameCsvReader >> separator: anObject [
 { #category : #reading }
 DataFrameCsvReader >> setDefaultColumnsWith: reader [
 	"Set numbered columns"
-	
+
 	columnNames := (1 to: reader next size) asArray.
-	reader resetStream.
+	reader resetStream
 ]
 
 { #category : #accessing }
