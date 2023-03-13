@@ -414,6 +414,30 @@ DataFrame >> addRow: anArray named: aString atPosition: aNumber [
 	rowNames add: aString afterIndex: aNumber - 1
 ]
 
+{ #category : #adding }
+DataFrame >> addRowWithColumnNamesAsKeys: aDataSeries [
+	"Add DataSeries as a new row at the end with the keys of the DataSeries corresponding to the column names"
+	|correctOrder actualColumn|
+	correctOrder:= Array new:(aDataSeries  size).
+1 to: aDataSeries size do:[: index|
+actualColumn :=self indexOfColumnNamed: (aDataSeries  keyAtIndex: index) .
+correctOrder at: actualColumn put: (aDataSeries  atIndex: index). 
+].
+	self addRow: correctOrder named: aDataSeries name.
+]
+
+{ #category : #adding }
+DataFrame >> addRowWithColumnNamesAsKeys: aDataSeries atPosition: aNumber [
+	"Add DataSeries as a new row at the given position with the keys of the DataSeries corresponding to the column names"
+	|correctOrder actualColumn|
+	correctOrder:= Array new:(aDataSeries  size).
+1 to: aDataSeries size do:[: index|
+actualColumn :=self indexOfColumnNamed: (aDataSeries  keyAtIndex: index) .
+correctOrder at: actualColumn put: (aDataSeries  atIndex: index). 
+].
+	self addRow: correctOrder named: aDataSeries name atPosition: aNumber.
+]
+
 { #category : #applying }
 DataFrame >> applyElementwise: aBlock [
 	"Applies a given block to all columns of a data frame"
