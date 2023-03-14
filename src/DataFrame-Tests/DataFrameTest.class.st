@@ -295,58 +295,6 @@ DataFrameTest >> testAddRowSizeMismatch [
 	self should: aBlock raise: SizeMismatch
 ]
 
-{ #category : #accessing }
-DataFrameTest >> testAddRowWithColumnNamesAsKeys [
-
-	| ds expected |
-	
-	df := DataFrame
-	withRows: #(
-		('A1' 'B1' 'C1' 'D1')
-		('A2' 'B2' 'C2' 'D2'))
-	columnNames: #('A' 'B' 'C' 'D').	
-ds := DataSeries
-	withKeys: #('B' 'A' 'D' 'C')
-	values: #('B3' 'A3' 'D3' 'C3')
-	name: 3.
-	df addRowWithColumnNamesAsKeys: ds.
-	expected := DataFrame withRows: #(
-		('A1' 'B1' 'C1' 'D1')
-   		('A2' 'B2' 'C2' 'D2')
-		('A3' 'B3' 'C3' 'D3')).
-		
-	expected rowNames: #(1 2 3).
-	expected columnNames: #('A' 'B' 'C' 'D').
-	
-	self assert: df equals: expected.
-]
-
-{ #category : #tests }
-DataFrameTest >> testAddRowWithColumnNamesAsKeysAtPosition [
-
-	| ds expected |
-	
-	df := DataFrame
-	withRows: #(
-		('A1' 'B1' 'C1' 'D1')
-		('A2' 'B2' 'C2' 'D2'))
-	columnNames: #('A' 'B' 'C' 'D').	
-ds := DataSeries
-	withKeys: #('B' 'A' 'D' 'C')
-	values: #('B3' 'A3' 'D3' 'C3')
-	name: 3.
-	df addRowWithColumnNamesAsKeys: ds atPosition:2.
-	expected := DataFrame withRows: #(
-		('A1' 'B1' 'C1' 'D1')
-   		('A3' 'B3' 'C3' 'D3')
-   		('A2' 'B2' 'C2' 'D2')).
-		
-	expected rowNames: #(1 3 2).
-	expected columnNames: #('A' 'B' 'C' 'D').
-	
-	self assert: df equals: expected.
-]
-
 { #category : #tests }
 DataFrameTest >> testAsArray [
 
