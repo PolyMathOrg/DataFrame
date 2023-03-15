@@ -460,6 +460,7 @@ DataSeries >> makeNumerical [
 
 { #category : #accessing }
 DataSeries >> mode [
+
 	| valueCounts maxCount |
 	valueCounts := self valueCounts.
 	maxCount := valueCounts max.

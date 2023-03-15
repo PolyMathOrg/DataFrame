@@ -1645,13 +1645,11 @@ DataFrame >> replaceNilsWithMedian [
 { #category : #replacing }
 DataFrame >> replaceNilsWithMode [
 
-	| modeOfColumn |
 	1 to: self numberOfColumns do: [ :i |
-		modeOfColumn := ((self columnAt: i) select: [ :ele | ele isNotNil ]) mode.
+		| modeOfColumn |
 		1 to: self numberOfRows do: [ :j |
-			(self at: j at: i) ifNil: [
-				self at: j at: i put: modeOfColumn  ] ].
-		]
+		(self at: j at: i) ifNil: [ self at: j at: i put: (modeOfColumn ifNil: [ modeOfColumn := ((self columnAt: i) select: [ :ele | ele isNotNil ]) mode ]) ] ].
+		modeOfColumn := nil ]
 ]
 
 { #category : #replacing }
