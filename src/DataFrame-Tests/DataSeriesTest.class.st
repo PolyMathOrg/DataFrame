@@ -188,6 +188,17 @@ DataSeriesTest >> testArithmeticsDivideSeriesBySeriesSameKeysDifferentName [
 	self assert: actual equals: expected
 ]
 
+{ #category : #'as yet unclassified' }
+DataSeriesTest >> testArithmeticsDivideSeriesBySeriesWithNils [
+
+	| a b c |
+	a := #( 2 4 nil ) asDataSeries.
+	b := #( 1 nil 3 ) asDataSeries.
+	c := #( 2 nil nil ) asDataSeries.
+
+	self assert: a / b equals: c
+]
+
 { #category : #arithmetic }
 DataSeriesTest >> testArithmeticsMultiplyArrayBySeries [
 
