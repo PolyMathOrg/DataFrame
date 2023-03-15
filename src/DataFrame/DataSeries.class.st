@@ -664,7 +664,10 @@ DataSeries >> sortedDescending [
 DataSeries >> sum [
 	"Return the sum of the values over the requested axis. Nil values are excluded."
 
-	^ (self reject: #isNil) inject: 0 into: [ :accum :each | accum + each ]
+	| result |
+	result := 0.
+	self do: [ :each | each ifNotNil: [ result := result + each ] ].
+	^ result
 ]
 
 { #category : #statistics }
