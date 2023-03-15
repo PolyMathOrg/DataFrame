@@ -160,6 +160,13 @@ DataSeries >> atIndex: aNumber transform: aBlock [
 	self at: key transform: aBlock
 ]
 
+{ #category : #information }
+DataSeries >> average [
+	"We do not count the nils"
+
+	^ (self values reject: #isNil) average
+]
+
 { #category : #'data-types' }
 DataSeries >> calculateDataType [
 

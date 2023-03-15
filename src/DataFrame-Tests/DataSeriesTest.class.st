@@ -531,6 +531,18 @@ DataSeriesTest >> testAtTransformIfAbsent [
 	self assert: exceptionBlockEvaluated
 ]
 
+{ #category : #'tests - arithmetic' }
+DataSeriesTest >> testAverage [
+
+	self assert: #( 1 2 3 4 ) asDataSeries average equals: 5 / 2
+]
+
+{ #category : #'tests - arithmetic' }
+DataSeriesTest >> testAverageWithNils [
+
+	self assert: #( 2 nil 4 ) asDataSeries average equals: 3
+]
+
 { #category : #'tests - comparing' }
 DataSeriesTest >> testBooleanGreaterThanEqualFromScalar [
 

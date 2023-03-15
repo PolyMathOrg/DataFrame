@@ -33,6 +33,23 @@ DataFrameStatsTest >> testAverage [
 ]
 
 { #category : #tests }
+DataFrameStatsTest >> testAverageWithNils [
+
+	| expected actual |
+	df := DataFrame withRows: #( #( 1 1 ) #( 2 nil ) #( nil 3 ) #( 4 4 ) ).
+	df columnNames: #( dogs cats ).
+
+	expected := {
+		            (7 / 3).
+		            (8 / 3) } asDataSeries.
+	expected name: #average.
+	expected keys: df columnNames.
+
+	actual := df average.
+	self assert: actual closeTo: expected
+]
+
+{ #category : #tests }
 DataFrameStatsTest >> testCorrelationMatrix [
 
 	| expectedCorrelationMatrix actualCorrelationMatrix |
