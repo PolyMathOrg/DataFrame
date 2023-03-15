@@ -8,7 +8,7 @@ Class {
 	#category : #'DataFrame-Tests'
 }
 
-{ #category : #'tests - running' }
+{ #category : #running }
 DataSeriesTest >> setUp [
 
 	super setUp.
@@ -19,12 +19,12 @@ DataSeriesTest >> setUp [
 
 { #category : #'tests - arithmetic' }
 DataSeriesTest >> testArithmeticsAddArrayToSeries [
-	| series array actual expected |
 
-	series := DataSeries withKeys: #(a b c) values: #(1 2 3) name: #X.
-	array := #(3 4 5).
+	| array actual expected |
+	series := DataSeries withKeys: #( a b c ) values: #( 1 2 3 ) name: #X.
+	array := #( 3 4 5 ).
 
-	expected := DataSeries withKeys: #(a b c) values: #(4 6 8) name: #X.
+	expected := DataSeries withKeys: #( a b c ) values: #( 4 6 8 ) name: #X.
 	actual := series + array.
 
 	self assert: actual equals: expected
@@ -32,12 +32,12 @@ DataSeriesTest >> testArithmeticsAddArrayToSeries [
 
 { #category : #'tests - arithmetic' }
 DataSeriesTest >> testArithmeticsAddScalarToSeries [
-	| series scalar actual expected |
 
-	series := DataSeries withKeys: #(a b c) values: #(1 2 3) name: #X.
+	| scalar actual expected |
+	series := DataSeries withKeys: #( a b c ) values: #( 1 2 3 ) name: #X.
 	scalar := 10.
 
-	expected := DataSeries withKeys: #(a b c) values: #(11 12 13) name: #X.
+	expected := DataSeries withKeys: #( a b c ) values: #( 11 12 13 ) name: #X.
 	actual := series + scalar.
 
 	self assert: actual equals: expected
@@ -45,12 +45,12 @@ DataSeriesTest >> testArithmeticsAddScalarToSeries [
 
 { #category : #'tests - arithmetic' }
 DataSeriesTest >> testArithmeticsAddSeriesToArray [
-	| array series actual expected |
 
-	array := #(1 2 3).
-	series := DataSeries withKeys: #(a b c) values: #(3 4 5) name: #X.
+	| array actual expected |
+	array := #( 1 2 3 ).
+	series := DataSeries withKeys: #( a b c ) values: #( 3 4 5 ) name: #X.
 
-	expected := DataSeries withKeys: #(a b c) values: #(4 6 8) name: #X.
+	expected := DataSeries withKeys: #( a b c ) values: #( 4 6 8 ) name: #X.
 	actual := array + series.
 
 	self assert: actual equals: expected
@@ -58,12 +58,12 @@ DataSeriesTest >> testArithmeticsAddSeriesToArray [
 
 { #category : #'tests - arithmetic' }
 DataSeriesTest >> testArithmeticsAddSeriesToScalar [
-	| scalar series actual expected |
 
+	| scalar actual expected |
 	scalar := 10.
-	series := DataSeries withKeys: #(a b c) values: #(3 4 5) name: #X.
+	series := DataSeries withKeys: #( a b c ) values: #( 3 4 5 ) name: #X.
 
-	expected := DataSeries withKeys: #(a b c) values: #(13 14 15) name: #X.
+	expected := DataSeries withKeys: #( a b c ) values: #( 13 14 15 ) name: #X.
 	actual := scalar + series.
 
 	self assert: actual equals: expected
