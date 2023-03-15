@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'detector'
 	],
-	#category : #'DataFrame-Type-Tests'
+	#category : #'DataFrame-IO-Tests-Type'
 }
 
 { #category : #running }

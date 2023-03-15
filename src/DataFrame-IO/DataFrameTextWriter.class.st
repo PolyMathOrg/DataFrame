@@ -22,7 +22,7 @@ Class {
 	#instVars : [
 		'padDirection'
 	],
-	#category : #'DataFrame-IO'
+	#category : #'DataFrame-IO-Core'
 }
 
 { #category : #accessing }

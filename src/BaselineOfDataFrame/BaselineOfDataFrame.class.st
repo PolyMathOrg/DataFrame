@@ -23,12 +23,8 @@ BaselineOfDataFrame >> baseline: spec [
 		spec
 			package: 'DataFrame' with: [ spec requires: #('AINormalization') ];
 			package: 'DataFrame-Tests' with: [ spec requires: #('DataFrame') ];
-			package: 'DataFrame-Type' with: [ spec requires: #('DataFrame') ];
-			package: 'DataFrame-Type-Tests' with: [ spec requires: #('DataFrame-Type') ];
 			package: 'DataFrame-IO' with: [ spec requires: #('DataFrame' 'DataFrame-Type' 'NeoCSV' 'NeoJSON') ];
-			package: 'DataFrame-IO-Tests' with: [ spec requires: #('DataFrame-IO') ];
-			package: 'DataFrame-Math';
-			package: 'DataFrame-Math-Tests' with: [ spec requires: #('DataFrame-Math') ] ].
+			package: 'DataFrame-IO-Tests' with: [ spec requires: #('DataFrame-IO') ] ].
 
 		spec
 			for: #'pharo7.x'

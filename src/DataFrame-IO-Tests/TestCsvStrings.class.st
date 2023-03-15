@@ -1,7 +1,7 @@
 Class {
 	#name : #TestCsvStrings,
 	#superclass : #Object,
-	#category : #'DataFrame-IO-Tests'
+	#category : #'DataFrame-IO-Tests-Core'
 }
 
 { #category : #running }
