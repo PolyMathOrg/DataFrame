@@ -5,7 +5,7 @@ Class {
 		'directory',
 		'df'
 	],
-	#category : #'DataFrame-IO-Tests'
+	#category : #'DataFrame-IO-Tests-Core'
 }
 
 { #category : #running }

@@ -9,7 +9,7 @@ Class {
 		'uniform',
 		'parseMap'
 	],
-	#category : #'DataFrame-IO'
+	#category : #'DataFrame-IO-Core'
 }
 
 { #category : #adding }

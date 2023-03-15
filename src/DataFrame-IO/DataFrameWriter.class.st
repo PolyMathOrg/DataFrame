@@ -1,7 +1,7 @@
 Class {
 	#name : #DataFrameWriter,
 	#superclass : #Object,
-	#category : #'DataFrame-IO'
+	#category : #'DataFrame-IO-Core'
 }
 
 { #category : #writing }

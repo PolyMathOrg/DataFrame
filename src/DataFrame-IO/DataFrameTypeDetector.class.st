@@ -44,7 +44,7 @@ Class {
 		'columnTypes',
 		'typeMapping'
 	],
-	#category : #'DataFrame-Type'
+	#category : #'DataFrame-IO-Type'
 }
 
 { #category : #testing }

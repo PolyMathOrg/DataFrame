@@ -1,7 +1,7 @@
 Class {
 	#name : #DataPearsonCorrelationMethodTest,
 	#superclass : #TestCase,
-	#category : #'DataFrame-Math-Tests'
+	#category : #'DataFrame-Tests-Math'
 }
 
 { #category : #tests }

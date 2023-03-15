@@ -6,7 +6,7 @@ Class {
 		'pretty',
 		'writeMap'
 	],
-	#category : #'DataFrame-IO'
+	#category : #'DataFrame-IO-Core'
 }
 
 { #category : #converting }

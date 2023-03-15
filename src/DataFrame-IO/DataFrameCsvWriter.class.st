@@ -5,7 +5,7 @@ Class {
 		'separator',
 		'lineEndConvention'
 	],
-	#category : #'DataFrame-IO'
+	#category : #'DataFrame-IO-Core'
 }
 
 { #category : #accessing }
