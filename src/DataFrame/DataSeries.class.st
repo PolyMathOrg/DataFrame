@@ -197,13 +197,13 @@ DataSeries >> collectWithNotNils: aBlock [
 	^ self collect: [ :each | each ifNotNil: [ aBlock value: each ] ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'math functions' }
 DataSeries >> correlationWith: otherSeries [
 	"Calculate the Pearson correlation coefficient between self and the other series"
 	^ self correlationWith: otherSeries using: DataPearsonCorrelationMethod
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'math functions' }
 DataSeries >> correlationWith: otherSeries using: aCorrelationCoefficient [
 	"Calculate the correlation coefficient between self and the other series using the given method"
 	^ aCorrelationCoefficient between: self and: otherSeries
