@@ -22,6 +22,16 @@ DataSeries class >> newFrom: aCollection [
 ]
 
 { #category : #'instance creation' }
+DataSeries class >> newFromKeys: keys andValues: values [
+
+	| dict |
+	self flag: #pharo12. "This is a copy of the superclass with a speed up. I'll propose this speedup in Pharo 12 so when Pharo 12 will be the minimal suuported version then we can drop this method."
+	dict := self new: keys size.
+	keys with: values do: [ :k :v | dict at: k put: v ].
+	^ dict
+]
+
+{ #category : #'instance creation' }
 DataSeries class >> withKeys: keys values: values [
 	^ self newFromKeys: keys andValues: values
 ]
@@ -450,6 +460,7 @@ DataSeries >> makeNumerical [
 
 { #category : #accessing }
 DataSeries >> mode [
+
 	| valueCounts maxCount |
 	valueCounts := self valueCounts.
 	maxCount := valueCounts max.

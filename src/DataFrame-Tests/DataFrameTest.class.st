@@ -3725,25 +3725,18 @@ DataFrameTest >> testReplaceNilsWithMedian [
 { #category : #replacing }
 DataFrameTest >> testReplaceNilsWithMode [
 
-	|expected|
+	| expected |
+	df := DataFrame withRows: #( #( 7 1 nil ) #( 8 nil nil ) #( nil 1 43 ) ).
 
-	df := DataFrame withRows: #(
-		(7 1 nil)
-   		(8 nil nil)
-   		(nil 1 43)).
+	df rowNames: #( A B C ).
+	df columnNames: #( Column1 Column2 Column3 ).
 
-	df rowNames: #(A B C).
-	df columnNames: #(Column1 Column2 Column3).
+	expected := DataFrame withRows: #( #( 7 1 43 ) #( 8 1 43 ) #( 8 1 43 ) ).
 
-	expected := DataFrame withRows: #(
-		(7 1 43)
-   		(8 1 43)
-   		(7 1 43)).
+	expected rowNames: #( A B C ).
+	expected columnNames: #( Column1 Column2 Column3 ).
 
-	expected rowNames: #(A B C).
-	expected columnNames: #(Column1 Column2 Column3).
-
-	self assert: (df replaceNilsWithMode) equals: expected
+	self assert: df replaceNilsWithMode equals: expected
 ]
 
 { #category : #replacing }
