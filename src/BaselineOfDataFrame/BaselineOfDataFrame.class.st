@@ -23,7 +23,7 @@ BaselineOfDataFrame >> baseline: spec [
 		spec
 			package: 'DataFrame' with: [ spec requires: #('AINormalization') ];
 			package: 'DataFrame-Tests' with: [ spec requires: #('DataFrame') ];
-			package: 'DataFrame-IO' with: [ spec requires: #('DataFrame' 'DataFrame-Type' 'NeoCSV' 'NeoJSON') ];
+			package: 'DataFrame-IO' with: [ spec requires: #('DataFrame' 'NeoCSV' 'NeoJSON') ];
 			package: 'DataFrame-IO-Tests' with: [ spec requires: #('DataFrame-IO') ] ].
 
 		spec
