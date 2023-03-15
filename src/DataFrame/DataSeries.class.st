@@ -92,10 +92,13 @@ DataSeries >> adaptToCollection: rcvr andSend: selector [
 	"If I am involved in arithmetic with another Collection, return a Collection of
 	the results of each element combined with the scalar in that expression."
 
-	(rcvr isSequenceable and: [ self isSequenceable ]) ifFalse:
-		[self error: 'Only sequenceable collections may be combined arithmetically'].
-	^ rcvr withSeries: self collect:
-		[:rcvrElement :myElement | rcvrElement perform: selector with: myElement]
+	(rcvr isSequenceable and: [ self isSequenceable ]) ifFalse: [ self error: 'Only sequenceable collections may be combined arithmetically' ].
+
+
+	^ rcvr withSeries: self collect: [ :rcvrElement :myElement |
+		  (rcvrElement isNil or: [ myElement isNil ])
+			  ifTrue: [ nil ]
+			  ifFalse: [ rcvrElement perform: selector with: myElement ] ]
 ]
 
 { #category : #converting }
@@ -194,13 +197,13 @@ DataSeries >> collectWithNotNils: aBlock [
 	^ self collect: [ :each | each ifNotNil: [ aBlock value: each ] ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'math functions' }
 DataSeries >> correlationWith: otherSeries [
 	"Calculate the Pearson correlation coefficient between self and the other series"
 	^ self correlationWith: otherSeries using: DataPearsonCorrelationMethod
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'math functions' }
 DataSeries >> correlationWith: otherSeries using: aCorrelationCoefficient [
 	"Calculate the correlation coefficient between self and the other series using the given method"
 	^ aCorrelationCoefficient between: self and: otherSeries
