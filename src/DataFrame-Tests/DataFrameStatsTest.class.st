@@ -73,7 +73,7 @@ DataFrameStatsTest >> testCorrelationMatrixWithNils [
 	df := DataFrame withRows: #( #( 1 1 ) #( 2 nil ) #( nil 3 ) #( 4 4 ) ).
 	df columnNames: #( dogs cats ).
 
-	expectedCorrelationMatrix := DataFrame withRows: #( #( 1 0.3207134902949093 ) #( 0.3207134902949093 1 ) ).
+	expectedCorrelationMatrix := DataFrame withRows: #( #( 1 0.4174555390689118 ) #( 0.4174555390689118 1 ) ).
 	expectedCorrelationMatrix columnNames: #( dogs cats ).
 	expectedCorrelationMatrix rowNames: #( dogs cats ).
 

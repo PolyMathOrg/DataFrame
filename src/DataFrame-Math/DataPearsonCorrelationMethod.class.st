@@ -11,8 +11,8 @@ DataPearsonCorrelationMethod class >> between: x and: y [
 	| xDeviation yDeviation |
 	x size = y size ifFalse: [ SizeMismatch signal: 'Correlation can not be calculated for two series of different size' ].
 
-	xDeviation := (x values replaceAll: nil with: 0) - (x sum / x size).
-	yDeviation := (y values replaceAll: nil with: 0) - (y sum / y size).
+	xDeviation := (x values replaceAll: nil with: 0) - x average.
+	yDeviation := (y values replaceAll: nil with: 0) - y average.
 
 	^ (xDeviation * yDeviation) sum / ((xDeviation ** 2) sum * (yDeviation ** 2) sum) sqrt
 ]
