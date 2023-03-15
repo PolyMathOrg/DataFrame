@@ -160,6 +160,13 @@ DataSeries >> atIndex: aNumber transform: aBlock [
 	self at: key transform: aBlock
 ]
 
+{ #category : #information }
+DataSeries >> average [
+	"We do not count the nils"
+
+	^ (self values reject: #isNil) average
+]
+
 { #category : #'data-types' }
 DataSeries >> calculateDataType [
 
@@ -420,7 +427,8 @@ DataSeries >> isCategorical [
 
 { #category : #'categorical-numerical' }
 DataSeries >> isNumerical [
-	^ forcedIsNumerical ifNil: [self uniqueValues allSatisfy: [:each|each isNumber]]
+
+	^ forcedIsNumerical ifNil: [ (self uniqueValues copyWithout: nil) allSatisfy: [ :each | each isNumber ] ]
 ]
 
 { #category : #testing }
@@ -657,6 +665,16 @@ DataSeries >> sortedAssociations: aBlock [
 { #category : #sorting }
 DataSeries >> sortedDescending [
 	^ self sorted: [ :a :b | a > b ]
+]
+
+{ #category : #transformation }
+DataSeries >> sum [
+	"Return the sum of the values over the requested axis. Nil values are excluded."
+
+	| result |
+	result := 0.
+	self do: [ :each | each ifNotNil: [ result := result + each ] ].
+	^ result
 ]
 
 { #category : #statistics }

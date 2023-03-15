@@ -33,32 +33,57 @@ DataFrameStatsTest >> testAverage [
 ]
 
 { #category : #tests }
+DataFrameStatsTest >> testAverageWithNils [
+
+	| expected actual |
+	df := DataFrame withRows: #( #( 1 1 ) #( 2 nil ) #( nil 3 ) #( 4 4 ) ).
+	df columnNames: #( dogs cats ).
+
+	expected := {
+		            (7 / 3).
+		            (8 / 3) } asDataSeries.
+	expected name: #average.
+	expected keys: df columnNames.
+
+	actual := df average.
+	self assert: actual closeTo: expected
+]
+
+{ #category : #tests }
 DataFrameStatsTest >> testCorrelationMatrix [
 
 	| expectedCorrelationMatrix actualCorrelationMatrix |
 	expectedCorrelationMatrix := DataFrame withRows:
-		                             #( #( 1 0.311398 0.538922 0.454601 )
-		                                #( 0.311398 1 -0.321281 -0.308023 )
-		                                #( 0.538922 -0.321281 1 0.982956 )
-		                                #( 0.454601 -0.308023 0.982956
-		                                   1 ) ).
-	expectedCorrelationMatrix columnNames:
-		#( sepalLength sepalWidth petalLength petalWidth ).
-	expectedCorrelationMatrix rowNames:
-		#( sepalLength sepalWidth petalLength petalWidth ).
+		                             #( #( 1 0.311398 0.538922 0.454601 ) #( 0.311398 1 -0.321281 -0.308023 ) #( 0.538922 -0.321281 1 0.982956 )
+		                                #( 0.454601 -0.308023 0.982956 1 ) ).
+	expectedCorrelationMatrix columnNames: #( sepalLength sepalWidth petalLength petalWidth ).
+	expectedCorrelationMatrix rowNames: #( sepalLength sepalWidth petalLength petalWidth ).
 	actualCorrelationMatrix := df correlationMatrix.
-	self
-		assert: actualCorrelationMatrix rowNames
-		equals: expectedCorrelationMatrix rowNames.
-	self
-		assert: actualCorrelationMatrix columnNames
-		equals: expectedCorrelationMatrix columnNames.
+	self assert: actualCorrelationMatrix rowNames equals: expectedCorrelationMatrix rowNames.
+	self assert: actualCorrelationMatrix columnNames equals: expectedCorrelationMatrix columnNames.
 
 	1 to: actualCorrelationMatrix numberOfColumns do: [ :j |
-		1 to: actualCorrelationMatrix numberOfRows do: [ :i |
-			self
-				assert: (actualCorrelationMatrix at: i at: j)
-				closeTo: (expectedCorrelationMatrix at: i at: j) ] ]
+		1 to: actualCorrelationMatrix numberOfRows do: [ :i | self assert: (actualCorrelationMatrix at: i at: j) closeTo: (expectedCorrelationMatrix at: i at: j) ] ]
+]
+
+{ #category : #tests }
+DataFrameStatsTest >> testCorrelationMatrixWithNils [
+
+	| expectedCorrelationMatrix actualCorrelationMatrix |
+	df := DataFrame withRows: #( #( 1 1 ) #( 2 nil ) #( nil 3 ) #( 4 4 ) ).
+	df columnNames: #( dogs cats ).
+
+	expectedCorrelationMatrix := DataFrame withRows: #( #( 1 0.4174555390689118 ) #( 0.4174555390689118 1 ) ).
+	expectedCorrelationMatrix columnNames: #( dogs cats ).
+	expectedCorrelationMatrix rowNames: #( dogs cats ).
+
+	actualCorrelationMatrix := df correlationMatrix.
+
+	self assert: actualCorrelationMatrix rowNames equals: expectedCorrelationMatrix rowNames.
+	self assert: actualCorrelationMatrix columnNames equals: expectedCorrelationMatrix columnNames.
+
+	1 to: actualCorrelationMatrix numberOfColumns do: [ :j |
+		1 to: actualCorrelationMatrix numberOfRows do: [ :i | self assert: (actualCorrelationMatrix at: i at: j) closeTo: (expectedCorrelationMatrix at: i at: j) ] ]
 ]
 
 { #category : #tests }

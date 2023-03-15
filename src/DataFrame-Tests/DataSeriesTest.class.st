@@ -531,6 +531,18 @@ DataSeriesTest >> testAtTransformIfAbsent [
 	self assert: exceptionBlockEvaluated
 ]
 
+{ #category : #'tests - arithmetic' }
+DataSeriesTest >> testAverage [
+
+	self assert: #( 1 2 3 4 ) asDataSeries average equals: 5 / 2
+]
+
+{ #category : #'tests - arithmetic' }
+DataSeriesTest >> testAverageWithNils [
+
+	self assert: #( 2 nil 4 ) asDataSeries average equals: 3
+]
+
 { #category : #'tests - comparing' }
 DataSeriesTest >> testBooleanGreaterThanEqualFromScalar [
 
@@ -981,6 +993,21 @@ DataSeriesTest >> testCollectWithNotNils [
 	self assert: actual equals: expected
 ]
 
+{ #category : #running }
+DataSeriesTest >> testCopy [
+
+	| copy |
+	copy := series copy.
+
+	self assert: copy equals: series.
+	self deny: copy identicalTo: series.
+
+	series add: $l -> 30.
+
+	self assert: series size equals: 12.
+	self assert: copy size equals: 11
+]
+
 { #category : #'tests - copying' }
 DataSeriesTest >> testCopyCanBeChanged [
 
@@ -1390,6 +1417,19 @@ DataSeriesTest >> testInjectInto [
 	expected := 115.
 	actual := series inject: 0 into: [ :sum :x | sum + x ].
 	self assert: actual equals: expected
+]
+
+{ #category : #'tests - testing' }
+DataSeriesTest >> testIsNumerical [
+
+	self assert: #( 1 2 3 ) asDataSeries isNumerical.
+	self deny: #( 1 2 '3' ) asDataSeries isNumerical
+]
+
+{ #category : #'tests - testing' }
+DataSeriesTest >> testIsNumericalWithNils [
+
+	self assert: #( 1 nil 3 ) asDataSeries isNumerical
 ]
 
 { #category : #'tests - accessing' }
@@ -2093,6 +2133,19 @@ DataSeriesTest >> testStatsZerothQuartile [
 DataSeriesTest >> testStatsZerothQuartileEqualsMin [
 
 	self assert: series zerothQuartile equals: series min
+]
+
+{ #category : #'tests - arithmetic' }
+DataSeriesTest >> testSum [
+
+	self assert: #( 1 2 3 4 ) asDataSeries sum equals: 10
+]
+
+{ #category : #'tests - arithmetic' }
+DataSeriesTest >> testSumWithNils [
+
+	self assert: #( 1 2 nil 4 ) asDataSeries sum equals: 7.
+	self assert: #( nil nil nil ) asDataSeries sum equals: 0
 ]
 
 { #category : #'tests - head/tail' }

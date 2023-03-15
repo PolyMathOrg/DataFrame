@@ -1412,6 +1412,16 @@ DataFrame >> outerJoin: aDataFrame onLeft: leftColumn onRight: rightColumn [
 	^ outputDf
 ]
 
+{ #category : #copying }
+DataFrame >> postCopy [
+
+	super postCopy.
+	contents := contents copy.
+	rowNames := rowNames copy.
+	columnNames := columnNames copy.
+	dataTypes := dataTypes copy
+]
+
 { #category : #printing }
 DataFrame >> printOn: aStream [
 

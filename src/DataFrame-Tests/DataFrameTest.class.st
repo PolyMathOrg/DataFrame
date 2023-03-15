@@ -899,6 +899,33 @@ DataFrameTest >> testColumnsSubset [
 ]
 
 { #category : #tests }
+DataFrameTest >> testCopy [
+
+	| copy |
+	copy := df copy.
+
+	self assert: copy equals: df.
+	self deny: copy identicalTo: df.
+
+	df addRow: #( 'Paris' 7 false ) named: 'D'.
+
+	self assert: df size equals: 4.
+	self assert: copy size equals: 3
+]
+
+{ #category : #tests }
+DataFrameTest >> testCopy2 [
+
+	| copy |
+	copy := df copy.
+
+	df addColumn: #( false true true ) named: 'Like it'.
+
+	self assert: df numberOfColumns equals: 4.
+	self assert: copy numberOfColumns equals: 3
+]
+
+{ #category : #tests }
 DataFrameTest >> testCreateDataFrameWith3ColumnsAndNoRows [
 	| dataFrame |
 	dataFrame := DataFrame new: 0@3.
