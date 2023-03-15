@@ -993,6 +993,21 @@ DataSeriesTest >> testCollectWithNotNils [
 	self assert: actual equals: expected
 ]
 
+{ #category : #running }
+DataSeriesTest >> testCopy [
+
+	| copy |
+	copy := series copy.
+
+	self assert: copy equals: series.
+	self deny: copy identicalTo: series.
+
+	series add: $l -> 30.
+
+	self assert: series size equals: 12.
+	self assert: copy size equals: 11
+]
+
 { #category : #'tests - copying' }
 DataSeriesTest >> testCopyCanBeChanged [
 
