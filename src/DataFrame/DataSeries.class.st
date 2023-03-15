@@ -420,7 +420,8 @@ DataSeries >> isCategorical [
 
 { #category : #'categorical-numerical' }
 DataSeries >> isNumerical [
-	^ forcedIsNumerical ifNil: [self uniqueValues allSatisfy: [:each|each isNumber]]
+
+	^ forcedIsNumerical ifNil: [ (self uniqueValues copyWithout: nil) allSatisfy: [ :each | each isNumber ] ]
 ]
 
 { #category : #testing }

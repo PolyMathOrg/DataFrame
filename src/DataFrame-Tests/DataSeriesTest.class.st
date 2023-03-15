@@ -1392,6 +1392,19 @@ DataSeriesTest >> testInjectInto [
 	self assert: actual equals: expected
 ]
 
+{ #category : #'tests - testing' }
+DataSeriesTest >> testIsNumerical [
+
+	self assert: #( 1 2 3 ) asDataSeries isNumerical.
+	self deny: #( 1 2 '3' ) asDataSeries isNumerical
+]
+
+{ #category : #'tests - testing' }
+DataSeriesTest >> testIsNumericalWithNils [
+
+	self assert: #( 1 nil 3 ) asDataSeries isNumerical
+]
+
 { #category : #'tests - accessing' }
 DataSeriesTest >> testLast [
 
