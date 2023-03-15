@@ -660,6 +660,13 @@ DataSeries >> sortedDescending [
 	^ self sorted: [ :a :b | a > b ]
 ]
 
+{ #category : #transformation }
+DataSeries >> sum [
+	"Return the sum of the values over the requested axis. Nil values are excluded."
+
+	^ (self reject: #isNil) inject: 0 into: [ :accum :each | accum + each ]
+]
+
 { #category : #statistics }
 DataSeries >> summary [
 	| summary |

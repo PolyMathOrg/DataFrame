@@ -2108,6 +2108,19 @@ DataSeriesTest >> testStatsZerothQuartileEqualsMin [
 	self assert: series zerothQuartile equals: series min
 ]
 
+{ #category : #'tests - arithmetic' }
+DataSeriesTest >> testSum [
+
+	self assert: #( 1 2 3 4 ) asDataSeries sum equals: 10
+]
+
+{ #category : #'tests - arithmetic' }
+DataSeriesTest >> testSumWithNils [
+
+	self assert: #( 1 2 nil 4 ) asDataSeries sum equals: 7.
+	self assert: #( nil nil nil ) asDataSeries sum equals: 0
+]
+
 { #category : #'tests - head/tail' }
 DataSeriesTest >> testTail [
 	| expected actual |
