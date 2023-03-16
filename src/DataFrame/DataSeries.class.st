@@ -468,11 +468,11 @@ DataSeries >> makeNumerical [
 
 { #category : #accessing }
 DataSeries >> mode [
+	"The mode of a set of values is the value that appears most often. "
 
-	| valueCounts maxCount |
+	| valueCounts |
 	valueCounts := self valueCounts.
-	maxCount := valueCounts max.
-	^ valueCounts keyAtValue: maxCount
+	^ valueCounts keyAtValue: valueCounts max
 ]
 
 { #category : #accessing }

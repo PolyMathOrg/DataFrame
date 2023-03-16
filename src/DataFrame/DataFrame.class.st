@@ -1288,6 +1288,7 @@ DataFrame >> min [
 
 { #category : #statistics }
 DataFrame >> mode [
+	"The mode of a set of values is the value that appears most often. "
 
 	^ self applyToAllColumns: #mode
 ]
