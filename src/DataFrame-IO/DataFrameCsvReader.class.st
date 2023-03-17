@@ -39,7 +39,7 @@ Class {
 		'rows',
 		'columnNames'
 	],
-	#category : #'DataFrame-IO'
+	#category : #'DataFrame-IO-Core'
 }
 
 { #category : #reading }

@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'df'
 	],
-	#category : #'DataFrame-Tests'
+	#category : #'DataFrame-Tests-Core'
 }
 
 { #category : #running }
@@ -903,6 +903,33 @@ DataFrameTest >> testColumnsSubset [
 	actualDataFrame := df columns: columnNames.
 
 	self assert: actualDataFrame equals: expectedDataFrame
+]
+
+{ #category : #tests }
+DataFrameTest >> testCopy [
+
+	| copy |
+	copy := df copy.
+
+	self assert: copy equals: df.
+	self deny: copy identicalTo: df.
+
+	df addRow: #( 'Paris' 7 false ) named: 'D'.
+
+	self assert: df size equals: 4.
+	self assert: copy size equals: 3
+]
+
+{ #category : #tests }
+DataFrameTest >> testCopy2 [
+
+	| copy |
+	copy := df copy.
+
+	df addColumn: #( false true true ) named: 'Like it'.
+
+	self assert: df numberOfColumns equals: 4.
+	self assert: copy numberOfColumns equals: 3
 ]
 
 { #category : #tests }
@@ -3732,25 +3759,18 @@ DataFrameTest >> testReplaceNilsWithMedian [
 { #category : #replacing }
 DataFrameTest >> testReplaceNilsWithMode [
 
-	|expected|
+	| expected |
+	df := DataFrame withRows: #( #( 7 1 nil ) #( 8 nil nil ) #( nil 1 43 ) ).
 
-	df := DataFrame withRows: #(
-		(7 1 nil)
-   		(8 nil nil)
-   		(nil 1 43)).
+	df rowNames: #( A B C ).
+	df columnNames: #( Column1 Column2 Column3 ).
 
-	df rowNames: #(A B C).
-	df columnNames: #(Column1 Column2 Column3).
+	expected := DataFrame withRows: #( #( 7 1 43 ) #( 8 1 43 ) #( 8 1 43 ) ).
 
-	expected := DataFrame withRows: #(
-		(7 1 43)
-   		(8 1 43)
-   		(7 1 43)).
+	expected rowNames: #( A B C ).
+	expected columnNames: #( Column1 Column2 Column3 ).
 
-	expected rowNames: #(A B C).
-	expected columnNames: #(Column1 Column2 Column3).
-
-	self assert: (df replaceNilsWithMode) equals: expected
+	self assert: df replaceNilsWithMode equals: expected
 ]
 
 { #category : #replacing }
