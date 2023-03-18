@@ -1309,6 +1309,7 @@ DataFrame >> min [
 
 { #category : #statistics }
 DataFrame >> mode [
+	"The mode of a set of values is the value that appears most often. "
 
 	^ self applyToAllColumns: #mode
 ]
@@ -1431,6 +1432,16 @@ DataFrame >> outerJoin: aDataFrame onLeft: leftColumn onRight: rightColumn [
 		].
 
 	^ outputDf
+]
+
+{ #category : #copying }
+DataFrame >> postCopy [
+
+	super postCopy.
+	contents := contents copy.
+	rowNames := rowNames copy.
+	columnNames := columnNames copy.
+	dataTypes := dataTypes copy
 ]
 
 { #category : #printing }
@@ -1667,13 +1678,11 @@ DataFrame >> replaceNilsWithMedian [
 { #category : #replacing }
 DataFrame >> replaceNilsWithMode [
 
-	| modeOfColumn |
 	1 to: self numberOfColumns do: [ :i |
-		modeOfColumn := ((self columnAt: i) select: [ :ele | ele isNotNil ]) mode.
+		| modeOfColumn |
 		1 to: self numberOfRows do: [ :j |
-			(self at: j at: i) ifNil: [
-				self at: j at: i put: modeOfColumn  ] ].
-		]
+		(self at: j at: i) ifNil: [ self at: j at: i put: (modeOfColumn ifNil: [ modeOfColumn := ((self columnAt: i) select: [ :ele | ele isNotNil ]) mode ]) ] ].
+		modeOfColumn := nil ]
 ]
 
 { #category : #replacing }

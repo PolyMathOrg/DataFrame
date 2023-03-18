@@ -22,6 +22,16 @@ DataSeries class >> newFrom: aCollection [
 ]
 
 { #category : #'instance creation' }
+DataSeries class >> newFromKeys: keys andValues: values [
+
+	| dict |
+	self flag: #pharo12. "This is a copy of the superclass with a speed up. I'll propose this speedup in Pharo 12 so when Pharo 12 will be the minimal suuported version then we can drop this method."
+	dict := self new: keys size.
+	keys with: values do: [ :k :v | dict at: k put: v ].
+	^ dict
+]
+
+{ #category : #'instance creation' }
 DataSeries class >> withKeys: keys values: values [
 	^ self newFromKeys: keys andValues: values
 ]
@@ -92,10 +102,13 @@ DataSeries >> adaptToCollection: rcvr andSend: selector [
 	"If I am involved in arithmetic with another Collection, return a Collection of
 	the results of each element combined with the scalar in that expression."
 
-	(rcvr isSequenceable and: [ self isSequenceable ]) ifFalse:
-		[self error: 'Only sequenceable collections may be combined arithmetically'].
-	^ rcvr withSeries: self collect:
-		[:rcvrElement :myElement | rcvrElement perform: selector with: myElement]
+	(rcvr isSequenceable and: [ self isSequenceable ]) ifFalse: [ self error: 'Only sequenceable collections may be combined arithmetically' ].
+
+
+	^ rcvr withSeries: self collect: [ :rcvrElement :myElement |
+		  (rcvrElement isNil or: [ myElement isNil ])
+			  ifTrue: [ nil ]
+			  ifFalse: [ rcvrElement perform: selector with: myElement ] ]
 ]
 
 { #category : #converting }
@@ -147,6 +160,13 @@ DataSeries >> atIndex: aNumber transform: aBlock [
 	self at: key transform: aBlock
 ]
 
+{ #category : #information }
+DataSeries >> average [
+	"We do not count the nils"
+
+	^ (self values reject: #isNil) average
+]
+
 { #category : #'data-types' }
 DataSeries >> calculateDataType [
 
@@ -194,13 +214,13 @@ DataSeries >> collectWithNotNils: aBlock [
 	^ self collect: [ :each | each ifNotNil: [ aBlock value: each ] ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'math functions' }
 DataSeries >> correlationWith: otherSeries [
 	"Calculate the Pearson correlation coefficient between self and the other series"
 	^ self correlationWith: otherSeries using: DataPearsonCorrelationMethod
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'math functions' }
 DataSeries >> correlationWith: otherSeries using: aCorrelationCoefficient [
 	"Calculate the correlation coefficient between self and the other series using the given method"
 	^ aCorrelationCoefficient between: self and: otherSeries
@@ -407,7 +427,8 @@ DataSeries >> isCategorical [
 
 { #category : #'categorical-numerical' }
 DataSeries >> isNumerical [
-	^ forcedIsNumerical ifNil: [self uniqueValues allSatisfy: [:each|each isNumber]]
+
+	^ forcedIsNumerical ifNil: [ (self uniqueValues copyWithout: nil) allSatisfy: [ :each | each isNumber ] ]
 ]
 
 { #category : #testing }
@@ -447,10 +468,11 @@ DataSeries >> makeNumerical [
 
 { #category : #accessing }
 DataSeries >> mode [
-	| valueCounts maxCount |
+	"The mode of a set of values is the value that appears most often. "
+
+	| valueCounts |
 	valueCounts := self valueCounts.
-	maxCount := valueCounts max.
-	^ valueCounts keyAtValue: maxCount
+	^ valueCounts keyAtValue: valueCounts max
 ]
 
 { #category : #accessing }
@@ -643,6 +665,16 @@ DataSeries >> sortedAssociations: aBlock [
 { #category : #sorting }
 DataSeries >> sortedDescending [
 	^ self sorted: [ :a :b | a > b ]
+]
+
+{ #category : #transformation }
+DataSeries >> sum [
+	"Return the sum of the values over the requested axis. Nil values are excluded."
+
+	| result |
+	result := 0.
+	self do: [ :each | each ifNotNil: [ result := result + each ] ].
+	^ result
 ]
 
 { #category : #statistics }
