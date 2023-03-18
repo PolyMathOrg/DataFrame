@@ -924,8 +924,8 @@ DataFrame >> first [
 
 { #category : #statistics }
 DataFrame >> firstQuartile [
-"25% of the values in a set are smaller than or equal to the first Quartile of that set"
-
+	"25% of the values in a set are smaller than or equal to the first Quartile of that set"
+	
 	^ self applyToAllColumns: #firstQuartile
 ]
 
@@ -1220,7 +1220,7 @@ DataFrame >> inspectionItems: aBuilder [
 
 { #category : #statistics }
 DataFrame >> interquartileRange [
-"The Inter Quartile Range is the difference between the third Quartile and the first Quartile"
+	"The Inter Quartile Range is the difference between the third Quartile and the first Quartile"
 
 	^ self applyToAllColumns: #interquartileRange
 ]
@@ -1296,7 +1296,7 @@ DataFrame >> max [
 
 { #category : #statistics }
 DataFrame >> median [
-"50% of data points have a value smaller or equal to the median . The median of a set of values is the middle value of the set when the set is arranged in increasing order."
+	"50% of data points have a value smaller or equal to the median . The median of a set of values is the middle value of the set when the set is arranged in increasing order."
 
 	^ self applyToAllColumns: #median
 ]
@@ -1465,7 +1465,7 @@ DataFrame >> privateRowNames: anArray [
 
 { #category : #statistics }
 DataFrame >> range [
-"Range is the difference between the highest value and the lowest value in a set"
+	"Range is the difference between the highest value and the lowest value in a set"
 
 	^ self applyToAllColumns: #range
 ]
@@ -1996,7 +1996,8 @@ DataFrame >> sortDescendingBy: columnName [
 
 { #category : #statistics }
 DataFrame >> stdev [
-"Standard deviation is a measure of how dispersed the data is in relation to the average"
+	"Standard deviation is a measure of how dispersed the data is in relation to the average"
+
 	^ self applyToAllColumns: #stdev
 ]
 
@@ -2017,7 +2018,7 @@ DataFrame >> tail: aNumber [
 
 { #category : #statistics }
 DataFrame >> thirdQuartile [
-"75% of the values in a set are smaller than or equal to the third Quartile of that set"
+	"75% of the values in a set are smaller than or equal to the third Quartile of that set"
 
 	^ self applyToAllColumns: #thirdQuartile
 ]
@@ -2064,7 +2065,7 @@ DataFrame >> transposed [
 
 { #category : #statistics }
 DataFrame >> variance [
-"variance measures how far each number in the set is from the average value of the set. It is the square of standard deviation."
+	"variance measures how far each number in the set is from the average value of the set. It is the square of standard deviation."
 
 	^ self applyToAllColumns: #variance
 ]
