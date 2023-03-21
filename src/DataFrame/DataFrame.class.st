@@ -773,6 +773,21 @@ DataFrame >> contents [
 	^ contents
 ]
 
+{ #category : #copying }
+DataFrame >> copyReplace: missingValue in2DCollectionBy: arrayOfReplacementValues [
+	"I am a 2D collection and the goal is to return a copy replace the missing values by the values of my second parameter. The good value is the index of the missing value in the sub collection.
+
+	I am needed for the project pharo-ai/data-imputers. I can work without that method but the time it will take to replace the missing values will be huuuuuuuuuuuge"
+
+	| copy |
+	copy := self copy.
+	1 to: self numberOfColumns do: [ :columnIndex |
+		| replacementValue |
+		replacementValue := arrayOfReplacementValues at: columnIndex.
+		1 to: self numberOfRows do: [ :rowIndex | (self at: rowIndex at: columnIndex) = missingValue ifTrue: [ self copy at: rowIndex at: columnIndex put: replacementValue ] ] ].
+	^ copy
+]
+
 { #category : #statistics }
 DataFrame >> correlationMatrix [
 	"Calculate a correlation matrix (correlation of every column with every column) using Pearson's correlation coefficient"
@@ -1625,10 +1640,10 @@ DataFrame >> replaceAllNilsWithZeros [
 { #category : #replacing }
 DataFrame >> replaceNilsWith: anObject [
 
-	1 to: self numberOfColumns do: [ :i |
-		1 to: self numberOfRows do: [ :j |
-			(self at: j at: i) ifNil:
-				[ self at: j at: i put: anObject ] ]
+	1 to: self numberOfColumns do: [ :columnIndex |
+		1 to: self numberOfRows do: [ :rowIndex |
+			(self at: rowIndex at: columnIndex) ifNil:
+				[ self at: rowIndex at: columnIndex put: anObject ] ]
 		]
 ]
 
