@@ -169,7 +169,8 @@ DataSeries >> average [
 
 { #category : #'data-types' }
 DataSeries >> calculateDataType [
-
+	"Returns the data type of the data series"
+	
 	^ self values calculateDataType
 ]
 
