@@ -228,6 +228,8 @@ DataSeries >> correlationWith: otherSeries using: aCorrelationCoefficient [
 
 { #category : #statistics }
 DataSeries >> crossTabulateWith: aSeries [
+	"A DataFrame is returned which is useful in quantitatively analyzing the relationship of values in one data series with the values in another data series"
+	
 	| df |
 
 	(self size = aSeries size)
@@ -307,6 +309,8 @@ DataSeries >> first [
 
 { #category : #statistics }
 DataSeries >> firstQuartile [
+    "25% of the values in a set are smaller than or equal to the first Quartile of that set"
+
 	^ self quartile: 1
 ]
 
@@ -319,6 +323,8 @@ DataSeries >> fourth [
 
 { #category : #statistics }
 DataSeries >> fourthQuartile [
+    "Fourth Quartile is the maximum value in a set of values"
+
 	^ self quartile: 4
 ]
 
@@ -417,6 +423,8 @@ DataSeries >> initialize: aCapacity [
 
 { #category : #statistics }
 DataSeries >> interquartileRange [
+	"The Inter Quartile Range is the difference between the third Quartile and the first Quartile"
+
 	^ self thirdQuartile - self firstQuartile
 ]
 
@@ -494,6 +502,8 @@ DataSeries >> ninth [
 
 { #category : #statistics }
 DataSeries >> quantile: aNumber [
+	"A quantile determines how many values in a distribution are above or below a certain limit.
+Eg: if the parameter aNumber is 85, a value from the data series is returned which is greater than or equal to 85% of the values in the data series"
 
 	| sortedSeries index |
 	sortedSeries := self withoutNils sorted.
@@ -506,6 +516,9 @@ DataSeries >> quantile: aNumber [
 
 { #category : #statistics }
 DataSeries >> quartile: aNumber [
+	"Quartiles are three values that split sorted data into four parts, each with an equal number of observations.
+Eg: if the parameter aNumber is 3, the Third Quartile of the data series is returned"
+	
 	^ self quantile: (25 * aNumber)
 ]
 
@@ -593,6 +606,8 @@ DataSeries >> second [
 
 { #category : #statistics }
 DataSeries >> secondQuartile [
+    "50% of the values in a set are smaller than or equal to the second Quartile of that set. It is also known as the median"
+
 	^ self quartile: 2
 ]
 
@@ -679,6 +694,8 @@ DataSeries >> sum [
 
 { #category : #statistics }
 DataSeries >> summary [
+	"A data series is returned which is a statistical summary of the data series. With keys as different statistical measures and values as the values returned when those statistical measures are applied on the data series."
+	
 	| summary |
 	summary := self species new.
 	summary name: self name.
@@ -716,6 +733,8 @@ DataSeries >> third [
 
 { #category : #statistics }
 DataSeries >> thirdQuartile [
+   "75% of the values in a set are smaller than or equal to the third Quartile of that set"
+
 	^ self quartile: 3
 ]
 
@@ -730,12 +749,15 @@ DataSeries >> uniqueValues [
 
 { #category : #statistics }
 DataSeries >> valueCounts [
-
+	"Calculates the frequency of each value in the data series and returns a data series in descending order of frequencies"
+	
 	^ (self groupByUniqueValuesAndAggregateUsing: #size) sortDescending
 ]
 
 { #category : #statistics }
 DataSeries >> valueFrequencies [
+	"Calculates the relative frequency of values in the data series. Relative frequency is the ratio of the number of times a value occurs in a set to the total number of values in the set"
+	
 	| count freq |
 	count := self valueCounts.
 	freq := count / self size.
@@ -887,5 +909,7 @@ DataSeries >> withoutNils [
 
 { #category : #statistics }
 DataSeries >> zerothQuartile [
+    "Zeroth Quartile is the minimum value in a set of values"
+
 	^ self quartile: 0
 ]
