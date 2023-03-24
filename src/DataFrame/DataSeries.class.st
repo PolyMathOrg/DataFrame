@@ -740,10 +740,7 @@ DataSeries >> thirdQuartile [
 
 { #category : #accessing }
 DataSeries >> uniqueValues [
-	| v |
-	v := self asSet asArray.
-
-	^ v
+	^ self asSet asArray
 ]
 
 { #category : #statistics }
