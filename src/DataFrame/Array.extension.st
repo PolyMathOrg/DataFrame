@@ -39,3 +39,10 @@ Array >> leastCommonSuperclassOf: firstClass and: secondClass [
 
 	^ Object
 ]
+
+{ #category : #'*DataFrame' }
+Array >> sortIfPossible [
+	"Sort if possible"
+	
+	^ [ self sort ] on: Error do: [ self ].
+]
