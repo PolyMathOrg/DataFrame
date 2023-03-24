@@ -743,8 +743,7 @@ DataSeries >> uniqueValues [
 	| v |
 	v := self asSet asArray.
 
-	"Sort if possible"
-	^ [ v sort ] on: Error do: [ v ]
+	^ v
 ]
 
 { #category : #statistics }
