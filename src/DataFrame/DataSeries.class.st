@@ -236,15 +236,15 @@ DataSeries >> crossTabulateWith: aSeries [
 		ifFalse: [ SizeMismatch signal ].
 
 	df := DataFrame withRows:
-		(self uniqueValues collect: [ :each1 |
-			aSeries uniqueValues collect: [ :each2 |
+		(self uniqueValues sortIfPossible collect: [ :each1 |
+			aSeries uniqueValues sortIfPossible collect: [ :each2 |
 				(1 to: self size) inject: 0 into: [ :accum :i |
 					(((self atIndex: i) = each1) and: ((aSeries atIndex: i) = each2))
 						ifTrue: [ accum + 1 ]
 						ifFalse: [ accum ] ] ] ]).
 
-	df rowNames: self uniqueValues.
-	df columnNames: aSeries uniqueValues.
+	df rowNames: self uniqueValues sortIfPossible.
+	df columnNames: aSeries uniqueValues sortIfPossible.
 	^ df
 ]
 
@@ -341,7 +341,7 @@ DataSeries >> groupBy: otherSeries aggregateUsing: aBlock as: aNewName [
 	| groupMap |
 	self size = otherSeries size ifFalse: [ SizeMismatch signal ].
 
-	groupMap := (otherSeries uniqueValues collect: [ :e | e -> OrderedCollection new ]) asOrderedDictionary.
+	groupMap := (otherSeries uniqueValues sortIfPossible collect: [ :e | e -> OrderedCollection new ]) asOrderedDictionary.
 
 	1 to: self size do: [ :index | (groupMap at: (otherSeries atIndex: index)) add: (self atIndex: index) ].
 
@@ -382,7 +382,7 @@ DataSeries >> groupByUniqueValuesAndAggregateUsing: aBlock as: aNewName [
 	"Group my values by unique values, aggregate them using aBlock, and answer a new DataSeries with theunique values as keys, aggregated values of myself as values, and aNewName as name"
 
 	| groupMap |
-	groupMap := (self uniqueValues collect: [ :e | e -> OrderedCollection new ]) asOrderedDictionary.
+	groupMap := (self uniqueValues sortIfPossible collect: [ :e | e -> OrderedCollection new ]) asOrderedDictionary.
 
 	self do: [ :each | (groupMap at: each) add: each ].
 
