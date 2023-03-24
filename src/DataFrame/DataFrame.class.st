@@ -838,24 +838,28 @@ DataFrame >> crossTabulate: colName1 with: colName2 [
 
 { #category : #'data-types' }
 DataFrame >> dataTypeOfColumn: aColumnName [
-
+	"Given a column name of the DataFrame, it returns the data type of that column"
+	
 	^ dataTypes at: aColumnName
 ]
 
 { #category : #'data-types' }
 DataFrame >> dataTypeOfColumn: aColumnName put: aDataType [
+	"Given a column name and a data type, it replaces the original data type of that column with the data type that was given as a parameter"
 
 	dataTypes at: aColumnName put: aDataType
 ]
 
 { #category : #'data-types' }
 DataFrame >> dataTypeOfColumnAt: aNumber [
+	"Given a column index of the DataFrame, it returns the data type of that column"
 
 	^ self dataTypeOfColumn: (columnNames at: aNumber)
 ]
 
 { #category : #'data-types' }
 DataFrame >> dataTypeOfColumnAt: aNumber put: aDataType [
+	"Given a column index and a data type, it replaces the original data type of that column with the data type that was given as a parameter"
 
 	^ self dataTypeOfColumn: (columnNames at: aNumber) put: aDataType
 ]
@@ -2050,7 +2054,7 @@ DataFrame >> toColumnsAt: arrayOfColumnNumbers applyElementwise: aBlock [
 
 { #category : #geometry }
 DataFrame >> transposed [
-	"Returs a transposed DataFrame. Columns become rows and rows become columns."
+	"Returns a transposed DataFrame. Columns become rows and rows become columns."
 
 	| transposedDf |
 	transposedDf := DataFrame withRows: (self asArrayOfColumns).
