@@ -485,19 +485,22 @@ DataFrame >> asArrayOfRowsWithName [
 
 { #category : #accessing }
 DataFrame >> at: aNumber [
-
+	"Returns the row of a DataFrame at row index aNumber"
+	
 	^ self rowAt: aNumber
 ]
 
 { #category : #accessing }
 DataFrame >> at: rowNumber at: columnNumber [
-
+	"Returns the value whose row index is rowNumber and column index is columnNumber"
+	
 	^ contents at: rowNumber at: columnNumber
 ]
 
 { #category : #accessing }
 DataFrame >> at: rowNumber at: columnNumber put: value [
-
+	"Replaces the original value of a DataFrame at row index rowNumber and column index columnNumber with a given value"
+	
 	contents at: rowNumber at: columnNumber put: value
 ]
 
@@ -637,7 +640,8 @@ DataFrame >> column: columnName transform: aBlock ifAbsent: exceptionBlock [
 
 { #category : #accessing }
 DataFrame >> columnAt: aNumber [
-
+	"Returns the column of a DataFrame at column index aNumber"
+	
 	^ (DataSeries withKeys: self rowNames values: (contents columnAt: aNumber))
 		  name: (self columnNames at: aNumber);
 		  yourself
@@ -645,7 +649,8 @@ DataFrame >> columnAt: aNumber [
 
 { #category : #accessing }
 DataFrame >> columnAt: aNumber put: anArray [
-
+	"Replaces the column at column index aNumber with contents of the array anArray"
+	
 	anArray size = self numberOfRows
 		ifFalse: [ SizeMismatch signal ].
 
@@ -662,13 +667,15 @@ DataFrame >> columnAt: aNumber transform: aBlock [
 
 { #category : #accessing }
 DataFrame >> columnNames [
-
+	"Returns the column names of a DataFrame"
+	
 	^ columnNames
 ]
 
 { #category : #accessing }
 DataFrame >> columnNames: aCollection [
-
+	"Sets the column names of a DataFrame with contents of the collection aCollection"
+	
 	| type |
 	aCollection size = self numberOfColumns
 		ifFalse: [ SizeMismatch signal: 'Wrong number of column names' ].
@@ -695,7 +702,8 @@ DataFrame >> columns [
 
 { #category : #accessing }
 DataFrame >> columns: anArrayOfNames [
-
+	"Returns a collection of columns whose column names are present in the array anArrayOfNames"
+	
 	| anArrayOfNumbers |
 
 	anArrayOfNumbers := anArrayOfNames
@@ -707,6 +715,7 @@ DataFrame >> columns: anArrayOfNames [
 
 { #category : #accessing }
 DataFrame >> columns: anArrayOfColumnNames put: anArrayOfArrays [
+	"Replaces the columns whose column names are present in the array anArrayOfColumnNames with the contents of the array of arrays anArrayOfArrays"
 
 	anArrayOfArrays size = anArrayOfColumnNames size
 		ifFalse: [ SizeMismatch signal ].
@@ -717,6 +726,7 @@ DataFrame >> columns: anArrayOfColumnNames put: anArrayOfArrays [
 
 { #category : #accessing }
 DataFrame >> columnsAt: anArrayOfNumbers [
+	"Returns a collection of columns whose column indices are present in the array anArrayOfNumbers"
 
 	| newColumnNames |
 
@@ -731,6 +741,7 @@ DataFrame >> columnsAt: anArrayOfNumbers [
 
 { #category : #accessing }
 DataFrame >> columnsAt: anArrayOfNumbers put: anArrayOfArrays [
+	"Replaces the columns whose column indices are present in the array anArrayOfNumbers with the contents of the array of arrays anArrayOfArrays"
 
 	anArrayOfArrays size = anArrayOfNumbers size
 		ifFalse: [ SizeMismatch signal ].
@@ -741,6 +752,7 @@ DataFrame >> columnsAt: anArrayOfNumbers put: anArrayOfArrays [
 
 { #category : #accessing }
 DataFrame >> columnsFrom: begin to: end [
+	"Returns a collection of columns whose column indices are present between begin and end"
 
 	| array |
 
@@ -753,6 +765,7 @@ DataFrame >> columnsFrom: begin to: end [
 
 { #category : #accessing }
 DataFrame >> columnsFrom: firstNumber to: secondNumber put: anArrayOfArrays [
+	"Replaces the columns whose column indices are present between firstNumber and secondNumber with the contents of the array of arrays anArrayOfArrays"
 
 	| interval |
 
@@ -827,6 +840,7 @@ DataFrame >> correlationMatrixUsing: aCorrelationCoefficient [
 
 { #category : #accessing }
 DataFrame >> crossTabulate: colName1 with: colName2 [
+	"Returns the cross tabulation of a column named colName1 with the column named colName2 of the DataFrame"
 
 	| col1 col2 |
 
@@ -866,7 +880,8 @@ DataFrame >> dataTypeOfColumnAt: aNumber put: aDataType [
 
 { #category : #accessing }
 DataFrame >> dataTypes [
-
+	"Returns the data types of each column"
+	
 	^ dataTypes
 ]
 
@@ -884,7 +899,8 @@ DataFrame >> defaultHeadTailSize [
 
 { #category : #accessing }
 DataFrame >> dimensions [
-
+	"Returns the number of rows and number of columns in a DataFrame"
+	
 	^ (self numberOfRows) @ (self numberOfColumns)
 ]
 
@@ -918,7 +934,8 @@ DataFrame >> findAllIndicesOf: anObject atColumn: columnName [
 
 { #category : #accessing }
 DataFrame >> first [
-
+	"Returns the first row of the DataFrame"
+	
 	^ self at: 1
 ]
 
@@ -1005,13 +1022,15 @@ DataFrame >> hasNilsByColumn [
 
 { #category : #accessing }
 DataFrame >> head [
-
+	"Returns the first 5 rows of the DataFrame"
+	
 	^ self head: self defaultHeadTailSize
 ]
 
 { #category : #accessing }
 DataFrame >> head: aNumber [
-
+	"Returns the first aNumber rows of a DataFrame"
+	
 	^ self rowsAt: (1 to: (self numberOfRows min: aNumber))
 ]
 
@@ -1330,7 +1349,8 @@ DataFrame >> normalized [
 
 { #category : #accessing }
 DataFrame >> numberOfColumns [
-
+	"Returns the number of columns of a DataFrame"
+	
 	^ contents numberOfColumns
 ]
 
@@ -1347,6 +1367,7 @@ DataFrame >> numberOfNils [
 
 { #category : #accessing }
 DataFrame >> numberOfRows [
+	"Returns the number of rows of a DataFrame"
 
 	^ contents numberOfRows
 ]
@@ -1831,6 +1852,7 @@ DataFrame >> row: rowName transform: aBlock ifAbsent: exceptionBlock [
 
 { #category : #accessing }
 DataFrame >> rowAt: aNumber [
+	"Returns the row of a DataFrame at row index aNumber"
 
 	| series |
 	series := (contents rowAt: aNumber) asDataSeries.
@@ -1841,6 +1863,7 @@ DataFrame >> rowAt: aNumber [
 
 { #category : #accessing }
 DataFrame >> rowAt: aNumber put: anArray [
+	"Replaces the row at row index aNumber with contents of the array anArray"
 
 	anArray size = self numberOfColumns
 		ifFalse: [ SizeMismatch signal ].
@@ -1858,12 +1881,14 @@ DataFrame >> rowAt: aNumber transform: aBlock [
 
 { #category : #accessing }
 DataFrame >> rowNames [
-
+	"Returns the row names of a DataFrame"
+	
 	^ rowNames
 ]
 
 { #category : #accessing }
 DataFrame >> rowNames: anArray [
+	"Sets the row names of a DataFrame with contents of the collection aCollection"
 
 	anArray size = self numberOfRows ifFalse: [ SizeMismatch signal: 'Wrong number of row names' ].
 
@@ -1874,6 +1899,7 @@ DataFrame >> rowNames: anArray [
 
 { #category : #accessing }
 DataFrame >> rows: anArrayOfNames [
+	"Returns a collection of rows whose row names are present in the array anArrayOfNames"
 
 	| anArrayOfNumbers |
 
@@ -1886,6 +1912,7 @@ DataFrame >> rows: anArrayOfNames [
 
 { #category : #accessing }
 DataFrame >> rows: anArrayOfRowNames put: anArrayOfArrays [
+	"Replaces the rows whose row names are present in the array anArrayOfRowNames with the contents of the array of arrays anArrayOfArrays"
 
 	anArrayOfArrays size = anArrayOfRowNames size
 		ifFalse: [ SizeMismatch signal ].
@@ -1896,6 +1923,7 @@ DataFrame >> rows: anArrayOfRowNames put: anArrayOfArrays [
 
 { #category : #accessing }
 DataFrame >> rowsAt: anArrayOfNumbers [
+	"Returns a collection of rows whose row indices are present in the array anArrayOfNumbers"
 
 	| newRowNames |
 
@@ -1910,6 +1938,7 @@ DataFrame >> rowsAt: anArrayOfNumbers [
 
 { #category : #accessing }
 DataFrame >> rowsAt: anArrayOfNumbers put: anArrayOfArrays [
+	"Replaces the rows whose row indices are present in the array anArrayOfNumbers with the contents of the array of arrays anArrayOfArrays"
 
 	anArrayOfArrays size = anArrayOfNumbers size
 		ifFalse: [ SizeMismatch signal ].
@@ -1920,12 +1949,14 @@ DataFrame >> rowsAt: anArrayOfNumbers put: anArrayOfArrays [
 
 { #category : #accessing }
 DataFrame >> rowsFrom: begin to: end [
+	"Returns a collection of rows whose row indices are present between begin and end"
 
 	^ self rowsAt: (begin to: end)
 ]
 
 { #category : #accessing }
 DataFrame >> rowsFrom: firstNumber to: secondNumber put: anArrayOfArrays [
+	"Replaces the rows whose row indices are present between firstNumber and secondNumber with the contents of the array of arrays anArrayOfArrays"
 
 	| interval |
 
@@ -1963,6 +1994,8 @@ DataFrame >> setDefaultRowColumnNames [
 
 { #category : #accessing }
 DataFrame >> size [
+	"Returns the number of rows of a DataFrame"
+	
 	^ self numberOfRows
 ]
 
@@ -2003,13 +2036,14 @@ DataFrame >> stdev [
 
 { #category : #accessing }
 DataFrame >> tail [
-
+	"Returns the last 5 rows of a DataFrame"
+	
 	^ self tail: self defaultHeadTailSize
 ]
 
 { #category : #accessing }
 DataFrame >> tail: aNumber [
-
+	"Returns the last aNumber rows of aDataFrame"
 	| rows |
 	rows := self numberOfRows.
 

@@ -138,17 +138,22 @@ DataSeries >> at: aKey transform: aBlock ifAbsent: exceptionBlock [
 
 { #category : #accessing }
 DataSeries >> atAll: aCollectionOfIndexes [
-
+	"Returns a data series of only those elements of the receiver whose indices are present in the collection aCollectionOfIndexes"
+	
 	^ self withIndexSelect: [ :each :index | aCollectionOfIndexes includes: index ]
 ]
 
 { #category : #accessing }
 DataSeries >> atIndex: aNumber [
+	"Answer the element of the receiver at index aNumber"
+	
 	^ self at: (self keys at: aNumber)
 ]
 
 { #category : #accessing }
 DataSeries >> atIndex: aNumber put: aValue [
+	"Replace the element of the receiver at index aNumber with the value aValue"
+
 	^ self at: (self keys at: aNumber) put: aValue
 ]
 
@@ -486,11 +491,15 @@ DataSeries >> mode [
 
 { #category : #accessing }
 DataSeries >> name [
+	"Answer the name of the receiver"
+	
 	^ name
 ]
 
 { #category : #accessing }
 DataSeries >> name: anObject [
+	"Set the name of the receiver to anObject"
+	
 	name := anObject
 ]
 
@@ -741,6 +750,8 @@ DataSeries >> thirdQuartile [
 
 { #category : #accessing }
 DataSeries >> uniqueValues [
+	"Answer the unique values of the receiver"
+	
 	^ self asSet asArray
 ]
 
