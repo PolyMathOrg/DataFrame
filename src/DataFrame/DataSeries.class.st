@@ -113,6 +113,8 @@ DataSeries >> adaptToCollection: rcvr andSend: selector [
 
 { #category : #converting }
 DataSeries >> asDataFrame [
+	"Converts a data series to a data frame with 1 column. The values in the column of the data frame are the values of the data series. The row names of this data frame are the keys of the data series. The column name of the data frame is same as the name of the data series"
+	
 	^ DataFrame
 		withColumns: {  self values }
 		rowNames: self keys
@@ -207,6 +209,8 @@ DataSeries >> closeTo: anObject precision: aPrecision [
 
 { #category : #enumerating }
 DataSeries >> collect: aBlock [
+	"Applies aBlock to every element"
+
 	| result |
 	result :=  super collect: aBlock.
 	result name: self name.
@@ -403,11 +407,15 @@ DataSeries >> hasNil [
 
 { #category : #slicing }
 DataSeries >> head [
+	"Returns a data series with first 5 elements of the receiver"
+	
 	^ self head: self defaultHeadTailSize
 ]
 
 { #category : #slicing }
 DataSeries >> head: aNumber [
+	"Returns a data series with first aNumber elements of the receiver"
+
 	^ self species
 		withKeys: (self keys copyFrom: 1 to: aNumber)
 		values: (self values copyFrom: 1 to: aNumber)
@@ -436,12 +444,15 @@ DataSeries >> interquartileRange [
 
 { #category : #'categorical-numerical' }
 DataSeries >> isCategorical [
+	"Returns true if atleast one value of the data series is non numerical and returns false otherwise"
+
 	^ self isNumerical not
 ]
 
 { #category : #'categorical-numerical' }
 DataSeries >> isNumerical [
-
+	"Returns true if all values of the data series are numerical values and returns false otherwise"
+	
 	^ forcedIsNumerical ifNil: [ (self uniqueValues copyWithout: nil) allSatisfy: [ :each | each isNumber ] ]
 ]
 
@@ -472,11 +483,15 @@ DataSeries >> log: base [
 
 { #category : #'categorical-numerical' }
 DataSeries >> makeCategorical [
+	"Converts a data series to a categorical data series"
+	
 	forcedIsNumerical := false
 ]
 
 { #category : #'categorical-numerical' }
 DataSeries >> makeNumerical [
+	"Converts a data series to a numerical data series"
+
 	forcedIsNumerical := true
 ]
 
@@ -542,16 +557,22 @@ DataSeries >> reject: aBlock [
 
 { #category : #removing }
 DataSeries >> removeAt: aKey [
+	"Removes element from the data series with key aKey"
+	
 	^ self removeKey: aKey
 ]
 
 { #category : #removing }
 DataSeries >> removeAtIndex: aNumber [
+	"Removes element from the data series with index aNumber"
+
 	^ self removeAt: (self keys at: aNumber)
 ]
 
 { #category : #removing }
 DataSeries >> removeNils [
+	"Removes elements with nil values from the data series"
+	
 	^ self reject: [ :ele | ele isNil ]
 ]
 
@@ -645,11 +666,15 @@ DataSeries >> sixth [
 
 { #category : #sorting }
 DataSeries >> sort [
+	"Arranges a data series in ascending order of its values"
+	
 	self sort: [ :a :b | a <= b ]
 ]
 
 { #category : #sorting }
 DataSeries >> sort: aBlock [
+	"Arranges a data series by applying aBlock on its values"
+
 	| associationBlock |
 	associationBlock := [ :a :b | aBlock value: a value value: b value ].
 	self sortAssociations: associationBlock
@@ -665,6 +690,8 @@ DataSeries >> sortAssociations: aBlock [
 
 { #category : #sorting }
 DataSeries >> sortDescending [
+	"Arranges a data series in descending order of its values"
+
 	self sort: [ :a :b | a > b ]
 ]
 
@@ -723,11 +750,15 @@ DataSeries >> summary [
 
 { #category : #slicing }
 DataSeries >> tail [
+	"Returns a data series with last 5 elements of the receiver"
+
 	^ self tail: self defaultHeadTailSize
 ]
 
 { #category : #slicing }
 DataSeries >> tail: aNumber [
+	"Returns a data series with last aNumber elements of the receiver"
+
 	^ self species
 		withKeys: (self keys copyFrom: self size - aNumber + 1 to: self size)
 		values: (self values copyFrom: self size - aNumber + 1 to: self size)
