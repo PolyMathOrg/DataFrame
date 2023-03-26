@@ -527,7 +527,8 @@ DataFrame >> atAll: indexes [
 
 { #category : #statistics }
 DataFrame >> average [
-
+	"Average is the ratio of sum of values in a set to the number of values in the set"
+	
 	^ self applyToAllColumns: #average
 ]
 
@@ -1068,7 +1069,8 @@ DataFrame >> indexOfRowNamed: rowName ifAbsent: exceptionBlock [
 
 { #category : #printing }
 DataFrame >> info [
-
+	"Prints the number of entries and number of columns of a data frame. For each column of the data frame, it prints the column index, column name, number of non-nil values in the column and the data type of the contents of the column"
+	
 	^ String streamContents: [ :aStream |
 		  aStream
 			  nextPutAll: 'DataFrame: ';
@@ -1309,7 +1311,8 @@ DataFrame >> leftJoin: aDataFrame onLeft: leftColumn onRight: rightColumn [
 
 { #category : #statistics }
 DataFrame >> max [
-
+	"Max is the largest value present in a set of values"
+	
 	^ self applyToAllColumns: #max
 ]
 
@@ -1322,6 +1325,7 @@ DataFrame >> median [
 
 { #category : #statistics }
 DataFrame >> min [
+	"Min is the smallest value present in a set of values"
 
 	^ self applyToAllColumns: #min
 ]
@@ -1356,6 +1360,7 @@ DataFrame >> numberOfColumns [
 
 { #category : #replacing }
 DataFrame >> numberOfNils [
+	"Returns a dictionary which indicates the number of nil values column wise"
 
 	| dictionary count |
 	dictionary := Dictionary new.
@@ -1493,7 +1498,8 @@ DataFrame >> range [
 
 { #category : #removing }
 DataFrame >> removeColumn: columnName [
-
+	"Removes the column named columnName from a data frame"
+	
 	| index |
 	index := self indexOfColumnNamed: columnName.
 	self removeColumnAt: index
@@ -1501,6 +1507,8 @@ DataFrame >> removeColumn: columnName [
 
 { #category : #removing }
 DataFrame >> removeColumnAt: columnNumber [
+	"Removes the column at column index columnNumber from a data frame"
+
 	(columnNumber < 1 or: [ columnNumber > self numberOfColumns ])
 		ifTrue: [ SubscriptOutOfBounds signalFor: columnNumber ].
 
@@ -1512,6 +1520,8 @@ DataFrame >> removeColumnAt: columnNumber [
 
 { #category : #removing }
 DataFrame >> removeColumns: aCollectionOfColumnNames [
+	"Removes all columns from a data frame whose names are present in the collection aCollectionOfColumnNames"
+
 	aCollectionOfColumnNames do: [ :each |
 		self removeColumn: each.
 		]
@@ -1519,6 +1529,8 @@ DataFrame >> removeColumns: aCollectionOfColumnNames [
 
 { #category : #removing }
 DataFrame >> removeColumnsAt: aCollectionOfColumnIndices [
+	"Removes all columns from a data frame whose column indices are present in the collection aCollectionOfColumnIndices"
+
 	| columnNamesToRemove |
 	columnNamesToRemove := aCollectionOfColumnIndices collect: [ :i |
 		columnNames at: i ].
@@ -1527,6 +1539,7 @@ DataFrame >> removeColumnsAt: aCollectionOfColumnIndices [
 
 { #category : #removing }
 DataFrame >> removeColumnsOfRowElementsSatisfing: aBlock onRowNamed: rowName [
+	"Removes columns from a data frame whose row elements at the row named rowName satisfy a given block"
 
 	| index |
 	index := self indexOfRowNamed: rowName.
@@ -1535,6 +1548,7 @@ DataFrame >> removeColumnsOfRowElementsSatisfing: aBlock onRowNamed: rowName [
 
 { #category : #removing }
 DataFrame >> removeColumnsOfRowElementsSatisfying: aBlock onRow: rowNumber [
+	"Removes columns from a data frame whose row elements at the row index rowNumber satisfy a given block"
 
 	| columnNamesCopy |
 	(rowNumber < 1 or: [ rowNumber > self numberOfRows ])
@@ -1552,16 +1566,21 @@ DataFrame >> removeColumnsOfRowElementsSatisfying: aBlock onRow: rowNumber [
 
 { #category : #'handling nils' }
 DataFrame >> removeColumnsWithNilsAtRow: rowNumber [
+	"Removes all columns with nil values at row number rowNumber from the data frame"
+	
 	self removeColumnsOfRowElementsSatisfying: [ :ele | ele isNil ] onRow: rowNumber
 ]
 
 { #category : #'handling nils' }
 DataFrame >> removeColumnsWithNilsAtRowNamed: rowName [
+	"Removes all columns with nil values at a row named rowName from the data frame"
+
 	self removeColumnsOfRowElementsSatisfing: [ :ele | ele isNil ] onRowNamed: rowName
 ]
 
 { #category : #removing }
 DataFrame >> removeRow: rowName [
+	"Removes the row named rowName from a data frame"
 
 	| index |
 	index := self indexOfRowNamed: rowName.
@@ -1570,6 +1589,8 @@ DataFrame >> removeRow: rowName [
 
 { #category : #removing }
 DataFrame >> removeRowAt: rowNumber [
+	"Removes the row at row index rowNumber from a data frame"
+
 	(rowNumber < 1 or: [ rowNumber > self numberOfRows ])
 		ifTrue: [ SubscriptOutOfBounds signalFor: rowNumber ].
 
@@ -1579,12 +1600,16 @@ DataFrame >> removeRowAt: rowNumber [
 
 { #category : #removing }
 DataFrame >> removeRows: aCollectionOfRowNames [
+	"Removes all rows from a data frame whose names are present in the collection aCollectionOfRowNames"
+
 	aCollectionOfRowNames do: [ :each |
 		self removeRow: each ]
 ]
 
 { #category : #removing }
 DataFrame >> removeRowsAt: aCollectionOfRowIndices [
+	"Removes all rows from a data frame whose row indices are present in the collection aCollectionOfRowIndices"
+
 	| rowNamesToRemove |
 	rowNamesToRemove := aCollectionOfRowIndices collect: [ :i |
 		rowNames at: i ].
@@ -1593,6 +1618,7 @@ DataFrame >> removeRowsAt: aCollectionOfRowIndices [
 
 { #category : #removing }
 DataFrame >> removeRowsOfColumnElementsSatisfing: aBlock onColumnNamed: columnName [
+	"Removes rows from a data frame whose column elements at the column named columnName satisfy a given block"
 
 	| index |
 	index := self indexOfColumnNamed: columnName.
@@ -1601,6 +1627,7 @@ DataFrame >> removeRowsOfColumnElementsSatisfing: aBlock onColumnNamed: columnNa
 
 { #category : #removing }
 DataFrame >> removeRowsOfColumnElementsSatisfying: aBlock onColumn: columnNumber [
+	"Removes rows from a data frame whose column elements at the column index columnNumber satisfy a given block"
 
 	| rowNamesCopy |
 	(columnNumber < 1 or: [ columnNumber > self numberOfColumns ])
@@ -1618,7 +1645,8 @@ DataFrame >> removeRowsOfColumnElementsSatisfying: aBlock onColumn: columnNumber
 
 { #category : #removing }
 DataFrame >> removeRowsWithNils [
-
+	"Removes all rows from a data frame which have atleast one nil value"
+	
 	1 to: self numberOfColumns do: [ :i |
 		self
 			removeRowsOfColumnElementsSatisfying: [ :ele | ele isNil ]
@@ -1627,11 +1655,15 @@ DataFrame >> removeRowsWithNils [
 
 { #category : #'handling nils' }
 DataFrame >> removeRowsWithNilsAtColumn: columnNumber [
+	"Removes all rows with nil values at column number columnNumber from the data frame"
+
 	self removeRowsOfColumnElementsSatisfying: [ :ele | ele isNil ] onColumn: columnNumber
 ]
 
 { #category : #'handling nils' }
 DataFrame >> removeRowsWithNilsAtColumnNamed: columnName [
+	"Removes all rows with nil values at a column named columnName from the data frame"
+
 	self removeRowsOfColumnElementsSatisfing: [ :ele | ele isNil ] onColumnNamed: columnName
 ]
 
@@ -1664,7 +1696,8 @@ DataFrame >> replaceAllNilsWithZeros [
 
 { #category : #replacing }
 DataFrame >> replaceNilsWith: anObject [
-
+	"Replaces all nil values of a data frame with the object anObject"
+	
 	1 to: self numberOfColumns do: [ :columnIndex |
 		1 to: self numberOfRows do: [ :rowIndex |
 			(self at: rowIndex at: columnIndex) ifNil:
@@ -1674,6 +1707,7 @@ DataFrame >> replaceNilsWith: anObject [
 
 { #category : #replacing }
 DataFrame >> replaceNilsWithAverage [
+	"Replaces all nil values of a data frame with the average value of the column in which it is present"
 
 	| averageOfColumn |
 	1 to: self numberOfColumns do: [ :i |
@@ -1686,6 +1720,7 @@ DataFrame >> replaceNilsWithAverage [
 
 { #category : #replacing }
 DataFrame >> replaceNilsWithMedian [
+	"Replaces all nil values of a data frame with the median of the column in which it is present"
 
 	| medianOfColumn |
 	1 to: self numberOfColumns do: [ :i |
@@ -1698,6 +1733,7 @@ DataFrame >> replaceNilsWithMedian [
 
 { #category : #replacing }
 DataFrame >> replaceNilsWithMode [
+	"Replaces all nil values of a data frame with the mode of the column in which it is present"
 
 	1 to: self numberOfColumns do: [ :i |
 		| modeOfColumn |
@@ -1708,6 +1744,7 @@ DataFrame >> replaceNilsWithMode [
 
 { #category : #replacing }
 DataFrame >> replaceNilsWithPreviousRowValue [
+	"Replaces all nil values of a data frame with the previous non-nil value of the column in which it is present"
 
 	|value|
 	1 to: self numberOfColumns do: [ :i |
@@ -1724,6 +1761,7 @@ DataFrame >> replaceNilsWithPreviousRowValue [
 
 { #category : #replacing }
 DataFrame >> replaceNilsWithZero [
+	"Replaces all nil values of a data frame with xero"
 
 	self replaceNilsWith: 0
 ]
@@ -2001,11 +2039,14 @@ DataFrame >> size [
 
 { #category : #sorting }
 DataFrame >> sortBy: columnName [
+	"Rearranges the rows of the data frame in ascending order of the values in the column named columnName"
+	
 	self sortBy: columnName using: [ :a :b | a <= b ]
 ]
 
 { #category : #sorting }
 DataFrame >> sortBy: columnName using: aBlock [
+	"Rearranges the rows of the data frame by applying the given block on the column named columnName"
 
 	| column sortedKeys newContents |
 	column := self column: columnName.
@@ -2024,6 +2065,8 @@ DataFrame >> sortBy: columnName using: aBlock [
 
 { #category : #sorting }
 DataFrame >> sortDescendingBy: columnName [
+	"Rearranges the rows of the data frame in descending order of the values in the column named columnName"
+
 	self sortBy: columnName using: [ :a :b | a >= b ]
 ]
 
@@ -2059,6 +2102,8 @@ DataFrame >> thirdQuartile [
 
 { #category : #applying }
 DataFrame >> toColumn: columnName applyElementwise: aBlock [
+	"Applies a given block to a column named columnName of a data frame"
+
 	| column |
 	column := (self column: columnName) asArray.
 	column := column collect: [ :each | aBlock value: each ].
@@ -2067,6 +2112,8 @@ DataFrame >> toColumn: columnName applyElementwise: aBlock [
 
 { #category : #applying }
 DataFrame >> toColumnAt: columnNumber applyElementwise: aBlock [
+	"Applies a given block to a column whose column index is columnNumber of a data frame"
+
 	| columnName |
 	columnName := self columnNames at: columnNumber.
 	^ self toColumn: columnName applyElementwise: aBlock
@@ -2074,6 +2121,7 @@ DataFrame >> toColumnAt: columnNumber applyElementwise: aBlock [
 
 { #category : #applying }
 DataFrame >> toColumns: arrayOfColumnNames applyElementwise: aBlock [
+	"Applies a given block to columns whose names are present in the array arrayOfColumnNames of a data frame"
 
 	arrayOfColumnNames do: [ :each |
 		self toColumn: each applyElementwise: aBlock ]
@@ -2081,6 +2129,7 @@ DataFrame >> toColumns: arrayOfColumnNames applyElementwise: aBlock [
 
 { #category : #applying }
 DataFrame >> toColumnsAt: arrayOfColumnNumbers applyElementwise: aBlock [
+	"Applies a given block to columns whose indices are present in the array arrayOfColumnNumbers of a data frame"
 
 	arrayOfColumnNumbers do: [ :each |
 		self toColumnAt: each applyElementwise: aBlock ]
