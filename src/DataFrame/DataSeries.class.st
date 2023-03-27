@@ -697,11 +697,15 @@ DataSeries >> sortDescending [
 
 { #category : #sorting }
 DataSeries >> sorted [
+	"Returns a sorted copy of the data series without rearranging the original data series"
+	
 	^ self sorted: [ :a :b | a <= b ]
 ]
 
 { #category : #sorting }
 DataSeries >> sorted: aBlock [
+	"Returns a copy of the data series after applying aBlock without rearranging the original data series"
+
 	| associationBlock |
 	associationBlock := [ :a :b | aBlock value: a value value: b value ].
 	^ self sortedAssociations: associationBlock
@@ -716,6 +720,8 @@ DataSeries >> sortedAssociations: aBlock [
 
 { #category : #sorting }
 DataSeries >> sortedDescending [
+	"Returns a sorted copy of the data series in descending order without rearranging the original data series"
+
 	^ self sorted: [ :a :b | a > b ]
 ]
 
@@ -942,7 +948,8 @@ DataSeries >> withSeries: otherDataSeries collect: twoArgBlock [
 
 { #category : #private }
 DataSeries >> withoutNils [
-
+	"Returns a data series without the elements whose values were nil values"
+	
 	^ self reject: #isNil
 ]
 

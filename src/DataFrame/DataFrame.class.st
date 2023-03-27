@@ -783,7 +783,8 @@ DataFrame >> columnsFrom: firstNumber to: secondNumber put: anArrayOfArrays [
 
 { #category : #accessing }
 DataFrame >> contents [
-
+	"Returns all the values of the DataFrame"
+	
 	^ contents
 ]
 
@@ -970,11 +971,14 @@ DataFrame >> getJointColumnsWith: aDataFrame [
 
 { #category : #grouping }
 DataFrame >> group: anAggregateColumnName by: aGroupColumnName aggregateUsing: aBlock [
+	"Group the values of the cloumn named anAggregateColumnName by the unique values of the column named aGroupColumnName, aggregate them using aBlock. With the same name as anAggregateColumnName"
+	
 	^ self group: anAggregateColumnName by: aGroupColumnName aggregateUsing: aBlock as: anAggregateColumnName
 ]
 
 { #category : #grouping }
 DataFrame >> group: anAggregateColumnName by: aGroupColumnName aggregateUsing: aBlock as: aNewColumnName [
+	"Group the values of the cloumn named anAggregateColumnName by the unique values of the column named aGroupColumnName, aggregate them using aBlock. With a new column name aNewColumnName"
 
 	| groupColumn aggregateColumn |
 
