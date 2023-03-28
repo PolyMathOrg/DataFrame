@@ -1008,10 +1008,12 @@ DataFrame >> groupBy: columnName aggregate: anArrayOfUsingAsStatements [
 { #category : #replacing }
 DataFrame >> hasNils [
 	"Returns true if there is atleast one nil value in the data frame. Returns false if there are no nil values in the dataframe"
-	
-	1 to: self numberOfColumns do: [ :each | 
-	 (self columnAt: each) hasNil
-	 ifTrue:[^ true] ].
+
+	| arrayOfColumns |
+	arrayOfColumns := self columns.
+	1 to: self numberOfColumns do: [ :column |
+		1 to: self numberOfRows do: [ :row |
+		((arrayOfColumns at: column) at: row) ifNil: [ ^ true ] ] ].
 	^ false
 ]
 

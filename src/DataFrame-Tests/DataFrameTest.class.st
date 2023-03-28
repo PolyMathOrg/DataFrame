@@ -1617,19 +1617,39 @@ DataFrameTest >> testFindAllIndicesOfAtColumnFloat [
 { #category : #replacing }
 DataFrameTest >> testHasNils [
 
-	| df1 df2 |
-	df1 := DataFrame withRows: #( #( nil 1.609 true ) #( Dubai 2.789 nil ) #( nil 8.788 false ) ).
+	| df1 df2 df3 df4 |
+	df1 := DataFrame withRows:
+		       #( #( nil 1.609 true ) #( Dubai 2.789 nil )
+		          #( nil 8.788 false ) ).
 	df1 rowNames: #( A B C ).
 	df1 columnNames: #( City Population BeenThere ).
 
 	self assert: df1 hasNils.
 
-	df2 := DataFrame withRows: #( #( Barcelona 1.609 true ) #( Dubai 2.789 true ) #( London 8.788 false ) ).
+	df2 := DataFrame withRows:
+		       #( #( Barcelona 1.609 true ) #( Dubai 2.789 true )
+		          #( London 8.788 false ) ).
 
 	df2 rowNames: #( A B C ).
 	df2 columnNames: #( City Population BeenThere ).
 
-	self deny: df2 hasNils
+	self deny: df2 hasNils.
+
+	df3 := DataFrame withRows:
+		       #( #( Barcelona 1.609 true ) #( Dubai 2.789 nil )
+		          #( London 8.788 false ) ).
+	df3 rowNames: #( A B C ).
+	df3 columnNames: #( City Population BeenThere ).
+
+	self assert: df3 hasNils.
+
+	df4 := DataFrame withRows:
+		       #( #( Barcelona nil true ) #( Dubai 2.789 true )
+		          #( London 8.788 false ) ).
+	df4 rowNames: #( A B C ).
+	df4 columnNames: #( City Population BeenThere ).
+
+	self assert: df4 hasNils
 ]
 
 { #category : #replacing }
