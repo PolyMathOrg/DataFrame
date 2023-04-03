@@ -10,15 +10,15 @@ Class {
 
 { #category : #'instance creation' }
 DataSeries class >> newFrom: aCollection [
+
 	aCollection ifEmpty: [ ^ self new ].
 
-	(aCollection species == self)
-		ifTrue: [ ^ super newFrom: aCollection associations ].
+	aCollection species == self ifTrue: [ ^ super newFrom: aCollection associations ].
 
 	"If it's a collection of associations use the superclass implementation"
-	^ super newFrom: ((aCollection anyOne respondsTo: #key)
-		ifTrue: [ aCollection ]
-		ifFalse: [ aCollection withIndexCollect: [ :each :i | i -> each ] ])
+	^ super newFrom: (aCollection anyOne isAssociation
+			   ifTrue: [ aCollection ]
+			   ifFalse: [ aCollection withIndexCollect: [ :each :i | i -> each ] ])
 ]
 
 { #category : #'instance creation' }
