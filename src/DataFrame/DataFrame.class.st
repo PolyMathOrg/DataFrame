@@ -856,10 +856,14 @@ DataFrame >> crossTabulate: colName1 with: colName2 [
 DataFrame >> dataPreProcessingEncodeWith: anEncoder [
 	"This method is here to speed up pharo-ai/data-preprocessing algos without coupling both projects."
 
-	| copy |
+	| copy cache |
 	copy := self copy.
+	cache := IdentityDictionary new.
 	self columns doWithIndex: [ :dataSerie :columnIndex |
-		dataSerie doWithIndex: [ :element :rowIndex | copy at: rowIndex at: columnIndex put: ((anEncoder categories at: columnIndex) indexOf: element) ] ].
+		| category |
+		category := cache at: columnIndex ifAbsentPut: [ ((anEncoder categories at: columnIndex) collectWithIndex: [ :elem :index | elem -> index ]) asDictionary ].
+		dataSerie doWithIndex: [ :element :rowIndex |
+			copy at: rowIndex at: columnIndex put: (category at: element ifAbsent: [ AIMissingCategory signalFor: element ]) ] ].
 
 	^ copy
 ]
