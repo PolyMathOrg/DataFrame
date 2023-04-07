@@ -159,12 +159,6 @@ Class {
 	#category : #'DataFrame-Core'
 }
 
-{ #category : #defaults }
-DataFrame class >> defaultNormalizer [
-
-	^ AIMinMaxNormalizer
-]
-
 { #category : #'instance creation' }
 DataFrame class >> new: aPoint [
 
@@ -1366,7 +1360,7 @@ DataFrame >> normalized [
 	"This methods returns a new DataFrame, without altering this one, that has all the columns normalized."
 
 	| normalizers normalizedColumns |
-	normalizers := (1 to: self anyOne size) collect: [ :e |  self class defaultNormalizer new ].
+	normalizers := (1 to: self anyOne size) collect: [ :e |  self class defaultNormalizerClass new ].
 
 	normalizedColumns := self columns
 		with: normalizers
