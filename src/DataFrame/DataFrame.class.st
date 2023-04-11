@@ -559,6 +559,21 @@ DataFrame >> closeTo: aDataFrame [
 	^ true
 ]
 
+{ #category : #comparing }
+DataFrame >> closeTo: aDataFrame precision: epsilon [
+
+	aDataFrame species = self species ifFalse: [ ^ false ].
+
+	aDataFrame dimensions = self dimensions ifFalse: [ ^ false ].
+
+	(aDataFrame rowNames = self rowNames and: [ aDataFrame columnNames = self columnNames ]) ifFalse: [ ^ false ].
+
+	1 to: self numberOfRows do: [ :i |
+	1 to: self numberOfColumns do: [ :j | ((self at: i at: j) closeTo: (aDataFrame at: i at: j) precision: epsilon) ifFalse: [ ^ false ] ] ].
+
+	^ true
+]
+
 { #category : #enumerating }
 DataFrame >> collect: aBlock [
 	"Overrides the Collection>>collect to create DataFrame with the same number of columns as values in the first row"
