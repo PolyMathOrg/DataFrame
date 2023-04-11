@@ -462,6 +462,40 @@ DataFrameTest >> testChangeDataTypes [
 ]
 
 { #category : #tests }
+DataFrameTest >> testCloseTo [
+
+	| collection |
+	collection := DataFrame withRows: #( #( Barcelona 1.609 true ) #( Dubai 2.789 true ) #( London 8.788 false ) #( Paris 2.141 true ) ).
+	self assert: (collection closeTo: (DataFrame withRows: #( #( Barcelona 1.609 true ) #( Dubai 2.789 true ) #( London 8.788 false ) #( Paris 2.141 true ) ))).
+
+
+	self assert: (collection closeTo: (DataFrame withRows:
+				  #( #( Barcelona 1.609000000000001 true ) #( Dubai 2.78900000001 true ) #( London 8.788000000001 false ) #( Paris 2.14100000000000005 true ) ))).
+
+	self deny: (collection closeTo: (DataFrame withRows: #( #( Barcelona 1.608 true ) #( Dubai 2.789 true ) #( London 8.788 false ) #( Paris 2.141 true ) )))
+]
+
+{ #category : #tests }
+DataFrameTest >> testCloseToPrecision [
+
+	| collection |
+	collection := DataFrame withRows: #( #( Barcelona 1.609 true ) #( Dubai 2.789 true ) #( London 8.788 false ) #( Paris 2.141 true ) ).
+	self assert: (collection
+			 closeTo: (DataFrame withRows: #( #( Barcelona 1.609 true ) #( Dubai 2.789 true ) #( London 8.788 false ) #( Paris 2.141 true ) ))
+			 precision: 0.0000001).
+
+
+	self assert: (collection
+			 closeTo: (DataFrame withRows:
+					  #( #( Barcelona 1.609000000000001 true ) #( Dubai 2.78900000001 true ) #( London 8.788000000001 false ) #( Paris 2.14100000000000005 true ) ))
+			 precision: 0.0000001).
+
+	self deny: (collection
+			 closeTo: (DataFrame withRows: #( #( Barcelona 1.608 true ) #( Dubai 2.789 true ) #( London 8.788 false ) #( Paris 2.141 true ) ))
+			 precision: 0.0000001)
+]
+
+{ #category : #tests }
 DataFrameTest >> testCollect [
 	| expectedDf expectedResult actualResult |
 
