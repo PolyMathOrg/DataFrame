@@ -933,6 +933,55 @@ DataFrameTest >> testColumnsSubset [
 ]
 
 { #category : #tests }
+DataFrameTest >> testConcatenation [
+
+	| df1 df2 df3 df4 |
+	df1 := DataFrame
+		       withColumns: #( #( 'A1' 'A2' 'A3' 'A4' ) #( 'B1' 'B2' 'B3' 'B4' ) #( 'C1' 'C2' 'C3' 'C4' ) #( 'D1' 'D2' 'D3' 'D4' ) )
+		       rowNames: #( 1 2 3 4 )
+		       columnNames: #( 'A' 'B' 'C' 'D' ).
+	df2 := DataFrame
+		       withColumns: #( #( 'A5' 'A6' 'A7' 'A8' ) #( 'B5' 'B6' 'B7' 'B8' ) #( 'C5' 'C6' 'C7' 'C8' ) #( 'D5' 'D6' 'D7' 'D8' ) )
+		       rowNames: #( 5 6 7 8 )
+		       columnNames: #( 'A' 'B' 'C' 'D' ).
+	df3 := DataFrame
+		       withColumns: #( #( 'A9' 'A10' 'A11' 'A12' ) #( 'B9' 'B10' 'B11' 'B12' ) #( 'C9' 'C10' 'C11' 'C12' ) #( 'D9' 'D10' 'D11' 'D12' ) )
+		       rowNames: #( 9 10 11 12 )
+		       columnNames: #( 'A' 'B' 'C' 'D' ).
+
+
+	df4 := DataFrame
+		       withColumns:
+			       #( #( 'A1' 'A2' 'A3' 'A4' 'A5' 'A6' 'A7' 'A8' 'A9' 'A10' 'A11' 'A12' ) #( 'B1' 'B2' 'B3' 'B4' 'B5' 'B6' 'B7' 'B8' 'B9' 'B10' 'B11' 'B12' )
+			          #( 'C1' 'C2' 'C3' 'C4' 'C5' 'C6' 'C7' 'C8' 'C9' 'C10' 'C11' 'C12' ) #( 'D1' 'D2' 'D3' 'D4' 'D5' 'D6' 'D7' 'D8' 'D9' 'D10' 'D11' 'D12' ) )
+		       rowNames: #( 1 2 3 4 5 6 7 8 9 10 11 12 )
+		       columnNames: #( 'A' 'B' 'C' 'D' ).
+
+	self assert: df1 , df2 , df3 equals: df4
+]
+
+{ #category : #tests }
+DataFrameTest >> testConcatenationWithMissingValues [
+
+	| df1 df2 df4 |
+	self skip. "WE need to check better how other libraries are managing this case."
+	df1 := DataFrame
+		       withColumns: #( #( 'A1' 'A2' 'A3' 'A4' ) #( 'B1' 'B2' 'B3' 'B4' ) #( 'C1' 'C2' 'C3' 'C4' ) #( 'D1' 'D2' 'D3' 'D4' ) )
+		       columnNames: #( 'A' 'B' 'C' 'D' ).
+	df2 := DataFrame withColumns: #( #( 'B3' 'B4' 'B7' 'B8' ) #( 'D3' 'D4' 'D7' 'D8' ) #( 'F3' 'F4' 'F7' 'F8' ) ) columnNames: #( 'B' 'D' 'F' ).
+
+	df2 rowNames: #( 3 4 7 8 ).
+
+
+	df4 := DataFrame
+		       withColumns: #( #( 'A1' 'A2' 'A3' 'A4' nil nil ) #( 'B1' 'B2' 'B3' 'B4' nil nil ) #( 'C1' 'C2' 'C3' 'C4' nil nil ) #( 'D1' 'D2' 'D3' 'D4' nil nil )
+			          #( nil nil 'B3' 'B4' 'B7' 'B8' ) #( nil nil 'D3' 'D4' 'D7' 'D8' ) #( nil nil 'F3' 'F4' 'F7' 'F8' ) )
+		       columnNames: #( 'A' 'B' 'C' 'D' 'B' 'D' 'F' ).
+	df4 rowNames: #( 1 2 3 4 7 8 ).
+	self assert: df1 , df2 equals: df4
+]
+
+{ #category : #tests }
 DataFrameTest >> testCopy [
 
 	| copy |
