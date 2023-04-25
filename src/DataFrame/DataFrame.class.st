@@ -298,6 +298,20 @@ DataFrame class >> withRows: anArrayOfArrays rowNames: anArrayOfRowNames columnN
 ]
 
 { #category : #comparing }
+DataFrame >> , aDataFrame [
+
+	| dataFrame rows |
+	self columnNames = aDataFrame columnNames ifFalse: [ self error: 'Not yet supported.' ].
+	(self rowNames includesAny: aDataFrame rowNames) ifTrue: [ self error: 'Not yet supported.' ].
+
+	dataFrame := self copy.
+	rows := aDataFrame asArrayOfRows.
+	aDataFrame rowNames doWithIndex: [ :name :index | dataFrame addRow: (rows at: index) named: name ].
+
+	^ dataFrame
+]
+
+{ #category : #comparing }
 DataFrame >> = aDataFrame [
 
 	"Most objects will fail here"
