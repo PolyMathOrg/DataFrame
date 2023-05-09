@@ -1058,6 +1058,32 @@ DataSeriesTest >> testCopyChangeDoesNotAffectOriginal [
 	self assert: original equals: expectedOriginalAfterChange
 ]
 
+{ #category : #'tests - statistics' }
+DataSeriesTest >> testCountNils [
+
+	| seriesWithNils |
+	keyArray := #( a b c d e f g h i j k ).
+
+	seriesWithNils := DataSeries
+		                  withKeys: keyArray
+		                  values: #( 3 7 6 20 nil 9 nil 10 15 13 nil )
+		                  name: 'ExampleSeries'.
+	self assert: seriesWithNils countNils equals: 3
+]
+
+{ #category : #'tests - statistics' }
+DataSeriesTest >> testCountNonNils [
+
+	| seriesWithNils |
+	keyArray := #( a b c d e f g h i j k ).
+
+	seriesWithNils := DataSeries
+		                  withKeys: keyArray
+		                  values: #( 3 7 6 20 nil 9 nil 10 15 13 nil )
+		                  name: 'ExampleSeries'.
+	self assert: seriesWithNils countNonNils equals: 8
+]
+
 { #category : #'tests - creation' }
 DataSeriesTest >> testCreateDataSeriesAsDataSeries [
 

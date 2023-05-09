@@ -237,6 +237,20 @@ DataSeries >> correlationWith: otherSeries using: aCorrelationCoefficient [
 ]
 
 { #category : #statistics }
+DataSeries >> countNils [
+	"Returns the number of nil values in the data series"
+
+	^ self count: [ :each | each isNil ]
+]
+
+{ #category : #statistics }
+DataSeries >> countNonNils [
+	"Returns the number of non-nil values in the data series"
+
+	^ self count: [ :each | each isNotNil ]
+]
+
+{ #category : #statistics }
 DataSeries >> crossTabulateWith: aSeries [
 	"A DataFrame is returned which is useful in quantitatively analyzing the relationship of values in one data series with the values in another data series"
 	
