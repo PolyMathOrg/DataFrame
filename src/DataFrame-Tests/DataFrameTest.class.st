@@ -3869,6 +3869,30 @@ DataFrameTest >> testReplaceNilsWithMode [
 	self assert: df replaceNilsWithMode equals: expected
 ]
 
+{ #category : #tests }
+DataFrameTest >> testReplaceNilsWithNextRowValue [
+
+	|expected|
+
+	df := DataFrame withRows: #(
+		(7 1 nil)
+   		(8 nil 3)
+   		(nil 2 nil)).
+
+	df rowNames: #(A B C).
+	df columnNames: #(Column1 Column2 Column3).
+
+	expected := DataFrame withRows: #(
+		(7 1 3)
+   		(8 2 3)
+   		(nil 2 nil)).
+
+	expected rowNames: #(A B C).
+	expected columnNames: #(Column1 Column2 Column3).
+
+	self assert: (df replaceNilsWithNextRowValue) equals: expected
+]
+
 { #category : #replacing }
 DataFrameTest >> testReplaceNilsWithPreviousRowValue [
 

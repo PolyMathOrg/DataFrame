@@ -1794,6 +1794,18 @@ DataFrame >> replaceNilsWithMode [
 ]
 
 { #category : #replacing }
+DataFrame >> replaceNilsWithNextRowValue [
+
+	| value numberOfRows |
+	numberOfRows := self numberOfRows.
+	1 to: self numberOfColumns do: [ :i |
+		self numberOfRows to: 1 by: -1 do: [ :j |
+			j < numberOfRows ifTrue: [
+				(self at: j at: i) ifNil: [ self at: j at: i put: value ] ].
+			value := self at: j at: i ] ]
+]
+
+{ #category : #replacing }
 DataFrame >> replaceNilsWithPreviousRowValue [
 	"Replaces all nil values of a data frame with the previous non-nil value of the column in which it is present"
 
