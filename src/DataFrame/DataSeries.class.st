@@ -520,6 +520,20 @@ DataSeries >> makeNumerical [
 	forcedIsNumerical := true
 ]
 
+{ #category : #statistics }
+DataSeries >> max [
+	"Returns the maximum value of the dataseries without including nils"
+
+	^ (self values reject: #isNil) max
+]
+
+{ #category : #statistics }
+DataSeries >> min [
+	"Returns the minimum value of the dataseries without including nils"
+
+	^ (self values reject: #isNil) min
+]
+
 { #category : #accessing }
 DataSeries >> mode [
 	"The mode of a set of values is the value that appears most often. "
@@ -755,6 +769,13 @@ DataSeries >> sortedDescending [
 	"Returns a sorted copy of the data series in descending order without rearranging the original data series"
 
 	^ self sorted: [ :a :b | a > b ]
+]
+
+{ #category : #statistics }
+DataSeries >> stdev [
+	"Returns the standard deviation of the dataseries without including nils"
+
+	^ (self values reject: #isNil) stdev
 ]
 
 { #category : #transformation }
