@@ -253,22 +253,21 @@ DataSeries >> countNonNils [
 { #category : #statistics }
 DataSeries >> crossTabulateWith: aSeries [
 	"A DataFrame is returned which is useful in quantitatively analyzing the relationship of values in one data series with the values in another data series"
-	
-	| df |
 
-	(self size = aSeries size)
-		ifFalse: [ SizeMismatch signal ].
+	| df |
+	self size = aSeries size ifFalse: [ SizeMismatch signal ].
 
 	df := DataFrame withRows:
-		(self uniqueValues sortIfPossible collect: [ :each1 |
-			aSeries uniqueValues sortIfPossible collect: [ :each2 |
-				(1 to: self size) inject: 0 into: [ :accum :i |
-					(((self atIndex: i) = each1) and: ((aSeries atIndex: i) = each2))
-						ifTrue: [ accum + 1 ]
-						ifFalse: [ accum ] ] ] ]).
+		      (self removeDuplicates sortIfPossible collect: [ :each1 |
+			       aSeries removeDuplicates sortIfPossible collect: [ :each2 |
+				       (1 to: self size) inject: 0 into: [ :accum :i |
+					       ((self atIndex: i) = each1 and:
+						        (aSeries atIndex: i) = each2)
+						       ifTrue: [ accum + 1 ]
+						       ifFalse: [ accum ] ] ] ]).
 
-	df rowNames: self uniqueValues sortIfPossible.
-	df columnNames: aSeries uniqueValues sortIfPossible.
+	df rowNames: self removeDuplicates sortIfPossible.
+	df columnNames: aSeries removeDuplicates sortIfPossible.
 	^ df
 ]
 
@@ -365,11 +364,17 @@ DataSeries >> groupBy: otherSeries aggregateUsing: aBlock as: aNewName [
 	| groupMap |
 	self size = otherSeries size ifFalse: [ SizeMismatch signal ].
 
-	groupMap := (otherSeries uniqueValues sortIfPossible collect: [ :e | e -> OrderedCollection new ]) asOrderedDictionary.
+	groupMap := (otherSeries removeDuplicates sortIfPossible collect: [
+		             :e | e -> OrderedCollection new ]) asOrderedDictionary.
 
-	1 to: self size do: [ :index | (groupMap at: (otherSeries atIndex: index)) add: (self atIndex: index) ].
+	1 to: self size do: [ :index |
+		(groupMap at: (otherSeries atIndex: index)) add:
+			(self atIndex: index) ].
 
-	^ self class withKeys: groupMap keys values: (groupMap values collect: aBlock) name: aNewName
+	^ self class
+		  withKeys: groupMap keys
+		  values: (groupMap values collect: aBlock)
+		  name: aNewName
 ]
 
 { #category : #grouping }
@@ -406,11 +411,15 @@ DataSeries >> groupByUniqueValuesAndAggregateUsing: aBlock as: aNewName [
 	"Group my values by unique values, aggregate them using aBlock, and answer a new DataSeries with theunique values as keys, aggregated values of myself as values, and aNewName as name"
 
 	| groupMap |
-	groupMap := (self uniqueValues sortIfPossible collect: [ :e | e -> OrderedCollection new ]) asOrderedDictionary.
+	groupMap := (self removeDuplicates sortIfPossible collect: [ :e |
+		             e -> OrderedCollection new ]) asOrderedDictionary.
 
 	self do: [ :each | (groupMap at: each) add: each ].
 
-	^ self class withKeys: groupMap keys values: (groupMap values collect: aBlock) name: aNewName
+	^ self class
+		  withKeys: groupMap keys
+		  values: (groupMap values collect: aBlock)
+		  name: aNewName
 ]
 
 { #category : #testing }
@@ -466,8 +475,10 @@ DataSeries >> isCategorical [
 { #category : #'categorical-numerical' }
 DataSeries >> isNumerical [
 	"Returns true if all values of the data series are numerical values and returns false otherwise"
-	
-	^ forcedIsNumerical ifNil: [ (self uniqueValues copyWithout: nil) allSatisfy: [ :each | each isNumber ] ]
+
+	^ forcedIsNumerical ifNil: [
+		  (self removeDuplicates copyWithout: nil) allSatisfy: [ :each |
+			  each isNumber ] ]
 ]
 
 { #category : #testing }
@@ -581,6 +592,13 @@ DataSeries >> removeAtIndex: aNumber [
 	"Removes element from the data series with index aNumber"
 
 	^ self removeAt: (self keys at: aNumber)
+]
+
+{ #category : #removing }
+DataSeries >> removeDuplicates [
+	"Answer the unique values of the receiver by removing duplicates"
+
+	^ self asSet asArray
 ]
 
 { #category : #removing }
@@ -801,9 +819,13 @@ DataSeries >> thirdQuartile [
 
 { #category : #accessing }
 DataSeries >> uniqueValues [
-	"Answer the unique values of the receiver"
-	
-	^ self asSet asArray
+
+	self
+		deprecated:
+		'The name of this method has been changed to removeDuplicates.'
+		transformWith:
+		'`@receiver uniqueValues' -> '`@receiver removeDuplicates'.
+	^ self removeDuplicates
 ]
 
 { #category : #statistics }
