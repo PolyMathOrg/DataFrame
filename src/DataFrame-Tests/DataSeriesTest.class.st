@@ -874,10 +874,11 @@ DataSeriesTest >> testCategoricalIsNotNumerical [
 
 { #category : #'tests - categorical' }
 DataSeriesTest >> testCategoricalUniqueValues [
+
 	| aSeries expected actual |
-	aSeries := DataSeries withKeys: #(a b c d e) values: #(z y y z x).
-	expected := #(x y z).
-	actual := aSeries uniqueValues.
+	aSeries := DataSeries withKeys: #( a b c d e ) values: #( z y y z x ).
+	expected := #( x y z ).
+	actual := aSeries removeDuplicates.
 	self assert: actual equals: expected
 ]
 
@@ -1678,6 +1679,20 @@ DataSeriesTest >> testRemoveAtIndex [
 	series removeAtIndex: 3.
 
 	self assert: series equals: expected
+]
+
+{ #category : #tests }
+DataSeriesTest >> testRemoveDuplicates [
+
+	| dataseries expected |
+	dataseries := DataSeries
+		              withKeys: #( 'A' 'B' 'C' 'D' 'E' )
+		              values: #( 7 1 1 1 3 )
+		              name: series.
+
+	expected := #( 7 1 3 ).
+
+	self assert: dataseries removeDuplicates equals: expected
 ]
 
 { #category : #'tests - removing' }
