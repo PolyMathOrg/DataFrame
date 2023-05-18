@@ -1600,6 +1600,18 @@ DataSeriesTest >> testMaxWithNils [
 	self assert: #( 1 nil 3 nil ) asDataSeries max equals: 3
 ]
 
+{ #category : #tests }
+DataSeriesTest >> testMedian [
+
+	self assert: #( 1 2 3 4 5 ) asDataSeries median equals: 3
+]
+
+{ #category : #tests }
+DataSeriesTest >> testMedianWithNils [
+
+	self assert: #( 1 2 nil 3 4 nil 5 ) asDataSeries median equals: 3
+]
+
 { #category : #'tests - statistics' }
 DataSeriesTest >> testMin [
 

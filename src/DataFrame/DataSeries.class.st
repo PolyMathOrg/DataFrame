@@ -167,11 +167,11 @@ DataSeries >> atIndex: aNumber transform: aBlock [
 	self at: key transform: aBlock
 ]
 
-{ #category : #information }
+{ #category : #statistics }
 DataSeries >> average [
-	"We do not count the nils"
+	"Returns the average without including nils"
 
-	^ (self values reject: #isNil) average
+	^ self removeNils values average
 ]
 
 { #category : #'data-types' }
@@ -524,14 +524,21 @@ DataSeries >> makeNumerical [
 DataSeries >> max [
 	"Returns the maximum value of the dataseries without including nils"
 
-	^ (self values reject: #isNil) max
+	^ self removeNils values max
+]
+
+{ #category : #statistics }
+DataSeries >> median [
+	"Returns the median without including nils"
+
+	^ self removeNils values median
 ]
 
 { #category : #statistics }
 DataSeries >> min [
 	"Returns the minimum value of the dataseries without including nils"
 
-	^ (self values reject: #isNil) min
+	^ self removeNils values min
 ]
 
 { #category : #accessing }
@@ -775,7 +782,7 @@ DataSeries >> sortedDescending [
 DataSeries >> stdev [
 	"Returns the standard deviation of the dataseries without including nils"
 
-	^ (self values reject: #isNil) stdev
+	^ self removeNils values stdev
 ]
 
 { #category : #transformation }
