@@ -1588,6 +1588,42 @@ DataSeriesTest >> testMathTan [
 	self assert: a tan closeTo: b
 ]
 
+{ #category : #'tests - statistics' }
+DataSeriesTest >> testMax [
+
+	self assert: #( 1 2 3 4 ) asDataSeries max equals: 4
+]
+
+{ #category : #'tests - statistics' }
+DataSeriesTest >> testMaxWithNils [
+
+	self assert: #( 1 nil 3 nil ) asDataSeries max equals: 3
+]
+
+{ #category : #tests }
+DataSeriesTest >> testMedian [
+
+	self assert: #( 1 2 3 4 5 ) asDataSeries median equals: 3
+]
+
+{ #category : #tests }
+DataSeriesTest >> testMedianWithNils [
+
+	self assert: #( 1 2 nil 3 4 nil 5 ) asDataSeries median equals: 3
+]
+
+{ #category : #'tests - statistics' }
+DataSeriesTest >> testMin [
+
+	self assert: #( 1 2 3 4 ) asDataSeries min equals: 1
+]
+
+{ #category : #'tests - statistics' }
+DataSeriesTest >> testMinWithNils [
+
+	self assert: #( nil 2 nil 4 ) asDataSeries min equals: 2
+]
+
 { #category : #'tests - creation' }
 DataSeriesTest >> testNewFrom [
 
@@ -2174,6 +2210,18 @@ DataSeriesTest >> testStatsZerothQuartile [
 DataSeriesTest >> testStatsZerothQuartileEqualsMin [
 
 	self assert: series zerothQuartile equals: series min
+]
+
+{ #category : #'tests - statistics' }
+DataSeriesTest >> testStdev [
+
+	self assert: #( 1 2 3 ) asDataSeries stdev equals: 1
+]
+
+{ #category : #tests }
+DataSeriesTest >> testStdevWithNils [
+
+	self assert: #( 1 nil 2 nil 3 ) asDataSeries stdev equals: 1
 ]
 
 { #category : #'tests - arithmetic' }
