@@ -1428,6 +1428,21 @@ DataFrame >> numberOfRows [
 	^ contents numberOfRows
 ]
 
+{ #category : #accessing }
+DataFrame >> numericalColumnNames [
+	"Returns the names of all numerical columns of the dataframe"
+
+	^ self columnNames select: [ :columnName |
+		  (self dataTypes at: columnName) includesBehavior: Number ]
+]
+
+{ #category : #accessing }
+DataFrame >> numericalColumns [
+	"Returns all numerical columns of the dataframe"
+
+	^ self columns: self numericalColumnNames
+]
+
 { #category : #splitjoin }
 DataFrame >> outerJoin: aDataFrame [
 	"Performs outer join on aDataFrame with rowNames as keys"
