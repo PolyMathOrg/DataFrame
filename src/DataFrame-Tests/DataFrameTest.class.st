@@ -2825,6 +2825,37 @@ DataFrameTest >> testNumberOfNils [
 	self assert: df numberOfNils equals: expected
 ]
 
+{ #category : #tests }
+DataFrameTest >> testNumericalColumnNames [
+
+	| dataFrame expected |
+	dataFrame := DataFrame withRows:
+		             #( #( Male 21 Argentina 94 ) #( Female 20 France 97 )
+		                #( Female 22 Spain 95 ) #( Male 24 Portugal 99 ) ).
+	dataFrame columnNames: #( Gender Age Country Score ).
+
+	expected := #( Age Score ) asOrderedCollection.
+
+	self assert: dataFrame numericalColumnNames equals: expected
+]
+
+{ #category : #tests }
+DataFrameTest >> testNumericalColumns [
+
+	| dataFrame expected |
+	dataFrame := DataFrame withRows:
+		             #( #( Male 21 Argentina 94 ) #( Female 20 France 97 )
+		                #( Female 22 Spain 95 ) #( Male 24 Portugal 99 ) ).
+	dataFrame columnNames: #( Gender Age Country Score ).
+
+	expected := DataFrame withRows:
+		            #( #( 21 94 ) #( 20 97 ) #( 22 95 ) #( 24 99 ) ).
+
+	expected columnNames: #( Age Score ).
+
+	self assert: dataFrame numericalColumns equals: expected
+]
+
 { #category : #splitjoin }
 DataFrameTest >> testOuterJoin [
 	| df2 expected |
