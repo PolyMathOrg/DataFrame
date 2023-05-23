@@ -1431,15 +1431,15 @@ DataFrame >> numberOfRows [
 DataFrame >> numericalColumnNames [
 	"Returns the names of all numerical columns of the dataframe"
 
-	^ self columnNames select: [ :columnName |
-		  (self dataTypes at: columnName) includesBehavior: Number ]
+	^ self numericalColumns collect: [ :column | column name ]
 ]
 
 { #category : #accessing }
 DataFrame >> numericalColumns [
 	"Returns all numerical columns of the dataframe"
 
-	^ self columns: self numericalColumnNames
+	^ self columns select: [ :column |
+		  (self dataTypes at: column name) includesBehavior: Number ]
 ]
 
 { #category : #splitjoin }
