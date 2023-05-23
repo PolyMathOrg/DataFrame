@@ -722,10 +722,9 @@ DataFrame >> columnNames: aCollection [
 
 { #category : #accessing }
 DataFrame >> columns [
-
 	"Returns a collection of all columns"
 
-	^ self asArrayOfColumns
+	^ (1 to: self numberOfColumns) collect: [ :j | self columnAt: j ]
 ]
 
 { #category : #accessing }
@@ -1054,9 +1053,7 @@ DataFrame >> hasNils [
 
 	| arrayOfColumns |
 	arrayOfColumns := self columns.
-	1 to: self numberOfColumns do: [ :column |
-		1 to: self numberOfRows do: [ :row |
-		((arrayOfColumns at: column) at: row) ifNil: [ ^ true ] ] ].
+	arrayOfColumns collect: [ :column | column hasNil ifTrue: [ ^ true ] ].
 	^ false
 ]
 

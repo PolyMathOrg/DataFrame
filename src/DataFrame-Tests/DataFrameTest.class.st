@@ -758,11 +758,10 @@ DataFrameTest >> testColumnTransformNotFound [
 DataFrameTest >> testColumns [
 
 	| expectedCollection |
-
-	expectedCollection := #(
-		(Barcelona Dubai London)
-	   (1.609 2.789 8.788)
-	   (true true false)).
+	expectedCollection := {
+		                      (df columnAt: 1).
+		                      (df columnAt: 2).
+		                      (df columnAt: 3) } asArray.
 
 	self assert: df columns equals: expectedCollection
 ]
