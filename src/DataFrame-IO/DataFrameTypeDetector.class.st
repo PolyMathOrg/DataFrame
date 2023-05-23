@@ -146,7 +146,7 @@ DataFrameTypeDetector >> detectColumnTypeAndConvert: anArray [
 { #category : #'public API' }
 DataFrameTypeDetector >> detectTypesAndConvert: aDataFrame [
 
-	aDataFrame columns with: aDataFrame columnNames do: [ :column :columnName |
+	aDataFrame asArrayOfColumns with: aDataFrame columnNames do: [ :column :columnName |
 		| thisColumnType |
 		"Get the user given column type for this column name and if it wasn't
 			 given then use the default type detection"

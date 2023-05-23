@@ -543,7 +543,7 @@ DataFrame >> average [
 { #category : #'data-types' }
 DataFrame >> calculateDataTypes [
 
-	self columns doWithIndex: [ :column :i | self dataTypes at: (self columnNames at: i) put: column calculateDataType ]
+	self asArrayOfColumns doWithIndex: [ :column :i | self dataTypes at: (self columnNames at: i) put: column calculateDataType ]
 ]
 
 { #category : #comparing }
@@ -722,10 +722,9 @@ DataFrame >> columnNames: aCollection [
 
 { #category : #accessing }
 DataFrame >> columns [
-
 	"Returns a collection of all columns"
 
-	^ self asArrayOfColumns
+	^ (1 to: self numberOfColumns) collect: [ :j | self columnAt: j ]
 ]
 
 { #category : #accessing }
@@ -1053,7 +1052,7 @@ DataFrame >> hasNils [
 	"Returns true if there is atleast one nil value in the data frame. Returns false if there are no nil values in the dataframe"
 
 	| arrayOfColumns |
-	arrayOfColumns := self columns.
+	arrayOfColumns := self asArrayOfColumns.
 	1 to: self numberOfColumns do: [ :column |
 		1 to: self numberOfRows do: [ :row |
 		((arrayOfColumns at: column) at: row) ifNil: [ ^ true ] ] ].
@@ -1397,7 +1396,7 @@ DataFrame >> normalized [
 		'DataFrame will remove the dependency over normalization in the next version. You can use pharo-ai/data-preprocessing project to normalize your DataFrame and even more!'.
 	normalizers := (1 to: self anyOne size) collect: [ :e | self class defaultNormalizerClass new ].
 
-	normalizedColumns := self columns with: normalizers collect: [ :col :normalizer | col normalizedUsing: normalizer ].
+	normalizedColumns := self asArrayOfColumns with: normalizers collect: [ :col :normalizer | col normalizedUsing: normalizer ].
 
 	^ self class withColumns: normalizedColumns columnNames: self columnNames
 ]
