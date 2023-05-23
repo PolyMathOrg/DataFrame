@@ -106,10 +106,10 @@ DataFrameCsvReaderTest >> testReadFromString [
 	actualDataFrame := DataFrameCsvReader new readFromString: TestCsvStrings commaCsvString.
 
 	self
-		assertCollection: actualDataFrame columns first
+		assertCollection: actualDataFrame asArrayOfColumns first
 		hasSameElements: #('1:10 am' '1:30 am' '1:50 am' '2:10 am' '2:30 am').
 	self
-		assertCollection: actualDataFrame columns last
+		assertCollection: actualDataFrame asArrayOfColumns last
 		hasSameElements: #('rain' 'rain' 'snow' '-' 'rain')
 ]
 
