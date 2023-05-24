@@ -943,47 +943,25 @@ DataFrame >> defaultHeadTailSize [
 
 { #category : #statistics }
 DataFrame >> describe [
-	"method to statistically describe a numerical dataframe"
+	"Answer another data frame with statistics describing the columns of this data frame"
 
-	| nCol nRow describeDF col count dtype |
-	nCol := self numberOfColumns.
-	nRow := self numberOfRows.
-	describeDF := self class new: nCol @ 9.
-	describeDF columnNames:
-		#( 'count' 'mean' 'std' 'min' '25%' '50%' '75%' 'max' 'dtype' ).
-	describeDF rowNames: self columnNames.
-	1 to: nCol do: [ :i |
-		| mean std mini fQ sQ tQ maxi |
-		col := self columnAt: i.
-		count := col countNonNils.
-		count = 0 ifFalse: [
-			col := col removeNils.
-			mean := col average.
-			std := col stdev.
-			mini := col min.
-			fQ := col firstQuartile.
-			sQ := col secondQuartile.
-			tQ := col thirdQuartile.
-			maxi := col max ].
-		dtype := col calculateDataType.
-		describeDF at: i at: 1 put: count.
+	| content |
+	content := self numericalColumns collect: [ :column |
+		           {
+			           column countNonNils.
+			           column average.
+			           column stdev.
+			           column min.
+			           column firstQuartile.
+			           column secondQuartile.
+			           column thirdQuartile.
+			           column max.
+			           column calculateDataType } ].
 
-		describeDF at: i at: 2 put: mean.
-
-		describeDF at: i at: 3 put: std.
-
-		describeDF at: i at: 4 put: mini.
-
-		describeDF at: i at: 5 put: fQ.
-
-		describeDF at: i at: 6 put: sQ.
-
-		describeDF at: i at: 7 put: tQ.
-
-		describeDF at: i at: 8 put: maxi.
-
-		describeDF at: i at: 9 put: dtype ].
-	^ describeDF
+	^ self class
+		  withRows: content
+		  rowNames: self numericalColumnNames
+		  columnNames: #( count mean std min '25%' '50%' '75%' max dtype )
 ]
 
 { #category : #accessing }
