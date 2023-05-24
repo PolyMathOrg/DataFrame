@@ -2833,7 +2833,7 @@ DataFrameTest >> testNumericalColumnNames [
 		                #( Female 22 Spain 95 ) #( Male 24 Portugal 99 ) ).
 	dataFrame columnNames: #( Gender Age Country Score ).
 
-	expected := #( Age Score ).
+	expected := #( Age Score ) asOrderedCollection.
 
 	self assert: dataFrame numericalColumnNames equals: expected
 ]

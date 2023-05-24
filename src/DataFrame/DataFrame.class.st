@@ -1431,7 +1431,8 @@ DataFrame >> numberOfRows [
 DataFrame >> numericalColumnNames [
 	"Returns the names of all numerical columns of the dataframe"
 
-	^ self numericalColumns collect: [ :column | column name ]
+	^ self columnNames select: [ :columnName |
+		  (self dataTypes at: columnName) includesBehavior: Number ]
 ]
 
 { #category : #accessing }
