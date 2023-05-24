@@ -543,7 +543,7 @@ DataFrame >> average [
 { #category : #'data-types' }
 DataFrame >> calculateDataTypes [
 
-	self columns doWithIndex: [ :column :i | self dataTypes at: (self columnNames at: i) put: column calculateDataType ]
+	self asArrayOfColumns doWithIndex: [ :column :i | self dataTypes at: (self columnNames at: i) put: column calculateDataType ]
 ]
 
 { #category : #comparing }
@@ -722,10 +722,9 @@ DataFrame >> columnNames: aCollection [
 
 { #category : #accessing }
 DataFrame >> columns [
-
 	"Returns a collection of all columns"
 
-	^ self asArrayOfColumns
+	^ (1 to: self numberOfColumns) collect: [ :j | self columnAt: j ]
 ]
 
 { #category : #accessing }
@@ -1098,7 +1097,7 @@ DataFrame >> hasNils [
 	"Returns true if there is atleast one nil value in the data frame. Returns false if there are no nil values in the dataframe"
 
 	| arrayOfColumns |
-	arrayOfColumns := self columns.
+	arrayOfColumns := self asArrayOfColumns.
 	1 to: self numberOfColumns do: [ :column |
 		1 to: self numberOfRows do: [ :row |
 		((arrayOfColumns at: column) at: row) ifNil: [ ^ true ] ] ].
@@ -1442,7 +1441,7 @@ DataFrame >> normalized [
 		'DataFrame will remove the dependency over normalization in the next version. You can use pharo-ai/data-preprocessing project to normalize your DataFrame and even more!'.
 	normalizers := (1 to: self anyOne size) collect: [ :e | self class defaultNormalizerClass new ].
 
-	normalizedColumns := self columns with: normalizers collect: [ :col :normalizer | col normalizedUsing: normalizer ].
+	normalizedColumns := self asArrayOfColumns with: normalizers collect: [ :col :normalizer | col normalizedUsing: normalizer ].
 
 	^ self class withColumns: normalizedColumns columnNames: self columnNames
 ]
@@ -1471,6 +1470,22 @@ DataFrame >> numberOfRows [
 	"Returns the number of rows of a DataFrame"
 
 	^ contents numberOfRows
+]
+
+{ #category : #accessing }
+DataFrame >> numericalColumnNames [
+	"Returns the names of all numerical columns of the dataframe"
+
+	^ self columnNames select: [ :columnName |
+		  (self dataTypes at: columnName) includesBehavior: Number ]
+]
+
+{ #category : #accessing }
+DataFrame >> numericalColumns [
+	"Returns all numerical columns of the dataframe"
+
+	^ self columns select: [ :column |
+		  (self dataTypes at: column name) includesBehavior: Number ]
 ]
 
 { #category : #splitjoin }
@@ -1836,6 +1851,18 @@ DataFrame >> replaceNilsWithMode [
 		1 to: self numberOfRows do: [ :j |
 		(self at: j at: i) ifNil: [ self at: j at: i put: (modeOfColumn ifNil: [ modeOfColumn := ((self columnAt: i) select: [ :ele | ele isNotNil ]) mode ]) ] ].
 		modeOfColumn := nil ]
+]
+
+{ #category : #replacing }
+DataFrame >> replaceNilsWithNextRowValue [
+
+	| value numberOfRows |
+	numberOfRows := self numberOfRows.
+	1 to: self numberOfColumns do: [ :i |
+		self numberOfRows to: 1 by: -1 do: [ :j |
+			j < numberOfRows ifTrue: [
+				(self at: j at: i) ifNil: [ self at: j at: i put: value ] ].
+			value := self at: j at: i ] ]
 ]
 
 { #category : #replacing }

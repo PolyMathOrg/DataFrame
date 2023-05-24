@@ -758,11 +758,10 @@ DataFrameTest >> testColumnTransformNotFound [
 DataFrameTest >> testColumns [
 
 	| expectedCollection |
-
-	expectedCollection := #(
-		(Barcelona Dubai London)
-	   (1.609 2.789 8.788)
-	   (true true false)).
+	expectedCollection := {
+		                      (df columnAt: 1).
+		                      (df columnAt: 2).
+		                      (df columnAt: 3) } asArray.
 
 	self assert: df columns equals: expectedCollection
 ]
@@ -2845,6 +2844,36 @@ DataFrameTest >> testNumberOfNils [
 	self assert: df numberOfNils equals: expected
 ]
 
+{ #category : #tests }
+DataFrameTest >> testNumericalColumnNames [
+
+	| dataFrame expected |
+	dataFrame := DataFrame withRows:
+		             #( #( Male 21 Argentina 94 ) #( Female 20 France 97 )
+		                #( Female 22 Spain 95 ) #( Male 24 Portugal 99 ) ).
+	dataFrame columnNames: #( Gender Age Country Score ).
+
+	expected := #( Age Score ) asOrderedCollection.
+
+	self assert: dataFrame numericalColumnNames equals: expected
+]
+
+{ #category : #tests }
+DataFrameTest >> testNumericalColumns [
+
+	| dataFrame expectedCollection |
+	dataFrame := DataFrame withRows:
+		             #( #( Male 21 Argentina 94 ) #( Female 20 France 97 )
+		                #( Female 22 Spain 95 ) #( Male 24 Portugal 99 ) ).
+	dataFrame columnNames: #( Gender Age Country Score ).
+
+	expectedCollection := {
+		                      (dataFrame columnAt: 2).
+		                      (dataFrame columnAt: 4) } asArray.
+
+	self assert: dataFrame numericalColumns equals: expectedCollection
+]
+
 { #category : #splitjoin }
 DataFrameTest >> testOuterJoin [
 	| df2 expected |
@@ -3887,6 +3916,30 @@ DataFrameTest >> testReplaceNilsWithMode [
 	expected columnNames: #( Column1 Column2 Column3 ).
 
 	self assert: df replaceNilsWithMode equals: expected
+]
+
+{ #category : #tests }
+DataFrameTest >> testReplaceNilsWithNextRowValue [
+
+	|expected|
+
+	df := DataFrame withRows: #(
+		(7 1 nil)
+   		(8 nil 3)
+   		(nil 2 nil)).
+
+	df rowNames: #(A B C).
+	df columnNames: #(Column1 Column2 Column3).
+
+	expected := DataFrame withRows: #(
+		(7 1 3)
+   		(8 2 3)
+   		(nil 2 nil)).
+
+	expected rowNames: #(A B C).
+	expected columnNames: #(Column1 Column2 Column3).
+
+	self assert: (df replaceNilsWithNextRowValue) equals: expected
 ]
 
 { #category : #replacing }

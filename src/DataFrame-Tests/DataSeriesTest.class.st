@@ -874,10 +874,11 @@ DataSeriesTest >> testCategoricalIsNotNumerical [
 
 { #category : #'tests - categorical' }
 DataSeriesTest >> testCategoricalUniqueValues [
+
 	| aSeries expected actual |
-	aSeries := DataSeries withKeys: #(a b c d e) values: #(z y y z x).
-	expected := #(x y z).
-	actual := aSeries uniqueValues.
+	aSeries := DataSeries withKeys: #( a b c d e ) values: #( z y y z x ).
+	expected := #( x y z ).
+	actual := aSeries removeDuplicates.
 	self assert: actual equals: expected
 ]
 
@@ -1587,6 +1588,42 @@ DataSeriesTest >> testMathTan [
 	self assert: a tan closeTo: b
 ]
 
+{ #category : #'tests - statistics' }
+DataSeriesTest >> testMax [
+
+	self assert: #( 1 2 3 4 ) asDataSeries max equals: 4
+]
+
+{ #category : #'tests - statistics' }
+DataSeriesTest >> testMaxWithNils [
+
+	self assert: #( 1 nil 3 nil ) asDataSeries max equals: 3
+]
+
+{ #category : #tests }
+DataSeriesTest >> testMedian [
+
+	self assert: #( 1 2 3 4 5 ) asDataSeries median equals: 3
+]
+
+{ #category : #tests }
+DataSeriesTest >> testMedianWithNils [
+
+	self assert: #( 1 2 nil 3 4 nil 5 ) asDataSeries median equals: 3
+]
+
+{ #category : #'tests - statistics' }
+DataSeriesTest >> testMin [
+
+	self assert: #( 1 2 3 4 ) asDataSeries min equals: 1
+]
+
+{ #category : #'tests - statistics' }
+DataSeriesTest >> testMinWithNils [
+
+	self assert: #( nil 2 nil 4 ) asDataSeries min equals: 2
+]
+
 { #category : #'tests - creation' }
 DataSeriesTest >> testNewFrom [
 
@@ -1678,6 +1715,20 @@ DataSeriesTest >> testRemoveAtIndex [
 	series removeAtIndex: 3.
 
 	self assert: series equals: expected
+]
+
+{ #category : #tests }
+DataSeriesTest >> testRemoveDuplicates [
+
+	| dataseries expected |
+	dataseries := DataSeries
+		              withKeys: #( 'A' 'B' 'C' 'D' 'E' )
+		              values: #( 7 1 1 1 3 )
+		              name: series.
+
+	expected := #( 7 1 3 ).
+
+	self assert: dataseries removeDuplicates equals: expected
 ]
 
 { #category : #'tests - removing' }
@@ -2159,6 +2210,18 @@ DataSeriesTest >> testStatsZerothQuartile [
 DataSeriesTest >> testStatsZerothQuartileEqualsMin [
 
 	self assert: series zerothQuartile equals: series min
+]
+
+{ #category : #'tests - statistics' }
+DataSeriesTest >> testStdev [
+
+	self assert: #( 1 2 3 ) asDataSeries stdev equals: 1
+]
+
+{ #category : #tests }
+DataSeriesTest >> testStdevWithNils [
+
+	self assert: #( 1 nil 2 nil 3 ) asDataSeries stdev equals: 1
 ]
 
 { #category : #'tests - arithmetic' }
