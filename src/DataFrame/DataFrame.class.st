@@ -1439,7 +1439,8 @@ DataFrame >> numericalColumnNames [
 DataFrame >> numericalColumns [
 	"Returns all numerical columns of the dataframe"
 
-	^ self columns: self numericalColumnNames
+	^ self columns select: [ :column |
+		  (self dataTypes at: column name) includesBehavior: Number ]
 ]
 
 { #category : #splitjoin }

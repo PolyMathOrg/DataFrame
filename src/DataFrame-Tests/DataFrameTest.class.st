@@ -2841,18 +2841,17 @@ DataFrameTest >> testNumericalColumnNames [
 { #category : #tests }
 DataFrameTest >> testNumericalColumns [
 
-	| dataFrame expected |
+	| dataFrame expectedCollection |
 	dataFrame := DataFrame withRows:
 		             #( #( Male 21 Argentina 94 ) #( Female 20 France 97 )
 		                #( Female 22 Spain 95 ) #( Male 24 Portugal 99 ) ).
 	dataFrame columnNames: #( Gender Age Country Score ).
 
-	expected := DataFrame withRows:
-		            #( #( 21 94 ) #( 20 97 ) #( 22 95 ) #( 24 99 ) ).
+	expectedCollection := {
+		                      (dataFrame columnAt: 2).
+		                      (dataFrame columnAt: 4) } asArray.
 
-	expected columnNames: #( Age Score ).
-
-	self assert: dataFrame numericalColumns equals: expected
+	self assert: dataFrame numericalColumns equals: expectedCollection
 ]
 
 { #category : #splitjoin }
