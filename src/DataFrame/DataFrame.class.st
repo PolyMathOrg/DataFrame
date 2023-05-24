@@ -941,6 +941,29 @@ DataFrame >> defaultHeadTailSize [
 	^ 5
 ]
 
+{ #category : #statistics }
+DataFrame >> describe [
+	"Answer another data frame with statistics describing the columns of this data frame"
+
+	| content |
+	content := self numericalColumns collect: [ :column |
+		           {
+			           column countNonNils.
+			           column average.
+			           column stdev.
+			           column min.
+			           column firstQuartile.
+			           column secondQuartile.
+			           column thirdQuartile.
+			           column max.
+			           column calculateDataType } ].
+
+	^ self class
+		  withRows: content
+		  rowNames: self numericalColumnNames
+		  columnNames: #( count mean std min '25%' '50%' '75%' max dtype )
+]
+
 { #category : #accessing }
 DataFrame >> dimensions [
 	"Returns the number of rows and number of columns in a DataFrame"

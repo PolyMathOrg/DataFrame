@@ -1553,6 +1553,26 @@ DataFrameTest >> testDataTypesWithNil [
 ]
 
 { #category : #tests }
+DataFrameTest >> testDescribe [
+
+	| dataFrame expected |
+	dataFrame := DataFrame
+		             withRows: #( #( 1 1 ) #( 2 nil ) #( 3 1 ) )
+		             columnNames: #( 'A' 'B' ).
+
+	expected := DataFrame withRows:
+		            #( #( 3 2 1 1 1 2 3 3 SmallInteger )
+		               #( 2 1 0 1 1 1 1 1 SmallInteger ) ).
+
+	expected rowNames: #( 'A' 'B' ).
+	expected columnNames:
+		#( 'count' 'mean' 'std' 'min' '25%' '50%' '75%' 'max' 'dtype' ).
+	expected at: 1 at: 9 put: SmallInteger.
+	expected at: 2 at: 9 put: SmallInteger.
+	self assert: dataFrame describe equals: expected
+]
+
+{ #category : #tests }
 DataFrameTest >> testDetect [
 	| actual expected |
 
