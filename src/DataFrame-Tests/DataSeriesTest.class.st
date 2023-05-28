@@ -17,6 +17,54 @@ DataSeriesTest >> setUp [
 	series := DataSeries withKeys: keyArray values: #( 3 7 6 20 8 9 8 10 15 13 16 ) name: 'ExampleSeries'
 ]
 
+{ #category : #'tests - statistics' }
+DataSeriesTest >> testArgmax [
+
+	| records |
+	
+	records := DataSeries
+		withKeys: #(2017 2018 2019 2020)
+		values: #(13 42 25 15).
+		
+	self assert: records argmax equals: 2018
+]
+
+{ #category : #'tests - statistics' }
+DataSeriesTest >> testArgmaxWithNils [
+
+	| records |
+	
+	records := DataSeries
+		withKeys: #(2017 2018 2019 2020)
+		values: #(13 nil 25 15).
+		
+	self assert: records argmax equals: 2019
+]
+
+{ #category : #'tests - statistics' }
+DataSeriesTest >> testArgmin [
+
+	| records |
+	
+	records := DataSeries
+		withKeys: #(2017 2018 2019 2020)
+		values: #(13 42 25 15).
+		
+	self assert: records argmin equals: 2017
+]
+
+{ #category : #'tests - statistics' }
+DataSeriesTest >> testArgminWithNils [
+
+	| records |
+	
+	records := DataSeries
+		withKeys: #(2017 2018 2019 2020)
+		values: #(nil 42 25 15).
+		
+	self assert: records argmin equals: 2020
+]
+
 { #category : #'tests - arithmetic' }
 DataSeriesTest >> testArithmeticsAddArrayToSeries [
 

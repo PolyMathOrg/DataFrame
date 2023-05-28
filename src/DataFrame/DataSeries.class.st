@@ -111,6 +111,20 @@ DataSeries >> adaptToCollection: rcvr andSend: selector [
 			  ifFalse: [ rcvrElement perform: selector with: myElement ] ]
 ]
 
+{ #category : #statistics }
+DataSeries >> argmax [
+	"Returns the key which corresponds to the maximum value of the dataseries"
+
+	^ self keyAtValue: self max
+]
+
+{ #category : #statistics }
+DataSeries >> argmin [
+	"Returns the key which corresponds to the minimum value of the dataseries"
+
+	^ self keyAtValue: self min
+]
+
 { #category : #converting }
 DataSeries >> asDataFrame [
 	"Converts a data series to a data frame with 1 column. The values in the column of the data frame are the values of the data series. The row names of this data frame are the keys of the data series. The column name of the data frame is same as the name of the data series"
