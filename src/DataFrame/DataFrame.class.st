@@ -1668,7 +1668,7 @@ DataFrame >> removeColumnsWithNilsAtRowNamed: rowName [
 ]
 
 { #category : #removing }
-DataFrame >> removeDuplicateRows [
+DataFrame >> removeDuplicatedRows [
 	"Removes duplicate rows of a dataframe except the first unique row"
 
 	| numberOfRows nextRowIndex currentRow row aSet |

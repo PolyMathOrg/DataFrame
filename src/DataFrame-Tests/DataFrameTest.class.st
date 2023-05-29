@@ -3695,7 +3695,7 @@ DataFrameTest >> testRemoveColumnsWithNilsAtRowOutOfRange [
 ]
 
 { #category : #tests }
-DataFrameTest >> testRemoveDuplicateRows [
+DataFrameTest >> testRemoveDuplicatedRows [
 
 |dataFrame|
 
