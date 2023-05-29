@@ -3709,7 +3709,7 @@ dataFrame := DataFrame withRows: #(
 	dataFrame rowNames: #(A B C D E).
 	dataFrame columnNames: #(City Population BeenThere).
 	
-dataFrame removeDuplicateRows.
+dataFrame removeDuplicatedRows.
 self assert: df equals: dataFrame.
 	
 ]
