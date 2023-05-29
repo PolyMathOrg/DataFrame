@@ -1668,6 +1668,22 @@ DataFrame >> removeColumnsWithNilsAtRowNamed: rowName [
 ]
 
 { #category : #removing }
+DataFrame >> removeDuplicateRows [
+	"Removes duplicate rows of a dataframe except the first unique row"
+
+	| numberOfRows nextRowIndex currentRow row aSet |
+	aSet := Set new.
+	numberOfRows := self numberOfRows.
+	1 to: numberOfRows do: [ :currentRowIndex |
+		currentRow := self rowAt: currentRowIndex.
+		nextRowIndex := currentRowIndex + 1.
+		nextRowIndex to: numberOfRows do: [ :index |
+			row := self rowAt: index.
+			row values = currentRow values ifTrue: [ aSet add: index ] ] ].
+	^ self removeRowsAt: aSet
+]
+
+{ #category : #removing }
 DataFrame >> removeRow: rowName [
 	"Removes the row named rowName from a data frame"
 

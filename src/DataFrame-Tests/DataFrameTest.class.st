@@ -3694,6 +3694,26 @@ DataFrameTest >> testRemoveColumnsWithNilsAtRowOutOfRange [
 	self should: [ df removeColumnsWithNilsAtRow: 100 ] raise: SubscriptOutOfBounds
 ]
 
+{ #category : #tests }
+DataFrameTest >> testRemoveDuplicateRows [
+
+|dataFrame|
+
+dataFrame := DataFrame withRows: #(
+		(Barcelona 1.609 true)
+   		(Dubai 2.789 true)
+   		(London 8.788 false)
+		(Barcelona 1.609 true)
+		(London 8.788 false)).
+
+	dataFrame rowNames: #(A B C D E).
+	dataFrame columnNames: #(City Population BeenThere).
+	
+dataFrame removeDuplicateRows.
+self assert: df equals: dataFrame.
+	
+]
+
 { #category : #removing }
 DataFrameTest >> testRemoveRow [
 
