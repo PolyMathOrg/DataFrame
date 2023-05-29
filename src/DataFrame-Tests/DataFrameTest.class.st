@@ -296,6 +296,47 @@ DataFrameTest >> testAddRowSizeMismatch [
 ]
 
 { #category : #tests }
+DataFrameTest >> testApplyElementwise [
+
+	| dataFrame expected |
+	dataFrame := DataFrame
+		             withRows:
+		             #( #( 1.1 1.7 1.3 ) 
+							#( 2.2 2.4 2.8 ) 
+							#( 3.5 3.2 3.3 ) )
+		             rowNames: #( A B C )
+		             columnNames: #( 1 2 3 ).
+	expected := DataFrame
+		            withRows: #( #( 1 1 1 ) 
+										#( 2 2 2 ) 
+										#( 3 3 3 ) )
+		            rowNames: #( A B C )
+		            columnNames: #( 1 2 3 ).
+
+	dataFrame applyElementwise: [ :value | value floor ].
+	self assert: dataFrame equals: expected
+]
+
+{ #category : #tests }
+DataFrameTest >> testApplyToAllColumns [
+
+	| dataFrame actual expected |
+	dataFrame := DataFrame
+		             withRows: #( #( 1 4 7 ) 
+										 #( 2 5 8 ) 
+										 #( 3 6 9 ) )
+		             rowNames: #( A B C )
+		             columnNames: #( 1 2 3 ).
+	expected := DataSeries
+		            withKeys: #( 1 2 3 )
+		            values: #( 3 6 9 )
+		            name: 'max'.
+
+	actual := dataFrame applyToAllColumns: #max.
+	self assert: actual equals: expected
+]
+
+{ #category : #tests }
 DataFrameTest >> testAsArray [
 
 	self testAsArrayOfRows
@@ -326,6 +367,20 @@ DataFrameTest >> testAsArrayOfRows [
 	}.
 
 	self assert: df asArrayOfRows equals: (expected collect: [ :e | e asArray ])
+]
+
+{ #category : #tests }
+DataFrameTest >> testAsArrayOfRowsWithName [
+
+	| expected |
+	expected := {
+		            #( 'A' 'Barcelona' 1.609 true ) asArray.
+		            #( 'B' 'Dubai' 2.789 true ) asArray.
+		            #( 'C' 'London' 8.788 false ) asArray }.
+
+	self
+		assert: df asArrayOfRowsWithName
+		equals: expected asOrderedCollection
 ]
 
 { #category : #tests }
@@ -1005,6 +1060,22 @@ DataFrameTest >> testCopy2 [
 
 	self assert: df numberOfColumns equals: 4.
 	self assert: copy numberOfColumns equals: 3
+]
+
+{ #category : #tests }
+DataFrameTest >> testCopyReplaceIn2DCollectionBy [
+
+	| expected |
+	expected := DataFrame withRows:
+		            #( #( Barcelona 1.609 true ) 
+						   #( Dubai 2.789 true )
+		               #( London 8.788 true ) ).
+
+	expected rowNames: #( A B C ).
+	expected columnNames: #( City Population BeenThere ).
+
+	df copyReplace: false in2DCollectionBy: #( true true true ).
+	self assert: df equals: expected
 ]
 
 { #category : #tests }
@@ -1716,6 +1787,18 @@ DataFrameTest >> testFindAllIndicesOfAtColumnFloat [
 	self assert: (df findAllIndicesOf: 2.789 atColumn: 'Population') equals: #(2 4) asOrderedCollection
 ]
 
+{ #category : #tests }
+DataFrameTest >> testFirst [
+
+	| actual expected |
+	expected := DataSeries
+		            withKeys: #( 'City' 'Population' 'BeenThere' )
+		            values: #( 'Barcelona' 1.609 true )
+		            name: 'A'.
+	actual := df first.
+	self assert: actual equals: expected
+]
+
 { #category : #replacing }
 DataFrameTest >> testHasNils [
 
@@ -1911,6 +1994,35 @@ Data columns (total 3 columns):
 2 | 2 | 5 non-nil | Boolean
 3 | 3 | 5 non-nil | Object
 '
+]
+
+{ #category : #tests }
+DataFrameTest >> testInitializeColumns [
+
+	| anArrayOfColumns dataFrame |
+	anArrayOfColumns := #( #( 'Barcelona' 'Dubai' 'London' )
+	                       #( 1.609 2.789 8.788 ) #( true true false ) ).
+	dataFrame := DataFrame new.
+	dataFrame initializeColumns: anArrayOfColumns.
+	dataFrame rowNames: #( 'A' 'B' 'C' ).
+	dataFrame columnNames: #( 'City' 'Population' 'BeenThere' ).
+
+	self assert: dataFrame equals: df
+]
+
+{ #category : #tests }
+DataFrameTest >> testInitializeRows [
+
+	| anArrayOfRows dataFrame |
+	anArrayOfRows := #( #( 'Barcelona' 1.609 true )
+	                    #( 'Dubai' 2.789 true ) 
+							  #( 'London' 8.788 false ) ).
+	dataFrame := DataFrame new.
+	dataFrame initializeRows: anArrayOfRows.
+	dataFrame rowNames: #( 'A' 'B' 'C' ).
+	dataFrame columnNames: #( 'City' 'Population' 'BeenThere' ).
+
+	self assert: dataFrame equals: df
 ]
 
 { #category : #tests }
