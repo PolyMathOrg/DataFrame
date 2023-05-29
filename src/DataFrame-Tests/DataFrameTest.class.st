@@ -301,15 +301,11 @@ DataFrameTest >> testApplyElementwise [
 	| dataFrame expected |
 	dataFrame := DataFrame
 		             withRows:
-		             #( #( 1.1 1.7 1.3 ) 
-							#( 2.2 2.4 2.8 ) 
-							#( 3.5 3.2 3.3 ) )
+		             #( #( 1.1 1.7 1.3 ) #( 2.2 2.4 2.8 ) #( 3.5 3.2 3.3 ) )
 		             rowNames: #( A B C )
 		             columnNames: #( 1 2 3 ).
 	expected := DataFrame
-		            withRows: #( #( 1 1 1 ) 
-										#( 2 2 2 ) 
-										#( 3 3 3 ) )
+		            withRows: #( #( 1 1 1 ) #( 2 2 2 ) #( 3 3 3 ) )
 		            rowNames: #( A B C )
 		            columnNames: #( 1 2 3 ).
 
@@ -322,9 +318,7 @@ DataFrameTest >> testApplyToAllColumns [
 
 	| dataFrame actual expected |
 	dataFrame := DataFrame
-		             withRows: #( #( 1 4 7 ) 
-										 #( 2 5 8 ) 
-										 #( 3 6 9 ) )
+		             withRows: #( #( 1 4 7 ) #( 2 5 8 ) #( 3 6 9 ) )
 		             rowNames: #( A B C )
 		             columnNames: #( 1 2 3 ).
 	expected := DataSeries
@@ -1067,8 +1061,7 @@ DataFrameTest >> testCopyReplaceIn2DCollectionBy [
 
 	| expected |
 	expected := DataFrame withRows:
-		            #( #( Barcelona 1.609 true ) 
-						   #( Dubai 2.789 true )
+		            #( #( Barcelona 1.609 true ) #( Dubai 2.789 true )
 		               #( London 8.788 true ) ).
 
 	expected rowNames: #( A B C ).
@@ -2015,8 +2008,7 @@ DataFrameTest >> testInitializeRows [
 
 	| anArrayOfRows dataFrame |
 	anArrayOfRows := #( #( 'Barcelona' 1.609 true )
-	                    #( 'Dubai' 2.789 true ) 
-							  #( 'London' 8.788 false ) ).
+	                    #( 'Dubai' 2.789 true ) #( 'London' 8.788 false ) ).
 	dataFrame := DataFrame new.
 	dataFrame initializeRows: anArrayOfRows.
 	dataFrame rowNames: #( 'A' 'B' 'C' ).
