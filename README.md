@@ -58,34 +58,63 @@ weather := DataFrame withRows: #(
   (-2.3 false -)
   (3.2 true rain)).
 ```
+|       | 1    | 2     | 3    |
+|-------|------|-------|------|
+| **1** | 2.4  | true  | rain |
+| **2** | 0.5  | true  | rain |
+| **3** | -1.2 | true  | snow |
+| **4** | -2.3 | false | -    |
+| **5** | 3.2  | true  | rain |
+
 
 ### Removing the third row of the data frame
 
 ```Smalltalk
 weather removeRowAt: 3.
 ```
-<img width="700" src="img/weatherDfRemoveRow.png">
+|       | 1    | 2     | 3    |
+|-------|------|-------|------|
+| **1** | 2.4  | true  | rain |
+| **2** | 0.5  | true  | rain |
+| **4** | -2.3 | false | -    |
+| **5** | 3.2  | true  | rain |
 
 ### Adding a row to the data frame
 
 ```Smalltalk
-weather addRow: #(-1.2 true snow) named:''.
+weather addRow: #(-1.2 true snow) named: 6.
 ```
-<img width="700" src="img/weatherDfAddRow.png">
+|       | 1    | 2     | 3    |
+|-------|------|-------|------|
+| **1** | 2.4  | true  | rain |
+| **2** | 0.5  | true  | rain |
+| **4** | -2.3 | false | -    |
+| **5** | 3.2  | true  | rain |
+| **6** | -1.2 | true  | snow |
 
 ### Replacing the data in the first row and third column with 'snow'
 
 ```Smalltalk
 weather at:1 at:3 put:#snow.
 ```
-<img width="700" src="img/weatherDfReplaceData.png">
+|       | 1    | 2     | 3    |
+|-------|------|-------|------|
+| **1** | 2.4  | true  | snow |
+| **2** | 0.5  | true  | rain |
+| **4** | -2.3 | false | -    |
+| **5** | 3.2  | true  | rain |
+| **6** | -1.2 | true  | snow |
 
 ### Transpose of the data frame
 
 ```Smalltalk
 weather transposed.
 ```
-<img width="700" src="img/weatherDfTranspose.png">
+|       | 1    | 2    | 4     | 5    | 6    |
+|-------|------|------|-------|------|------|
+| **1** | 2.4  | 0.5  | -2.3  | 3.2  | -1.2 |
+| **2** | true | true | false | true | true |
+| **3** | snow | rain | -     | rain | snow |
 
 ## DataFrame Booklet
 
