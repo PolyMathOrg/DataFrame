@@ -122,4 +122,4 @@ weather transposed.
 
 [![DataFrame Booklet](img/booklet.png)](https://github.com/SquareBracketAssociates/Booklet-DataFrame)
 
-2. Zaytsev Oleksandr, Nick Papoulias and Serge Stinckwich. ["Towards Exploratory Data Analysis for Pharo"](https://dl.acm.org/doi/10.1145/3139903.3139918) In Proceedings of the 12th edition of the International Workshop on Smalltalk Technologies, pp. 1-6. 2017.
+2. Zaytsev Oleksandr, Nick Papoulias and Serge Stinckwich. [Towards Exploratory Data Analysis for Pharo](https://dl.acm.org/doi/10.1145/3139903.3139918) In Proceedings of the 12th edition of the International Workshop on Smalltalk Technologies, pp. 1-6. 2017.
