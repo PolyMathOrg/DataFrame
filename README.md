@@ -3,9 +3,9 @@
 [![Coverage Status](https://coveralls.io/repos/github/PolyMathOrg/DataFrame/badge.svg?branch=master)](https://coveralls.io/github/PolyMathOrg/DataFrame?branch=master)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/PolyMathOrg/DataFrame/master/LICENSE)
 
-DataFrame is a tabular data structure for data analysis in [Pharo](https://pharo.org/).
+DataFrame is a tabular data structure for data analysis in [Pharo](https://pharo.org/). It organizes and represents data in a tabular format, resembling a spreadsheet or database table. It is designed to handle structured data and offer various functionalities for data manipulation and analysis. DataFrames are used as visualization tools for Machine Learning and Data Science related tasks.
 
-<img width="700" src="img/weatherDf.png">
+<img width="700" src="img/weatherDfDataInspector.png">
 
 ## Installation
 To install the latest stable version of DataFrame (`pre-v3`), go to the Playground (`Ctrl+OW`) in your Pharo image and execute the following Metacello script (select it and press Do-it button or `Ctrl+D`):
@@ -58,37 +58,68 @@ weather := DataFrame withRows: #(
   (-2.3 false -)
   (3.2 true rain)).
 ```
+|       | 1    | 2     | 3    |
+|-------|------|-------|------|
+| **1** | 2.4  | true  | rain |
+| **2** | 0.5  | true  | rain |
+| **3** | -1.2 | true  | snow |
+| **4** | -2.3 | false | -    |
+| **5** | 3.2  | true  | rain |
+
 
 ### Removing the third row of the data frame
 
 ```Smalltalk
 weather removeRowAt: 3.
 ```
-<img width="700" src="img/weatherDfRemoveRow.png">
+|       | 1    | 2     | 3    |
+|-------|------|-------|------|
+| **1** | 2.4  | true  | rain |
+| **2** | 0.5  | true  | rain |
+| **4** | -2.3 | false | -    |
+| **5** | 3.2  | true  | rain |
 
 ### Adding a row to the data frame
 
 ```Smalltalk
-weather addRow: #(-1.2 true snow) named:''.
+weather addRow: #(-1.2 true snow) named: 6.
 ```
-<img width="700" src="img/weatherDfAddRow.png">
+|       | 1    | 2     | 3    |
+|-------|------|-------|------|
+| **1** | 2.4  | true  | rain |
+| **2** | 0.5  | true  | rain |
+| **4** | -2.3 | false | -    |
+| **5** | 3.2  | true  | rain |
+| **6** | -1.2 | true  | snow |
 
 ### Replacing the data in the first row and third column with 'snow'
 
 ```Smalltalk
 weather at:1 at:3 put:#snow.
 ```
-<img width="700" src="img/weatherDfReplaceData.png">
+|       | 1    | 2     | 3    |
+|-------|------|-------|------|
+| **1** | 2.4  | true  | snow |
+| **2** | 0.5  | true  | rain |
+| **4** | -2.3 | false | -    |
+| **5** | 3.2  | true  | rain |
+| **6** | -1.2 | true  | snow |
 
 ### Transpose of the data frame
 
 ```Smalltalk
 weather transposed.
 ```
-<img width="700" src="img/weatherDfTranspose.png">
+|       | 1    | 2    | 4     | 5    | 6    |
+|-------|------|------|-------|------|------|
+| **1** | 2.4  | 0.5  | -2.3  | 3.2  | -1.2 |
+| **2** | true | true | false | true | true |
+| **3** | snow | rain | -     | rain | snow |
 
-## DataFrame Booklet
+## Documentation and Literature
 
-For more information, please read [Data Analysis Made Simple with Pharo DataFrame](https://github.com/SquareBracketAssociates/Booklet-DataFrame) - a booklet that serves as the main source of documentation for the DataFrame project. It describes the complete API of DataFrame and DataSeries data structures, and provides examples for each method.
+1. [Data Analysis Made Simple with Pharo DataFrame](https://github.com/SquareBracketAssociates/Booklet-DataFrame) - a booklet that serves as the main source of documentation for the DataFrame project. It describes the complete API of DataFrame and DataSeries data structures, and provides examples for each method.
 
 [![DataFrame Booklet](img/booklet.png)](https://github.com/SquareBracketAssociates/Booklet-DataFrame)
+
+2. Zaytsev Oleksandr, Nick Papoulias and Serge Stinckwich. [Towards Exploratory Data Analysis for Pharo](https://dl.acm.org/doi/10.1145/3139903.3139918) In Proceedings of the 12th edition of the International Workshop on Smalltalk Technologies, pp. 1-6. 2017.
