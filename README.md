@@ -5,7 +5,7 @@
 
 DataFrame is a tabular data structure for data analysis in [Pharo](https://pharo.org/). It organizes and represents data in a tabular format, resembling a spreadsheet or database table. It is designed to handle structured data and offer various functionalities for data manipulation and analysis. DataFrames are used as visualization tools for Machine Learning and Data Science related tasks.
 
-<img width="700" src="img/weatherDf.png">
+<img width="1000" height="400" src="img/weatherDfDataInspector.png">
 
 ## Installation
 To install the latest stable version of DataFrame (`pre-v3`), go to the Playground (`Ctrl+OW`) in your Pharo image and execute the following Metacello script (select it and press Do-it button or `Ctrl+D`):
