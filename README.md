@@ -3,7 +3,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/PolyMathOrg/DataFrame/badge.svg?branch=master)](https://coveralls.io/github/PolyMathOrg/DataFrame?branch=master)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/PolyMathOrg/DataFrame/master/LICENSE)
 
-DataFrame is a tabular data structure for data analysis in [Pharo](https://pharo.org/).
+DataFrame is a tabular data structure for data analysis in [Pharo](https://pharo.org/). It organizes and represents data in a tabular format, resembling a spreadsheet or database table. It is designed to handle structured data and offer various functionalities for data manipulation and analysis. DataFrames are used as visualization tools for Machine Learning and Data Science related tasks.
 
 <img width="700" src="img/weatherDf.png">
 
