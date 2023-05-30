@@ -116,8 +116,10 @@ weather transposed.
 | **2** | true | true | false | true | true |
 | **3** | snow | rain | -     | rain | snow |
 
-## DataFrame Booklet
+## Documentation and Literature
 
-For more information, please read [Data Analysis Made Simple with Pharo DataFrame](https://github.com/SquareBracketAssociates/Booklet-DataFrame) - a booklet that serves as the main source of documentation for the DataFrame project. It describes the complete API of DataFrame and DataSeries data structures, and provides examples for each method.
+1. [Data Analysis Made Simple with Pharo DataFrame](https://github.com/SquareBracketAssociates/Booklet-DataFrame) - a booklet that serves as the main source of documentation for the DataFrame project. It describes the complete API of DataFrame and DataSeries data structures, and provides examples for each method.
 
 [![DataFrame Booklet](img/booklet.png)](https://github.com/SquareBracketAssociates/Booklet-DataFrame)
+
+2. Zaytsev Oleksandr, Nick Papoulias and Serge Stinckwich. ["Towards Exploratory Data Analysis for Pharo"](https://dl.acm.org/doi/10.1145/3139903.3139918) In Proceedings of the 12th edition of the International Workshop on Smalltalk Technologies, pp. 1-6. 2017.
