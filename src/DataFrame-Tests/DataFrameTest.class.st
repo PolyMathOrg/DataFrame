@@ -4928,6 +4928,18 @@ DataFrameTest >> testRowsFromToPut [
 ]
 
 { #category : #tests }
+DataFrameTest >> testRowsMethod [
+
+	| expectedCollection |
+	expectedCollection := {
+		                      (df rowAt: 1).
+		                      (df rowAt: 2).
+		                      (df rowAt: 3) } asArray.
+
+	self assert: df rows equals: expectedCollection
+]
+
+{ #category : #tests }
 DataFrameTest >> testRowsPut [
 	| rowNames columnNames dataFrame newRows expected |
 
