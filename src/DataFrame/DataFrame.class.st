@@ -2053,6 +2053,13 @@ DataFrame >> rowNames: anArray [
 ]
 
 { #category : #accessing }
+DataFrame >> rows [
+	"Returns a collection of all rows"
+
+	^ (1 to: self numberOfRows) collect: [ :j | self rowAt: j ]
+]
+
+{ #category : #accessing }
 DataFrame >> rows: anArrayOfNames [
 	"Returns a collection of rows whose row names are present in the array anArrayOfNames"
 
