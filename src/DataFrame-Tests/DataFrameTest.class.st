@@ -5134,6 +5134,25 @@ DataFrameTest >> testToColumnsAtApplyElementwise [
 ]
 
 { #category : #tests }
+DataFrameTest >> testToLatex [
+
+	| expectedString |
+	expectedString := '\begin{tabular}{|l|l|l|l|}
+\hline
+\#  & City        & Population & BeenThere\\
+\hline
+''A'' & ''Barcelona'' & 1.609      & true     \\
+\hline
+''B'' & ''Dubai''     & 2.789      & true     \\
+\hline
+''C'' & ''London''    & 8.788      & false    \\
+\hline
+\end{tabular}'.
+
+	self assert: df toLatex equals: expectedString
+]
+
+{ #category : #tests }
 DataFrameTest >> testToMarkdown [
 
 	| expectedString |
