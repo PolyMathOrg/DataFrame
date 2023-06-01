@@ -5134,6 +5134,19 @@ DataFrameTest >> testToColumnsAtApplyElementwise [
 ]
 
 { #category : #tests }
+DataFrameTest >> testToMarkdown [
+
+	| expectedString |
+	expectedString := '| #   | City        | Population | BeenThere | 
+| --- | ----------- | ---------- | --------- | 
+| ''A'' | ''Barcelona'' | 1.609      | true      | 
+| ''B'' | ''Dubai''     | 2.789      | true      | 
+| ''C'' | ''London''    | 8.788      | false     | 
+'.
+	self assert: df toMarkdown equals: expectedString
+]
+
+{ #category : #tests }
 DataFrameTest >> testTransposed [
 
 	| expected |

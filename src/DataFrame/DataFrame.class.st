@@ -2259,6 +2259,52 @@ DataFrame >> toColumnsAt: arrayOfColumnNumbers applyElementwise: aBlock [
 		self toColumnAt: each applyElementwise: aBlock ]
 ]
 
+{ #category : #converting }
+DataFrame >> toMarkdown [
+	" Prints the DataFrame as a Markdown formatted table"
+
+	| markdown columnWidths dataFrame |
+	dataFrame := self copy.
+	dataFrame addColumn: dataFrame rowNames named: '#' atPosition: 1.
+	markdown := WriteStream on: String new.
+	markdown nextPutAll: '| '.
+
+	columnWidths := dataFrame columnNames collect: [ :columnName |
+		                | maxWidth |
+		                maxWidth := columnName size.
+		                dataFrame rows do: [ :row |
+			                | value |
+			                value := row at: columnName.
+			                maxWidth := maxWidth max: value printString size ].
+		                maxWidth ].
+
+	dataFrame columnNames withIndexDo: [ :columnName :index |
+		| paddedColumnName |
+		paddedColumnName := columnName padRightTo: (columnWidths at: index).
+		markdown nextPutAll: paddedColumnName , ' | ' ].
+	markdown cr.
+	markdown nextPutAll: '| '.
+
+	columnWidths do: [ :width |
+		| secondRow |
+		secondRow := '-'.
+		width - 1 timesRepeat: [ secondRow := secondRow , '-' ].
+		markdown nextPutAll: secondRow , ' | ' ].
+
+	markdown cr.
+
+	dataFrame asArrayOfRows do: [ :row |
+		markdown nextPutAll: '| '.
+		row withIndexDo: [ :value :index |
+			| paddedValue |
+			paddedValue := value printString padRightTo:
+				               (columnWidths at: index).
+			markdown nextPutAll: paddedValue , ' | ' ].
+		markdown cr ].
+
+	^ markdown contents
+]
+
 { #category : #geometry }
 DataFrame >> transposed [
 	"Returns a transposed DataFrame. Columns become rows and rows become columns."
