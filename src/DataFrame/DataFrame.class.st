@@ -2263,21 +2263,22 @@ DataFrame >> toColumnsAt: arrayOfColumnNumbers applyElementwise: aBlock [
 DataFrame >> toMarkdown [
 	" Prints the DataFrame as a Markdown formatted table"
 
-	| markdown columnWidths |
-	self addColumn: self rowNames named: '#' atPosition: 1.
+	| markdown columnWidths dataFrame |
+	dataFrame := self copy.
+	dataFrame addColumn: dataFrame rowNames named: '#' atPosition: 1.
 	markdown := WriteStream on: String new.
 	markdown nextPutAll: '| '.
 
-	columnWidths := self columnNames collect: [ :columnName |
+	columnWidths := dataFrame columnNames collect: [ :columnName |
 		                | maxWidth |
 		                maxWidth := columnName size.
-		                self rows do: [ :row |
+		                dataFrame rows do: [ :row |
 			                | value |
 			                value := row at: columnName.
 			                maxWidth := maxWidth max: value printString size ].
 		                maxWidth ].
 
-	self columnNames withIndexDo: [ :columnName :index |
+	dataFrame columnNames withIndexDo: [ :columnName :index |
 		| paddedColumnName |
 		paddedColumnName := columnName padRightTo: (columnWidths at: index).
 		markdown nextPutAll: paddedColumnName , ' | ' ].
@@ -2292,7 +2293,7 @@ DataFrame >> toMarkdown [
 
 	markdown cr.
 
-	self asArrayOfRows do: [ :row |
+	dataFrame asArrayOfRows do: [ :row |
 		markdown nextPutAll: '| '.
 		row withIndexDo: [ :value :index |
 			| paddedValue |
