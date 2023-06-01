@@ -2260,6 +2260,59 @@ DataFrame >> toColumnsAt: arrayOfColumnNumbers applyElementwise: aBlock [
 ]
 
 { #category : #converting }
+DataFrame >> toLatex [
+	" Prints the DataFrame as a Latex formatted table"
+
+	| markdown columnWidths dataFrame |
+	dataFrame := self copy.
+	dataFrame addColumn: dataFrame rowNames named: '\#' atPosition: 1.
+	markdown := WriteStream on: String new.
+	markdown nextPutAll: '\begin{tabular}{|'.
+	dataFrame numberOfColumns timesRepeat: [ markdown nextPutAll: 'l|' ].
+	markdown nextPutAll: '}'.
+	markdown cr.
+	markdown nextPutAll: '\hline'.
+	markdown cr.
+
+	columnWidths := dataFrame columnNames collect: [ :columnName |
+		                | maxWidth |
+		                maxWidth := columnName size.
+		                dataFrame rows do: [ :row |
+			                | value |
+			                value := row at: columnName.
+			                maxWidth := maxWidth max: value printString size ].
+		                maxWidth ].
+
+	dataFrame columnNames withIndexDo: [ :columnName :index |
+		| paddedColumnName |
+		paddedColumnName := columnName padRightTo: (columnWidths at: index).
+		index = dataFrame numberOfColumns
+			ifFalse: [ markdown nextPutAll: paddedColumnName , ' & ' ]
+			ifTrue: [ markdown nextPutAll: paddedColumnName ] ].
+	markdown nextPutAll: '\\'.
+	markdown cr.
+	markdown nextPutAll: '\hline'.
+	markdown cr.
+
+
+
+	dataFrame asArrayOfRows do: [ :row |
+		row withIndexDo: [ :value :index |
+			| paddedValue |
+			paddedValue := value printString padRightTo:
+				               (columnWidths at: index).
+			index = dataFrame numberOfColumns
+				ifFalse: [ markdown nextPutAll: paddedValue , ' & ' ]
+				ifTrue: [ markdown nextPutAll: paddedValue ] ].
+		markdown nextPutAll: '\\'.
+		markdown cr.
+		markdown nextPutAll: '\hline'.
+		markdown cr ].
+	markdown nextPutAll: '\end{tabular}'.
+	^ markdown contents
+]
+
+{ #category : #converting }
 DataFrame >> toMarkdown [
 	" Prints the DataFrame as a Markdown formatted table"
 
