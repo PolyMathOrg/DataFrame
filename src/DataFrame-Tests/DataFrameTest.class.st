@@ -5200,6 +5200,19 @@ DataFrameTest >> testToMarkdown [
 ]
 
 { #category : #tests }
+DataFrameTest >> testToString [
+
+	| expectedString |
+	expectedString := '#    City         Population  BeenThere  
+''A''  ''Barcelona''  1.609       true       
+''B''  ''Dubai''      2.789       true       
+''C''  ''London''     8.788       false      
+'.
+
+	self assert: df toString equals: expectedString
+]
+
+{ #category : #tests }
 DataFrameTest >> testTransposed [
 
 	| expected |
