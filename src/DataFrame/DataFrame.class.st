@@ -2260,6 +2260,80 @@ DataFrame >> toColumnsAt: arrayOfColumnNumbers applyElementwise: aBlock [
 ]
 
 { #category : #converting }
+DataFrame >> toHtml [
+	"Prints the DataFrame as an HTML formatted table"
+
+	| html columnWidths dataFrame |
+	dataFrame := self copy.
+	dataFrame addColumn: dataFrame rowNames named: '#' atPosition: 1.
+	html := WriteStream on: String new.
+	html
+		nextPutAll: '<table border="1" class="dataframe">';
+		cr;
+		nextPutAll: '  <thead>';
+		cr;
+		nextPutAll: '    <tr style="text-align: left;">'.
+
+	columnWidths := dataFrame columnNames collect: [ :columnName |
+		                | maxWidth |
+		                maxWidth := columnName size.
+		                dataFrame rows do: [ :row |
+			                | value |
+			                value := row at: columnName.
+			                maxWidth := maxWidth max: value printString size ].
+		                maxWidth ].
+
+	dataFrame columnNames withIndexDo: [ :columnName :index |
+		| paddedColumnName |
+		paddedColumnName := columnName padRightTo: (columnWidths at: index).
+		html
+			nextPutAll: '      <th>';
+			nextPutAll: paddedColumnName;
+			nextPutAll: '</th>';
+			cr ].
+
+	html
+		nextPutAll: '    </tr>';
+		cr;
+		nextPutAll: '  </thead>';
+		cr;
+		nextPutAll: '  <tbody>';
+		cr.
+
+	dataFrame asArrayOfRows do: [ :row |
+		html nextPutAll: '    <tr>'.
+
+		row withIndexDo: [ :value :index |
+			| paddedValue |
+			paddedValue := value printString padRightTo:
+				               (columnWidths at: index).
+			index = 1
+				ifFalse: [
+					html
+						nextPutAll: '      <td>';
+						nextPutAll: paddedValue;
+						nextPutAll: '</td>';
+						cr ]
+				ifTrue: [
+					html
+						nextPutAll: '      <th>';
+						nextPutAll: paddedValue;
+						nextPutAll: '</th>';
+						cr ] ].
+
+		html
+			nextPutAll: '    </tr>';
+			cr ].
+
+	html
+		nextPutAll: '  </tbody>';
+		cr;
+		nextPutAll: '</table>'.
+
+	^ html contents
+]
+
+{ #category : #converting }
 DataFrame >> toLatex [
 	" Prints the DataFrame as a Latex formatted table"
 

@@ -5134,6 +5134,40 @@ DataFrameTest >> testToColumnsAtApplyElementwise [
 ]
 
 { #category : #tests }
+DataFrameTest >> testToHtml [
+
+	| expectedString |
+	expectedString := '<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">      <th>#  </th>
+      <th>City       </th>
+      <th>Population</th>
+      <th>BeenThere</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>      <th>''A''</th>
+      <td>''Barcelona''</td>
+      <td>1.609     </td>
+      <td>true     </td>
+    </tr>
+    <tr>      <th>''B''</th>
+      <td>''Dubai''    </td>
+      <td>2.789     </td>
+      <td>true     </td>
+    </tr>
+    <tr>      <th>''C''</th>
+      <td>''London''   </td>
+      <td>8.788     </td>
+      <td>false    </td>
+    </tr>
+  </tbody>
+</table>'.
+
+	self assert: df toHtml equals: expectedString
+]
+
+{ #category : #tests }
 DataFrameTest >> testToLatex [
 
 	| expectedString |
