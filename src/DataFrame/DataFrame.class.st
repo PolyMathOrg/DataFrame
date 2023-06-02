@@ -2432,6 +2432,43 @@ DataFrame >> toMarkdown [
 	^ markdown contents
 ]
 
+{ #category : #converting }
+DataFrame >> toString [
+	" Prints the DataFrame as a String formatted table"
+
+	| stringTable columnWidths dataFrame |
+	dataFrame := self copy.
+	dataFrame addColumn: dataFrame rowNames named: '#' atPosition: 1.
+	stringTable := WriteStream on: String new.
+
+	columnWidths := dataFrame columnNames collect: [ :columnName |
+		                | maxWidth |
+		                maxWidth := columnName size.
+		                dataFrame rows do: [ :row |
+			                | value |
+			                value := row at: columnName.
+			                maxWidth := maxWidth max: value printString size ].
+		                maxWidth ].
+
+	dataFrame columnNames withIndexDo: [ :columnName :index |
+		| paddedColumnName |
+		paddedColumnName := columnName padRightTo: (columnWidths at: index).
+		stringTable nextPutAll: paddedColumnName, '  ' ].
+	stringTable cr.
+
+
+
+	dataFrame asArrayOfRows do: [ :row |
+		row withIndexDo: [ :value :index |
+			| paddedValue |
+			paddedValue := value printString padRightTo:
+				               (columnWidths at: index).
+			stringTable nextPutAll: paddedValue , '  ' ].
+		stringTable cr ].
+
+	^ stringTable contents
+]
+
 { #category : #geometry }
 DataFrame >> transposed [
 	"Returns a transposed DataFrame. Columns become rows and rows become columns."
