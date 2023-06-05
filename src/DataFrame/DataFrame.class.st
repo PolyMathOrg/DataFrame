@@ -2276,7 +2276,9 @@ DataFrame >> toHtml [
 
 	columnWidths := dataFrame columnNames collect: [ :columnName |
 		                | maxWidth |
-		                maxWidth := columnName size.
+		                columnName isString
+			                ifFalse: [ maxWidth := columnName asString size ]
+			                ifTrue: [ maxWidth := columnName size ].
 		                dataFrame rows do: [ :row |
 			                | value |
 			                value := row at: columnName.
@@ -2285,7 +2287,10 @@ DataFrame >> toHtml [
 
 	dataFrame columnNames withIndexDo: [ :columnName :index |
 		| paddedColumnName |
-		paddedColumnName := columnName padRightTo: (columnWidths at: index).
+		paddedColumnName := (columnName isString
+			                     ifFalse: [ columnName asString ]
+			                     ifTrue: [ columnName ]) padRightTo:
+			                    (columnWidths at: index).
 		html
 			nextPutAll: '      <th>';
 			nextPutAll: paddedColumnName;
