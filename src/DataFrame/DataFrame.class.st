@@ -2276,9 +2276,7 @@ DataFrame >> toHtml [
 
 	columnWidths := dataFrame columnNames collect: [ :columnName |
 		                | maxWidth |
-		                columnName isString
-			                ifFalse: [ maxWidth := columnName asString size ]
-			                ifTrue: [ maxWidth := columnName size ].
+		                maxWidth := columnName asString size.
 		                dataFrame rows do: [ :row |
 			                | value |
 			                value := row at: columnName.
