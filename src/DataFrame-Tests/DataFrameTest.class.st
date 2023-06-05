@@ -5168,6 +5168,60 @@ DataFrameTest >> testToHtml [
 ]
 
 { #category : #tests }
+DataFrameTest >> testToHtmlWithNumericColumnNames [
+
+	| expectedString weather |
+	expectedString :=   '<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">      <th>#      </th>
+      <th>1   </th>
+      <th>2    </th>
+      <th>3    </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>      <th>''01:10''</th>
+      <td>2.4 </td>
+      <td>true </td>
+      <td>#rain</td>
+    </tr>
+    <tr>      <th>''01:30''</th>
+      <td>0.5 </td>
+      <td>true </td>
+      <td>#rain</td>
+    </tr>
+    <tr>      <th>''01:50''</th>
+      <td>-1.2</td>
+      <td>true </td>
+      <td>#snow</td>
+    </tr>
+    <tr>      <th>''02:10''</th>
+      <td>-2.3</td>
+      <td>false</td>
+      <td>#-   </td>
+    </tr>
+    <tr>      <th>''02:30''</th>
+      <td>3.2 </td>
+      <td>true </td>
+      <td>#rain</td>
+    </tr>
+  </tbody>
+</table>'.
+	weather := DataFrame withRows:
+		           #( #( 2.4 true rain ) 
+						  #( 0.5 true rain )
+		              #( -1.2 true snow ) 
+						  #( -2.3 false #- )
+		              #( 3.2 true rain ) ).
+
+	weather columnNames: #( 1 2 3 ).
+
+	weather rowNames: #( '01:10' '01:30' '01:50' '02:10' '02:30' ).
+
+	self assert: weather toHtml equals: expectedString
+]
+
+{ #category : #tests }
 DataFrameTest >> testToLatex [
 
 	| expectedString |
@@ -5187,6 +5241,39 @@ DataFrameTest >> testToLatex [
 ]
 
 { #category : #tests }
+DataFrameTest >> testToLatexWithNumericColumnNames [
+
+	| expectedString weather |
+	expectedString := '\begin{tabular}{|l|l|l|l|}
+\hline
+\#      & 1    & 2     & 3    \\
+\hline
+''01:10'' & 2.4  & true  & #rain\\
+\hline
+''01:30'' & 0.5  & true  & #rain\\
+\hline
+''01:50'' & -1.2 & true  & #snow\\
+\hline
+''02:10'' & -2.3 & false & #-   \\
+\hline
+''02:30'' & 3.2  & true  & #rain\\
+\hline
+\end{tabular}'.
+	weather := DataFrame withRows:
+		           #( #( 2.4 true rain ) 
+						  #( 0.5 true rain )
+		              #( -1.2 true snow ) 
+						  #( -2.3 false #- )
+		              #( 3.2 true rain ) ).
+
+	weather columnNames: #( 1 2 3 ).
+
+	weather rowNames: #( '01:10' '01:30' '01:50' '02:10' '02:30' ).
+
+	self assert: weather toLatex equals: expectedString
+]
+
+{ #category : #tests }
 DataFrameTest >> testToMarkdown [
 
 	| expectedString |
@@ -5200,6 +5287,32 @@ DataFrameTest >> testToMarkdown [
 ]
 
 { #category : #tests }
+DataFrameTest >> testToMarkdownWithNumericColumnNames [
+
+	| expectedString weather|
+	expectedString := '| #       | 1    | 2     | 3     | 
+| ------- | ---- | ----- | ----- | 
+| ''01:10'' | 2.4  | true  | #rain | 
+| ''01:30'' | 0.5  | true  | #rain | 
+| ''01:50'' | -1.2 | true  | #snow | 
+| ''02:10'' | -2.3 | false | #-    | 
+| ''02:30'' | 3.2  | true  | #rain | 
+'.
+weather := DataFrame withRows: #(
+  (2.4 true rain)
+  (0.5 true rain)
+  (-1.2 true snow)
+  (-2.3 false -)
+  (3.2 true rain)).
+
+weather columnNames: #( 1 2 3).
+
+weather rowNames: #( '01:10' '01:30' '01:50' '02:10' '02:30').
+
+	self assert: weather toMarkdown equals: expectedString
+]
+
+{ #category : #tests }
 DataFrameTest >> testToString [
 
 	| expectedString |
@@ -5210,6 +5323,31 @@ DataFrameTest >> testToString [
 '.
 
 	self assert: df toString equals: expectedString
+]
+
+{ #category : #tests }
+DataFrameTest >> testToStringWithNumericColumnNames [
+
+	| expectedString weather |
+	expectedString := '#        1     2      3      
+''01:10''  2.4   true   #rain  
+''01:30''  0.5   true   #rain  
+''01:50''  -1.2  true   #snow  
+''02:10''  -2.3  false  #-     
+''02:30''  3.2   true   #rain  
+'.
+	weather := DataFrame withRows:
+		           #( #( 2.4 true rain ) 
+						  #( 0.5 true rain )
+		              #( -1.2 true snow ) 
+						  #( -2.3 false #- )
+		              #( 3.2 true rain ) ).
+
+	weather columnNames: #( 1 2 3 ).
+
+	weather rowNames: #( '01:10' '01:30' '01:50' '02:10' '02:30' ).
+
+	self assert: weather toString equals: expectedString
 ]
 
 { #category : #tests }
