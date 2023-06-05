@@ -2359,10 +2359,7 @@ DataFrame >> toLatex [
 
 	dataFrame columnNames withIndexDo: [ :columnName :index |
 		| paddedColumnName |
-		paddedColumnName := (columnName isString
-			                     ifFalse: [ columnName asString ]
-			                     ifTrue: [ columnName ]) padRightTo:
-			                    (columnWidths at: index).
+		paddedColumnName := columnName asString padRightTo: (columnWidths at: index).
 		index = dataFrame numberOfColumns
 			ifFalse: [ markdown nextPutAll: paddedColumnName , ' & ' ]
 			ifTrue: [ markdown nextPutAll: paddedColumnName ] ].
