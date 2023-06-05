@@ -5022,7 +5022,7 @@ DataFrameTest >> testSelectEmptyDataFrame [
 ]
 
 { #category : #tests }
-DataFrameTest >> testSortAscendingBy [
+DataFrameTest >> testSortBy [
 
 	| actual expected |
 
@@ -5034,7 +5034,7 @@ DataFrameTest >> testSortAscendingBy [
 	expected rowNames: #(A B C).
 	expected columnNames: #(City Population BeenThere).
 
-	actual := df sortAscendingBy: #(Population).
+	actual := df sortBy: #Population.
 	self assert: actual equals: expected
 ]
 
@@ -5070,7 +5070,7 @@ DataFrameTest >> testSortDescendingBy [
 	expected rowNames: #(C B A).
 	expected columnNames: #(City Population BeenThere).
 
-	actual := df sortDescendingBy: #(Population).
+	actual := df sortDescendingBy: #Population.
 	self assert: actual equals: expected
 ]
 
