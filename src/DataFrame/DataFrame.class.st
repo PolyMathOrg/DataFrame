@@ -2285,10 +2285,7 @@ DataFrame >> toHtml [
 
 	dataFrame columnNames withIndexDo: [ :columnName :index |
 		| paddedColumnName |
-		paddedColumnName := (columnName isString
-			                     ifFalse: [ columnName asString ]
-			                     ifTrue: [ columnName ]) padRightTo:
-			                    (columnWidths at: index).
+		paddedColumnName := columnName asString padRightTo: (columnWidths at: index).
 		html
 			nextPutAll: '      <th>';
 			nextPutAll: paddedColumnName;
