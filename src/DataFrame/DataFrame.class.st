@@ -2287,9 +2287,7 @@ DataFrame >> toHtml [
 
 	columnWidths := dataFrame columnNames collect: [ :columnName |
 		                | maxWidth |
-		                columnName isString
-			                ifFalse: [ maxWidth := columnName asString size ]
-			                ifTrue: [ maxWidth := columnName size ].
+		                maxWidth := columnName asString size.
 		                dataFrame rows do: [ :row |
 			                | value |
 			                value := row at: columnName.
@@ -2298,10 +2296,7 @@ DataFrame >> toHtml [
 
 	dataFrame columnNames withIndexDo: [ :columnName :index |
 		| paddedColumnName |
-		paddedColumnName := (columnName isString
-			                     ifFalse: [ columnName asString ]
-			                     ifTrue: [ columnName ]) padRightTo:
-			                    (columnWidths at: index).
+		paddedColumnName := columnName asString padRightTo: (columnWidths at: index).
 		html
 			nextPutAll: '      <th>';
 			nextPutAll: paddedColumnName;
@@ -2366,9 +2361,7 @@ DataFrame >> toLatex [
 
 	columnWidths := dataFrame columnNames collect: [ :columnName |
 		                | maxWidth |
-		                columnName isString
-			                ifFalse: [ maxWidth := columnName asString size ]
-			                ifTrue: [ maxWidth := columnName size ].
+		                maxWidth := columnName asString size.
 		                dataFrame rows do: [ :row |
 			                | value |
 			                value := row at: columnName.
@@ -2377,10 +2370,7 @@ DataFrame >> toLatex [
 
 	dataFrame columnNames withIndexDo: [ :columnName :index |
 		| paddedColumnName |
-		paddedColumnName := (columnName isString
-			                     ifFalse: [ columnName asString ]
-			                     ifTrue: [ columnName ]) padRightTo:
-			                    (columnWidths at: index).
+		paddedColumnName := columnName asString padRightTo: (columnWidths at: index).
 		index = dataFrame numberOfColumns
 			ifFalse: [ markdown nextPutAll: paddedColumnName , ' & ' ]
 			ifTrue: [ markdown nextPutAll: paddedColumnName ] ].
@@ -2419,9 +2409,7 @@ DataFrame >> toMarkdown [
 
 	columnWidths := dataFrame columnNames collect: [ :columnName |
 		                | maxWidth |
-		                columnName isString
-			                ifFalse: [ maxWidth := columnName asString size ]
-			                ifTrue: [ maxWidth := columnName size ].
+		                maxWidth := columnName asString size.
 		                dataFrame rows do: [ :row |
 			                | value |
 			                value := row at: columnName.
@@ -2430,10 +2418,7 @@ DataFrame >> toMarkdown [
 
 	dataFrame columnNames withIndexDo: [ :columnName :index |
 		| paddedColumnName |
-		paddedColumnName := (columnName isString
-			                     ifFalse: [ columnName asString ]
-			                     ifTrue: [ columnName ]) padRightTo:
-			                    (columnWidths at: index).
+		paddedColumnName := columnName asString padRightTo: (columnWidths at: index).
 		markdown nextPutAll: paddedColumnName , ' | ' ].
 	markdown cr.
 	markdown nextPutAll: '| '.
@@ -2469,9 +2454,7 @@ DataFrame >> toString [
 
 	columnWidths := dataFrame columnNames collect: [ :columnName |
 		                | maxWidth |
-		                columnName isString
-			                ifFalse: [ maxWidth := columnName asString size ]
-			                ifTrue: [ maxWidth := columnName size ].
+		                maxWidth := columnName asString size.
 		                dataFrame rows do: [ :row |
 			                | value |
 			                value := row at: columnName.
@@ -2480,10 +2463,7 @@ DataFrame >> toString [
 
 	dataFrame columnNames withIndexDo: [ :columnName :index |
 		| paddedColumnName |
-		paddedColumnName := (columnName isString
-			                     ifFalse: [ columnName asString ]
-			                     ifTrue: [ columnName ]) padRightTo:
-			                    (columnWidths at: index).
+		paddedColumnName := columnName asString padRightTo: (columnWidths at: index).
 		stringTable nextPutAll: paddedColumnName , '  ' ].
 	stringTable cr.
 
