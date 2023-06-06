@@ -2180,6 +2180,13 @@ DataFrame >> size [
 ]
 
 { #category : #sorting }
+DataFrame >> sortBy: columnName [
+	"Rearranges the rows of the data frame in ascending order of the values in the column named columnName"
+
+	self sortBy: columnName using: [ :a :b | a <= b ]
+]
+
+{ #category : #sorting }
 DataFrame >> sortBy: columnName using: aBlock [
 	"Rearranges the rows of the data frame by applying the given block on the column named columnName"
 
