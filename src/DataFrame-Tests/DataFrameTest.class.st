@@ -237,6 +237,28 @@ DataFrameTest >> testAddRowAtPosition [
 ]
 
 { #category : #tests }
+DataFrameTest >> testAddRowAtPositionWithKeysAsColumnNames [
+	| row expected |
+
+	row := DataSeries
+		       withKeys: #( 'Population' 'BeenThere' 'City' )
+		       values: #( 2.141 true Paris )
+		       name: 'X'.
+	df addRow: row atPosition: 2.
+
+	expected := DataFrame withRows: #(
+		(Barcelona 1.609 true)
+		(Paris 2.141 true)
+   		(Dubai 2.789 true)
+   		(London 8.788 false)).
+
+	expected rowNames: #(A X B C).
+	expected columnNames: #(City Population BeenThere).
+
+	self assert: df equals: expected
+]
+
+{ #category : #tests }
 DataFrameTest >> testAddRowNameMustBeDistinct [
 
 	| series |
@@ -293,6 +315,28 @@ DataFrameTest >> testAddRowSizeMismatch [
 	aBlock := [ df addRow: #(1 2) named: 'TooSmall' ].
 
 	self should: aBlock raise: SizeMismatch
+]
+
+{ #category : #tests }
+DataFrameTest >> testAddRowWithKeysAsColumnNames [
+
+	| row expected |
+	row := DataSeries
+		       withKeys: #( 'Population' 'BeenThere' 'City' )
+		       values: #( 2.141 true Paris )
+		       name: 'X'.
+	df addRow: row.
+
+	expected := DataFrame withRows:
+		            #( #( Barcelona 1.609 true ) 
+							#( Dubai 2.789 true )
+		               #( London 8.788 false ) 
+							#( Paris 2.141 true ) ).
+
+	expected rowNames: #( A B C X ).
+	expected columnNames: #( City Population BeenThere ).
+
+	self assert: df equals: expected
 ]
 
 { #category : #tests }

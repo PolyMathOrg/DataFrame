@@ -397,13 +397,31 @@ DataFrame >> addEmptyRowNamed: aString atPosition: aNumber [
 { #category : #adding }
 DataFrame >> addRow: aDataSeries [
 	"Add DataSeries as a new row at the end"
-	self addRow: aDataSeries asArray named: aDataSeries name
+
+	| row |
+	row := Array new: self columnNames size.
+	self columnNames withIndexDo: [ :columnName :index |
+		| value |
+		value := aDataSeries
+			         at: columnName
+			         ifAbsent: [ aDataSeries atIndex: index ].
+		row at: index put: value ].
+	self addRow: row named: aDataSeries name
 ]
 
 { #category : #adding }
 DataFrame >> addRow: aDataSeries atPosition: aNumber [
 	"Add DataSeries as a new row at the given position"
-	self addRow: aDataSeries named: aDataSeries name atPosition: aNumber
+
+	| row |
+	row := Array new: self columnNames size.
+	self columnNames withIndexDo: [ :columnName :index |
+		| value |
+		value := aDataSeries
+			         at: columnName
+			         ifAbsent: [ aDataSeries atIndex: index ].
+		row at: index put: value ].
+	self addRow: row named: aDataSeries name atPosition: aNumber
 ]
 
 { #category : #adding }
@@ -2159,13 +2177,6 @@ DataFrame >> size [
 	"Returns the number of rows of a DataFrame"
 	
 	^ self numberOfRows
-]
-
-{ #category : #sorting }
-DataFrame >> sortBy: columnName [
-	"Rearranges the rows of the data frame in ascending order of the values in the column named columnName"
-	
-	self sortBy: columnName using: [ :a :b | a <= b ]
 ]
 
 { #category : #sorting }
