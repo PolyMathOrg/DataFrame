@@ -398,15 +398,7 @@ DataFrame >> addEmptyRowNamed: aString atPosition: aNumber [
 DataFrame >> addRow: aDataSeries [
 	"Add DataSeries as a new row at the end"
 
-	| row |
-	row := Array new: self columnNames size.
-	self columnNames withIndexDo: [ :columnName :index |
-		| value |
-		value := aDataSeries
-			         at: columnName
-			         ifAbsent: [ aDataSeries atIndex: index ].
-		row at: index put: value ].
-	self addRow: row named: aDataSeries name
+	self addRow: aDataSeries atPosition: self numberOfRows + 1
 ]
 
 { #category : #adding }
