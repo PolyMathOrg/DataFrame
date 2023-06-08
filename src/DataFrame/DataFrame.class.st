@@ -2198,10 +2198,28 @@ DataFrame >> sortBy: columnName using: aBlock [
 ]
 
 { #category : #sorting }
+DataFrame >> sortByAll: arrayOfColumnNames [
+	" Chain sorts the data frame in ascending order. The data frame is sorted based on the first column in the array of column names, if there are same values, then it sorts these same values based on the values of the second column and so on.."
+
+	arrayOfColumnNames reverseDo: [ :columnName |
+		self sortBy: columnName using: [ :a :b | a <= b ] ].
+	^ self
+]
+
+{ #category : #sorting }
 DataFrame >> sortDescendingBy: columnName [
 	"Rearranges the rows of the data frame in descending order of the values in the column named columnName"
 
 	self sortBy: columnName using: [ :a :b | a >= b ]
+]
+
+{ #category : #sorting }
+DataFrame >> sortDescendingByAll: arrayOfColumnNames [
+	" Chain sorts the data frame in descending order. The data frame is sorted based on the first column in the array of column names, if there are same values, then it sorts these same values based on the values of the second column and so on.."
+
+	arrayOfColumnNames reverseDo: [ :columnName |
+		self sortBy: columnName using: [ :a :b | a >= b ] ].
+	^ self
 ]
 
 { #category : #statistics }

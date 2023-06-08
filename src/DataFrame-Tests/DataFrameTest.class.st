@@ -5066,6 +5066,37 @@ DataFrameTest >> testSortBy [
 ]
 
 { #category : #tests }
+DataFrameTest >> testSortByAll [
+
+	| dataFrame actual expected |
+	dataFrame := DataFrame withRows:
+		             #( #( 2 5 ) 
+							 #( 1 2 ) 
+							 #( 3 2 ) 
+							 #( 1 5 ) 
+							 #( 2 4 ) ).
+
+	dataFrame columnNames: #( season episode ).
+	dataFrame rowNames: #( 'A' 'B' 'C' 'D' 'E' ).
+
+
+	expected := DataFrame withRows:
+		            #( #( 1 2 ) 
+							#( 1 5 ) 
+							#( 2 4 ) 
+							#( 2 5 ) 
+							#( 3 2 ) ).
+
+	expected columnNames: #( season episode ).
+	expected rowNames: #( 'B' 'D' 'E' 'A' 'C' ).
+
+	actual := dataFrame sortByAll: #( season episode ).
+
+
+	self assert: actual equals: expected
+]
+
+{ #category : #tests }
 DataFrameTest >> testSortByUsing [
 	"Sort by second letter of city name"
 	| actual expected |
@@ -5098,6 +5129,37 @@ DataFrameTest >> testSortDescendingBy [
 	expected columnNames: #(City Population BeenThere).
 
 	actual := df sortDescendingBy: #Population.
+	self assert: actual equals: expected
+]
+
+{ #category : #tests }
+DataFrameTest >> testSortDescendingByAll [
+
+	| dataFrame actual expected |
+	dataFrame := DataFrame withRows:
+		             #( #( 2 5 ) 
+							 #( 1 2 ) 
+							 #( 3 2 ) 
+							 #( 1 5 ) 
+							 #( 2 4 ) ).
+
+	dataFrame columnNames: #( season episode ).
+	dataFrame rowNames: #( 'A' 'B' 'C' 'D' 'E' ).
+
+
+	expected := DataFrame withRows:
+		            #( #( 3 2 )
+							#( 2 5 ) 
+							#( 2 4 )
+							#( 1 5 )
+							#( 1 2 ) ).
+
+	expected columnNames: #( season episode ).
+	expected rowNames: #( 'C' 'A' 'E' 'D' 'B' ).
+
+	actual := dataFrame sortDescendingByAll: #( season episode ).
+
+
 	self assert: actual equals: expected
 ]
 
