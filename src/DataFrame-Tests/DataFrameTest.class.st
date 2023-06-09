@@ -2973,6 +2973,22 @@ DataFrameTest >> testLeftJoinSameColumnNames [
 	self assert: (df leftJoin: df2) equals: expected
 ]
 
+{ #category : #'find-select' }
+DataFrameTest >> testMatchesAny [
+
+	| actual expected |
+	actual := df matchesAny: #( 'Barcelona' false 2.789 3.65 ).
+	expected := DataFrame withRows:
+		            #( #( true false false ) 
+						   #( false true false )
+		               #( false false true ) ).
+
+	expected rowNames: #( 'A' 'B' 'C' ).
+	expected columnNames: #( 'City' 'Population' 'BeenThere' ).
+
+	self assert: actual equals: expected
+]
+
 { #category : #replacing }
 DataFrameTest >> testNumberOfNils [
 

@@ -1392,6 +1392,17 @@ DataFrame >> leftJoin: aDataFrame onLeft: leftColumn onRight: rightColumn [
 	^ outputDf
 ]
 
+{ #category : #'find-select' }
+DataFrame >> matchesAny: aCollection [
+	"Returns a new DataFrame where each element indicates whether it matches any value in the given collection."
+
+	^ self class
+		  withRows: (self rows collect: [ :row |
+				   row collect: [ :each | aCollection includes: each ] ])
+		  rowNames: self rowNames
+		  columnNames: self columnNames
+]
+
 { #category : #statistics }
 DataFrame >> max [
 	"Max is the largest value present in a set of values"
