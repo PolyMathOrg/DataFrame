@@ -325,7 +325,7 @@ DataSeries >> encodeOneHot [
 
 	| uniqueValues encodingDataSeries oneHotValues |
 	uniqueValues := self removeDuplicates sortIfPossible.
-	encodingDataSeries := DataSeries new.
+	encodingDataSeries := self class new.
 	uniqueValues withIndexDo: [ :value :index |
 		encodingDataSeries at: value put: index ].
 	oneHotValues := self values collect: [ :value |
