@@ -1279,10 +1279,10 @@ DataSeriesTest >> testEncodeOneHot [
 	| actual expected |
 	actual := #( 1 2 3 4 ) asDataSeries encodeOneHot.
 	expected := #(
-	    #(1 0 0 0)
-	    #(0 1 0 0)
-	    #(0 0 1 0)
-		 #(0 0 0 1)
+	    #( 1 0 0 0 )
+	    #( 0 1 0 0 )
+	    #( 0 0 1 0 )
+		 #( 0 0 0 1 )
 	) asDataSeries.
 
 	self assert: actual equals: expected
@@ -1295,10 +1295,10 @@ DataSeriesTest >> testEncodeOneHotRomanNumbers [
 	actual := (#( I XIV VII XXXII ) collect: [ :each | each romanNumber ])
 		          asDataSeries encodeOneHot.
 	expected := #(
-	    #(1 0 0 0)
-	    #(0 0 1 0)
-	    #(0 1 0 0)
-		 #(0 0 0 1)
+	    #( 1 0 0 0 )
+	    #( 0 0 1 0 )
+	    #( 0 1 0 0 )
+		 #( 0 0 0 1 )
 	) asDataSeries.
 
 	self assert: actual equals: expected
@@ -1310,10 +1310,26 @@ DataSeriesTest >> testEncodeOneHotStrings [
 	| actual expected |
 	actual := #( apple avocado orange banana ) asDataSeries encodeOneHot.
 	expected := #(
-	    #(1 0 0 0)
-	    #(0 1 0 0)
-	    #(0 0 0 1)
-		 #(0 0 1 0)
+	    #( 1 0 0 0 )
+	    #( 0 1 0 0 )
+	    #( 0 0 0 1 )
+		 #( 0 0 1 0 )
+	) asDataSeries.
+
+	self assert: actual equals: expected
+]
+
+{ #category : #'tests - converting' }
+DataSeriesTest >> testEncodeOneHotWithDecimalAndLargeValues [
+
+	| actual expected |
+	actual := #( 0.5 1 2.2 3 4000 ) asDataSeries encodeOneHot.
+	expected := #(
+	    #( 1 0 0 0 0 )
+	    #( 0 1 0 0 0 )
+	    #( 0 0 1 0 0 )
+		 #( 0 0 0 1 0 )
+		 #( 0 0 0 0 1 )
 	) asDataSeries.
 
 	self assert: actual equals: expected
