@@ -1273,6 +1273,68 @@ DataSeriesTest >> testEighth [
 	self assert: series eighth equals: 10
 ]
 
+{ #category : #'tests - converting' }
+DataSeriesTest >> testEncodeOneHot [
+
+	| actual expected |
+	actual := #( 1 2 3 4 ) asDataSeries encodeOneHot.
+	expected := #(
+	    #( 1 0 0 0 )
+	    #( 0 1 0 0 )
+	    #( 0 0 1 0 )
+		 #( 0 0 0 1 )
+	) asDataSeries.
+
+	self assert: actual equals: expected
+]
+
+{ #category : #'tests - converting' }
+DataSeriesTest >> testEncodeOneHotRomanNumbers [
+
+	| actual expected |
+	actual := (#( I XIV VII XXXII ) collect: [ :each | each romanNumber ])
+		          asDataSeries encodeOneHot.
+	expected := #(
+	    #( 1 0 0 0 )
+	    #( 0 0 1 0 )
+	    #( 0 1 0 0 )
+		 #( 0 0 0 1 )
+	) asDataSeries.
+
+	self assert: actual equals: expected
+]
+
+{ #category : #'tests - converting' }
+DataSeriesTest >> testEncodeOneHotStrings [
+
+	| actual expected |
+	actual := #( apple avocado orange banana ) asDataSeries encodeOneHot.
+	expected := #(
+	    #( 1 0 0 0 )
+	    #( 0 1 0 0 )
+	    #( 0 0 0 1 )
+		 #( 0 0 1 0 )
+	) asDataSeries.
+
+	self assert: actual equals: expected
+]
+
+{ #category : #'tests - converting' }
+DataSeriesTest >> testEncodeOneHotWithDecimalAndLargeValues [
+
+	| actual expected |
+	actual := #( 0.5 1 2.2 3 4000 ) asDataSeries encodeOneHot.
+	expected := #(
+	    #( 1 0 0 0 0 )
+	    #( 0 1 0 0 0 )
+	    #( 0 0 1 0 0 )
+		 #( 0 0 0 1 0 )
+		 #( 0 0 0 0 1 )
+	) asDataSeries.
+
+	self assert: actual equals: expected
+]
+
 { #category : #'tests - comparing' }
 DataSeriesTest >> testEquality [
 
@@ -1783,22 +1845,28 @@ DataSeriesTest >> testRemoveDuplicates [
 DataSeriesTest >> testRemoveNils [
 
 	| expected |
-
-	series := DataSeries withKeys: #(1 2 'a' 3) values: #(nil 4.2 'b' nil).
-	expected := DataSeries withKeys: #(2 'a') values: #(4.2 'b').
-
-	self assert: series removeNils equals: expected
+	series := DataSeries
+		          withKeys: #( 1 2 'a' 3 )
+		          values: #( nil 4.2 'b' nil ).
+	expected := DataSeries withKeys: #( 2 'a' ) values: #( 4.2 'b' ).
+	self assert: series removeNils equals: expected.
+	self assert: series equals: expected
 ]
 
 { #category : #'tests - removing' }
 DataSeriesTest >> testRemoveNilsOnNamedSeries [
 
 	| expected |
-
-	series := DataSeries withKeys: #(1 2 'a' 3) values: #(nil 4.2 'b' nil) name: 'A'.
-	expected := DataSeries withKeys: #(2 'a') values: #(4.2 'b') name: 'A'.
-
-	self assert: series removeNils equals: expected
+	series := DataSeries
+		          withKeys: #( 1 2 'a' 3 )
+		          values: #( nil 4.2 'b' nil )
+		          name: 'A'.
+	expected := DataSeries
+		            withKeys: #( 2 'a' )
+		            values: #( 4.2 'b' )
+		            name: 'A'.
+	self assert: series removeNils equals: expected.
+	self assert: series equals: expected
 ]
 
 { #category : #'tests - missing values' }
@@ -2483,4 +2551,34 @@ DataSeriesTest >> testWithKeySelect [
 
 	actual := series withKeySelect: [ :x :k | x < 10 and: (#(a c g) includes: k) ].
 	self assert: actual equals: expected
+]
+
+{ #category : #tests }
+DataSeriesTest >> testWithoutNils [
+
+	| expected |
+	series := DataSeries
+		          withKeys: #( 1 2 'a' 3 )
+		          values: #( nil 4.2 'b' nil ).
+	expected := DataSeries withKeys: #( 2 'a' ) values: #( 4.2 'b' ).
+
+	self assert: series withoutNils equals: expected.
+	self deny: series equals: expected
+]
+
+{ #category : #tests }
+DataSeriesTest >> testWithoutNilsOnNamedSeries [
+
+	| expected |
+	series := DataSeries
+		          withKeys: #( 1 2 'a' 3 )
+		          values: #( nil 4.2 'b' nil )
+		          name: 'A'.
+	expected := DataSeries
+		            withKeys: #( 2 'a' )
+		            values: #( 4.2 'b' )
+		            name: 'A'.
+
+	self assert: series withoutNils equals: expected.
+	self deny: series equals: expected
 ]
