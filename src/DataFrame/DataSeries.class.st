@@ -639,8 +639,12 @@ DataSeries >> removeDuplicates [
 { #category : #removing }
 DataSeries >> removeNils [
 	"Removes elements with nil values from the data series"
-	
-	^ self reject: [ :ele | ele isNil ]
+
+	| keysWithNilValues |
+	keysWithNilValues := OrderedCollection new.
+	self associationsDo: [ :each |
+		each value ifNil: [ keysWithNilValues add: each key ] ].
+	self removeKeys: keysWithNilValues
 ]
 
 { #category : #replacing }
@@ -1026,8 +1030,8 @@ DataSeries >> withSeries: otherDataSeries collect: twoArgBlock [
 
 { #category : #private }
 DataSeries >> withoutNils [
-	"Returns a data series without the elements whose values were nil values"
-	
+	"Returns a copy of the data series without the nil values"
+
 	^ self reject: #isNil
 ]
 

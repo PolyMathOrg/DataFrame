@@ -1783,22 +1783,28 @@ DataSeriesTest >> testRemoveDuplicates [
 DataSeriesTest >> testRemoveNils [
 
 	| expected |
-
-	series := DataSeries withKeys: #(1 2 'a' 3) values: #(nil 4.2 'b' nil).
-	expected := DataSeries withKeys: #(2 'a') values: #(4.2 'b').
-
-	self assert: series removeNils equals: expected
+	series := DataSeries
+		          withKeys: #( 1 2 'a' 3 )
+		          values: #( nil 4.2 'b' nil ).
+	expected := DataSeries withKeys: #( 2 'a' ) values: #( 4.2 'b' ).
+	self assert: series removeNils equals: expected.
+	self assert: series equals: expected
 ]
 
 { #category : #'tests - removing' }
 DataSeriesTest >> testRemoveNilsOnNamedSeries [
 
 	| expected |
-
-	series := DataSeries withKeys: #(1 2 'a' 3) values: #(nil 4.2 'b' nil) name: 'A'.
-	expected := DataSeries withKeys: #(2 'a') values: #(4.2 'b') name: 'A'.
-
-	self assert: series removeNils equals: expected
+	series := DataSeries
+		          withKeys: #( 1 2 'a' 3 )
+		          values: #( nil 4.2 'b' nil )
+		          name: 'A'.
+	expected := DataSeries
+		            withKeys: #( 2 'a' )
+		            values: #( 4.2 'b' )
+		            name: 'A'.
+	self assert: series removeNils equals: expected.
+	self assert: series equals: expected
 ]
 
 { #category : #'tests - missing values' }
@@ -2483,4 +2489,34 @@ DataSeriesTest >> testWithKeySelect [
 
 	actual := series withKeySelect: [ :x :k | x < 10 and: (#(a c g) includes: k) ].
 	self assert: actual equals: expected
+]
+
+{ #category : #tests }
+DataSeriesTest >> testWithoutNils [
+
+	| expected |
+	series := DataSeries
+		          withKeys: #( 1 2 'a' 3 )
+		          values: #( nil 4.2 'b' nil ).
+	expected := DataSeries withKeys: #( 2 'a' ) values: #( 4.2 'b' ).
+
+	self assert: series withoutNils equals: expected.
+	self deny: series equals: expected
+]
+
+{ #category : #tests }
+DataSeriesTest >> testWithoutNilsOnNamedSeries [
+
+	| expected |
+	series := DataSeries
+		          withKeys: #( 1 2 'a' 3 )
+		          values: #( nil 4.2 'b' nil )
+		          name: 'A'.
+	expected := DataSeries
+		            withKeys: #( 2 'a' )
+		            values: #( 4.2 'b' )
+		            name: 'A'.
+
+	self assert: series withoutNils equals: expected.
+	self deny: series equals: expected
 ]
