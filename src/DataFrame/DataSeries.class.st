@@ -357,6 +357,9 @@ DataSeries >> defaultPrecision [
 DataSeries >> eighth [
 	"Answer the eighth element of the receiver.
 	Raise an error if there are not enough elements."
+
+	"(#(a b c d e f g h i j) asDataSeries eighth) >>> #h"
+
 	^ self atIndex: 8
 ]
 
@@ -394,6 +397,9 @@ DataSeries >> errorKeysMismatch [
 DataSeries >> fifth [
 	"Answer the fifth element of the receiver.
 	Raise an error if there are not enough elements."
+
+	"(#(a b c d e f g h i j) asDataSeries fifth) >>> #e"
+
 	^ self atIndex: 5
 ]
 
@@ -401,6 +407,9 @@ DataSeries >> fifth [
 DataSeries >> first [
 	"Answer the first element of the receiver.
 	Raise an error if there are not enough elements."
+
+	"(#(a b c d e f g h i j) asDataSeries first) >>> #a"
+
 	^ self atIndex: 1
 ]
 
@@ -417,6 +426,9 @@ DataSeries >> firstQuartile [
 DataSeries >> fourth [
 	"Answer the fourth element of the receiver.
 	Raise an error if there are not enough elements."
+
+	"(#(a b c d e f g h i j) asDataSeries fourth) >>> #d"
+
 	^ self atIndex: 4
 ]
 
@@ -578,6 +590,9 @@ DataSeries >> keys: anArrayOfKeys [
 DataSeries >> last [
 	"Answer the last element of the receiver.
 	Raise an error if there are not enough elements."
+
+	"(#(a b c d e f g h i j) asDataSeries last) >>> #j"
+
 	^ self atIndex: self size
 ]
 
@@ -631,6 +646,10 @@ DataSeries >> min [
 DataSeries >> mode [
 	"The mode of a set of values is the value that appears most often. "
 
+	"(#(a j a j e j g j i j) asDataSeries mode) >>> #j"
+
+	"(#(1 2 3 2) asDataSeries mode) >>> 2"
+
 	| valueCounts |
 	valueCounts := self valueCounts.
 	^ valueCounts keyAtValue: valueCounts max
@@ -654,6 +673,9 @@ DataSeries >> name: anObject [
 DataSeries >> ninth [
 	"Answer the ninth element of the receiver.
 	Raise an error if there are not enough elements."
+
+	"(#(a b c d e f g h i j) asDataSeries ninth) >>> #i"
+
 	^ self atIndex: 9
 ]
 
@@ -779,6 +801,9 @@ DataSeries >> replaceNilsWithZeros [
 DataSeries >> second [
 	"Answer the second element of the receiver.
 	Raise an error if there are not enough elements."
+
+	"(#(a b c d e f g h i j) asDataSeries second) >>> #b"
+
 	^ self atIndex: 2
 ]
 
@@ -803,6 +828,9 @@ DataSeries >> select: aBlock [
 DataSeries >> seventh [
 	"Answer the seventh element of the receiver.
 	Raise an error if there are not enough elements."
+
+	"(#(a b c d e f g h i j) asDataSeries seventh) >>> #g"
+
 	^ self atIndex: 7
 ]
 
@@ -810,6 +838,9 @@ DataSeries >> seventh [
 DataSeries >> sixth [
 	"Answer the sixth element of the receiver.
 	Raise an error if there are not enough elements."
+
+	"(#(a b c d e f g h i j) asDataSeries sixth) >>> #f"
+
 	^ self atIndex: 6
 ]
 
@@ -933,6 +964,9 @@ DataSeries >> tail: aNumber [
 DataSeries >> third [
 	"Answer the third element of the receiver.
 	Raise an error if there are not enough elements."
+
+	"(#(a b c d e f g h i j) asDataSeries third) >>> #c"
+
 	^ self atIndex: 3
 ]
 
