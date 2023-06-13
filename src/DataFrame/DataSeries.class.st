@@ -212,6 +212,8 @@ DataSeries >> atIndex: aNumber transform: aBlock [
 DataSeries >> average [
 	"Returns the average without including nils"
 
+	"(#(1 2 nil 3) asDataSeries average) >>> 2"
+
 	^ self removeNils values average
 ]
 
@@ -281,12 +283,20 @@ DataSeries >> correlationWith: otherSeries using: aCorrelationCoefficient [
 DataSeries >> countNils [
 	"Returns the number of nil values in the data series"
 
+	"(#(1 nil 2 nil nil) asDataSeries countNils) >>> 3"
+
+	"(#('A' 'nil' nil 'B') asDataSeries countNils) >>> 1"
+
 	^ self count: [ :each | each isNil ]
 ]
 
 { #category : #statistics }
 DataSeries >> countNonNils [
 	"Returns the number of non-nil values in the data series"
+
+	"(#(1 nil 2 nil nil) asDataSeries countNonNils) >>> 2"
+
+	"(#('A' 'nil' nil 'B') asDataSeries countNonNils) >>> 3"
 
 	^ self count: [ :each | each isNotNil ]
 ]
@@ -316,12 +326,16 @@ DataSeries >> crossTabulateWith: aSeries [
 DataSeries >> cumulativeSum [
 	"Calculate the cumulative sum of a data series and return a new data series with keys as self keys and values as cumulative sum"
 
+	"(#(1 nil 2 3 4) asDataSeries cumulativeSum) >>> (#(1 1 3 6 10) asDataSeries)"
+
+	"(#(nil nil 10 90) asDataSeries cumulativeSum) >>> (#(0 0 10 100) asDataSeries)"
+
 	| sum |
 	sum := 0.
 
 	^ self collect: [ :each |
-		each ifNotNil: [ sum := sum + each ].
-		sum ]
+		  each ifNotNil: [ sum := sum + each ].
+		  sum ]
 ]
 
 { #category : #defaults }
@@ -392,7 +406,9 @@ DataSeries >> first [
 
 { #category : #statistics }
 DataSeries >> firstQuartile [
-    "25% of the values in a set are smaller than or equal to the first Quartile of that set"
+	"25% of the values in a set are smaller than or equal to the first Quartile of that set"
+
+	"(#(7 4 20) asDataSeries firstQuartile) >>> 4"
 
 	^ self quartile: 1
 ]
@@ -406,7 +422,9 @@ DataSeries >> fourth [
 
 { #category : #statistics }
 DataSeries >> fourthQuartile [
-    "Fourth Quartile is the maximum value in a set of values"
+	"Fourth Quartile is the maximum value in a set of values"
+
+	"(#(7 4 20) asDataSeries fourthQuartile) >>> 20"
 
 	^ self quartile: 4
 ]
@@ -522,6 +540,8 @@ DataSeries >> initialize: aCapacity [
 DataSeries >> interquartileRange [
 	"The Inter Quartile Range is the difference between the third Quartile and the first Quartile"
 
+	"(#(7 4 20) asDataSeries interquartileRange) >>> 16"
+
 	^ self thirdQuartile - self firstQuartile
 ]
 
@@ -584,6 +604,8 @@ DataSeries >> makeNumerical [
 DataSeries >> max [
 	"Returns the maximum value of the dataseries without including nils"
 
+	"(#(7 4 20) asDataSeries max) >>> 20"
+
 	^ self removeNils values max
 ]
 
@@ -591,12 +613,16 @@ DataSeries >> max [
 DataSeries >> median [
 	"Returns the median without including nils"
 
+	"(#(7 4 20) asDataSeries median) >>> 7"
+
 	^ self removeNils values median
 ]
 
 { #category : #statistics }
 DataSeries >> min [
 	"Returns the minimum value of the dataseries without including nils"
+
+	"(#(7 4 20) asDataSeries min) >>> 4"
 
 	^ self removeNils values min
 ]
@@ -636,6 +662,8 @@ DataSeries >> quantile: aNumber [
 	"A quantile determines how many values in a distribution are above or below a certain limit.
 Eg: if the parameter aNumber is 85, a value from the data series is returned which is greater than or equal to 85% of the values in the data series"
 
+	"(#(7 4 20) asDataSeries quantile: 50) >>> 7"
+
 	| sortedSeries index |
 	sortedSeries := self withoutNils sorted.
 
@@ -649,8 +677,10 @@ Eg: if the parameter aNumber is 85, a value from the data series is returned whi
 DataSeries >> quartile: aNumber [
 	"Quartiles are three values that split sorted data into four parts, each with an equal number of observations.
 Eg: if the parameter aNumber is 3, the Third Quartile of the data series is returned"
-	
-	^ self quantile: (25 * aNumber)
+
+	"(#(7 4 20) asDataSeries quartile: 3) >>> 20"
+
+	^ self quantile: 25 * aNumber
 ]
 
 { #category : #enumerating }
@@ -754,7 +784,9 @@ DataSeries >> second [
 
 { #category : #statistics }
 DataSeries >> secondQuartile [
-    "50% of the values in a set are smaller than or equal to the second Quartile of that set. It is also known as the median"
+	"50% of the values in a set are smaller than or equal to the second Quartile of that set. It is also known as the median"
+
+	"(#(7 4 20) asDataSeries secondQuartile) >>> 7"
 
 	^ self quartile: 2
 ]
@@ -846,6 +878,8 @@ DataSeries >> sortedDescending [
 DataSeries >> stdev [
 	"Returns the standard deviation of the dataseries without including nils"
 
+	"(#(10 20 30) asDataSeries stdev) >>> 10"
+
 	^ self removeNils values stdev
 ]
 
@@ -904,7 +938,9 @@ DataSeries >> third [
 
 { #category : #statistics }
 DataSeries >> thirdQuartile [
-   "75% of the values in a set are smaller than or equal to the third Quartile of that set"
+	"75% of the values in a set are smaller than or equal to the third Quartile of that set"
+
+	"(#(7 4 20) asDataSeries thirdQuartile) >>> 20"
 
 	^ self quartile: 3
 ]
@@ -923,14 +959,19 @@ DataSeries >> uniqueValues [
 { #category : #statistics }
 DataSeries >> valueCounts [
 	"Calculates the frequency of each value in the data series and returns a data series in descending order of frequencies"
-	
+
+	"(#(7 20 20) asDataSeries valueCounts) >>> (DataSeries withKeys: #(20 7) values: #(2 1))"
+
 	^ (self groupByUniqueValuesAndAggregateUsing: #size) sortDescending
 ]
 
 { #category : #statistics }
 DataSeries >> valueFrequencies [
 	"Calculates the relative frequency of values in the data series. Relative frequency is the ratio of the number of times a value occurs in a set to the total number of values in the set"
-	
+
+	"(#(7 20 20) asDataSeries valueFrequencies) >>> (DataSeries withKeys: #( 20 7 ) values: {
+			(2 / 3). (1 / 3) })"
+
 	| count freq |
 	count := self valueCounts.
 	freq := count / self size.
@@ -1083,7 +1124,9 @@ DataSeries >> withoutNils [
 
 { #category : #statistics }
 DataSeries >> zerothQuartile [
-    "Zeroth Quartile is the minimum value in a set of values"
+	"Zeroth Quartile is the minimum value in a set of values"
+
+	"(#(7 4 20) asDataSeries zerothQuartile) >>> 4"
 
 	^ self quartile: 0
 ]
