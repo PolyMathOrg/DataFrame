@@ -561,12 +561,24 @@ DataSeries >> interquartileRange [
 DataSeries >> isCategorical [
 	"Returns true if atleast one value of the data series is non numerical and returns false otherwise"
 
+	"(#(a 1 2 3) asDataSeries isCategorical) >>> true"
+
+	"(#(0 1 2 3) asDataSeries isCategorical) >>> false"
+
+	"(#(a b c d) asDataSeries isCategorical) >>> true"
+
 	^ self isNumerical not
 ]
 
 { #category : #'categorical-numerical' }
 DataSeries >> isNumerical [
 	"Returns true if all values of the data series are numerical values and returns false otherwise"
+
+	"(#(a 1 2 3) asDataSeries isNumerical) >>> false"
+
+	"(#(0 1 2.2 3) asDataSeries isNumerical) >>> true"
+
+	"((#( I XIV VII XII ) collect: [ :each | each romanNumber ]) asDataSeries isNumerical) >>> true"
 
 	^ forcedIsNumerical ifNil: [
 		  (self removeDuplicates copyWithout: nil) allSatisfy: [ :each |
