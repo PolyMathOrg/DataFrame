@@ -146,7 +146,13 @@ DataSeries >> asDataFrame [
 { #category : #accessing }
 DataSeries >> at: aKey transform: aBlock [
 	"Evaluate aBlock on the value at aKey and replace that value with the result. Signal an exception if aKey was not found"
-	self at: aKey transform: aBlock ifAbsent: [ self errorKeyNotFound: aKey ]
+
+	"((DataSeries withKeys: #(A B C) values: #(1 4 3)) at: #C transform: [ :x | x * x ]) >>> (DataSeries withKeys: #(A B C) values: #(1 4 9))."
+
+	self
+		at: aKey
+		transform: aBlock
+		ifAbsent: [ self errorKeyNotFound: aKey ]
 ]
 
 { #category : #accessing }
@@ -170,7 +176,11 @@ DataSeries >> atAll: aCollectionOfIndexes [
 { #category : #accessing }
 DataSeries >> atIndex: aNumber [
 	"Answer the element of the receiver at index aNumber"
-	
+
+	"(#(1 4 9) asDataSeries atIndex: 2) >>> 4"
+
+	"((DataSeries withKeys: #(A B C) values: #(1 2 40)) atIndex: 3) >>> 40"
+
 	^ self at: (self keys at: aNumber)
 ]
 
@@ -184,6 +194,15 @@ DataSeries >> atIndex: aNumber put: aValue [
 { #category : #accessing }
 DataSeries >> atIndex: aNumber transform: aBlock [
 	"Evaluate aBlock on the value at aNumber and replace that value with the result"
+
+	"	((DataSeries withKeys: #( A B C ) values: #( 1 4 3 ))
+		 atIndex: 3
+		 transform: [ :x | x * x ])
+	>>> (DataSeries withKeys: #( A B C ) values: #( 1 4 9 ))"
+
+	"(#( 1 3 3 ) asDataSeries atIndex: 2 transform: [ :x | x - 1 ])
+	>>> (#( 1 2 3 ) asDataSeries)"
+
 	| key |
 	key := self keys at: aNumber.
 	self at: key transform: aBlock
