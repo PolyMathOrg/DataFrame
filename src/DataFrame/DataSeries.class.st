@@ -327,6 +327,25 @@ DataSeries >> eighth [
 	^ self atIndex: 8
 ]
 
+{ #category : #converting }
+DataSeries >> encodeOneHot [
+	"Encode the values of the DataSeries into one-hot vectors."
+
+	| uniqueValues encodingDataSeries oneHotValues |
+	uniqueValues := self removeDuplicates sortIfPossible.
+	encodingDataSeries := self class new.
+	uniqueValues withIndexDo: [ :value :index |
+		encodingDataSeries at: value put: index ].
+	oneHotValues := self values collect: [ :value |
+		                | oneHot |
+		                oneHot := encodingDataSeries keys collect: [ :key |
+			                          value = key
+				                          ifTrue: [ 1 ]
+				                          ifFalse: [ 0 ] ].
+		                oneHot ].
+	^ DataSeries withKeys: self keys values: oneHotValues name: self name
+]
+
 { #category : #private }
 DataSeries >> errorKeyNotFound: aKey [
 

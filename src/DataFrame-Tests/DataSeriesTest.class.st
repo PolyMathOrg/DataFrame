@@ -1273,6 +1273,68 @@ DataSeriesTest >> testEighth [
 	self assert: series eighth equals: 10
 ]
 
+{ #category : #'tests - converting' }
+DataSeriesTest >> testEncodeOneHot [
+
+	| actual expected |
+	actual := #( 1 2 3 4 ) asDataSeries encodeOneHot.
+	expected := #(
+	    #( 1 0 0 0 )
+	    #( 0 1 0 0 )
+	    #( 0 0 1 0 )
+		 #( 0 0 0 1 )
+	) asDataSeries.
+
+	self assert: actual equals: expected
+]
+
+{ #category : #'tests - converting' }
+DataSeriesTest >> testEncodeOneHotRomanNumbers [
+
+	| actual expected |
+	actual := (#( I XIV VII XXXII ) collect: [ :each | each romanNumber ])
+		          asDataSeries encodeOneHot.
+	expected := #(
+	    #( 1 0 0 0 )
+	    #( 0 0 1 0 )
+	    #( 0 1 0 0 )
+		 #( 0 0 0 1 )
+	) asDataSeries.
+
+	self assert: actual equals: expected
+]
+
+{ #category : #'tests - converting' }
+DataSeriesTest >> testEncodeOneHotStrings [
+
+	| actual expected |
+	actual := #( apple avocado orange banana ) asDataSeries encodeOneHot.
+	expected := #(
+	    #( 1 0 0 0 )
+	    #( 0 1 0 0 )
+	    #( 0 0 0 1 )
+		 #( 0 0 1 0 )
+	) asDataSeries.
+
+	self assert: actual equals: expected
+]
+
+{ #category : #'tests - converting' }
+DataSeriesTest >> testEncodeOneHotWithDecimalAndLargeValues [
+
+	| actual expected |
+	actual := #( 0.5 1 2.2 3 4000 ) asDataSeries encodeOneHot.
+	expected := #(
+	    #( 1 0 0 0 0 )
+	    #( 0 1 0 0 0 )
+	    #( 0 0 1 0 0 )
+		 #( 0 0 0 1 0 )
+		 #( 0 0 0 0 1 )
+	) asDataSeries.
+
+	self assert: actual equals: expected
+]
+
 { #category : #'tests - comparing' }
 DataSeriesTest >> testEquality [
 
