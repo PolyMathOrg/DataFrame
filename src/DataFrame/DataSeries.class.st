@@ -115,12 +115,20 @@ DataSeries >> adaptToCollection: rcvr andSend: selector [
 DataSeries >> argmax [
 	"Returns the key which corresponds to the maximum value of the dataseries"
 
+	"(#(100 10 20 30) asDataSeries argmax) >>> 1"
+
+	"((DataSeries withKeys: #(A B C) values: #(1 2 40)) argmax) >>> #C"
+
 	^ self keyAtValue: self max
 ]
 
 { #category : #statistics }
 DataSeries >> argmin [
 	"Returns the key which corresponds to the minimum value of the dataseries"
+
+	"(#(100 10 20 30) asDataSeries argmin) >>> 2"
+
+	"((DataSeries withKeys: #(A B C) values: #(1 2 40)) argmin) >>> #A"
 
 	^ self keyAtValue: self min
 ]
