@@ -115,12 +115,20 @@ DataSeries >> adaptToCollection: rcvr andSend: selector [
 DataSeries >> argmax [
 	"Returns the key which corresponds to the maximum value of the dataseries"
 
+	"(#(100 10 20 30) asDataSeries argmax) >>> 1"
+
+	"((DataSeries withKeys: #(A B C) values: #(1 2 40)) argmax) >>> #C"
+
 	^ self keyAtValue: self max
 ]
 
 { #category : #statistics }
 DataSeries >> argmin [
 	"Returns the key which corresponds to the minimum value of the dataseries"
+
+	"(#(100 10 20 30) asDataSeries argmin) >>> 2"
+
+	"((DataSeries withKeys: #(A B C) values: #(1 2 40)) argmin) >>> #A"
 
 	^ self keyAtValue: self min
 ]
@@ -138,7 +146,13 @@ DataSeries >> asDataFrame [
 { #category : #accessing }
 DataSeries >> at: aKey transform: aBlock [
 	"Evaluate aBlock on the value at aKey and replace that value with the result. Signal an exception if aKey was not found"
-	self at: aKey transform: aBlock ifAbsent: [ self errorKeyNotFound: aKey ]
+
+	"((DataSeries withKeys: #(A B C) values: #(1 4 3)) at: #C transform: [ :x | x * x ]) >>> (DataSeries withKeys: #(A B C) values: #(1 4 9))."
+
+	self
+		at: aKey
+		transform: aBlock
+		ifAbsent: [ self errorKeyNotFound: aKey ]
 ]
 
 { #category : #accessing }
@@ -162,7 +176,11 @@ DataSeries >> atAll: aCollectionOfIndexes [
 { #category : #accessing }
 DataSeries >> atIndex: aNumber [
 	"Answer the element of the receiver at index aNumber"
-	
+
+	"(#(1 4 9) asDataSeries atIndex: 2) >>> 4"
+
+	"((DataSeries withKeys: #(A B C) values: #(1 2 40)) atIndex: 3) >>> 40"
+
 	^ self at: (self keys at: aNumber)
 ]
 
@@ -176,6 +194,15 @@ DataSeries >> atIndex: aNumber put: aValue [
 { #category : #accessing }
 DataSeries >> atIndex: aNumber transform: aBlock [
 	"Evaluate aBlock on the value at aNumber and replace that value with the result"
+
+	"	((DataSeries withKeys: #( A B C ) values: #( 1 4 3 ))
+		 atIndex: 3
+		 transform: [ :x | x * x ])
+	>>> (DataSeries withKeys: #( A B C ) values: #( 1 4 9 ))"
+
+	"(#( 1 3 3 ) asDataSeries atIndex: 2 transform: [ :x | x - 1 ])
+	>>> (#( 1 2 3 ) asDataSeries)"
+
 	| key |
 	key := self keys at: aNumber.
 	self at: key transform: aBlock
@@ -184,6 +211,8 @@ DataSeries >> atIndex: aNumber transform: aBlock [
 { #category : #statistics }
 DataSeries >> average [
 	"Returns the average without including nils"
+
+	"(#(1 2 nil 3) asDataSeries average) >>> 2"
 
 	^ self removeNils values average
 ]
@@ -254,12 +283,20 @@ DataSeries >> correlationWith: otherSeries using: aCorrelationCoefficient [
 DataSeries >> countNils [
 	"Returns the number of nil values in the data series"
 
+	"(#(1 nil 2 nil nil) asDataSeries countNils) >>> 3"
+
+	"(#('A' 'nil' nil 'B') asDataSeries countNils) >>> 1"
+
 	^ self count: [ :each | each isNil ]
 ]
 
 { #category : #statistics }
 DataSeries >> countNonNils [
 	"Returns the number of non-nil values in the data series"
+
+	"(#(1 nil 2 nil nil) asDataSeries countNonNils) >>> 2"
+
+	"(#('A' 'nil' nil 'B') asDataSeries countNonNils) >>> 3"
 
 	^ self count: [ :each | each isNotNil ]
 ]
@@ -289,12 +326,16 @@ DataSeries >> crossTabulateWith: aSeries [
 DataSeries >> cumulativeSum [
 	"Calculate the cumulative sum of a data series and return a new data series with keys as self keys and values as cumulative sum"
 
+	"(#(1 nil 2 3 4) asDataSeries cumulativeSum) >>> (#(1 1 3 6 10) asDataSeries)"
+
+	"(#(nil nil 10 90) asDataSeries cumulativeSum) >>> (#(0 0 10 100) asDataSeries)"
+
 	| sum |
 	sum := 0.
 
 	^ self collect: [ :each |
-		each ifNotNil: [ sum := sum + each ].
-		sum ]
+		  each ifNotNil: [ sum := sum + each ].
+		  sum ]
 ]
 
 { #category : #defaults }
@@ -316,6 +357,9 @@ DataSeries >> defaultPrecision [
 DataSeries >> eighth [
 	"Answer the eighth element of the receiver.
 	Raise an error if there are not enough elements."
+
+	"(#(a b c d e f g h i j) asDataSeries eighth) >>> #h"
+
 	^ self atIndex: 8
 ]
 
@@ -353,6 +397,9 @@ DataSeries >> errorKeysMismatch [
 DataSeries >> fifth [
 	"Answer the fifth element of the receiver.
 	Raise an error if there are not enough elements."
+
+	"(#(a b c d e f g h i j) asDataSeries fifth) >>> #e"
+
 	^ self atIndex: 5
 ]
 
@@ -360,12 +407,17 @@ DataSeries >> fifth [
 DataSeries >> first [
 	"Answer the first element of the receiver.
 	Raise an error if there are not enough elements."
+
+	"(#(a b c d e f g h i j) asDataSeries first) >>> #a"
+
 	^ self atIndex: 1
 ]
 
 { #category : #statistics }
 DataSeries >> firstQuartile [
-    "25% of the values in a set are smaller than or equal to the first Quartile of that set"
+	"25% of the values in a set are smaller than or equal to the first Quartile of that set"
+
+	"(#(7 4 20) asDataSeries firstQuartile) >>> 4"
 
 	^ self quartile: 1
 ]
@@ -374,12 +426,17 @@ DataSeries >> firstQuartile [
 DataSeries >> fourth [
 	"Answer the fourth element of the receiver.
 	Raise an error if there are not enough elements."
+
+	"(#(a b c d e f g h i j) asDataSeries fourth) >>> #d"
+
 	^ self atIndex: 4
 ]
 
 { #category : #statistics }
 DataSeries >> fourthQuartile [
-    "Fourth Quartile is the maximum value in a set of values"
+	"Fourth Quartile is the maximum value in a set of values"
+
+	"(#(7 4 20) asDataSeries fourthQuartile) >>> 20"
 
 	^ self quartile: 4
 ]
@@ -495,6 +552,8 @@ DataSeries >> initialize: aCapacity [
 DataSeries >> interquartileRange [
 	"The Inter Quartile Range is the difference between the third Quartile and the first Quartile"
 
+	"(#(7 4 20) asDataSeries interquartileRange) >>> 16"
+
 	^ self thirdQuartile - self firstQuartile
 ]
 
@@ -502,12 +561,24 @@ DataSeries >> interquartileRange [
 DataSeries >> isCategorical [
 	"Returns true if atleast one value of the data series is non numerical and returns false otherwise"
 
+	"(#(a 1 2 3) asDataSeries isCategorical) >>> true"
+
+	"(#(0 1 2 3) asDataSeries isCategorical) >>> false"
+
+	"(#(a b c d) asDataSeries isCategorical) >>> true"
+
 	^ self isNumerical not
 ]
 
 { #category : #'categorical-numerical' }
 DataSeries >> isNumerical [
 	"Returns true if all values of the data series are numerical values and returns false otherwise"
+
+	"(#(a 1 2 3) asDataSeries isNumerical) >>> false"
+
+	"(#(0 1 2.2 3) asDataSeries isNumerical) >>> true"
+
+	"((#( I XIV VII XII ) collect: [ :each | each romanNumber ]) asDataSeries isNumerical) >>> true"
 
 	^ forcedIsNumerical ifNil: [
 		  (self removeDuplicates copyWithout: nil) allSatisfy: [ :each |
@@ -531,6 +602,9 @@ DataSeries >> keys: anArrayOfKeys [
 DataSeries >> last [
 	"Answer the last element of the receiver.
 	Raise an error if there are not enough elements."
+
+	"(#(a b c d e f g h i j) asDataSeries last) >>> #j"
+
 	^ self atIndex: self size
 ]
 
@@ -557,12 +631,16 @@ DataSeries >> makeNumerical [
 DataSeries >> max [
 	"Returns the maximum value of the dataseries without including nils"
 
+	"(#(7 4 20) asDataSeries max) >>> 20"
+
 	^ self removeNils values max
 ]
 
 { #category : #statistics }
 DataSeries >> median [
 	"Returns the median without including nils"
+
+	"(#(7 4 20) asDataSeries median) >>> 7"
 
 	^ self removeNils values median
 ]
@@ -571,12 +649,18 @@ DataSeries >> median [
 DataSeries >> min [
 	"Returns the minimum value of the dataseries without including nils"
 
+	"(#(7 4 20) asDataSeries min) >>> 4"
+
 	^ self removeNils values min
 ]
 
 { #category : #accessing }
 DataSeries >> mode [
 	"The mode of a set of values is the value that appears most often. "
+
+	"(#(a j a j e j g j i j) asDataSeries mode) >>> #j"
+
+	"(#(1 2 3 2) asDataSeries mode) >>> 2"
 
 	| valueCounts |
 	valueCounts := self valueCounts.
@@ -601,6 +685,9 @@ DataSeries >> name: anObject [
 DataSeries >> ninth [
 	"Answer the ninth element of the receiver.
 	Raise an error if there are not enough elements."
+
+	"(#(a b c d e f g h i j) asDataSeries ninth) >>> #i"
+
 	^ self atIndex: 9
 ]
 
@@ -608,6 +695,8 @@ DataSeries >> ninth [
 DataSeries >> quantile: aNumber [
 	"A quantile determines how many values in a distribution are above or below a certain limit.
 Eg: if the parameter aNumber is 85, a value from the data series is returned which is greater than or equal to 85% of the values in the data series"
+
+	"(#(7 4 20) asDataSeries quantile: 50) >>> 7"
 
 	| sortedSeries index |
 	sortedSeries := self withoutNils sorted.
@@ -622,8 +711,10 @@ Eg: if the parameter aNumber is 85, a value from the data series is returned whi
 DataSeries >> quartile: aNumber [
 	"Quartiles are three values that split sorted data into four parts, each with an equal number of observations.
 Eg: if the parameter aNumber is 3, the Third Quartile of the data series is returned"
-	
-	^ self quantile: (25 * aNumber)
+
+	"(#(7 4 20) asDataSeries quartile: 3) >>> 20"
+
+	^ self quantile: 25 * aNumber
 ]
 
 { #category : #enumerating }
@@ -722,12 +813,17 @@ DataSeries >> replaceNilsWithZeros [
 DataSeries >> second [
 	"Answer the second element of the receiver.
 	Raise an error if there are not enough elements."
+
+	"(#(a b c d e f g h i j) asDataSeries second) >>> #b"
+
 	^ self atIndex: 2
 ]
 
 { #category : #statistics }
 DataSeries >> secondQuartile [
-    "50% of the values in a set are smaller than or equal to the second Quartile of that set. It is also known as the median"
+	"50% of the values in a set are smaller than or equal to the second Quartile of that set. It is also known as the median"
+
+	"(#(7 4 20) asDataSeries secondQuartile) >>> 7"
 
 	^ self quartile: 2
 ]
@@ -744,6 +840,9 @@ DataSeries >> select: aBlock [
 DataSeries >> seventh [
 	"Answer the seventh element of the receiver.
 	Raise an error if there are not enough elements."
+
+	"(#(a b c d e f g h i j) asDataSeries seventh) >>> #g"
+
 	^ self atIndex: 7
 ]
 
@@ -751,6 +850,9 @@ DataSeries >> seventh [
 DataSeries >> sixth [
 	"Answer the sixth element of the receiver.
 	Raise an error if there are not enough elements."
+
+	"(#(a b c d e f g h i j) asDataSeries sixth) >>> #f"
+
 	^ self atIndex: 6
 ]
 
@@ -819,6 +921,8 @@ DataSeries >> sortedDescending [
 DataSeries >> stdev [
 	"Returns the standard deviation of the dataseries without including nils"
 
+	"(#(10 20 30) asDataSeries stdev) >>> 10"
+
 	^ self removeNils values stdev
 ]
 
@@ -872,12 +976,17 @@ DataSeries >> tail: aNumber [
 DataSeries >> third [
 	"Answer the third element of the receiver.
 	Raise an error if there are not enough elements."
+
+	"(#(a b c d e f g h i j) asDataSeries third) >>> #c"
+
 	^ self atIndex: 3
 ]
 
 { #category : #statistics }
 DataSeries >> thirdQuartile [
-   "75% of the values in a set are smaller than or equal to the third Quartile of that set"
+	"75% of the values in a set are smaller than or equal to the third Quartile of that set"
+
+	"(#(7 4 20) asDataSeries thirdQuartile) >>> 20"
 
 	^ self quartile: 3
 ]
@@ -896,14 +1005,19 @@ DataSeries >> uniqueValues [
 { #category : #statistics }
 DataSeries >> valueCounts [
 	"Calculates the frequency of each value in the data series and returns a data series in descending order of frequencies"
-	
+
+	"(#(7 20 20) asDataSeries valueCounts) >>> (DataSeries withKeys: #(20 7) values: #(2 1))"
+
 	^ (self groupByUniqueValuesAndAggregateUsing: #size) sortDescending
 ]
 
 { #category : #statistics }
 DataSeries >> valueFrequencies [
 	"Calculates the relative frequency of values in the data series. Relative frequency is the ratio of the number of times a value occurs in a set to the total number of values in the set"
-	
+
+	"(#(7 20 20) asDataSeries valueFrequencies) >>> (DataSeries withKeys: #( 20 7 ) values: {
+			(2 / 3). (1 / 3) })"
+
 	| count freq |
 	count := self valueCounts.
 	freq := count / self size.
@@ -1056,7 +1170,9 @@ DataSeries >> withoutNils [
 
 { #category : #statistics }
 DataSeries >> zerothQuartile [
-    "Zeroth Quartile is the minimum value in a set of values"
+	"Zeroth Quartile is the minimum value in a set of values"
+
+	"(#(7 4 20) asDataSeries zerothQuartile) >>> 4"
 
 	^ self quartile: 0
 ]
