@@ -220,7 +220,15 @@ DataSeries >> average [
 { #category : #'data-types' }
 DataSeries >> calculateDataType [
 	"Returns the data type of the data series"
-	
+
+	"(#(1 2 3) asDataSeries calculateDataType) >>> SmallInteger"
+
+	"(#(1 a 3) asDataSeries calculateDataType) >>> Object"
+
+	"(#(1.1 2.5 3.7) asDataSeries calculateDataType) >>> SmallFloat64"
+
+	"(#(1.1 2.5 3) asDataSeries calculateDataType) >>> Number"
+
 	^ self values calculateDataType
 ]
 
@@ -270,12 +278,24 @@ DataSeries >> collectWithNotNils: aBlock [
 { #category : #'math functions' }
 DataSeries >> correlationWith: otherSeries [
 	"Calculate the Pearson correlation coefficient between self and the other series"
-	^ self correlationWith: otherSeries using: DataPearsonCorrelationMethod
+
+	"((#(1 2 4) asDataSeries) correlationWith: (#(2 4 8) asDataSeries)) >>> 1."
+
+	"((#(1 2 4) asDataSeries) correlationWith: (#(-3 -6 -12) asDataSeries)) >>> -1."
+
+	^ self
+		  correlationWith: otherSeries
+		  using: DataPearsonCorrelationMethod
 ]
 
 { #category : #'math functions' }
 DataSeries >> correlationWith: otherSeries using: aCorrelationCoefficient [
 	"Calculate the correlation coefficient between self and the other series using the given method"
+
+	"((#(1 2 4) asDataSeries) correlationWith: (#(2 4 8) asDataSeries) using: DataPearsonCorrelationMethod) >>> 1."
+
+	"((#(1 2 4) asDataSeries) correlationWith: (#(-3 -6 -12) asDataSeries) using: DataPearsonCorrelationMethod) >>> -1."
+
 	^ aCorrelationCoefficient between: self and: otherSeries
 ]
 
@@ -366,6 +386,12 @@ DataSeries >> eighth [
 { #category : #converting }
 DataSeries >> encodeOneHot [
 	"Encode the values of the DataSeries into one-hot vectors."
+
+	"(#(a b) asDataSeries encodeOneHot) >>>(#(#(1 0) #(0 1))asDataSeries) "
+
+	"(#(1 2 3) asDataSeries encodeOneHot) >>>(#(#(1 0 0) #(0 1 0) #(0 0 1))asDataSeries) "
+
+	"(#(23 0.5 542) asDataSeries encodeOneHot) >>>(#(#(0 1 0) #(1 0 0) #(0 0 1))asDataSeries) "
 
 	| uniqueValues encodingDataSeries oneHotValues |
 	uniqueValues := self removeDuplicates sortIfPossible.
@@ -515,13 +541,26 @@ DataSeries >> groupByUniqueValuesAndAggregateUsing: aBlock as: aNewName [
 { #category : #testing }
 DataSeries >> hasNil [
 	"return true if data series has at least one nil value"
-	^ self includes: nil.
+
+	"(#(a nil b) asDataSeries hasNil) >>> true"
+
+	"(#(a 'nil' b) asDataSeries hasNil) >>> false"
+
+	"(#(1 nil 3) asDataSeries hasNil) >>> true"
+
+	"(#(1 0 3) asDataSeries hasNil) >>> false"
+
+	^ self includes: nil
 ]
 
 { #category : #slicing }
 DataSeries >> head [
 	"Returns a data series with first 5 elements of the receiver"
-	
+
+	"(#(a b c d e f g h i j) asDataSeries head) >>> (#(a b c d e) asDataSeries)"
+
+	"(#(1 2 3 4 5 6 7 8 9 10) asDataSeries head) >>> (#(1 2 3 4 5) asDataSeries)"
+
 	^ self head: self defaultHeadTailSize
 ]
 
@@ -529,10 +568,14 @@ DataSeries >> head [
 DataSeries >> head: aNumber [
 	"Returns a data series with first aNumber elements of the receiver"
 
+	"(#(a b c d e f g h i j) asDataSeries head: 3) >>> (#(a b c) asDataSeries)"
+
+	"(#(1 2 3 4 5 6 7 8 9 10) asDataSeries head: 1) >>> (#(1) asDataSeries)"
+
 	^ self species
-		withKeys: (self keys copyFrom: 1 to: aNumber)
-		values: (self values copyFrom: 1 to: aNumber)
-		name: self name
+		  withKeys: (self keys copyFrom: 1 to: aNumber)
+		  values: (self values copyFrom: 1 to: aNumber)
+		  name: self name
 ]
 
 { #category : #initialization }
@@ -610,6 +653,12 @@ DataSeries >> last [
 
 { #category : #'math functions' }
 DataSeries >> log: base [
+	"Returns a data series containing the logarithm of each value in the receiver using the specified base."
+
+	"(#(1 2 4 8 16) asDataSeries log: 2) >>> (#(0.0 1.0 2.0 3.0 4.0) asDataSeries)"
+
+	"(#(1 10 100) asDataSeries log: 10) >>> (#(0.0 1.0 2.0) asDataSeries)"
+
 	^ self collect: [ :each | each log: base ]
 ]
 
@@ -728,7 +777,7 @@ DataSeries >> reject: aBlock [
 { #category : #removing }
 DataSeries >> removeAt: aKey [
 	"Removes element from the data series with key aKey"
-	
+
 	^ self removeKey: aKey
 ]
 
@@ -743,12 +792,20 @@ DataSeries >> removeAtIndex: aNumber [
 DataSeries >> removeDuplicates [
 	"Answer the unique values of the receiver by removing duplicates"
 
+	"(#(1 2 3 3 2) asDataSeries removeDuplicates) >>> (#(1 2 3))"
+
+	"(#(c d b c d d) asDataSeries removeDuplicates) >>> (#(#c #d #b))"
+
 	^ self asSet asArray
 ]
 
 { #category : #removing }
 DataSeries >> removeNils [
 	"Removes elements with nil values from the data series"
+
+	"(#(nil 1 nil nil 2) asDataSeries removeNils) >>> (DataSeries withKeys: #(2 5) values: #(1 2))"
+
+	"(#(a b 'nil' nil nil nil) asDataSeries removeNils) >>> (#(a b 'nil') asDataSeries)"
 
 	| keysWithNilValues |
 	keysWithNilValues := OrderedCollection new.
@@ -761,12 +818,21 @@ DataSeries >> removeNils [
 DataSeries >> replaceNilsWith: anObject [
 	"Replaces nils inplace with anObject"
 
-	self withIndexDo: [ :ele :index | ele ifNil: [ self atIndex: index put: anObject ] ]
+	"(#(a 'nil' nil d nil) asDataSeries replaceNilsWith: #b) >>> (#(a 'nil' b d b) asDataSeries)"
+
+	"(#(1 0 nil 3 nil) asDataSeries replaceNilsWith: 7) >>> (#(1 0 7 3 7) asDataSeries)"
+
+	self withIndexDo: [ :ele :index |
+		ele ifNil: [ self atIndex: index put: anObject ] ]
 ]
 
 { #category : #replacing }
 DataSeries >> replaceNilsWithAverage [
 	"Replaces nils inplace with average"
+
+	"(#(1 2 nil 3 nil) asDataSeries replaceNilsWithAverage) >>> (#(1 2 2 3 2) asDataSeries)"
+
+	"(#(3 6 2 9 nil) asDataSeries replaceNilsWithAverage) >>> (#(3 6 2 9 5) asDataSeries)"
 
 	| mean |
 	mean := (self select: [ :ele | ele isNotNil ]) average.
@@ -777,6 +843,10 @@ DataSeries >> replaceNilsWithAverage [
 DataSeries >> replaceNilsWithMedian [
 	"Replaces nils inplace with median"
 
+	"(#(1 2 nil 3) asDataSeries replaceNilsWithMedian) >>> (#(1 2 2 3) asDataSeries)"
+
+	"(#(3 7 nil 9 nil) asDataSeries replaceNilsWithMedian) >>> (#(3 7 7 9 7) asDataSeries)"
+
 	| median |
 	median := (self select: [ :ele | ele isNotNil ]) median.
 	self replaceNilsWith: median
@@ -786,6 +856,10 @@ DataSeries >> replaceNilsWithMedian [
 DataSeries >> replaceNilsWithMode [
 	"Replaces nils inplace with mode"
 
+	"(#(1 2 1 3 nil) asDataSeries replaceNilsWithMode) >>> (#(1 2 1 3 1) asDataSeries)"
+
+	"(#(a a a b nil) asDataSeries replaceNilsWithMode) >>> (#(a a a b a) asDataSeries)"
+
 	| mode |
 	mode := (self select: [ :ele | ele isNotNil ]) mode.
 	self replaceNilsWith: mode
@@ -793,8 +867,11 @@ DataSeries >> replaceNilsWithMode [
 
 { #category : #replacing }
 DataSeries >> replaceNilsWithPreviousValue [
-
 	"Replaces nils inplace with previous non-nil value"
+
+	"(#(nil 2 nil 3 nil) asDataSeries replaceNilsWithPreviousValue) >>> (#(nil 2 2 3 3) asDataSeries)"
+
+	"(#(a nil b c nil) asDataSeries replaceNilsWithPreviousValue) >>> (#(a a b c c) asDataSeries)"
 
 	| value |
 	self withIndexDo: [ :ele :index |
@@ -805,6 +882,10 @@ DataSeries >> replaceNilsWithPreviousValue [
 { #category : #replacing }
 DataSeries >> replaceNilsWithZeros [
 	"Replaces nils inplace with zero"
+
+	"(#(1 2 nil 3 nil) asDataSeries replaceNilsWithZeros) >>> (#(1 2 0 3 0) asDataSeries)"
+
+	"(#(a b c d nil) asDataSeries replaceNilsWithZeros) >>> (#(a b c d 0) asDataSeries)"
 
 	self replaceNilsWith: 0
 ]
@@ -859,13 +940,24 @@ DataSeries >> sixth [
 { #category : #sorting }
 DataSeries >> sort [
 	"Arranges a data series in ascending order of its values"
-	
+
+	"(#(a c b) asDataSeries sort) >>> (DataSeries withKeys: #(1 3 2) values: #(a b c))"
+
+	"(#(500 5 37) asDataSeries sort) >>> (DataSeries withKeys: #(2 3 1) values: #(5 37 500))"
+
 	self sort: [ :a :b | a <= b ]
 ]
 
 { #category : #sorting }
 DataSeries >> sort: aBlock [
 	"Arranges a data series by applying aBlock on its values"
+
+	"(#( z aaa cc ) asDataSeries sort: [ :a :b |
+		 a asString size < b asString size ])
+	>>> (DataSeries withKeys: #( 1 3 2 ) values: #( z cc aaa ))."
+
+	"(#( 500 5 37 ) asDataSeries sort: [ :a :b | a >= b ])
+	>>> (DataSeries withKeys: #( 1 3 2 ) values: #( 500 37 5 ))"
 
 	| associationBlock |
 	associationBlock := [ :a :b | aBlock value: a value value: b value ].
@@ -884,19 +976,34 @@ DataSeries >> sortAssociations: aBlock [
 DataSeries >> sortDescending [
 	"Arranges a data series in descending order of its values"
 
+	"(#(a c b) asDataSeries sortDescending) >>> (DataSeries withKeys: #(2 3 1) values: #(c b a))"
+
+	"(#(500 5 37) asDataSeries sortDescending) >>> (DataSeries withKeys: #(1 3 2) values: #(500 37 5))"
+
 	self sort: [ :a :b | a > b ]
 ]
 
 { #category : #sorting }
 DataSeries >> sorted [
 	"Returns a sorted copy of the data series without rearranging the original data series"
-	
+
+	"(#(a c b) asDataSeries sorted) >>> (DataSeries withKeys: #(1 3 2) values: #(a b c))"
+
+	"(#(500 5 37) asDataSeries sorted) >>> (DataSeries withKeys: #(2 3 1) values: #(5 37 500))"
+
 	^ self sorted: [ :a :b | a <= b ]
 ]
 
 { #category : #sorting }
 DataSeries >> sorted: aBlock [
 	"Returns a copy of the data series after applying aBlock without rearranging the original data series"
+
+	"(#( z aaa cc ) asDataSeries sorted: [ :a :b |
+		 a asString size < b asString size ])
+	>>> (DataSeries withKeys: #( 1 3 2 ) values: #( z cc aaa ))."
+
+	"(#( 500 5 37 ) asDataSeries sorted: [ :a :b | a >= b ])
+	>>> (DataSeries withKeys: #( 1 3 2 ) values: #( 500 37 5 ))"
 
 	| associationBlock |
 	associationBlock := [ :a :b | aBlock value: a value value: b value ].
@@ -914,6 +1021,10 @@ DataSeries >> sortedAssociations: aBlock [
 DataSeries >> sortedDescending [
 	"Returns a sorted copy of the data series in descending order without rearranging the original data series"
 
+	"(#(a c b) asDataSeries sortedDescending) >>> (DataSeries withKeys: #(2 3 1) values: #(c b a))"
+
+	"(#(50 5 37) asDataSeries sortedDescending) >>> (DataSeries withKeys: #(1 3 2) values: #(50 37 5))"
+
 	^ self sorted: [ :a :b | a > b ]
 ]
 
@@ -929,6 +1040,12 @@ DataSeries >> stdev [
 { #category : #transformation }
 DataSeries >> sum [
 	"Return the sum of the values over the requested axis. Nil values are excluded."
+
+	"(#(1 1 1) asDataSeries sum) >>> 3"
+
+	"(#(1 nil 1) asDataSeries sum) >>> 2"
+
+	"(#(1 1.1 1) asDataSeries sum) >>> 3.1"
 
 	| result |
 	result := 0.
@@ -959,6 +1076,10 @@ DataSeries >> summary [
 DataSeries >> tail [
 	"Returns a data series with last 5 elements of the receiver"
 
+	"(#(a b c d e f) asDataSeries tail) >>> (DataSeries withKeys: #(2 3 4 5 6) values: #(b c d e f) )"
+
+	"(#(1 2 3 4 5 6 7) asDataSeries tail) >>> (DataSeries withKeys: #(3 4 5 6 7) values: #(3 4 5 6 7) )"
+
 	^ self tail: self defaultHeadTailSize
 ]
 
@@ -966,10 +1087,16 @@ DataSeries >> tail [
 DataSeries >> tail: aNumber [
 	"Returns a data series with last aNumber elements of the receiver"
 
+	"(#(a b c d e f) asDataSeries tail: 3) >>> (DataSeries withKeys: #(4 5 6) values: #(d e f) )"
+
+	"(#(1 2 3 4 5 6 7) asDataSeries tail: 2) >>> (DataSeries withKeys: #(6 7) values: #(6 7) )"
+
 	^ self species
-		withKeys: (self keys copyFrom: self size - aNumber + 1 to: self size)
-		values: (self values copyFrom: self size - aNumber + 1 to: self size)
-		name: self name
+		  withKeys:
+		  (self keys copyFrom: self size - aNumber + 1 to: self size)
+		  values:
+		  (self values copyFrom: self size - aNumber + 1 to: self size)
+		  name: self name
 ]
 
 { #category : #accessing }
@@ -1164,6 +1291,10 @@ DataSeries >> withSeries: otherDataSeries collect: twoArgBlock [
 { #category : #private }
 DataSeries >> withoutNils [
 	"Returns a copy of the data series without the nil values"
+
+	"(#(nil 1 nil nil 2) asDataSeries withoutNils) >>> (DataSeries withKeys: #(2 5) values: #(1 2))"
+
+	"(#(a b 'nil' nil nil nil) asDataSeries withoutNils) >>> (#(a b 'nil') asDataSeries)"
 
 	^ self reject: #isNil
 ]
