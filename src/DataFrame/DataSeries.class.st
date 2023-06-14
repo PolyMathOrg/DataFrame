@@ -1260,6 +1260,10 @@ DataSeries >> withSeries: otherDataSeries collect: twoArgBlock [
 DataSeries >> withoutNils [
 	"Returns a copy of the data series without the nil values"
 
+	"(#(nil 1 nil nil 2) asDataSeries withoutNils) >>> (DataSeries withKeys: #(2 5) values: #(1 2))"
+
+	"(#(a b 'nil' nil nil nil) asDataSeries withoutNils) >>> (#(a b 'nil') asDataSeries)"
+
 	^ self reject: #isNil
 ]
 
