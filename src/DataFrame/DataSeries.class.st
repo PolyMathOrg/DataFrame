@@ -530,7 +530,11 @@ DataSeries >> hasNil [
 { #category : #slicing }
 DataSeries >> head [
 	"Returns a data series with first 5 elements of the receiver"
-	
+
+	"(#(a b c d e f g h i j) asDataSeries head) >>> (#(a b c d e) asDataSeries)"
+
+	"(#(1 2 3 4 5 6 7 8 9 10) asDataSeries head) >>> (#(1 2 3 4 5) asDataSeries)"
+
 	^ self head: self defaultHeadTailSize
 ]
 
@@ -538,10 +542,14 @@ DataSeries >> head [
 DataSeries >> head: aNumber [
 	"Returns a data series with first aNumber elements of the receiver"
 
+	"(#(a b c d e f g h i j) asDataSeries head: 3) >>> (#(a b c) asDataSeries)"
+
+	"(#(1 2 3 4 5 6 7 8 9 10) asDataSeries head: 1) >>> (#(1) asDataSeries)"
+
 	^ self species
-		withKeys: (self keys copyFrom: 1 to: aNumber)
-		values: (self values copyFrom: 1 to: aNumber)
-		name: self name
+		  withKeys: (self keys copyFrom: 1 to: aNumber)
+		  values: (self values copyFrom: 1 to: aNumber)
+		  name: self name
 ]
 
 { #category : #initialization }
@@ -1004,6 +1012,10 @@ DataSeries >> summary [
 DataSeries >> tail [
 	"Returns a data series with last 5 elements of the receiver"
 
+	"(#(a b c d e f) asDataSeries tail) >>> (DataSeries withKeys: #(2 3 4 5 6) values: #(b c d e f) )"
+
+	"(#(1 2 3 4 5 6 7) asDataSeries tail) >>> (DataSeries withKeys: #(3 4 5 6 7) values: #(3 4 5 6 7) )"
+
 	^ self tail: self defaultHeadTailSize
 ]
 
@@ -1011,10 +1023,16 @@ DataSeries >> tail [
 DataSeries >> tail: aNumber [
 	"Returns a data series with last aNumber elements of the receiver"
 
+	"(#(a b c d e f) asDataSeries tail: 3) >>> (DataSeries withKeys: #(4 5 6) values: #(d e f) )"
+
+	"(#(1 2 3 4 5 6 7) asDataSeries tail: 2) >>> (DataSeries withKeys: #(6 7) values: #(6 7) )"
+
 	^ self species
-		withKeys: (self keys copyFrom: self size - aNumber + 1 to: self size)
-		values: (self values copyFrom: self size - aNumber + 1 to: self size)
-		name: self name
+		  withKeys:
+		  (self keys copyFrom: self size - aNumber + 1 to: self size)
+		  values:
+		  (self values copyFrom: self size - aNumber + 1 to: self size)
+		  name: self name
 ]
 
 { #category : #accessing }
