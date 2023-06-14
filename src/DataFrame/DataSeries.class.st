@@ -868,13 +868,24 @@ DataSeries >> sixth [
 { #category : #sorting }
 DataSeries >> sort [
 	"Arranges a data series in ascending order of its values"
-	
+
+	"(#(a c b) asDataSeries sort) >>> (DataSeries withKeys: #(1 3 2) values: #(a b c))"
+
+	"(#(500 5 37) asDataSeries sort) >>> (DataSeries withKeys: #(2 3 1) values: #(5 37 500))"
+
 	self sort: [ :a :b | a <= b ]
 ]
 
 { #category : #sorting }
 DataSeries >> sort: aBlock [
 	"Arranges a data series by applying aBlock on its values"
+
+	"(#( z aaa cc ) asDataSeries sort: [ :a :b |
+		 a asString size < b asString size ])
+	>>> (DataSeries withKeys: #( 1 3 2 ) values: #( z cc aaa ))."
+
+	"(#( 500 5 37 ) asDataSeries sort: [ :a :b | a >= b ])
+	>>> (DataSeries withKeys: #( 1 3 2 ) values: #( 500 37 5 ))"
 
 	| associationBlock |
 	associationBlock := [ :a :b | aBlock value: a value value: b value ].
@@ -893,19 +904,34 @@ DataSeries >> sortAssociations: aBlock [
 DataSeries >> sortDescending [
 	"Arranges a data series in descending order of its values"
 
+	"(#(a c b) asDataSeries sortDescending) >>> (DataSeries withKeys: #(2 3 1) values: #(c b a))"
+
+	"(#(500 5 37) asDataSeries sortDescending) >>> (DataSeries withKeys: #(1 3 2) values: #(500 37 5))"
+
 	self sort: [ :a :b | a > b ]
 ]
 
 { #category : #sorting }
 DataSeries >> sorted [
 	"Returns a sorted copy of the data series without rearranging the original data series"
-	
+
+	"(#(a c b) asDataSeries sorted) >>> (DataSeries withKeys: #(1 3 2) values: #(a b c))"
+
+	"(#(500 5 37) asDataSeries sorted) >>> (DataSeries withKeys: #(2 3 1) values: #(5 37 500))"
+
 	^ self sorted: [ :a :b | a <= b ]
 ]
 
 { #category : #sorting }
 DataSeries >> sorted: aBlock [
 	"Returns a copy of the data series after applying aBlock without rearranging the original data series"
+
+	"(#( z aaa cc ) asDataSeries sorted: [ :a :b |
+		 a asString size < b asString size ])
+	>>> (DataSeries withKeys: #( 1 3 2 ) values: #( z cc aaa ))."
+
+	"(#( 500 5 37 ) asDataSeries sorted: [ :a :b | a >= b ])
+	>>> (DataSeries withKeys: #( 1 3 2 ) values: #( 500 37 5 ))"
 
 	| associationBlock |
 	associationBlock := [ :a :b | aBlock value: a value value: b value ].
@@ -922,6 +948,10 @@ DataSeries >> sortedAssociations: aBlock [
 { #category : #sorting }
 DataSeries >> sortedDescending [
 	"Returns a sorted copy of the data series in descending order without rearranging the original data series"
+
+	"(#(a c b) asDataSeries sortedDescending) >>> (DataSeries withKeys: #(2 3 1) values: #(c b a))"
+
+	"(#(50 5 37) asDataSeries sortedDescending) >>> (DataSeries withKeys: #(1 3 2) values: #(50 37 5))"
 
 	^ self sorted: [ :a :b | a > b ]
 ]
