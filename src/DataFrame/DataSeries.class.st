@@ -220,7 +220,15 @@ DataSeries >> average [
 { #category : #'data-types' }
 DataSeries >> calculateDataType [
 	"Returns the data type of the data series"
-	
+
+	"(#(1 2 3) asDataSeries calculateDataType) >>> SmallInteger"
+
+	"(#(1 a 3) asDataSeries calculateDataType) >>> Object"
+
+	"(#(1.1 2.5 3.7) asDataSeries calculateDataType) >>> SmallFloat64"
+
+	"(#(1.1 2.5 3) asDataSeries calculateDataType) >>> Number"
+
 	^ self values calculateDataType
 ]
 
