@@ -270,12 +270,24 @@ DataSeries >> collectWithNotNils: aBlock [
 { #category : #'math functions' }
 DataSeries >> correlationWith: otherSeries [
 	"Calculate the Pearson correlation coefficient between self and the other series"
-	^ self correlationWith: otherSeries using: DataPearsonCorrelationMethod
+
+	"((#(1 2 4) asDataSeries) correlationWith: (#(2 4 8) asDataSeries)) >>> 1."
+
+	"((#(1 2 4) asDataSeries) correlationWith: (#(-3 -6 -12) asDataSeries)) >>> -1."
+
+	^ self
+		  correlationWith: otherSeries
+		  using: DataPearsonCorrelationMethod
 ]
 
 { #category : #'math functions' }
 DataSeries >> correlationWith: otherSeries using: aCorrelationCoefficient [
 	"Calculate the correlation coefficient between self and the other series using the given method"
+
+	"((#(1 2 4) asDataSeries) correlationWith: (#(2 4 8) asDataSeries) using: DataPearsonCorrelationMethod) >>> 1."
+
+	"((#(1 2 4) asDataSeries) correlationWith: (#(-3 -6 -12) asDataSeries) using: DataPearsonCorrelationMethod) >>> -1."
+
 	^ aCorrelationCoefficient between: self and: otherSeries
 ]
 
@@ -627,6 +639,12 @@ DataSeries >> last [
 
 { #category : #'math functions' }
 DataSeries >> log: base [
+	"Returns a data series containing the logarithm of each value in the receiver using the specified base."
+
+	"(#(1 2 4 8 16) asDataSeries log: 2) >>> (#(0.0 1.0 2.0 3.0 4.0) asDataSeries)"
+
+	"(#(1 10 100) asDataSeries log: 10) >>> (#(0.0 1.0 2.0) asDataSeries)"
+
 	^ self collect: [ :each | each log: base ]
 ]
 
