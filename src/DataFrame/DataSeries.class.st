@@ -387,6 +387,12 @@ DataSeries >> eighth [
 DataSeries >> encodeOneHot [
 	"Encode the values of the DataSeries into one-hot vectors."
 
+	"(#(a b) asDataSeries encodeOneHot) >>>(#(#(1 0) #(0 1))asDataSeries) "
+
+	"(#(1 2 3) asDataSeries encodeOneHot) >>>(#(#(1 0 0) #(0 1 0) #(0 0 1))asDataSeries) "
+
+	"(#(23 0.5 542) asDataSeries encodeOneHot) >>>(#(#(0 1 0) #(1 0 0) #(0 0 1))asDataSeries) "
+
 	| uniqueValues encodingDataSeries oneHotValues |
 	uniqueValues := self removeDuplicates sortIfPossible.
 	encodingDataSeries := self class new.
