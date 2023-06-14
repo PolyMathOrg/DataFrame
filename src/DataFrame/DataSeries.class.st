@@ -745,7 +745,7 @@ DataSeries >> reject: aBlock [
 { #category : #removing }
 DataSeries >> removeAt: aKey [
 	"Removes element from the data series with key aKey"
-	
+
 	^ self removeKey: aKey
 ]
 
@@ -760,12 +760,20 @@ DataSeries >> removeAtIndex: aNumber [
 DataSeries >> removeDuplicates [
 	"Answer the unique values of the receiver by removing duplicates"
 
+	"(#(1 2 3 3 2) asDataSeries removeDuplicates) >>> (#(1 2 3))"
+
+	"(#(c d b c d d) asDataSeries removeDuplicates) >>> (#(#c #d #b))"
+
 	^ self asSet asArray
 ]
 
 { #category : #removing }
 DataSeries >> removeNils [
 	"Removes elements with nil values from the data series"
+
+	"(#(nil 1 nil nil 2) asDataSeries removeNils) >>> (DataSeries withKeys: #(2 5) values: #(1 2))"
+
+	"(#(a b 'nil' nil nil nil) asDataSeries removeNils) >>> (#(a b 'nil') asDataSeries)"
 
 	| keysWithNilValues |
 	keysWithNilValues := OrderedCollection new.
