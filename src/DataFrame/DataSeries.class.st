@@ -515,7 +515,16 @@ DataSeries >> groupByUniqueValuesAndAggregateUsing: aBlock as: aNewName [
 { #category : #testing }
 DataSeries >> hasNil [
 	"return true if data series has at least one nil value"
-	^ self includes: nil.
+
+	"(#(a nil b) asDataSeries hasNil) >>> true"
+
+	"(#(a 'nil' b) asDataSeries hasNil) >>> false"
+
+	"(#(1 nil 3) asDataSeries hasNil) >>> true"
+
+	"(#(1 0 3) asDataSeries hasNil) >>> false"
+
+	^ self includes: nil
 ]
 
 { #category : #slicing }
