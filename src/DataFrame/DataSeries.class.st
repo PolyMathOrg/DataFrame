@@ -930,6 +930,12 @@ DataSeries >> stdev [
 DataSeries >> sum [
 	"Return the sum of the values over the requested axis. Nil values are excluded."
 
+	"(#(1 1 1) asDataSeries sum) >>> 3"
+
+	"(#(1 nil 1) asDataSeries sum) >>> 2"
+
+	"(#(1 1.1 1) asDataSeries sum) >>> 3.1"
+
 	| result |
 	result := 0.
 	self do: [ :each | each ifNotNil: [ result := result + each ] ].
