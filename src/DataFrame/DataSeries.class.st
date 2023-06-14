@@ -778,12 +778,21 @@ DataSeries >> removeNils [
 DataSeries >> replaceNilsWith: anObject [
 	"Replaces nils inplace with anObject"
 
-	self withIndexDo: [ :ele :index | ele ifNil: [ self atIndex: index put: anObject ] ]
+	"(#(a 'nil' nil d nil) asDataSeries replaceNilsWith: #b) >>> (#(a 'nil' b d b) asDataSeries)"
+
+	"(#(1 0 nil 3 nil) asDataSeries replaceNilsWith: 7) >>> (#(1 0 7 3 7) asDataSeries)"
+
+	self withIndexDo: [ :ele :index |
+		ele ifNil: [ self atIndex: index put: anObject ] ]
 ]
 
 { #category : #replacing }
 DataSeries >> replaceNilsWithAverage [
 	"Replaces nils inplace with average"
+
+	"(#(1 2 nil 3 nil) asDataSeries replaceNilsWithAverage) >>> (#(1 2 2 3 2) asDataSeries)"
+
+	"(#(3 6 2 9 nil) asDataSeries replaceNilsWithAverage) >>> (#(3 6 2 9 5) asDataSeries)"
 
 	| mean |
 	mean := (self select: [ :ele | ele isNotNil ]) average.
@@ -794,6 +803,10 @@ DataSeries >> replaceNilsWithAverage [
 DataSeries >> replaceNilsWithMedian [
 	"Replaces nils inplace with median"
 
+	"(#(1 2 nil 3) asDataSeries replaceNilsWithMedian) >>> (#(1 2 2 3) asDataSeries)"
+
+	"(#(3 7 nil 9 nil) asDataSeries replaceNilsWithMedian) >>> (#(3 7 7 9 7) asDataSeries)"
+
 	| median |
 	median := (self select: [ :ele | ele isNotNil ]) median.
 	self replaceNilsWith: median
@@ -803,6 +816,10 @@ DataSeries >> replaceNilsWithMedian [
 DataSeries >> replaceNilsWithMode [
 	"Replaces nils inplace with mode"
 
+	"(#(1 2 1 3 nil) asDataSeries replaceNilsWithMode) >>> (#(1 2 1 3 1) asDataSeries)"
+
+	"(#(a a a b nil) asDataSeries replaceNilsWithMode) >>> (#(a a a b a) asDataSeries)"
+
 	| mode |
 	mode := (self select: [ :ele | ele isNotNil ]) mode.
 	self replaceNilsWith: mode
@@ -810,8 +827,11 @@ DataSeries >> replaceNilsWithMode [
 
 { #category : #replacing }
 DataSeries >> replaceNilsWithPreviousValue [
-
 	"Replaces nils inplace with previous non-nil value"
+
+	"(#(nil 2 nil 3 nil) asDataSeries replaceNilsWithPreviousValue) >>> (#(nil 2 2 3 3) asDataSeries)"
+
+	"(#(a nil b c nil) asDataSeries replaceNilsWithPreviousValue) >>> (#(a a b c c) asDataSeries)"
 
 	| value |
 	self withIndexDo: [ :ele :index |
@@ -822,6 +842,10 @@ DataSeries >> replaceNilsWithPreviousValue [
 { #category : #replacing }
 DataSeries >> replaceNilsWithZeros [
 	"Replaces nils inplace with zero"
+
+	"(#(1 2 nil 3 nil) asDataSeries replaceNilsWithZeros) >>> (#(1 2 0 3 0) asDataSeries)"
+
+	"(#(a b c d nil) asDataSeries replaceNilsWithZeros) >>> (#(a b c d 0) asDataSeries)"
 
 	self replaceNilsWith: 0
 ]
