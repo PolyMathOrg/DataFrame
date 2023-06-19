@@ -422,6 +422,52 @@ DataFrameTest >> testAsArrayOfRowsWithName [
 ]
 
 { #category : #tests }
+DataFrameTest >> testAsDataFrame [
+
+	| actual expected |
+	actual := #( #( 1 2 3 ) 
+					#( 4 5 6 ) 
+					#( 7 8 9 ) ) asDataFrame.
+	expected := DataFrame withRows: #( #( 1 2 3 ) #( 4 5 6 ) #( 7 8 9 ) ).
+
+	self assert: actual equals: expected
+]
+
+{ #category : #tests }
+DataFrameTest >> testAsDataFrameEmpty [
+
+	| actual expected |
+	actual := #() asDataFrame.
+	expected := DataFrame new.
+
+	self assert: actual equals: expected
+]
+
+{ #category : #tests }
+DataFrameTest >> testAsDataFrameEmptyColumns [
+
+	| actual expected |
+	actual := #( #() 
+					 #() 
+					 #() ) asDataFrame.
+	expected := DataFrame new: 3 @ 0.
+
+	self assert: actual equals: expected
+]
+
+{ #category : #tests }
+DataFrameTest >> testAsDataFrameWithUnevenRowElements [
+
+	| actual expected |
+	actual := #( #( 1 2 ) 
+					#( 3 4 5 ) 
+					#( 6 7 8 9  ) ) asDataFrame.
+	expected := DataFrame withRows: #( #( 1 2 ) #( 3 4 5 ) #( 6 7 8 9 ) ).
+
+	self assert: actual equals: expected
+]
+
+{ #category : #tests }
 DataFrameTest >> testAt [
 
 	| actual expected |
