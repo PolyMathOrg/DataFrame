@@ -462,7 +462,7 @@ DataFrameTest >> testAsDataFrameWithUnevenRowElements [
 	actual := #( #( 1 2 ) 
 					#( 3 4 5 ) 
 					#( 6 7 8 9  ) ) asDataFrame.
-	expected := DataFrame withRows: #( #( 1 2 nil ) #( 3 4 5 ) #( 6 7 8 9 ) ).
+	expected := DataFrame withRows: #( #( 1 2 ) #( 3 4 5 ) #( 6 7 8 9 ) ).
 
 	self assert: actual equals: expected
 ]
