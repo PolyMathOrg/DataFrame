@@ -6,6 +6,28 @@ Collection >> ** arg [
 	^ self raisedTo: arg
 ]
 
+{ #category : #'*DataFrame' }
+Collection >> asDataFrame [
+
+	| numberOfRows numberOfColumns dataFrame |
+	numberOfRows := self size.
+	numberOfColumns := 0.
+	numberOfRows = 0 ifFalse: [
+		numberOfColumns := (self collect: #size) max ].
+	dataFrame := DataFrame new: numberOfRows @ numberOfColumns.
+
+	1 to: numberOfRows do: [ :rowIndex |
+		| row |
+		row := self at: rowIndex.
+		1 to: numberOfColumns do: [ :colIndex |
+			| value |
+			value := row at: colIndex ifAbsent: [ nil ].
+			dataFrame at: rowIndex at: colIndex put: value ] ].
+
+
+	^ dataFrame
+]
+
 { #category : #'*DataFrame-Core-Base' }
 Collection >> asDataSeries [
 
