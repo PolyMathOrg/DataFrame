@@ -504,27 +504,42 @@ DataFrame >> asArrayOfRowsWithName [
 { #category : #accessing }
 DataFrame >> at: aNumber [
 	"Returns the row of a DataFrame at row index aNumber"
-	
+
+	"(#(#(1 2) #(3 4)) asDataFrame at: 1) >>> (#(1 2) asDataSeries)"
+
+	"(#(#(r1c1 r1c2) #(r2c1 r2c2)) asDataFrame at: 2) >>> (#(r2c1 r2c2) asDataSeries)"
+
 	^ self rowAt: aNumber
 ]
 
 { #category : #accessing }
 DataFrame >> at: rowNumber at: columnNumber [
 	"Returns the value whose row index is rowNumber and column index is columnNumber"
-	
+
+	"(#(#(1 2) #(3 4)) asDataFrame at: 1 at:1) >>> 1"
+
+	"(#(#(r1c1 r1c2) #(r2c1 r2c2)) asDataFrame at: 2 at: 1) >>> #r2c1"
+
 	^ contents at: rowNumber at: columnNumber
 ]
 
 { #category : #accessing }
 DataFrame >> at: rowNumber at: columnNumber put: value [
 	"Replaces the original value of a DataFrame at row index rowNumber and column index columnNumber with a given value"
-	
+
+	"(#(#(1 2) #(3 4)) asDataFrame at: 1 at:1 put: 5) >>> (#(#(5 2) #(3 4)) asDataFrame)"
+
+	"(#(#(r1c1 r1c2) #(r2c1 r2c2)) asDataFrame at: 2 at: 1 put: #R2C1) >>> (#(#(r1c1 r1c2) #(R2C1 r2c2)) asDataFrame)"
+
 	contents at: rowNumber at: columnNumber put: value
 ]
 
 { #category : #accessing }
 DataFrame >> at: rowIndex at: columnIndex transform: aBlock [
 	"Evaluate aBlock on the value at the intersection of rowIndex and columnIndex and replace that value with the result"
+
+	"(#(#(1 2) #(3 4)) asDataFrame at: 1 at:1 transform: [:x| x - 1]) >>>(#(#(0 2) #(3 4)) asDataFrame)"
+
 	| value |
 	value := self at: rowIndex at: columnIndex.
 	self at: rowIndex at: columnIndex put: (aBlock value: value)
@@ -533,12 +548,19 @@ DataFrame >> at: rowIndex at: columnIndex transform: aBlock [
 { #category : #accessing }
 DataFrame >> at: aNumber transform: aBlock [
 	"Evaluate aBlock on the row at aNumber and replace that row with the result"
+
+	"(#(#(1 2) #(3 4)) asDataFrame at: 1 transform: [:x| x - 1]) >>>(#(#(0 1) #(3 4)) asDataFrame)"
+
 	^ self rowAt: aNumber transform: aBlock
 ]
 
 { #category : #accessing }
 DataFrame >> atAll: indexes [
 	"For polymorphisme with other collections."
+
+	"(#(#(1 2) #(3 4) #(5 6)) asDataFrame atAll: #(1 3)) >>> (#(#(1 2) #(5 6)) asDataFrame)"
+
+	"(#(#(r1c1 r1c2) #(r2c1 r2c2) #(r3c1 r3c2)) asDataFrame atAll: #(1 3)) >>> (#(#(r1c1 r1c2) #(r3c1 r3c2)) asDataFrame)"
 
 	^ self rowsAt: indexes
 ]
@@ -679,8 +701,14 @@ DataFrame >> column: columnName transform: aBlock ifAbsent: exceptionBlock [
 { #category : #accessing }
 DataFrame >> columnAt: aNumber [
 	"Returns the column of a DataFrame at column index aNumber"
-	
-	^ (DataSeries withKeys: self rowNames values: (contents columnAt: aNumber))
+
+	"(#(#(1 2) #(5 6)) asDataFrame columnAt: 2) >>> (#(2 6) asDataSeries) "
+
+	"(#(#(r1c1 r1c2) #(r2c1 r2c2)) asDataFrame columnAt: 2) >>> (#(r1c2 r2c2) asDataSeries) "
+
+	^ (DataSeries
+		   withKeys: self rowNames
+		   values: (contents columnAt: aNumber))
 		  name: (self columnNames at: aNumber);
 		  yourself
 ]
@@ -688,9 +716,12 @@ DataFrame >> columnAt: aNumber [
 { #category : #accessing }
 DataFrame >> columnAt: aNumber put: anArray [
 	"Replaces the column at column index aNumber with contents of the array anArray"
-	
-	anArray size = self numberOfRows
-		ifFalse: [ SizeMismatch signal ].
+
+	"(#(#(1 2) #(3 4)) asDataFrame columnAt: 2 put: #(5 6)) >>> (#(#(1 5) #(3 6)) asDataFrame) "
+
+	"(#(#(r1c1 r1c2) #(r2c1 r2c2)) asDataFrame columnAt: 2 put: #(R1C2 R2C2)) >>> (#(#(r1c1 R1C2) #(r2c1 R2C2)) asDataFrame) "
+
+	anArray size = self numberOfRows ifFalse: [ SizeMismatch signal ].
 
 	contents columnAt: aNumber put: anArray
 ]
@@ -698,6 +729,9 @@ DataFrame >> columnAt: aNumber put: anArray [
 { #category : #accessing }
 DataFrame >> columnAt: aNumber transform: aBlock [
 	"Evaluate aBlock on the column at aNumber and replace that column with the result"
+
+	"(#(#(1 2) #(3 4)) asDataFrame columnAt: 2 transform: [ :x | x / 2 ]) >>> (#(#(1 1) #(3 2)) asDataFrame) "
+
 	| column |
 	column := self columnAt: aNumber.
 	self columnAt: aNumber put: (aBlock value: column) asArray
@@ -734,6 +768,10 @@ DataFrame >> columnNames: aCollection [
 DataFrame >> columns [
 	"Returns a collection of all columns"
 
+	"(#(#(1 2) #(3 4)) asDataFrame columns) >>> (#( #(1 3) #(2 4) ) collect: #asDataSeries) "
+
+	"(#(#(r1c1 r1c2) #(r2c1 r2c2)) asDataFrame columns) >>> (#( #(r1c1 r2c1) #(r1c2 r2c2) ) collect: #asDataSeries) "
+
 	^ (1 to: self numberOfColumns) collect: [ :j | self columnAt: j ]
 ]
 
@@ -765,37 +803,46 @@ DataFrame >> columns: anArrayOfColumnNames put: anArrayOfArrays [
 DataFrame >> columnsAt: anArrayOfNumbers [
 	"Returns a collection of columns whose column indices are present in the array anArrayOfNumbers"
 
-	| newColumnNames |
+	"(#(#(1 2 3) #(4 5 6)) asDataFrame columnsAt: #(1 3)) >>> (#(#(1 3) #(4 6)) asDataFrame)"
 
-	newColumnNames := (anArrayOfNumbers collect: [ :i |
-		self columnNames at: i ]).
+	"(#(#(r1c1 r1c2 r1c3) #(r2c1 r2c2 r2c3)) asDataFrame columnsAt: #(1 3)) >>> (#(#(r1c1 r1c3) #(r2c1 r2c3)) asDataFrame)"
+
+	| newColumnNames |
+	newColumnNames := anArrayOfNumbers collect: [ :i |
+		                  self columnNames at: i ].
 
 	^ DataFrame
-		withDataFrameInternal: (self contents columnsAt: anArrayOfNumbers)
-		rowNames: self rowNames
-		columnNames: newColumnNames
+		  withDataFrameInternal: (self contents columnsAt: anArrayOfNumbers)
+		  rowNames: self rowNames
+		  columnNames: newColumnNames
 ]
 
 { #category : #accessing }
 DataFrame >> columnsAt: anArrayOfNumbers put: anArrayOfArrays [
 	"Replaces the columns whose column indices are present in the array anArrayOfNumbers with the contents of the array of arrays anArrayOfArrays"
 
-	anArrayOfArrays size = anArrayOfNumbers size
-		ifFalse: [ SizeMismatch signal ].
+	"(#(#(1 2 3) #(4 5 6)) asDataFrame columnsAt: #(1 3) put: #(#(10 40) #(30 60))) >>> (#(#(10 2 30) #(40 5 60)) asDataFrame)"
 
-	anArrayOfNumbers with: anArrayOfArrays do: [ :index :array |
-		self columnAt: index put: array ]
+	anArrayOfArrays size = anArrayOfNumbers size ifFalse: [
+		SizeMismatch signal ].
+
+	anArrayOfNumbers
+		with: anArrayOfArrays
+		do: [ :index :array | self columnAt: index put: array ]
 ]
 
 { #category : #accessing }
 DataFrame >> columnsFrom: begin to: end [
 	"Returns a collection of columns whose column indices are present between begin and end"
 
-	| array |
+	"(#(#(1 2 3) #(4 5 6)) asDataFrame columnsFrom: 1 to: 2)  >>> (#(#(1 2) #(4 5)) asDataFrame)"
 
+	"(#(#(r1c1 r1c2 r1c3) #(r2c1 r2c2 r2c3)) asDataFrame columnsFrom: 1 to: 2) >>> (#(#(r1c1 r1c2) #(r2c1 r2c2)) asDataFrame)"
+
+	| array |
 	array := begin < end
-		ifTrue: [ (begin to: end) asArray ]
-		ifFalse: [ (end to: begin) asArray reverse ].
+		         ifTrue: [ (begin to: end) asArray ]
+		         ifFalse: [ (end to: begin) asArray reverse ].
 
 	^ self columnsAt: array
 ]
@@ -804,14 +851,15 @@ DataFrame >> columnsFrom: begin to: end [
 DataFrame >> columnsFrom: firstNumber to: secondNumber put: anArrayOfArrays [
 	"Replaces the columns whose column indices are present between firstNumber and secondNumber with the contents of the array of arrays anArrayOfArrays"
 
-	| interval |
+	"(#(#(1 2 3) #(4 5 6)) asDataFrame columnsFrom: 1 to: 2 put:#(#(7 8) #(9 10)))  >>> (#(#(7 9 3) #(8 10 6)) asDataFrame)"
 
+	| interval |
 	anArrayOfArrays size = ((firstNumber - secondNumber) abs + 1)
 		ifFalse: [ SizeMismatch signal ].
 
 	interval := secondNumber >= firstNumber
-		ifTrue: [ (firstNumber to: secondNumber) ]
-		ifFalse: [ (secondNumber to: firstNumber) reversed ].
+		            ifTrue: [ firstNumber to: secondNumber ]
+		            ifFalse: [ (secondNumber to: firstNumber) reversed ].
 
 	interval withIndexDo: [ :columnIndex :i |
 		self columnAt: columnIndex put: (anArrayOfArrays at: i) ]
@@ -977,8 +1025,14 @@ DataFrame >> describe [
 { #category : #accessing }
 DataFrame >> dimensions [
 	"Returns the number of rows and number of columns in a DataFrame"
-	
-	^ (self numberOfRows) @ (self numberOfColumns)
+
+	"(#(#(1 2) #(3 4)) asDataFrame dimensions) >>> (2@2)"
+
+	"(#(#(1 2) #(3 4) #(5 6)) asDataFrame dimensions) >>> (3@2)"
+
+	"(#(#(1 2 3) #(4 5 6)) asDataFrame dimensions) >>> (2@3)"
+
+	^ self numberOfRows @ self numberOfColumns
 ]
 
 { #category : #enumerating }
@@ -1012,7 +1066,11 @@ DataFrame >> findAllIndicesOf: anObject atColumn: columnName [
 { #category : #accessing }
 DataFrame >> first [
 	"Returns the first row of the DataFrame"
-	
+
+	"(#(#(1 2) #(3 4)) asDataFrame first) >>> (#(1 2) asDataSeries)"
+
+	"(#(#(r1c1 r1c2) #(r2c1 r2c2)) asDataFrame first) >>> (#(r1c1 r1c2) asDataSeries)"
+
 	^ self at: 1
 ]
 
@@ -1114,7 +1172,11 @@ DataFrame >> head [
 { #category : #accessing }
 DataFrame >> head: aNumber [
 	"Returns the first aNumber rows of a DataFrame"
-	
+
+	"(#(#(1 2) #(3 4) #(5 6)) asDataFrame head: 2) >>> (#(#(1 2) #(3 4)) asDataFrame)"
+
+	"(#(#(r1c1 r1c2) #(r2c1 r2c2)) asDataFrame head: 1) >>> (#(#(r1c1 r1c2)) asDataFrame)"
+
 	^ self rowsAt: (1 to: (self numberOfRows min: aNumber))
 ]
 
@@ -1437,7 +1499,11 @@ DataFrame >> normalized [
 { #category : #accessing }
 DataFrame >> numberOfColumns [
 	"Returns the number of columns of a DataFrame"
-	
+
+	"(#(#(1 2) #(3 4) #(5 6)) asDataFrame numberOfColumns) >>> 2 "
+
+	"(#(#(1 2 3) #(4 5 6)) asDataFrame numberOfColumns) >>> 3 "
+
 	^ contents numberOfColumns
 ]
 
@@ -1456,6 +1522,10 @@ DataFrame >> numberOfNils [
 { #category : #accessing }
 DataFrame >> numberOfRows [
 	"Returns the number of rows of a DataFrame"
+
+	"(#(#(1 2) #(3 4) #(5 6)) asDataFrame numberOfRows) >>> 3 "
+
+	"(#(#(1 2 3) #(4 5 6)) asDataFrame numberOfRows) >>> 2 "
 
 	^ contents numberOfRows
 ]
@@ -2019,6 +2089,10 @@ DataFrame >> row: rowName transform: aBlock ifAbsent: exceptionBlock [
 DataFrame >> rowAt: aNumber [
 	"Returns the row of a DataFrame at row index aNumber"
 
+	"(#(#(1 2) #(5 6)) asDataFrame rowAt: 2) >>> (#(5 6) asDataSeries) "
+
+	"(#(#(r1c1 r1c2) #(r2c1 r2c2)) asDataFrame rowAt: 2) >>> (#(r2c1 r2c2) asDataSeries) "
+
 	| series |
 	series := (contents rowAt: aNumber) asDataSeries.
 	series name: (self rowNames at: aNumber).
@@ -2030,8 +2104,11 @@ DataFrame >> rowAt: aNumber [
 DataFrame >> rowAt: aNumber put: anArray [
 	"Replaces the row at row index aNumber with contents of the array anArray"
 
-	anArray size = self numberOfColumns
-		ifFalse: [ SizeMismatch signal ].
+	"(#(#(1 2) #(3 4)) asDataFrame rowAt: 2 put: #(5 6)) >>> (#(#(1 2) #(5 6)) asDataFrame) "
+
+	"(#(#(r1c1 r1c2) #(r2c1 r2c2)) asDataFrame rowAt: 2 put: #(R2C1 R2C2)) >>> (#(#(r1c1 r1c2) #(R2C1 R2C2)) asDataFrame) "
+
+	anArray size = self numberOfColumns ifFalse: [ SizeMismatch signal ].
 
 	contents rowAt: aNumber put: anArray
 ]
@@ -2039,6 +2116,9 @@ DataFrame >> rowAt: aNumber put: anArray [
 { #category : #accessing }
 DataFrame >> rowAt: aNumber transform: aBlock [
 	"Evaluate aBlock on the row at aNumber and replace that row with the result"
+
+	"(#(#(1 2) #(3 4)) asDataFrame rowAt: 2 transform: [ :x | x + 1 ]) >>> (#(#(1 2) #(4 5)) asDataFrame) "
+
 	| row |
 	row := self rowAt: aNumber.
 	self rowAt: aNumber put: (aBlock value: row) asArray
@@ -2065,6 +2145,10 @@ DataFrame >> rowNames: anArray [
 { #category : #accessing }
 DataFrame >> rows [
 	"Returns a collection of all rows"
+
+	"(#(#(1 2) #(3 4)) asDataFrame rows) >>> (#( #(1 2) #(3 4) ) collect: #asDataSeries) "
+
+	"(#(#(r1c1 r1c2) #(r2c1 r2c2)) asDataFrame rows) >>> (#( #(r1c1 r1c2) #(r2c1 r2c2) ) collect: #asDataSeries) "
 
 	^ (1 to: self numberOfRows) collect: [ :j | self rowAt: j ]
 ]
@@ -2097,31 +2181,40 @@ DataFrame >> rows: anArrayOfRowNames put: anArrayOfArrays [
 DataFrame >> rowsAt: anArrayOfNumbers [
 	"Returns a collection of rows whose row indices are present in the array anArrayOfNumbers"
 
-	| newRowNames |
+	"(#(#(1 2) #(3 4) #(5 6)) asDataFrame rowsAt: #(1 3)) >>> (#(#(1 2) #(5 6)) asDataFrame)"
 
-	newRowNames := (anArrayOfNumbers collect: [ :i |
-		self rowNames at: i ]).
+	"(#(#(r1c1 r1c2) #(r2c1 r2c2) #(r3c1 r3c2)) asDataFrame rowsAt: #(1 3)) >>> (#(#(r1c1 r1c2) #(r3c1 r3c2)) asDataFrame)"
+
+	| newRowNames |
+	newRowNames := anArrayOfNumbers collect: [ :i | self rowNames at: i ].
 
 	^ DataFrame
-		withDataFrameInternal: (self contents rowsAt: anArrayOfNumbers)
-		rowNames: newRowNames
-		columnNames: self columnNames
+		  withDataFrameInternal: (self contents rowsAt: anArrayOfNumbers)
+		  rowNames: newRowNames
+		  columnNames: self columnNames
 ]
 
 { #category : #accessing }
 DataFrame >> rowsAt: anArrayOfNumbers put: anArrayOfArrays [
 	"Replaces the rows whose row indices are present in the array anArrayOfNumbers with the contents of the array of arrays anArrayOfArrays"
 
-	anArrayOfArrays size = anArrayOfNumbers size
-		ifFalse: [ SizeMismatch signal ].
+	"(#(#(1 2) #(3 4) #(5 6)) asDataFrame rowsAt: #(1 3) put: #((10 20)(50 60))) >>> (#(#(10 20) #(3 4) #(50 60)) asDataFrame)"
 
-	anArrayOfNumbers with: anArrayOfArrays do: [ :index :array |
-		self rowAt: index put: array ]
+	anArrayOfArrays size = anArrayOfNumbers size ifFalse: [
+		SizeMismatch signal ].
+
+	anArrayOfNumbers
+		with: anArrayOfArrays
+		do: [ :index :array | self rowAt: index put: array ]
 ]
 
 { #category : #accessing }
 DataFrame >> rowsFrom: begin to: end [
 	"Returns a collection of rows whose row indices are present between begin and end"
+
+	"(#(#(1 2) #(3 4) #(5 6)) asDataFrame rowsFrom: 1 to: 2) >>> (#(#(1 2) #(3 4)) asDataFrame)"
+
+	"(#(#(r1c1 r1c2) #(r2c1 r2c2) #(r3c1 r3c2)) asDataFrame rowsFrom: 1 to: 2) >>> (#(#(r1c1 r1c2) #(r2c1 r2c2)) asDataFrame)"
 
 	^ self rowsAt: (begin to: end)
 ]
@@ -2130,14 +2223,15 @@ DataFrame >> rowsFrom: begin to: end [
 DataFrame >> rowsFrom: firstNumber to: secondNumber put: anArrayOfArrays [
 	"Replaces the rows whose row indices are present between firstNumber and secondNumber with the contents of the array of arrays anArrayOfArrays"
 
-	| interval |
+	"(#(#(1 2) #(3 4) #(5 6)) asDataFrame rowsFrom: 1 to: 2 put: #(#(7 8) #(9 10))) >>> (#(#(7 8) #(9 10) #(5 6)) asDataFrame)"
 
+	| interval |
 	anArrayOfArrays size = ((firstNumber - secondNumber) abs + 1)
 		ifFalse: [ SizeMismatch signal ].
 
 	interval := secondNumber >= firstNumber
-		ifTrue: [ (firstNumber to: secondNumber) ]
-		ifFalse: [ (secondNumber to: firstNumber) reversed ].
+		            ifTrue: [ firstNumber to: secondNumber ]
+		            ifFalse: [ (secondNumber to: firstNumber) reversed ].
 
 	interval withIndexDo: [ :rowIndex :i |
 		self rowAt: rowIndex put: (anArrayOfArrays at: i) ]
@@ -2167,7 +2261,13 @@ DataFrame >> setDefaultRowColumnNames [
 { #category : #accessing }
 DataFrame >> size [
 	"Returns the number of rows of a DataFrame"
-	
+
+	"(#(#(1 2) #(3 4) #(5 6)) asDataFrame size) >>> 3 "
+
+	"(#(#(1 2 3) #(4 5 6)) asDataFrame size) >>> 2 "
+
+	"(#() asDataFrame size) >>> 0 "
+
 	^ self numberOfRows
 ]
 
