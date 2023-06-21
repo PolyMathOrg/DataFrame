@@ -343,14 +343,29 @@ DataFrame >> add: aDataSeries [
 { #category : #adding }
 DataFrame >> addColumn: aDataSeries [
 	"Add DataSeries as a new column at the end"
+
+	"(#(#(1 2) #(3 4)) asDataFrame addColumn: #(5 6) asDataSeries named: 3) >>> (#(#(1 2 5) #(3 4 6)) asDataFrame)"
+
+	"(#(#(r1c1 r1c2)) asDataFrame addColumn: #(r1c3) asDataSeries named: 3) >>> (#(#(r1c1 r1c2 r1c3)) asDataFrame)"
+
 	self addColumn: aDataSeries named: aDataSeries name.
-	(self dataTypes ) at: aDataSeries name put: aDataSeries calculateDataType
+	self dataTypes
+		at: aDataSeries name
+		put: aDataSeries calculateDataType
 ]
 
 { #category : #adding }
 DataFrame >> addColumn: aDataSeries atPosition: aNumber [
 	"Add DataSeries as a new column at the given position"
-	self addColumn: aDataSeries asArray named: aDataSeries name atPosition: aNumber
+
+	"(#(#(1 2) #(3 4)) asDataFrame addColumn: #(5 6) asDataSeries named: 3 atPosition: 3) >>> (#(#(1 2 5) #(3 4 6)) asDataFrame)"
+
+	"(#(#(r1c1 r1c2)) asDataFrame addColumn: #(r1c3) asDataSeries named: 3 atPosition: 3) >>> (#(#(r1c1 r1c2 r1c3)) asDataFrame)"
+
+	self
+		addColumn: aDataSeries asArray
+		named: aDataSeries name
+		atPosition: aNumber
 ]
 
 { #category : #adding }
@@ -398,12 +413,20 @@ DataFrame >> addEmptyRowNamed: aString atPosition: aNumber [
 DataFrame >> addRow: aDataSeries [
 	"Add DataSeries as a new row at the end"
 
+	"(#(#(1 2) #(3 4)) asDataFrame addRow: #(5 6) asDataSeries named: 3) >>> (#(#(1 2) #(3 4) #(5 6)) asDataFrame)"
+
+	"(#(#(r1c1 r1c2)) asDataFrame addRow: #(r2c1 r2c2) asDataSeries named: 2) >>> (#(#(r1c1 r1c2 ) #(r2c1 r2c2)) asDataFrame)"
+
 	self addRow: aDataSeries atPosition: self numberOfRows + 1
 ]
 
 { #category : #adding }
 DataFrame >> addRow: aDataSeries atPosition: aNumber [
 	"Add DataSeries as a new row at the given position"
+
+	"(#(#(1 2) #(3 4)) asDataFrame addRow: #(5 6) asDataSeries named: 3 atPosition: 3) >>> (#(#(1 2) #(3 4) #(5 6)) asDataFrame)"
+
+	"(#(#(r1c1 r1c2)) asDataFrame addRow: #(r2c1 r2c2) asDataSeries named: 2 atPosition: 2) >>> (#(#(r1c1 r1c2 ) #(r2c1 r2c2)) asDataFrame)"
 
 	| row |
 	row := Array new: self columnNames size.
@@ -435,6 +458,8 @@ DataFrame >> addRow: anArray named: aString atPosition: aNumber [
 { #category : #applying }
 DataFrame >> applyElementwise: aBlock [
 	"Applies a given block to all columns of a data frame"
+
+	"(#(#(1 2) #(3 4)) asDataFrame applyElementwise:[ :x | x - 1 ]) >>> (#(#(0 1) #(2 3)) asDataFrame)"
 
 	self toColumns: self columnNames applyElementwise: aBlock
 ]
@@ -468,8 +493,11 @@ DataFrame >> applyToAllColumns: aSymbol [
 
 { #category : #converting }
 DataFrame >> asArray [
-
 	"Converts DataFrame to the array of rows"
+
+	"(#(#(1 2) #(3 4)) asDataFrame asArray) >>> (#(#(1 2) #(3 4)))"
+
+	"(#(#(r1c1 r1c2) #(r2c1 r2c2)) asDataFrame asArray) >>> (#(#(r1c1 r1c2) #(r2c1 r2c2)))"
 
 	^ self asArrayOfRows
 ]
@@ -478,12 +506,20 @@ DataFrame >> asArray [
 DataFrame >> asArrayOfColumns [
 	"Converts DataFrame to the array of columns"
 
-	^ contents asArrayOfColumns.
+	"(#(#(1 2) #(3 4)) asDataFrame asArrayOfColumns) >>> (#(#(1 3) #(2 4)))"
+
+	"(#(#(r1c1 r1c2) #(r2c1 r2c2)) asDataFrame asArrayOfColumns) >>> (#(#(r1c1 r2c1) #(r1c2 r2c2)))"
+
+	^ contents asArrayOfColumns
 ]
 
 { #category : #converting }
 DataFrame >> asArrayOfRows [
 	"Converts DataFrame to the array of rows"
+
+	"(#(#(1 2) #(3 4)) asDataFrame asArrayOfRows) >>> (#(#(1 2) #(3 4)))"
+
+	"(#(#(r1c1 r1c2) #(r2c1 r2c2)) asDataFrame asArrayOfRows) >>> (#(#(r1c1 r1c2) #(r2c1 r2c2)))"
 
 	^ contents asArrayOfRows
 ]
@@ -568,24 +604,33 @@ DataFrame >> atAll: indexes [
 { #category : #statistics }
 DataFrame >> average [
 	"Average is the ratio of sum of values in a set to the number of values in the set"
-	
+
+	"(#(#(10 3) #(20 1) #(30 2)) asDataFrame average) >>> (Dictionary newFrom: {(1 -> 20).(2 -> 2)})"
+
 	^ self applyToAllColumns: #average
 ]
 
 { #category : #'data-types' }
 DataFrame >> calculateDataTypes [
 
-	self asArrayOfColumns doWithIndex: [ :column :i | self dataTypes at: (self columnNames at: i) put: column calculateDataType ]
+	self asArrayOfColumns doWithIndex: [ :column :i |
+		self dataTypes
+			at: (self columnNames at: i)
+			put: column calculateDataType ]
 ]
 
 { #category : #comparing }
 DataFrame >> closeTo: aDataFrame [
+	"(#(#(1 2) #(3 4)) asDataFrame closeTo: #(#(1.0001 1.9999) #(3 4.0001)) asDataFrame ) >>> true"
+
+	"(#(#(1 2) #(3 4)) asDataFrame closeTo: #(#(1 1) #(3 4)) asDataFrame ) >>> false"
 
 	aDataFrame species = self species ifFalse: [ ^ false ].
 
 	aDataFrame dimensions = self dimensions ifFalse: [ ^ false ].
 
-	(aDataFrame rowNames = self rowNames and: [ aDataFrame columnNames = self columnNames ]) ifFalse: [ ^ false ].
+	(aDataFrame rowNames = self rowNames and: [
+		 aDataFrame columnNames = self columnNames ]) ifFalse: [ ^ false ].
 
 	1 to: self numberOfRows do: [ :i |
 		1 to: self numberOfColumns do: [ :j |
@@ -593,13 +638,18 @@ DataFrame >> closeTo: aDataFrame [
 			value := self at: i at: j.
 			(value isNumber
 				 ifTrue: [ value closeTo: (aDataFrame at: i at: j) ]
-				 ifFalse: [ value = (aDataFrame at: i at: j) ]) ifFalse: [ ^ false ] ] ].
+				 ifFalse: [ value = (aDataFrame at: i at: j) ]) ifFalse: [
+				^ false ] ] ].
 
 	^ true
 ]
 
 { #category : #comparing }
 DataFrame >> closeTo: aDataFrame precision: epsilon [
+
+	"(#(#(1 2) #(3 4)) asDataFrame closeTo: #(#(1.2 2.19) #(3 4)) asDataFrame precision: 0.2 ) >>> true"
+
+	"(#(#(1 2) #(3 4)) asDataFrame closeTo: #(#(1.21 2) #(3 4)) asDataFrame precision: 0.2 ) >>> false"
 
 	aDataFrame species = self species ifFalse: [ ^ false ].
 
@@ -1076,7 +1126,9 @@ DataFrame >> first [
 
 { #category : #statistics }
 DataFrame >> firstQuartile [
-    "25% of the values in a set are smaller than or equal to the first Quartile of that set"
+	"25% of the values in a set are smaller than or equal to the first Quartile of that set"
+
+	"(#(#(10 3) #(20 1) #(30 2)) asDataFrame firstQuartile) >>> (Dictionary newFrom: {(1 -> 10).(2 -> 1)})"
 
 	^ self applyToAllColumns: #firstQuartile
 ]
@@ -1142,6 +1194,12 @@ DataFrame >> groupBy: columnName aggregate: anArrayOfUsingAsStatements [
 DataFrame >> hasNils [
 	"Returns true if there is atleast one nil value in the data frame. Returns false if there are no nil values in the dataframe"
 
+	"(#(#(nil 2) #(nil 4)) asDataFrame hasNils) >>> true"
+
+	"(#(#('nil' 'nil') #('nil' 'nil')) asDataFrame hasNils) >>> false"
+
+	"(#(#(nil 'nil') #('nil' 'nil')) asDataFrame hasNils) >>> true"
+
 	| arrayOfColumns |
 	arrayOfColumns := self asArrayOfColumns.
 	1 to: self numberOfColumns do: [ :column |
@@ -1152,8 +1210,13 @@ DataFrame >> hasNils [
 
 { #category : #replacing }
 DataFrame >> hasNilsByColumn [
-
 	"Returns a dictionary which indicates the presence of any nil values column wise"
+
+	"(#(#(1 2) #(nil 4)) asDataFrame hasNilsByColumn) >>> (Dictionary newFrom: {(1 -> true).(2 -> false)})"
+
+	"(#(#('nil' 'nil') #('nil' 'nil')) asDataFrame hasNilsByColumn) >>> (Dictionary newFrom: {(1 -> false).(2 -> false)})"
+
+	"(#(#(nil 'nil') #('nil' 'nil')) asDataFrame hasNilsByColumn) >>> (Dictionary newFrom: {(1 -> true).(2 -> false)})"
 
 	| dictionary |
 	dictionary := Dictionary new.
@@ -1388,6 +1451,8 @@ DataFrame >> inspectionItems: aBuilder [
 DataFrame >> interquartileRange [
 	"The Inter Quartile Range is the difference between the third Quartile and the first Quartile"
 
+	"(#(#(10 3) #(20 1) #(30 2)) asDataFrame interquartileRange) >>> (Dictionary newFrom: {(1 -> 20).(2 -> 2)})"
+
 	^ self applyToAllColumns: #interquartileRange
 ]
 
@@ -1457,13 +1522,17 @@ DataFrame >> leftJoin: aDataFrame onLeft: leftColumn onRight: rightColumn [
 { #category : #statistics }
 DataFrame >> max [
 	"Max is the largest value present in a set of values"
-	
+
+	"(#(#(10 3) #(20 1) #(30 2)) asDataFrame max) >>> (Dictionary newFrom: {(1 -> 30).(2 -> 3)})"
+
 	^ self applyToAllColumns: #max
 ]
 
 { #category : #statistics }
 DataFrame >> median [
-   "50% of data points have a value smaller or equal to the median . The median of a set of values is the middle value of the set when the set is arranged in increasing order."
+	"50% of data points have a value smaller or equal to the median . The median of a set of values is the middle value of the set when the set is arranged in increasing order."
+
+	"(#(#(10 3) #(20 1) #(30 2)) asDataFrame median) >>> (Dictionary newFrom: {(1 -> 20).(2 -> 2)})"
 
 	^ self applyToAllColumns: #median
 ]
@@ -1472,12 +1541,16 @@ DataFrame >> median [
 DataFrame >> min [
 	"Min is the smallest value present in a set of values"
 
+	"(#(#(10 3) #(20 1) #(30 2)) asDataFrame min) >>> (Dictionary newFrom: {(1 -> 10).(2 -> 1)})"
+
 	^ self applyToAllColumns: #min
 ]
 
 { #category : #statistics }
 DataFrame >> mode [
 	"The mode of a set of values is the value that appears most often. "
+
+	"(#(#(10 3) #(10 1) #(30 3)) asDataFrame mode) >>> (Dictionary newFrom: {(1 -> 10).(2 -> 3)})"
 
 	^ self applyToAllColumns: #mode
 ]
@@ -1510,6 +1583,12 @@ DataFrame >> numberOfColumns [
 { #category : #replacing }
 DataFrame >> numberOfNils [
 	"Returns a dictionary which indicates the number of nil values column wise"
+
+	"(#(#(nil 2) #(nil 4)) asDataFrame numberOfNils) >>> (Dictionary newFrom: {(1 -> 2).(2 -> 0)})"
+
+	"(#(#('nil' 'nil') #('nil' 'nil')) asDataFrame numberOfNils) >>> (Dictionary newFrom: {(1 -> 0).(2 -> 0)})"
+
+	"(#(#(nil 'nil') #('nil' 'nil')) asDataFrame numberOfNils) >>> (Dictionary newFrom: {(1 -> 1).(2 -> 0)})"
 
 	| dictionary count |
 	dictionary := Dictionary new.
@@ -1662,6 +1741,8 @@ DataFrame >> privateRowNames: anArray [
 DataFrame >> range [
 	"Range is the difference between the highest value and the lowest value in a set"
 
+	"(#(#(10 3) #(20 1) #(30 2)) asDataFrame range) >>> (Dictionary newFrom: {(1 -> 20).(2 -> 2)})"
+
 	^ self applyToAllColumns: #range
 ]
 
@@ -1677,6 +1758,10 @@ DataFrame >> removeColumn: columnName [
 { #category : #removing }
 DataFrame >> removeColumnAt: columnNumber [
 	"Removes the column at column index columnNumber from a data frame"
+
+	"(#(#(1 2) #(3 4)) asDataFrame removeColumnAt: 2) >>> (#(#(1) #(3)) asDataFrame)"
+
+	"(#(#(r1c1 r1c2) #(r2c1 r2c2)) asDataFrame removeColumnAt: 2) >>> (#(#(r1c1) #(r2c1)) asDataFrame)"
 
 	(columnNumber < 1 or: [ columnNumber > self numberOfColumns ])
 		ifTrue: [ SubscriptOutOfBounds signalFor: columnNumber ].
@@ -1700,9 +1785,13 @@ DataFrame >> removeColumns: aCollectionOfColumnNames [
 DataFrame >> removeColumnsAt: aCollectionOfColumnIndices [
 	"Removes all columns from a data frame whose column indices are present in the collection aCollectionOfColumnIndices"
 
+	"(#(#(1 2 3) #(4 5 6)) asDataFrame removeColumnsAt: #(2 3)) >>> (#(#(1) #(4)) asDataFrame)"
+
+	"(#(#(r1c1 r1c2) #(r2c1 r2c2)) asDataFrame removeColumnsAt: #(1 2)) >>> (#(#() #()) asDataFrame)"
+
 	| columnNamesToRemove |
 	columnNamesToRemove := aCollectionOfColumnIndices collect: [ :i |
-		columnNames at: i ].
+		                       columnNames at: i ].
 	self removeColumns: columnNamesToRemove
 ]
 
@@ -1719,16 +1808,20 @@ DataFrame >> removeColumnsOfRowElementsSatisfing: aBlock onRowNamed: rowName [
 DataFrame >> removeColumnsOfRowElementsSatisfying: aBlock onRow: rowNumber [
 	"Removes columns from a data frame whose row elements at the row index rowNumber satisfy a given block"
 
+	"(#(#(1 2 3) #(4 5 6)) asDataFrame removeColumnsOfRowElementsSatisfying: [ :x | x > 4 ] onRow: 2) >>> (#(#(1) #(4)) asDataFrame)"
+
 	| columnNamesCopy |
-	(rowNumber < 1 or: [ rowNumber > self numberOfRows ])
-		ifTrue: [ SubscriptOutOfBounds signalFor: rowNumber ].
+	(rowNumber < 1 or: [ rowNumber > self numberOfRows ]) ifTrue: [
+		SubscriptOutOfBounds signalFor: rowNumber ].
 
 	columnNamesCopy := columnNames deepCopy.
 	columnNames removeAll.
 	columnNamesCopy withIndexDo: [ :columnName :j |
-		(aBlock value: (contents at: rowNumber at: j))
-			ifFalse: [ columnNames add: columnName ]].
-	contents removeColumnsOfRowElementsSatisfying: aBlock onRow: rowNumber.
+		(aBlock value: (contents at: rowNumber at: j)) ifFalse: [
+			columnNames add: columnName ] ].
+	contents
+		removeColumnsOfRowElementsSatisfying: aBlock
+		onRow: rowNumber.
 
 	self numberOfColumns = 0 ifTrue: [ rowNames removeAll ]
 ]
@@ -1736,8 +1829,14 @@ DataFrame >> removeColumnsOfRowElementsSatisfying: aBlock onRow: rowNumber [
 { #category : #'handling nils' }
 DataFrame >> removeColumnsWithNilsAtRow: rowNumber [
 	"Removes all columns with nil values at row number rowNumber from the data frame"
-	
-	self removeColumnsOfRowElementsSatisfying: [ :ele | ele isNil ] onRow: rowNumber
+
+	"(#(#(nil 2) #(3 nil)) asDataFrame removeColumnsWithNilsAtRow: 2) >>> (#(#(nil) #(3)) asDataFrame)"
+
+	"(#(#(nil r1c2) #(r2c1 nil)) asDataFrame removeColumnsWithNilsAtRow: 2) >>> (#(#(nil) #(r2c1)) asDataFrame)"
+
+	self
+		removeColumnsOfRowElementsSatisfying: [ :ele | ele isNil ]
+		onRow: rowNumber
 ]
 
 { #category : #'handling nils' }
@@ -1750,6 +1849,10 @@ DataFrame >> removeColumnsWithNilsAtRowNamed: rowName [
 { #category : #removing }
 DataFrame >> removeDuplicatedRows [
 	"Removes duplicate rows of a dataframe except the first unique row"
+
+	"(#(#(1 2) #(3 4) #(1 2)) asDataFrame removeDuplicatedRows) >>> (#(#(1 2) #(3 4)) asDataFrame)"
+
+	"(#(#(r1c1) #(r2c1) #(r2c1) #(r2c1)) asDataFrame removeDuplicatedRows) >>> (#(#(r1c1) #(r2c1)) asDataFrame)"
 
 	| numberOfRows nextRowIndex currentRow row aSet |
 	aSet := Set new.
@@ -1776,8 +1879,12 @@ DataFrame >> removeRow: rowName [
 DataFrame >> removeRowAt: rowNumber [
 	"Removes the row at row index rowNumber from a data frame"
 
-	(rowNumber < 1 or: [ rowNumber > self numberOfRows ])
-		ifTrue: [ SubscriptOutOfBounds signalFor: rowNumber ].
+	"(#(#(1 2) #(3 4)) asDataFrame removeRowAt: 2) >>> (#(#(1 2)) asDataFrame)"
+
+	"(#(#(r1c1 r1c2) #(r2c1 r2c2)) asDataFrame removeRowAt: 2) >>> (#(#(r1c1 r1c2)) asDataFrame)"
+
+	(rowNumber < 1 or: [ rowNumber > self numberOfRows ]) ifTrue: [
+		SubscriptOutOfBounds signalFor: rowNumber ].
 
 	contents removeRowAt: rowNumber.
 	rowNames := rowNames copyWithoutIndex: rowNumber
@@ -1795,9 +1902,13 @@ DataFrame >> removeRows: aCollectionOfRowNames [
 DataFrame >> removeRowsAt: aCollectionOfRowIndices [
 	"Removes all rows from a data frame whose row indices are present in the collection aCollectionOfRowIndices"
 
+	"(#(#(1 2) #(3 4) #(5 6)) asDataFrame removeRowsAt: #(2 3)) >>> (#(#(1 2)) asDataFrame)"
+
+	"(#(#(r1c1 r1c2) #(r2c1 r2c2)) asDataFrame removeRowsAt: #(2)) >>> (#(#(r1c1 r1c2)) asDataFrame)"
+
 	| rowNamesToRemove |
 	rowNamesToRemove := aCollectionOfRowIndices collect: [ :i |
-		rowNames at: i ].
+		                    rowNames at: i ].
 	self removeRows: rowNamesToRemove
 ]
 
@@ -1814,6 +1925,8 @@ DataFrame >> removeRowsOfColumnElementsSatisfing: aBlock onColumnNamed: columnNa
 DataFrame >> removeRowsOfColumnElementsSatisfying: aBlock onColumn: columnNumber [
 	"Removes rows from a data frame whose column elements at the column index columnNumber satisfy a given block"
 
+	"(#(#(1 2) #(3 4) #(5 6)) asDataFrame removeRowsOfColumnElementsSatisfying: [ :x | x >= 4 ] onColumn: 2) >>> (#(#(1 2)) asDataFrame)"
+
 	| rowNamesCopy |
 	(columnNumber < 1 or: [ columnNumber > self numberOfColumns ])
 		ifTrue: [ SubscriptOutOfBounds signalFor: columnNumber ].
@@ -1821,9 +1934,11 @@ DataFrame >> removeRowsOfColumnElementsSatisfying: aBlock onColumn: columnNumber
 	rowNamesCopy := rowNames deepCopy.
 	rowNames removeAll.
 	rowNamesCopy withIndexDo: [ :rowName :i |
-		(aBlock value: (contents at: i at: columnNumber))
-			ifFalse: [ rowNames add: rowName ] ].
-	contents removeRowsOfColumnElementsSatisfying: aBlock onColumn: columnNumber.
+		(aBlock value: (contents at: i at: columnNumber)) ifFalse: [
+			rowNames add: rowName ] ].
+	contents
+		removeRowsOfColumnElementsSatisfying: aBlock
+		onColumn: columnNumber.
 
 	self numberOfRows = 0 ifTrue: [ columnNames removeAll ]
 ]
@@ -1831,7 +1946,11 @@ DataFrame >> removeRowsOfColumnElementsSatisfying: aBlock onColumn: columnNumber
 { #category : #removing }
 DataFrame >> removeRowsWithNils [
 	"Removes all rows from a data frame which have atleast one nil value"
-	
+
+	"(#(#(1 2) #(nil 4) #(5 nil)) asDataFrame removeRowsWithNils) >>> (#(#(1 2)) asDataFrame)"
+
+	"(#(#(r1c1 r1c2) #(nil r2c2)) asDataFrame removeRowsWithNils) >>> (#(#(r1c1 r1c2)) asDataFrame)"
+
 	1 to: self numberOfColumns do: [ :i |
 		self
 			removeRowsOfColumnElementsSatisfying: [ :ele | ele isNil ]
@@ -1842,7 +1961,13 @@ DataFrame >> removeRowsWithNils [
 DataFrame >> removeRowsWithNilsAtColumn: columnNumber [
 	"Removes all rows with nil values at column number columnNumber from the data frame"
 
-	self removeRowsOfColumnElementsSatisfying: [ :ele | ele isNil ] onColumn: columnNumber
+	"(#(#(nil 2) #(3 nil)) asDataFrame removeRowsWithNilsAtColumn: 2) >>> (#(#(nil 2)) asDataFrame)"
+
+	"(#(#(nil r1c2) #(r2c1 nil)) asDataFrame removeRowsWithNilsAtColumn: 2) >>> (#(#(nil r1c2)) asDataFrame)"
+
+	self
+		removeRowsOfColumnElementsSatisfying: [ :ele | ele isNil ]
+		onColumn: columnNumber
 ]
 
 { #category : #'handling nils' }
@@ -1882,53 +2007,76 @@ DataFrame >> replaceAllNilsWithZeros [
 { #category : #replacing }
 DataFrame >> replaceNilsWith: anObject [
 	"Replaces all nil values of a data frame with the object anObject"
-	
+
+	"(#(#(nil 2) #(3 nil)) asDataFrame replaceNilsWith: 5) >>> (#(#(5 2) #(3 5)) asDataFrame)"
+
+	"(#(#('nil' 'nil') #('nil' 'nil')) asDataFrame replaceNilsWith: 5) >>> (#(#('nil' 'nil') #('nil' 'nil')) asDataFrame)"
+
+	"(#(#(nil 'nil') #('nil' 'nil')) asDataFrame replaceNilsWith: 5) >>> (#(#(5 'nil') #('nil' 'nil')) asDataFrame)"
+
 	1 to: self numberOfColumns do: [ :columnIndex |
 		1 to: self numberOfRows do: [ :rowIndex |
-			(self at: rowIndex at: columnIndex) ifNil:
-				[ self at: rowIndex at: columnIndex put: anObject ] ]
-		]
+			(self at: rowIndex at: columnIndex) ifNil: [
+				self at: rowIndex at: columnIndex put: anObject ] ] ]
 ]
 
 { #category : #replacing }
 DataFrame >> replaceNilsWithAverage [
 	"Replaces all nil values of a data frame with the average value of the column in which it is present"
 
+	"(#(#(nil 2) #(3 nil) #(5 6)) asDataFrame replaceNilsWithAverage) >>> (#(#(4 2) #(3 4) #(5 6)) asDataFrame)"
+
+	"(#(#(1 2) #(3 4)) asDataFrame replaceNilsWithAverage) >>> (#(#(1 2) #(3 4)) asDataFrame)"
+
 	| averageOfColumn |
 	1 to: self numberOfColumns do: [ :i |
-		averageOfColumn := ((self columnAt: i) select: [ :ele | ele isNotNil ]) average.
+		averageOfColumn := ((self columnAt: i) select: [ :ele |
+			                    ele isNotNil ]) average.
 		1 to: self numberOfRows do: [ :j |
-			(self at: j at: i) ifNil: [
-				self at: j at: i put: averageOfColumn  ] ].
-		]
+			(self at: j at: i) ifNil: [ self at: j at: i put: averageOfColumn ] ] ]
 ]
 
 { #category : #replacing }
 DataFrame >> replaceNilsWithMedian [
 	"Replaces all nil values of a data frame with the median of the column in which it is present"
 
+	"(#(#(nil 2) #(3 nil) #(5 6) #(7 8)) asDataFrame replaceNilsWithMedian) >>> (#(#(5 2) #(3 6) #(5 6) #(7 8)) asDataFrame)"
+
+	"(#(#(1 2) #(3 4)) asDataFrame replaceNilsWithMedian) >>> (#(#(1 2) #(3 4)) asDataFrame)"
+
 	| medianOfColumn |
 	1 to: self numberOfColumns do: [ :i |
-		medianOfColumn := ((self columnAt: i) select: [ :ele | ele isNotNil ]) median.
+		medianOfColumn := ((self columnAt: i) select: [ :ele | ele isNotNil ])
+			                  median.
 		1 to: self numberOfRows do: [ :j |
-			(self at: j at: i) ifNil: [
-				self at: j at: i put: medianOfColumn  ] ].
-		]
+			(self at: j at: i) ifNil: [ self at: j at: i put: medianOfColumn ] ] ]
 ]
 
 { #category : #replacing }
 DataFrame >> replaceNilsWithMode [
 	"Replaces all nil values of a data frame with the mode of the column in which it is present"
 
+	"(#(#(nil 2) #(3 nil) #(3 2)) asDataFrame replaceNilsWithMode) >>> (#(#(3 2) #(3 2) #(3 2)) asDataFrame)"
+
+	"(#(#(1 2) #(3 4)) asDataFrame replaceNilsWithMode) >>> (#(#(1 2) #(3 4)) asDataFrame)"
+
 	1 to: self numberOfColumns do: [ :i |
 		| modeOfColumn |
 		1 to: self numberOfRows do: [ :j |
-		(self at: j at: i) ifNil: [ self at: j at: i put: (modeOfColumn ifNil: [ modeOfColumn := ((self columnAt: i) select: [ :ele | ele isNotNil ]) mode ]) ] ].
+			(self at: j at: i) ifNil: [
+				self at: j at: i put: (modeOfColumn ifNil: [
+						 modeOfColumn := ((self columnAt: i) select: [ :ele |
+							                  ele isNotNil ]) mode ]) ] ].
 		modeOfColumn := nil ]
 ]
 
 { #category : #replacing }
 DataFrame >> replaceNilsWithNextRowValue [
+	"Replaces all nil values of a data frame with the next non-nil value of the column in which it is present. If there is no non-nil value after it, it is not replaced"
+
+	"(#(#(nil 2) #(3 nil)) asDataFrame replaceNilsWithNextRowValue) >>> (#(#(3 2) #(3 nil)) asDataFrame)"
+
+	"(#(#(1 2) #(3 4)) asDataFrame replaceNilsWithNextRowValue) >>> (#(#(1 2) #(3 4)) asDataFrame)"
 
 	| value numberOfRows |
 	numberOfRows := self numberOfRows.
@@ -1941,24 +2089,27 @@ DataFrame >> replaceNilsWithNextRowValue [
 
 { #category : #replacing }
 DataFrame >> replaceNilsWithPreviousRowValue [
-	"Replaces all nil values of a data frame with the previous non-nil value of the column in which it is present"
+	"Replaces all nil values of a data frame with the previous non-nil value of the column in which it is present. If there is no non-nil value before it, it is not replaced"
 
-	|value|
+	"(#(#(nil 2) #(3 nil)) asDataFrame replaceNilsWithPreviousRowValue) >>> (#(#(nil 2) #(3 2)) asDataFrame)"
+
+	"(#(#(1 2) #(3 4)) asDataFrame replaceNilsWithPreviousRowValue) >>> (#(#(1 2) #(3 4)) asDataFrame)"
+
+	| value |
 	1 to: self numberOfColumns do: [ :i |
 		1 to: self numberOfRows do: [ :j |
-
-			j > 1
-				ifTrue: [
-					(self at: j at: i) ifNil: [ self at: j at: i put: value ].
-				 	].
-			value:= self at: j at: i.
-		].
-	]
+			j > 1 ifTrue: [
+				(self at: j at: i) ifNil: [ self at: j at: i put: value ] ].
+			value := self at: j at: i ] ]
 ]
 
 { #category : #replacing }
 DataFrame >> replaceNilsWithZero [
-	"Replaces all nil values of a data frame with xero"
+	"Replaces all nil values of a data frame with zero"
+
+	"(#(#(nil 2) #(3 nil)) asDataFrame replaceNilsWithZero) >>> (#(#(0 2) #(3 0)) asDataFrame)"
+
+	"(#(#(1 2) #(3 4)) asDataFrame replaceNilsWithZero) >>> (#(#(1 2) #(3 4)) asDataFrame)"
 
 	self replaceNilsWith: 0
 ]
@@ -2275,12 +2426,20 @@ DataFrame >> size [
 DataFrame >> sortBy: columnName [
 	"Rearranges the rows of the data frame in ascending order of the values in the column named columnName"
 
+	"(#(#(3 2) #(1 4) #(2 4)) asDataFrame sortBy: 1) >>> (#(#(1 4) #(2 4) #(3 2)) asDataFrame)"
+
+	"(#(#(3 2) #(1 4) #(2 4)) asDataFrame sortBy: 2) >>> (#(#(3 2) #(1 4) #(2 4)) asDataFrame)"
+
 	self sortBy: columnName using: [ :a :b | a <= b ]
 ]
 
 { #category : #sorting }
 DataFrame >> sortBy: columnName using: aBlock [
 	"Rearranges the rows of the data frame by applying the given block on the column named columnName"
+
+	"(#(#(3 2) #(1 4) #(2 4)) asDataFrame sortBy: 1 using: [ :a :b | a <= b ]) >>> (#(#(1 4) #(2 4) #(3 2)) asDataFrame)"
+
+	"(#(#(3 2) #(1 4) #(2 4)) asDataFrame sortBy: 2 using: [ :a :b | a <= b ]) >>> (#(#(3 2) #(1 4) #(2 4)) asDataFrame)"
 
 	| column sortedKeys newContents |
 	column := self column: columnName.
@@ -2301,6 +2460,10 @@ DataFrame >> sortBy: columnName using: aBlock [
 DataFrame >> sortByAll: arrayOfColumnNames [
 	" Chain sorts the data frame in ascending order. The data frame is sorted based on the first column in the array of column names, if there are same values, then it sorts these same values based on the values of the second column and so on.."
 
+	"(#(#(3 2) #(1 4) #(2 4)) asDataFrame sortByAll: #(1 2)) >>> (#(#(1 4) #(2 4) #(3 2)) asDataFrame)"
+
+	"(#(#(3 2) #(1 4) #(2 4)) asDataFrame sortByAll: #(2 1)) >>> (#(#(3 2) #(1 4) #(2 4)) asDataFrame)"
+
 	arrayOfColumnNames reverseDo: [ :columnName |
 		self sortBy: columnName using: [ :a :b | a <= b ] ].
 	^ self
@@ -2310,12 +2473,20 @@ DataFrame >> sortByAll: arrayOfColumnNames [
 DataFrame >> sortDescendingBy: columnName [
 	"Rearranges the rows of the data frame in descending order of the values in the column named columnName"
 
+	"(#(#(3 2) #(1 4) #(2 4)) asDataFrame sortDescendingBy: 1) >>> (#(#(3 2) #(2 4) #(1 4)) asDataFrame)"
+
+	"(#(#(3 2) #(1 4) #(2 4)) asDataFrame sortDescendingBy: 2) >>> (#(#(1 4) #(2 4) #(3 2)) asDataFrame)"
+
 	self sortBy: columnName using: [ :a :b | a >= b ]
 ]
 
 { #category : #sorting }
 DataFrame >> sortDescendingByAll: arrayOfColumnNames [
 	" Chain sorts the data frame in descending order. The data frame is sorted based on the first column in the array of column names, if there are same values, then it sorts these same values based on the values of the second column and so on.."
+
+	"(#(#(3 2) #(1 4) #(2 4)) asDataFrame sortDescendingByAll: #(1 2)) >>> (#(#(3 2) #(2 4) #(1 4)) asDataFrame)"
+
+	"(#(#(3 2) #(1 4) #(2 4)) asDataFrame sortDescendingByAll: #(2 1)) >>> (#(#(2 4) #(1 4) #(3 2)) asDataFrame)"
 
 	arrayOfColumnNames reverseDo: [ :columnName |
 		self sortBy: columnName using: [ :a :b | a >= b ] ].
@@ -2324,7 +2495,9 @@ DataFrame >> sortDescendingByAll: arrayOfColumnNames [
 
 { #category : #statistics }
 DataFrame >> stdev [
-   "Standard deviation is a measure of how dispersed the data is in relation to the average"
+	"Standard deviation is a measure of how dispersed the data is in relation to the average"
+
+	"(#(#(10 3) #(20 1) #(30 2)) asDataFrame stdev) >>> (Dictionary newFrom: {(1 -> 10).(2 -> 1)})"
 
 	^ self applyToAllColumns: #stdev
 ]
@@ -2347,7 +2520,9 @@ DataFrame >> tail: aNumber [
 
 { #category : #statistics }
 DataFrame >> thirdQuartile [
-   "75% of the values in a set are smaller than or equal to the third Quartile of that set"
+	"75% of the values in a set are smaller than or equal to the third Quartile of that set"
+
+	"(#(#(10 3) #(20 1) #(30 2)) asDataFrame thirdQuartile) >>> (Dictionary newFrom: {(1 -> 30).(2 -> 3)})"
 
 	^ self applyToAllColumns: #thirdQuartile
 ]
@@ -2366,6 +2541,8 @@ DataFrame >> toColumn: columnName applyElementwise: aBlock [
 DataFrame >> toColumnAt: columnNumber applyElementwise: aBlock [
 	"Applies a given block to a column whose column index is columnNumber of a data frame"
 
+	"(#(#(1 2) #(3 4)) asDataFrame toColumnAt: 1 applyElementwise:[ :x | x - 1 ]) >>> (#(#(0 2) #(2 4)) asDataFrame)"
+
 	| columnName |
 	columnName := self columnNames at: columnNumber.
 	^ self toColumn: columnName applyElementwise: aBlock
@@ -2382,6 +2559,8 @@ DataFrame >> toColumns: arrayOfColumnNames applyElementwise: aBlock [
 { #category : #applying }
 DataFrame >> toColumnsAt: arrayOfColumnNumbers applyElementwise: aBlock [
 	"Applies a given block to columns whose indices are present in the array arrayOfColumnNumbers of a data frame"
+
+	"(#(#(1 2) #(3 4)) asDataFrame toColumnsAt: #(1 2) applyElementwise:[ :x | x - 1 ]) >>> (#(#(0 1) #(2 3)) asDataFrame)"
 
 	arrayOfColumnNumbers do: [ :each |
 		self toColumnAt: each applyElementwise: aBlock ]
@@ -2601,8 +2780,14 @@ DataFrame >> toString [
 DataFrame >> transposed [
 	"Returns a transposed DataFrame. Columns become rows and rows become columns."
 
+	"(#(#(1 2) #(3 4)) asDataFrame transposed) >>> (#(#(1 3) #(2 4)) asDataFrame)"
+
+	"(#(#(1 2 3)) asDataFrame transposed) >>> (#(#(1) #(2) #(3)) asDataFrame)"
+
+	"(#(#(r1c1 r1c2) #(r2c1 r2c2)) asDataFrame transposed) >>> (#(#(r1c1 r2c1) #(r1c2 r2c2)) asDataFrame)"
+
 	| transposedDf |
-	transposedDf := DataFrame withRows: (self asArrayOfColumns).
+	transposedDf := DataFrame withRows: self asArrayOfColumns.
 	transposedDf rowNames: self columnNames.
 	transposedDf columnNames: self rowNames.
 	^ transposedDf
@@ -2610,7 +2795,9 @@ DataFrame >> transposed [
 
 { #category : #statistics }
 DataFrame >> variance [
-   "variance measures how far each number in the set is from the average value of the set. It is the square of standard deviation."
+	"variance measures how far each number in the set is from the average value of the set. It is the square of standard deviation."
+
+	"(#(#(10 3) #(20 1) #(30 2)) asDataFrame variance) >>> (Dictionary newFrom: {(1 -> 100).(2 -> 1)})"
 
 	^ self applyToAllColumns: #variance
 ]
