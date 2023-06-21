@@ -459,6 +459,8 @@ DataFrame >> addRow: anArray named: aString atPosition: aNumber [
 DataFrame >> applyElementwise: aBlock [
 	"Applies a given block to all columns of a data frame"
 
+	"(#(#(1 2) #(3 4)) asDataFrame applyElementwise:[ :x | x - 1 ]) >>> (#(#(0 1) #(2 3)) asDataFrame)"
+
 	self toColumns: self columnNames applyElementwise: aBlock
 ]
 
@@ -2389,6 +2391,8 @@ DataFrame >> toColumn: columnName applyElementwise: aBlock [
 DataFrame >> toColumnAt: columnNumber applyElementwise: aBlock [
 	"Applies a given block to a column whose column index is columnNumber of a data frame"
 
+	"(#(#(1 2) #(3 4)) asDataFrame toColumnAt: 1 applyElementwise:[ :x | x - 1 ]) >>> (#(#(0 2) #(2 4)) asDataFrame)"
+
 	| columnName |
 	columnName := self columnNames at: columnNumber.
 	^ self toColumn: columnName applyElementwise: aBlock
@@ -2405,6 +2409,8 @@ DataFrame >> toColumns: arrayOfColumnNames applyElementwise: aBlock [
 { #category : #applying }
 DataFrame >> toColumnsAt: arrayOfColumnNumbers applyElementwise: aBlock [
 	"Applies a given block to columns whose indices are present in the array arrayOfColumnNumbers of a data frame"
+
+	"(#(#(1 2) #(3 4)) asDataFrame toColumnsAt: #(1 2) applyElementwise:[ :x | x - 1 ]) >>> (#(#(0 1) #(2 3)) asDataFrame)"
 
 	arrayOfColumnNumbers do: [ :each |
 		self toColumnAt: each applyElementwise: aBlock ]
