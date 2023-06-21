@@ -604,7 +604,9 @@ DataFrame >> atAll: indexes [
 { #category : #statistics }
 DataFrame >> average [
 	"Average is the ratio of sum of values in a set to the number of values in the set"
-	
+
+	"(#(#(10 3) #(20 1) #(30 2)) asDataFrame average) >>> (Dictionary newFrom: {(1 -> 20).(2 -> 2)})"
+
 	^ self applyToAllColumns: #average
 ]
 
@@ -1124,7 +1126,9 @@ DataFrame >> first [
 
 { #category : #statistics }
 DataFrame >> firstQuartile [
-    "25% of the values in a set are smaller than or equal to the first Quartile of that set"
+	"25% of the values in a set are smaller than or equal to the first Quartile of that set"
+
+	"(#(#(10 3) #(20 1) #(30 2)) asDataFrame firstQuartile) >>> (Dictionary newFrom: {(1 -> 10).(2 -> 1)})"
 
 	^ self applyToAllColumns: #firstQuartile
 ]
@@ -1447,6 +1451,8 @@ DataFrame >> inspectionItems: aBuilder [
 DataFrame >> interquartileRange [
 	"The Inter Quartile Range is the difference between the third Quartile and the first Quartile"
 
+	"(#(#(10 3) #(20 1) #(30 2)) asDataFrame interquartileRange) >>> (Dictionary newFrom: {(1 -> 20).(2 -> 2)})"
+
 	^ self applyToAllColumns: #interquartileRange
 ]
 
@@ -1516,13 +1522,17 @@ DataFrame >> leftJoin: aDataFrame onLeft: leftColumn onRight: rightColumn [
 { #category : #statistics }
 DataFrame >> max [
 	"Max is the largest value present in a set of values"
-	
+
+	"(#(#(10 3) #(20 1) #(30 2)) asDataFrame max) >>> (Dictionary newFrom: {(1 -> 30).(2 -> 3)})"
+
 	^ self applyToAllColumns: #max
 ]
 
 { #category : #statistics }
 DataFrame >> median [
-   "50% of data points have a value smaller or equal to the median . The median of a set of values is the middle value of the set when the set is arranged in increasing order."
+	"50% of data points have a value smaller or equal to the median . The median of a set of values is the middle value of the set when the set is arranged in increasing order."
+
+	"(#(#(10 3) #(20 1) #(30 2)) asDataFrame median) >>> (Dictionary newFrom: {(1 -> 20).(2 -> 2)})"
 
 	^ self applyToAllColumns: #median
 ]
@@ -1531,12 +1541,16 @@ DataFrame >> median [
 DataFrame >> min [
 	"Min is the smallest value present in a set of values"
 
+	"(#(#(10 3) #(20 1) #(30 2)) asDataFrame min) >>> (Dictionary newFrom: {(1 -> 10).(2 -> 1)})"
+
 	^ self applyToAllColumns: #min
 ]
 
 { #category : #statistics }
 DataFrame >> mode [
 	"The mode of a set of values is the value that appears most often. "
+
+	"(#(#(10 3) #(10 1) #(30 3)) asDataFrame mode) >>> (Dictionary newFrom: {(1 -> 10).(2 -> 3)})"
 
 	^ self applyToAllColumns: #mode
 ]
@@ -1726,6 +1740,8 @@ DataFrame >> privateRowNames: anArray [
 { #category : #statistics }
 DataFrame >> range [
 	"Range is the difference between the highest value and the lowest value in a set"
+
+	"(#(#(10 3) #(20 1) #(30 2)) asDataFrame range) >>> (Dictionary newFrom: {(1 -> 20).(2 -> 2)})"
 
 	^ self applyToAllColumns: #range
 ]
@@ -2479,7 +2495,9 @@ DataFrame >> sortDescendingByAll: arrayOfColumnNames [
 
 { #category : #statistics }
 DataFrame >> stdev [
-   "Standard deviation is a measure of how dispersed the data is in relation to the average"
+	"Standard deviation is a measure of how dispersed the data is in relation to the average"
+
+	"(#(#(10 3) #(20 1) #(30 2)) asDataFrame stdev) >>> (Dictionary newFrom: {(1 -> 10).(2 -> 1)})"
 
 	^ self applyToAllColumns: #stdev
 ]
@@ -2502,7 +2520,9 @@ DataFrame >> tail: aNumber [
 
 { #category : #statistics }
 DataFrame >> thirdQuartile [
-   "75% of the values in a set are smaller than or equal to the third Quartile of that set"
+	"75% of the values in a set are smaller than or equal to the third Quartile of that set"
+
+	"(#(#(10 3) #(20 1) #(30 2)) asDataFrame thirdQuartile) >>> (Dictionary newFrom: {(1 -> 30).(2 -> 3)})"
 
 	^ self applyToAllColumns: #thirdQuartile
 ]
@@ -2775,7 +2795,9 @@ DataFrame >> transposed [
 
 { #category : #statistics }
 DataFrame >> variance [
-   "variance measures how far each number in the set is from the average value of the set. It is the square of standard deviation."
+	"variance measures how far each number in the set is from the average value of the set. It is the square of standard deviation."
+
+	"(#(#(10 3) #(20 1) #(30 2)) asDataFrame variance) >>> (Dictionary newFrom: {(1 -> 100).(2 -> 1)})"
 
 	^ self applyToAllColumns: #variance
 ]
