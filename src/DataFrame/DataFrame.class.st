@@ -605,12 +605,16 @@ DataFrame >> calculateDataTypes [
 
 { #category : #comparing }
 DataFrame >> closeTo: aDataFrame [
+	"(#(#(1 2) #(3 4)) asDataFrame closeTo: #(#(1.0001 1.9999) #(3 4.0001)) asDataFrame ) >>> true"
+
+	"(#(#(1 2) #(3 4)) asDataFrame closeTo: #(#(1 1) #(3 4)) asDataFrame ) >>> false"
 
 	aDataFrame species = self species ifFalse: [ ^ false ].
 
 	aDataFrame dimensions = self dimensions ifFalse: [ ^ false ].
 
-	(aDataFrame rowNames = self rowNames and: [ aDataFrame columnNames = self columnNames ]) ifFalse: [ ^ false ].
+	(aDataFrame rowNames = self rowNames and: [
+		 aDataFrame columnNames = self columnNames ]) ifFalse: [ ^ false ].
 
 	1 to: self numberOfRows do: [ :i |
 		1 to: self numberOfColumns do: [ :j |
@@ -618,13 +622,18 @@ DataFrame >> closeTo: aDataFrame [
 			value := self at: i at: j.
 			(value isNumber
 				 ifTrue: [ value closeTo: (aDataFrame at: i at: j) ]
-				 ifFalse: [ value = (aDataFrame at: i at: j) ]) ifFalse: [ ^ false ] ] ].
+				 ifFalse: [ value = (aDataFrame at: i at: j) ]) ifFalse: [
+				^ false ] ] ].
 
 	^ true
 ]
 
 { #category : #comparing }
 DataFrame >> closeTo: aDataFrame precision: epsilon [
+
+	"(#(#(1 2) #(3 4)) asDataFrame closeTo: #(#(1.2 2.19) #(3 4)) asDataFrame precision: 0.2 ) >>> true"
+
+	"(#(#(1 2) #(3 4)) asDataFrame closeTo: #(#(1.21 2) #(3 4)) asDataFrame precision: 0.2 ) >>> false"
 
 	aDataFrame species = self species ifFalse: [ ^ false ].
 
