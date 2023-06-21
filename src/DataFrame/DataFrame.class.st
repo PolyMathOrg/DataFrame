@@ -343,14 +343,29 @@ DataFrame >> add: aDataSeries [
 { #category : #adding }
 DataFrame >> addColumn: aDataSeries [
 	"Add DataSeries as a new column at the end"
+
+	"(#(#(1 2) #(3 4)) asDataFrame addColumn: #(5 6) asDataSeries named: 3) >>> (#(#(1 2 5) #(3 4 6)) asDataFrame)"
+
+	"(#(#(r1c1 r1c2)) asDataFrame addColumn: #(r1c3) asDataSeries named: 3) >>> (#(#(r1c1 r1c2 r1c3)) asDataFrame)"
+
 	self addColumn: aDataSeries named: aDataSeries name.
-	(self dataTypes ) at: aDataSeries name put: aDataSeries calculateDataType
+	self dataTypes
+		at: aDataSeries name
+		put: aDataSeries calculateDataType
 ]
 
 { #category : #adding }
 DataFrame >> addColumn: aDataSeries atPosition: aNumber [
 	"Add DataSeries as a new column at the given position"
-	self addColumn: aDataSeries asArray named: aDataSeries name atPosition: aNumber
+
+	"(#(#(1 2) #(3 4)) asDataFrame addColumn: #(5 6) asDataSeries named: 3 atPosition: 3) >>> (#(#(1 2 5) #(3 4 6)) asDataFrame)"
+
+	"(#(#(r1c1 r1c2)) asDataFrame addColumn: #(r1c3) asDataSeries named: 3 atPosition: 3) >>> (#(#(r1c1 r1c2 r1c3)) asDataFrame)"
+
+	self
+		addColumn: aDataSeries asArray
+		named: aDataSeries name
+		atPosition: aNumber
 ]
 
 { #category : #adding }
@@ -398,12 +413,20 @@ DataFrame >> addEmptyRowNamed: aString atPosition: aNumber [
 DataFrame >> addRow: aDataSeries [
 	"Add DataSeries as a new row at the end"
 
+	"(#(#(1 2) #(3 4)) asDataFrame addRow: #(5 6) asDataSeries named: 3) >>> (#(#(1 2) #(3 4) #(5 6)) asDataFrame)"
+
+	"(#(#(r1c1 r1c2)) asDataFrame addRow: #(r2c1 r2c2) asDataSeries named: 2) >>> (#(#(r1c1 r1c2 ) #(r2c1 r2c2)) asDataFrame)"
+
 	self addRow: aDataSeries atPosition: self numberOfRows + 1
 ]
 
 { #category : #adding }
 DataFrame >> addRow: aDataSeries atPosition: aNumber [
 	"Add DataSeries as a new row at the given position"
+
+	"(#(#(1 2) #(3 4)) asDataFrame addRow: #(5 6) asDataSeries named: 3 atPosition: 3) >>> (#(#(1 2) #(3 4) #(5 6)) asDataFrame)"
+
+	"(#(#(r1c1 r1c2)) asDataFrame addRow: #(r2c1 r2c2) asDataSeries named: 2 atPosition: 2) >>> (#(#(r1c1 r1c2 ) #(r2c1 r2c2)) asDataFrame)"
 
 	| row |
 	row := Array new: self columnNames size.
