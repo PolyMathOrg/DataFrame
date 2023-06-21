@@ -611,7 +611,10 @@ DataFrame >> average [
 { #category : #'data-types' }
 DataFrame >> calculateDataTypes [
 
-	self asArrayOfColumns doWithIndex: [ :column :i | self dataTypes at: (self columnNames at: i) put: column calculateDataType ]
+	self asArrayOfColumns doWithIndex: [ :column :i |
+		self dataTypes
+			at: (self columnNames at: i)
+			put: column calculateDataType ]
 ]
 
 { #category : #comparing }
@@ -2650,8 +2653,14 @@ DataFrame >> toString [
 DataFrame >> transposed [
 	"Returns a transposed DataFrame. Columns become rows and rows become columns."
 
+	"(#(#(1 2) #(3 4)) asDataFrame transposed) >>> (#(#(1 3) #(2 4)) asDataFrame)"
+
+	"(#(#(1 2 3)) asDataFrame transposed) >>> (#(#(1) #(2) #(3)) asDataFrame)"
+
+	"(#(#(r1c1 r1c2) #(r2c1 r2c2)) asDataFrame transposed) >>> (#(#(r1c1 r2c1) #(r1c2 r2c2)) asDataFrame)"
+
 	| transposedDf |
-	transposedDf := DataFrame withRows: (self asArrayOfColumns).
+	transposedDf := DataFrame withRows: self asArrayOfColumns.
 	transposedDf rowNames: self columnNames.
 	transposedDf columnNames: self rowNames.
 	^ transposedDf
