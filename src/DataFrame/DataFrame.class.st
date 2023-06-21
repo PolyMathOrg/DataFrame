@@ -493,8 +493,11 @@ DataFrame >> applyToAllColumns: aSymbol [
 
 { #category : #converting }
 DataFrame >> asArray [
-
 	"Converts DataFrame to the array of rows"
+
+	"(#(#(1 2) #(3 4)) asDataFrame asArray) >>> (#(#(1 2) #(3 4)))"
+
+	"(#(#(r1c1 r1c2) #(r2c1 r2c2)) asDataFrame asArray) >>> (#(#(r1c1 r1c2) #(r2c1 r2c2)))"
 
 	^ self asArrayOfRows
 ]
@@ -503,12 +506,20 @@ DataFrame >> asArray [
 DataFrame >> asArrayOfColumns [
 	"Converts DataFrame to the array of columns"
 
-	^ contents asArrayOfColumns.
+	"(#(#(1 2) #(3 4)) asDataFrame asArrayOfColumns) >>> (#(#(1 3) #(2 4)))"
+
+	"(#(#(r1c1 r1c2) #(r2c1 r2c2)) asDataFrame asArrayOfColumns) >>> (#(#(r1c1 r2c1) #(r1c2 r2c2)))"
+
+	^ contents asArrayOfColumns
 ]
 
 { #category : #converting }
 DataFrame >> asArrayOfRows [
 	"Converts DataFrame to the array of rows"
+
+	"(#(#(1 2) #(3 4)) asDataFrame asArrayOfRows) >>> (#(#(1 2) #(3 4)))"
+
+	"(#(#(r1c1 r1c2) #(r2c1 r2c2)) asDataFrame asArrayOfRows) >>> (#(#(r1c1 r1c2) #(r2c1 r2c2)))"
 
 	^ contents asArrayOfRows
 ]
