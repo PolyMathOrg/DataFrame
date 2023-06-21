@@ -2410,12 +2410,20 @@ DataFrame >> size [
 DataFrame >> sortBy: columnName [
 	"Rearranges the rows of the data frame in ascending order of the values in the column named columnName"
 
+	"(#(#(3 2) #(1 4) #(2 4)) asDataFrame sortBy: 1) >>> (#(#(1 4) #(2 4) #(3 2)) asDataFrame)"
+
+	"(#(#(3 2) #(1 4) #(2 4)) asDataFrame sortBy: 2) >>> (#(#(3 2) #(1 4) #(2 4)) asDataFrame)"
+
 	self sortBy: columnName using: [ :a :b | a <= b ]
 ]
 
 { #category : #sorting }
 DataFrame >> sortBy: columnName using: aBlock [
 	"Rearranges the rows of the data frame by applying the given block on the column named columnName"
+
+	"(#(#(3 2) #(1 4) #(2 4)) asDataFrame sortBy: 1 using: [ :a :b | a <= b ]) >>> (#(#(1 4) #(2 4) #(3 2)) asDataFrame)"
+
+	"(#(#(3 2) #(1 4) #(2 4)) asDataFrame sortBy: 2 using: [ :a :b | a <= b ]) >>> (#(#(3 2) #(1 4) #(2 4)) asDataFrame)"
 
 	| column sortedKeys newContents |
 	column := self column: columnName.
@@ -2436,6 +2444,10 @@ DataFrame >> sortBy: columnName using: aBlock [
 DataFrame >> sortByAll: arrayOfColumnNames [
 	" Chain sorts the data frame in ascending order. The data frame is sorted based on the first column in the array of column names, if there are same values, then it sorts these same values based on the values of the second column and so on.."
 
+	"(#(#(3 2) #(1 4) #(2 4)) asDataFrame sortByAll: #(1 2)) >>> (#(#(1 4) #(2 4) #(3 2)) asDataFrame)"
+
+	"(#(#(3 2) #(1 4) #(2 4)) asDataFrame sortByAll: #(2 1)) >>> (#(#(3 2) #(1 4) #(2 4)) asDataFrame)"
+
 	arrayOfColumnNames reverseDo: [ :columnName |
 		self sortBy: columnName using: [ :a :b | a <= b ] ].
 	^ self
@@ -2445,12 +2457,20 @@ DataFrame >> sortByAll: arrayOfColumnNames [
 DataFrame >> sortDescendingBy: columnName [
 	"Rearranges the rows of the data frame in descending order of the values in the column named columnName"
 
+	"(#(#(3 2) #(1 4) #(2 4)) asDataFrame sortDescendingBy: 1) >>> (#(#(3 2) #(2 4) #(1 4)) asDataFrame)"
+
+	"(#(#(3 2) #(1 4) #(2 4)) asDataFrame sortDescendingBy: 2) >>> (#(#(1 4) #(2 4) #(3 2)) asDataFrame)"
+
 	self sortBy: columnName using: [ :a :b | a >= b ]
 ]
 
 { #category : #sorting }
 DataFrame >> sortDescendingByAll: arrayOfColumnNames [
 	" Chain sorts the data frame in descending order. The data frame is sorted based on the first column in the array of column names, if there are same values, then it sorts these same values based on the values of the second column and so on.."
+
+	"(#(#(3 2) #(1 4) #(2 4)) asDataFrame sortDescendingByAll: #(1 2)) >>> (#(#(3 2) #(2 4) #(1 4)) asDataFrame)"
+
+	"(#(#(3 2) #(1 4) #(2 4)) asDataFrame sortDescendingByAll: #(2 1)) >>> (#(#(2 4) #(1 4) #(3 2)) asDataFrame)"
 
 	arrayOfColumnNames reverseDo: [ :columnName |
 		self sortBy: columnName using: [ :a :b | a >= b ] ].
