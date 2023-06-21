@@ -1726,6 +1726,10 @@ DataFrame >> removeColumn: columnName [
 DataFrame >> removeColumnAt: columnNumber [
 	"Removes the column at column index columnNumber from a data frame"
 
+	"(#(#(1 2) #(3 4)) asDataFrame removeColumnAt: 2) >>> (#(#(1) #(3)) asDataFrame)"
+
+	"(#(#(r1c1 r1c2) #(r2c1 r2c2)) asDataFrame removeColumnAt: 2) >>> (#(#(r1c1) #(r2c1)) asDataFrame)"
+
 	(columnNumber < 1 or: [ columnNumber > self numberOfColumns ])
 		ifTrue: [ SubscriptOutOfBounds signalFor: columnNumber ].
 
@@ -1748,9 +1752,13 @@ DataFrame >> removeColumns: aCollectionOfColumnNames [
 DataFrame >> removeColumnsAt: aCollectionOfColumnIndices [
 	"Removes all columns from a data frame whose column indices are present in the collection aCollectionOfColumnIndices"
 
+	"(#(#(1 2 3) #(4 5 6)) asDataFrame removeColumnsAt: #(2 3)) >>> (#(#(1) #(4)) asDataFrame)"
+
+	"(#(#(r1c1 r1c2) #(r2c1 r2c2)) asDataFrame removeColumnsAt: #(1 2)) >>> (#(#() #()) asDataFrame)"
+
 	| columnNamesToRemove |
 	columnNamesToRemove := aCollectionOfColumnIndices collect: [ :i |
-		columnNames at: i ].
+		                       columnNames at: i ].
 	self removeColumns: columnNamesToRemove
 ]
 
@@ -1767,16 +1775,20 @@ DataFrame >> removeColumnsOfRowElementsSatisfing: aBlock onRowNamed: rowName [
 DataFrame >> removeColumnsOfRowElementsSatisfying: aBlock onRow: rowNumber [
 	"Removes columns from a data frame whose row elements at the row index rowNumber satisfy a given block"
 
+	"(#(#(1 2 3) #(4 5 6)) asDataFrame removeColumnsOfRowElementsSatisfying: [ :x | x > 4 ] onRow: 2) >>> (#(#(1) #(4)) asDataFrame)"
+
 	| columnNamesCopy |
-	(rowNumber < 1 or: [ rowNumber > self numberOfRows ])
-		ifTrue: [ SubscriptOutOfBounds signalFor: rowNumber ].
+	(rowNumber < 1 or: [ rowNumber > self numberOfRows ]) ifTrue: [
+		SubscriptOutOfBounds signalFor: rowNumber ].
 
 	columnNamesCopy := columnNames deepCopy.
 	columnNames removeAll.
 	columnNamesCopy withIndexDo: [ :columnName :j |
-		(aBlock value: (contents at: rowNumber at: j))
-			ifFalse: [ columnNames add: columnName ]].
-	contents removeColumnsOfRowElementsSatisfying: aBlock onRow: rowNumber.
+		(aBlock value: (contents at: rowNumber at: j)) ifFalse: [
+			columnNames add: columnName ] ].
+	contents
+		removeColumnsOfRowElementsSatisfying: aBlock
+		onRow: rowNumber.
 
 	self numberOfColumns = 0 ifTrue: [ rowNames removeAll ]
 ]
@@ -1805,6 +1817,10 @@ DataFrame >> removeColumnsWithNilsAtRowNamed: rowName [
 DataFrame >> removeDuplicatedRows [
 	"Removes duplicate rows of a dataframe except the first unique row"
 
+	"(#(#(1 2) #(3 4) #(1 2)) asDataFrame removeDuplicatedRows) >>> (#(#(1 2) #(3 4)) asDataFrame)"
+
+	"(#(#(r1c1) #(r2c1) #(r2c1) #(r2c1)) asDataFrame removeDuplicatedRows) >>> (#(#(r1c1) #(r2c1)) asDataFrame)"
+
 	| numberOfRows nextRowIndex currentRow row aSet |
 	aSet := Set new.
 	numberOfRows := self numberOfRows.
@@ -1830,8 +1846,12 @@ DataFrame >> removeRow: rowName [
 DataFrame >> removeRowAt: rowNumber [
 	"Removes the row at row index rowNumber from a data frame"
 
-	(rowNumber < 1 or: [ rowNumber > self numberOfRows ])
-		ifTrue: [ SubscriptOutOfBounds signalFor: rowNumber ].
+	"(#(#(1 2) #(3 4)) asDataFrame removeRowAt: 2) >>> (#(#(1 2)) asDataFrame)"
+
+	"(#(#(r1c1 r1c2) #(r2c1 r2c2)) asDataFrame removeRowAt: 2) >>> (#(#(r1c1 r1c2)) asDataFrame)"
+
+	(rowNumber < 1 or: [ rowNumber > self numberOfRows ]) ifTrue: [
+		SubscriptOutOfBounds signalFor: rowNumber ].
 
 	contents removeRowAt: rowNumber.
 	rowNames := rowNames copyWithoutIndex: rowNumber
@@ -1849,9 +1869,13 @@ DataFrame >> removeRows: aCollectionOfRowNames [
 DataFrame >> removeRowsAt: aCollectionOfRowIndices [
 	"Removes all rows from a data frame whose row indices are present in the collection aCollectionOfRowIndices"
 
+	"(#(#(1 2) #(3 4) #(5 6)) asDataFrame removeRowsAt: #(2 3)) >>> (#(#(1 2)) asDataFrame)"
+
+	"(#(#(r1c1 r1c2) #(r2c1 r2c2)) asDataFrame removeRowsAt: #(2)) >>> (#(#(r1c1 r1c2)) asDataFrame)"
+
 	| rowNamesToRemove |
 	rowNamesToRemove := aCollectionOfRowIndices collect: [ :i |
-		rowNames at: i ].
+		                    rowNames at: i ].
 	self removeRows: rowNamesToRemove
 ]
 
@@ -1868,6 +1892,8 @@ DataFrame >> removeRowsOfColumnElementsSatisfing: aBlock onColumnNamed: columnNa
 DataFrame >> removeRowsOfColumnElementsSatisfying: aBlock onColumn: columnNumber [
 	"Removes rows from a data frame whose column elements at the column index columnNumber satisfy a given block"
 
+	"(#(#(1 2) #(3 4) #(5 6)) asDataFrame removeRowsOfColumnElementsSatisfying: [ :x | x >= 4 ] onColumn: 2) >>> (#(#(1 2)) asDataFrame)"
+
 	| rowNamesCopy |
 	(columnNumber < 1 or: [ columnNumber > self numberOfColumns ])
 		ifTrue: [ SubscriptOutOfBounds signalFor: columnNumber ].
@@ -1875,9 +1901,11 @@ DataFrame >> removeRowsOfColumnElementsSatisfying: aBlock onColumn: columnNumber
 	rowNamesCopy := rowNames deepCopy.
 	rowNames removeAll.
 	rowNamesCopy withIndexDo: [ :rowName :i |
-		(aBlock value: (contents at: i at: columnNumber))
-			ifFalse: [ rowNames add: rowName ] ].
-	contents removeRowsOfColumnElementsSatisfying: aBlock onColumn: columnNumber.
+		(aBlock value: (contents at: i at: columnNumber)) ifFalse: [
+			rowNames add: rowName ] ].
+	contents
+		removeRowsOfColumnElementsSatisfying: aBlock
+		onColumn: columnNumber.
 
 	self numberOfRows = 0 ifTrue: [ columnNames removeAll ]
 ]
@@ -1885,7 +1913,11 @@ DataFrame >> removeRowsOfColumnElementsSatisfying: aBlock onColumn: columnNumber
 { #category : #removing }
 DataFrame >> removeRowsWithNils [
 	"Removes all rows from a data frame which have atleast one nil value"
-	
+
+	"(#(#(1 2) #(nil 4) #(5 nil)) asDataFrame removeRowsWithNils) >>> (#(#(1 2)) asDataFrame)"
+
+	"(#(#(r1c1 r1c2) #(nil r2c2)) asDataFrame removeRowsWithNils) >>> (#(#(r1c1 r1c2)) asDataFrame)"
+
 	1 to: self numberOfColumns do: [ :i |
 		self
 			removeRowsOfColumnElementsSatisfying: [ :ele | ele isNil ]
