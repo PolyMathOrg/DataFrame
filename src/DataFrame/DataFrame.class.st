@@ -1190,6 +1190,12 @@ DataFrame >> groupBy: columnName aggregate: anArrayOfUsingAsStatements [
 DataFrame >> hasNils [
 	"Returns true if there is atleast one nil value in the data frame. Returns false if there are no nil values in the dataframe"
 
+	"(#(#(nil 2) #(nil 4)) asDataFrame hasNils) >>> true"
+
+	"(#(#('nil' 'nil') #('nil' 'nil')) asDataFrame hasNils) >>> false"
+
+	"(#(#(nil 'nil') #('nil' 'nil')) asDataFrame hasNils) >>> true"
+
 	| arrayOfColumns |
 	arrayOfColumns := self asArrayOfColumns.
 	1 to: self numberOfColumns do: [ :column |
@@ -1200,8 +1206,13 @@ DataFrame >> hasNils [
 
 { #category : #replacing }
 DataFrame >> hasNilsByColumn [
-
 	"Returns a dictionary which indicates the presence of any nil values column wise"
+
+	"(#(#(1 2) #(nil 4)) asDataFrame hasNilsByColumn) >>> (Dictionary newFrom: {(1 -> true).(2 -> false)})"
+
+	"(#(#('nil' 'nil') #('nil' 'nil')) asDataFrame hasNilsByColumn) >>> (Dictionary newFrom: {(1 -> false).(2 -> false)})"
+
+	"(#(#(nil 'nil') #('nil' 'nil')) asDataFrame hasNilsByColumn) >>> (Dictionary newFrom: {(1 -> true).(2 -> false)})"
 
 	| dictionary |
 	dictionary := Dictionary new.
@@ -1558,6 +1569,12 @@ DataFrame >> numberOfColumns [
 { #category : #replacing }
 DataFrame >> numberOfNils [
 	"Returns a dictionary which indicates the number of nil values column wise"
+
+	"(#(#(nil 2) #(nil 4)) asDataFrame numberOfNils) >>> (Dictionary newFrom: {(1 -> 2).(2 -> 0)})"
+
+	"(#(#('nil' 'nil') #('nil' 'nil')) asDataFrame numberOfNils) >>> (Dictionary newFrom: {(1 -> 0).(2 -> 0)})"
+
+	"(#(#(nil 'nil') #('nil' 'nil')) asDataFrame numberOfNils) >>> (Dictionary newFrom: {(1 -> 1).(2 -> 0)})"
 
 	| dictionary count |
 	dictionary := Dictionary new.
@@ -1974,53 +1991,76 @@ DataFrame >> replaceAllNilsWithZeros [
 { #category : #replacing }
 DataFrame >> replaceNilsWith: anObject [
 	"Replaces all nil values of a data frame with the object anObject"
-	
+
+	"(#(#(nil 2) #(3 nil)) asDataFrame replaceNilsWith: 5) >>> (#(#(5 2) #(3 5)) asDataFrame)"
+
+	"(#(#('nil' 'nil') #('nil' 'nil')) asDataFrame replaceNilsWith: 5) >>> (#(#('nil' 'nil') #('nil' 'nil')) asDataFrame)"
+
+	"(#(#(nil 'nil') #('nil' 'nil')) asDataFrame replaceNilsWith: 5) >>> (#(#(5 'nil') #('nil' 'nil')) asDataFrame)"
+
 	1 to: self numberOfColumns do: [ :columnIndex |
 		1 to: self numberOfRows do: [ :rowIndex |
-			(self at: rowIndex at: columnIndex) ifNil:
-				[ self at: rowIndex at: columnIndex put: anObject ] ]
-		]
+			(self at: rowIndex at: columnIndex) ifNil: [
+				self at: rowIndex at: columnIndex put: anObject ] ] ]
 ]
 
 { #category : #replacing }
 DataFrame >> replaceNilsWithAverage [
 	"Replaces all nil values of a data frame with the average value of the column in which it is present"
 
+	"(#(#(nil 2) #(3 nil) #(5 6)) asDataFrame replaceNilsWithAverage) >>> (#(#(4 2) #(3 4) #(5 6)) asDataFrame)"
+
+	"(#(#(1 2) #(3 4)) asDataFrame replaceNilsWithAverage) >>> (#(#(1 2) #(3 4)) asDataFrame)"
+
 	| averageOfColumn |
 	1 to: self numberOfColumns do: [ :i |
-		averageOfColumn := ((self columnAt: i) select: [ :ele | ele isNotNil ]) average.
+		averageOfColumn := ((self columnAt: i) select: [ :ele |
+			                    ele isNotNil ]) average.
 		1 to: self numberOfRows do: [ :j |
-			(self at: j at: i) ifNil: [
-				self at: j at: i put: averageOfColumn  ] ].
-		]
+			(self at: j at: i) ifNil: [ self at: j at: i put: averageOfColumn ] ] ]
 ]
 
 { #category : #replacing }
 DataFrame >> replaceNilsWithMedian [
 	"Replaces all nil values of a data frame with the median of the column in which it is present"
 
+	"(#(#(nil 2) #(3 nil) #(5 6) #(7 8)) asDataFrame replaceNilsWithMedian) >>> (#(#(5 2) #(3 6) #(5 6) #(7 8)) asDataFrame)"
+
+	"(#(#(1 2) #(3 4)) asDataFrame replaceNilsWithMedian) >>> (#(#(1 2) #(3 4)) asDataFrame)"
+
 	| medianOfColumn |
 	1 to: self numberOfColumns do: [ :i |
-		medianOfColumn := ((self columnAt: i) select: [ :ele | ele isNotNil ]) median.
+		medianOfColumn := ((self columnAt: i) select: [ :ele | ele isNotNil ])
+			                  median.
 		1 to: self numberOfRows do: [ :j |
-			(self at: j at: i) ifNil: [
-				self at: j at: i put: medianOfColumn  ] ].
-		]
+			(self at: j at: i) ifNil: [ self at: j at: i put: medianOfColumn ] ] ]
 ]
 
 { #category : #replacing }
 DataFrame >> replaceNilsWithMode [
 	"Replaces all nil values of a data frame with the mode of the column in which it is present"
 
+	"(#(#(nil 2) #(3 nil) #(3 2)) asDataFrame replaceNilsWithMode) >>> (#(#(3 2) #(3 2) #(3 2)) asDataFrame)"
+
+	"(#(#(1 2) #(3 4)) asDataFrame replaceNilsWithMode) >>> (#(#(1 2) #(3 4)) asDataFrame)"
+
 	1 to: self numberOfColumns do: [ :i |
 		| modeOfColumn |
 		1 to: self numberOfRows do: [ :j |
-		(self at: j at: i) ifNil: [ self at: j at: i put: (modeOfColumn ifNil: [ modeOfColumn := ((self columnAt: i) select: [ :ele | ele isNotNil ]) mode ]) ] ].
+			(self at: j at: i) ifNil: [
+				self at: j at: i put: (modeOfColumn ifNil: [
+						 modeOfColumn := ((self columnAt: i) select: [ :ele |
+							                  ele isNotNil ]) mode ]) ] ].
 		modeOfColumn := nil ]
 ]
 
 { #category : #replacing }
 DataFrame >> replaceNilsWithNextRowValue [
+	"Replaces all nil values of a data frame with the next non-nil value of the column in which it is present. If there is no non-nil value after it, it is not replaced"
+
+	"(#(#(nil 2) #(3 nil)) asDataFrame replaceNilsWithNextRowValue) >>> (#(#(3 2) #(3 nil)) asDataFrame)"
+
+	"(#(#(1 2) #(3 4)) asDataFrame replaceNilsWithNextRowValue) >>> (#(#(1 2) #(3 4)) asDataFrame)"
 
 	| value numberOfRows |
 	numberOfRows := self numberOfRows.
@@ -2033,24 +2073,27 @@ DataFrame >> replaceNilsWithNextRowValue [
 
 { #category : #replacing }
 DataFrame >> replaceNilsWithPreviousRowValue [
-	"Replaces all nil values of a data frame with the previous non-nil value of the column in which it is present"
+	"Replaces all nil values of a data frame with the previous non-nil value of the column in which it is present. If there is no non-nil value before it, it is not replaced"
 
-	|value|
+	"(#(#(nil 2) #(3 nil)) asDataFrame replaceNilsWithPreviousRowValue) >>> (#(#(nil 2) #(3 2)) asDataFrame)"
+
+	"(#(#(1 2) #(3 4)) asDataFrame replaceNilsWithPreviousRowValue) >>> (#(#(1 2) #(3 4)) asDataFrame)"
+
+	| value |
 	1 to: self numberOfColumns do: [ :i |
 		1 to: self numberOfRows do: [ :j |
-
-			j > 1
-				ifTrue: [
-					(self at: j at: i) ifNil: [ self at: j at: i put: value ].
-				 	].
-			value:= self at: j at: i.
-		].
-	]
+			j > 1 ifTrue: [
+				(self at: j at: i) ifNil: [ self at: j at: i put: value ] ].
+			value := self at: j at: i ] ]
 ]
 
 { #category : #replacing }
 DataFrame >> replaceNilsWithZero [
-	"Replaces all nil values of a data frame with xero"
+	"Replaces all nil values of a data frame with zero"
+
+	"(#(#(nil 2) #(3 nil)) asDataFrame replaceNilsWithZero) >>> (#(#(0 2) #(3 0)) asDataFrame)"
+
+	"(#(#(1 2) #(3 4)) asDataFrame replaceNilsWithZero) >>> (#(#(1 2) #(3 4)) asDataFrame)"
 
 	self replaceNilsWith: 0
 ]
