@@ -1784,8 +1784,14 @@ DataFrame >> removeColumnsOfRowElementsSatisfying: aBlock onRow: rowNumber [
 { #category : #'handling nils' }
 DataFrame >> removeColumnsWithNilsAtRow: rowNumber [
 	"Removes all columns with nil values at row number rowNumber from the data frame"
-	
-	self removeColumnsOfRowElementsSatisfying: [ :ele | ele isNil ] onRow: rowNumber
+
+	"(#(#(nil 2) #(3 nil)) asDataFrame removeColumnsWithNilsAtRow: 2) >>> (#(#(nil) #(3)) asDataFrame)"
+
+	"(#(#(nil r1c2) #(r2c1 nil)) asDataFrame removeColumnsWithNilsAtRow: 2) >>> (#(#(nil) #(r2c1)) asDataFrame)"
+
+	self
+		removeColumnsOfRowElementsSatisfying: [ :ele | ele isNil ]
+		onRow: rowNumber
 ]
 
 { #category : #'handling nils' }
@@ -1890,7 +1896,13 @@ DataFrame >> removeRowsWithNils [
 DataFrame >> removeRowsWithNilsAtColumn: columnNumber [
 	"Removes all rows with nil values at column number columnNumber from the data frame"
 
-	self removeRowsOfColumnElementsSatisfying: [ :ele | ele isNil ] onColumn: columnNumber
+	"(#(#(nil 2) #(3 nil)) asDataFrame removeRowsWithNilsAtColumn: 2) >>> (#(#(nil 2)) asDataFrame)"
+
+	"(#(#(nil r1c2) #(r2c1 nil)) asDataFrame removeRowsWithNilsAtColumn: 2) >>> (#(#(nil r1c2)) asDataFrame)"
+
+	self
+		removeRowsOfColumnElementsSatisfying: [ :ele | ele isNil ]
+		onColumn: columnNumber
 ]
 
 { #category : #'handling nils' }
