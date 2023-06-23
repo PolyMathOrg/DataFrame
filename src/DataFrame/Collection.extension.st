@@ -23,7 +23,10 @@ Collection >> asDataFrame [
 			| value |
 			value := row at: colIndex ifAbsent: [ nil ].
 			dataFrame at: rowIndex at: colIndex put: value ] ].
-
+	1 to: numberOfColumns do: [ :colIndex |
+		dataFrame dataTypes
+			at: colIndex
+			put: (dataFrame columnAt: colIndex) calculateDataType ].
 
 	^ dataFrame
 ]
