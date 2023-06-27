@@ -434,6 +434,21 @@ DataFrameTest >> testAsDataFrame [
 ]
 
 { #category : #tests }
+DataFrameTest >> testAsDataFrameDataTypes [
+
+	| actual expected |
+	actual := #( #( a 1 3.1 ) 
+					 #( b 2 6.5 ) 
+					 #( c 3 9.7 ) ) asDataFrame dataTypes.
+	expected := Dictionary newFrom: {
+			            (1 -> Object).
+			            (2 -> SmallInteger).
+			            (3 -> SmallFloat64) }.
+
+	self assert: actual equals: expected
+]
+
+{ #category : #tests }
 DataFrameTest >> testAsDataFrameEmpty [
 
 	| actual expected |
