@@ -1250,6 +1250,14 @@ DataFrame >> includes: aDataSeries [
 	^ self rows anySatisfy: [ :row | row = aDataSeries ]
 ]
 
+{ #category : #'find-select' }
+DataFrame >> includesAll: aDataSeriesCollection [
+	"Returns true if the DataFrame includes all of the DataSeries in the specified collection."
+
+	^ aDataSeriesCollection allSatisfy: [ :dataSeries |
+		  self includes: dataSeries ]
+]
+
 { #category : #accessing }
 DataFrame >> indexOfColumnNamed: columnName [
 	"Answer the index of a column with a given name or signal an exception if the column with that name was not found"
