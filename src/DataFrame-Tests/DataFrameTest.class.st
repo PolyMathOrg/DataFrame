@@ -1973,6 +1973,25 @@ DataFrameTest >> testIncludesAll [
 				 dataSeries2 })
 ]
 
+{ #category : #'find-select' }
+DataFrameTest >> testIncludesAny [
+
+	| dataSeries1 dataSeries2 |
+	dataSeries1 := DataSeries
+		               withKeys: #( City Population BeenThere )
+		               values: #( London 8.788 false )
+		               name: 'C'.
+	dataSeries2 := DataSeries
+		               withKeys: #( City Population BeenThere )
+		               values: #( Paris 8.788 false )
+		               name: 'B'.
+
+	self assert: (df includesAny: {
+				 dataSeries1.
+				 dataSeries2 }).
+	self deny: (df includesAny: { dataSeries2 })
+]
+
 { #category : #tests }
 DataFrameTest >> testIndexOfColumnNamed [
 	| expected actual |
