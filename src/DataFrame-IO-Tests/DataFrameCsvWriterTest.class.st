@@ -56,6 +56,36 @@ DataFrameCsvWriterTest >> testWriteToCsvLineEndLf [
 ]
 
 { #category : #tests }
+DataFrameCsvWriterTest >> testWriteToCsvWithRawFieldWriter [
+
+	| file writer actual expected |
+	file := FileSystem memory workingDirectory / 'testData' / 'raw.csv'.
+	file ensureCreateFile.
+	writer := DataFrameCsvWriter new.
+	writer useRawFieldWriter.
+	dataFrame writeTo: file using: writer.
+	actual := self readFile: file.
+	expected := TestCsvStrings commaCsvString.
+	self assert: actual lines equals: expected lines
+]
+
+{ #category : #tests }
+DataFrameCsvWriterTest >> testWriteToCsvWithRawFieldWriterWithoutRowName [
+
+	| file writer actual expected |
+	file := FileSystem memory workingDirectory / 'testData' / 'raw.csv'.
+	file ensureCreateFile.
+	writer := DataFrameCsvWriter new.
+	writer
+		useRawFieldWriter;
+		disableRowName.
+	dataFrame writeTo: file using: writer.
+	actual := self readFile: file.
+	expected := TestCsvStrings commaCsvWithoutRowNameString.
+	self assert: actual lines equals: expected lines
+]
+
+{ #category : #tests }
 DataFrameCsvWriterTest >> testWriteToCsvWithSeparatorTab [
 	| actual expected |
 	dataFrame writeToCsv: tabQuoteCsvFile withSeparator: Character tab.
