@@ -1243,6 +1243,13 @@ DataFrame >> head: aNumber [
 	^ self rowsAt: (1 to: (self numberOfRows min: aNumber))
 ]
 
+{ #category : #'find-select' }
+DataFrame >> includes: aDataSeries [
+	"Returns true if the DataFrame includes the specified DataSeries."
+
+	^ self rows anySatisfy: [ :row | row = aDataSeries ]
+]
+
 { #category : #accessing }
 DataFrame >> indexOfColumnNamed: columnName [
 	"Answer the index of a column with a given name or signal an exception if the column with that name was not found"

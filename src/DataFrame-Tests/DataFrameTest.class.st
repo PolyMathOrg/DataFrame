@@ -1937,6 +1937,23 @@ DataFrameTest >> testHasNilsByColumn [
 	self assert: df hasNilsByColumn equals: expected
 ]
 
+{ #category : #'find-select' }
+DataFrameTest >> testIncludes [
+
+	| dataSeries1 dataSeries2 |
+	dataSeries1 := DataSeries
+		               withKeys: #( City Population BeenThere )
+		               values: #( London 8.788 false )
+		               name: 'C'.
+	dataSeries2 := DataSeries
+		               withKeys: #( City Population BeenThere )
+		               values: #( Paris 8.788 false )
+		               name: 'B'.
+
+	self assert: (df includes: dataSeries1).
+	self deny: (df includes: dataSeries2)
+]
+
 { #category : #tests }
 DataFrameTest >> testIndexOfColumnNamed [
 	| expected actual |
