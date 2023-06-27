@@ -16,6 +16,17 @@ TestCsvStrings class >> commaCsvString [
 ]
 
 { #category : #running }
+TestCsvStrings class >> commaCsvWithoutRowNameString [
+	^ 'temperature,precipitation,type
+2.4,true,rain
+0.5,true,rain
+-1.2,true,snow
+-2.3,false,-
+3.2,true,rain
+'
+]
+
+{ #category : #running }
 TestCsvStrings class >> commaQuoteCsvString [
 	^ '"","temperature","precipitation","type"
 "1:10 am","2.4","true","rain"

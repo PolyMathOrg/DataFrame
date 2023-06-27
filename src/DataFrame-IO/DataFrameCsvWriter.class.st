@@ -3,10 +3,18 @@ Class {
 	#superclass : #DataFrameWriter,
 	#instVars : [
 		'separator',
-		'lineEndConvention'
+		'lineEndConvention',
+		'fieldWriter',
+		'rowNameEnabled'
 	],
 	#category : #'DataFrame-IO-Core'
 }
+
+{ #category : #'accessing - field writers' }
+DataFrameCsvWriter >> defaultFieldWriter [
+
+	^ nil
+]
 
 { #category : #accessing }
 DataFrameCsvWriter >> defaultLineEndConvention [
@@ -18,15 +26,48 @@ DataFrameCsvWriter >> defaultLineEndConvention [
 ]
 
 { #category : #accessing }
+DataFrameCsvWriter >> defaultRowIndexEnabled [
+
+	^ true
+]
+
+{ #category : #accessing }
 DataFrameCsvWriter >> defaultSeparator [
 	^ $,
 ]
 
+{ #category : #'enable/disable' }
+DataFrameCsvWriter >> disableRowName [
+
+	self rowNameEnabled: false
+]
+
+{ #category : #'enable/disable' }
+DataFrameCsvWriter >> enableRowName [
+
+	self rowNameEnabled: true
+]
+
+{ #category : #'accessing - field writers' }
+DataFrameCsvWriter >> fieldWriter [
+
+	^ fieldWriter
+]
+
+{ #category : #'accessing - field writers' }
+DataFrameCsvWriter >> fieldWriter: aSymbol [
+
+	fieldWriter := aSymbol
+]
+
 { #category : #initialization }
 DataFrameCsvWriter >> initialize [
+
 	super initialize.
 	separator := self defaultSeparator.
-	lineEndConvention := self defaultLineEndConvention
+	lineEndConvention := self defaultLineEndConvention.
+	fieldWriter := self defaultFieldWriter.
+	rowNameEnabled := self defaultRowIndexEnabled
 ]
 
 { #category : #accessing }
@@ -43,6 +84,42 @@ DataFrameCsvWriter >> lineEndConvention: aSymbol [
 	lineEndConvention := aSymbol
 ]
 
+{ #category : #'accessing - field writers' }
+DataFrameCsvWriter >> objectFieldWriter [
+
+	^ #object
+]
+
+{ #category : #'accessing - field writers' }
+DataFrameCsvWriter >> optionalQuotedFieldWriter [
+
+	^ #optionalQuoted
+]
+
+{ #category : #'accessing - field writers' }
+DataFrameCsvWriter >> quotedFieldWriter [
+
+	^ #quoted
+]
+
+{ #category : #'accessing - field writers' }
+DataFrameCsvWriter >> rawFieldWriter [
+
+	^ #raw
+]
+
+{ #category : #accessing }
+DataFrameCsvWriter >> rowNameEnabled [
+
+	^ rowNameEnabled
+]
+
+{ #category : #accessing }
+DataFrameCsvWriter >> rowNameEnabled: aBoolean [
+
+	rowNameEnabled := aBoolean = true
+]
+
 { #category : #accessing }
 DataFrameCsvWriter >> separator [
 	^ separator
@@ -53,25 +130,55 @@ DataFrameCsvWriter >> separator: anObject [
 	separator := anObject
 ]
 
+{ #category : #'accessing - field writers' }
+DataFrameCsvWriter >> useObjectFieldWriter [
+
+	self fieldWriter: self objectFieldWriter
+]
+
+{ #category : #'accessing - field writers' }
+DataFrameCsvWriter >> useOptionalQuotedFieldWriter [
+
+	self fieldWriter: self optionalQuotedFieldWriter
+]
+
+{ #category : #'accessing - field writers' }
+DataFrameCsvWriter >> useQuotedFieldWriter [
+
+	self fieldWriter: self quotedFieldWriter
+]
+
+{ #category : #'accessing - field writers' }
+DataFrameCsvWriter >> useRawFieldWriter [
+
+	self fieldWriter: self rawFieldWriter
+]
+
 { #category : #writing }
 DataFrameCsvWriter >> write: aDataFrame to: aFileReference [
+
 	| stream writer |
 	stream := aFileReference writeStream.
 
 	writer := NeoCSVWriter on: stream.
+	fieldWriter ifNotNil: [ writer fieldWriter: fieldWriter ].
 	writer separator: self separator.
 	writer lineEndConvention: self lineEndConvention.
 
-	writer
-		writeField: '';
-		writeSeparator;
-		writeHeader: aDataFrame columnNames.
-
-	aDataFrame do: [ :row |
+	self rowNameEnabled ifTrue: [
 		writer
-			writeField: row name;
-			writeSeparator;
-			nextPut: row ].
+			writeField: '';
+			writeSeparator ].
+	writer writeHeader: aDataFrame columnNames.
+
+	self rowNameEnabled
+		ifTrue: [
+			aDataFrame do: [ :row |
+				writer
+					writeField: row name;
+					writeSeparator;
+					nextPut: row ] ]
+		ifFalse: [ aDataFrame do: [ :row | writer nextPut: row ] ].
 
 	writer close
 ]
