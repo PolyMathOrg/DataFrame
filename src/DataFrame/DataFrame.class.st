@@ -1243,29 +1243,6 @@ DataFrame >> head: aNumber [
 	^ self rowsAt: (1 to: (self numberOfRows min: aNumber))
 ]
 
-{ #category : #'find-select' }
-DataFrame >> includes: aDataSeries [
-	"Returns true if the DataFrame includes the specified DataSeries."
-
-	^ self rows anySatisfy: [ :row | row = aDataSeries ]
-]
-
-{ #category : #'find-select' }
-DataFrame >> includesAll: aDataSeriesCollection [
-	"Returns true if the DataFrame includes all of the DataSeries in the specified collection."
-
-	^ aDataSeriesCollection allSatisfy: [ :dataSeries |
-		  self includes: dataSeries ]
-]
-
-{ #category : #'find-select' }
-DataFrame >> includesAny: aDataSeriesCollection [
-	"Returns true if the DataFrame includes any of the DataSeries in the specified collection."
-
-	^ aDataSeriesCollection anySatisfy: [ :dataSeries |
-		  self includes: dataSeries ]
-]
-
 { #category : #accessing }
 DataFrame >> indexOfColumnNamed: columnName [
 	"Answer the index of a column with a given name or signal an exception if the column with that name was not found"
