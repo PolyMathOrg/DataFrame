@@ -2518,7 +2518,7 @@ DataFrame >> sortDescendingByAll: arrayOfColumnNames [
 
 { #category : #sorting }
 DataFrame >> sortDescendingByRowNames [
-	"Sorts the rows of the data frame based on the row names in ascending order"
+	"Sorts the rows of the data frame based on the row names in descending order"
 
 	self sortByRowNamesUsing: [ :a :b | a >= b ]
 ]
