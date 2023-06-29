@@ -5273,6 +5273,29 @@ DataFrameTest >> testSortDescendingByAll [
 ]
 
 { #category : #tests }
+DataFrameTest >> testSortDescendingByRowNames [
+
+	| dataFrame expected sortedDF |
+	dataFrame := DataFrame withRows:
+		             #( #( 'CD' 3 2 ) 
+							 #( 'AC' 1 4 ) 
+							 #( 'DB' 2 4 )
+		                #( 'BA' 5 1 ) ).
+	dataFrame rowNames: #( 'CD' 'AC' 'DB' 'BA' ).
+
+	expected := DataFrame withRows:
+		            #( #( 'DB' 2 4 ) 
+							#( 'CD' 3 2 ) 
+							#( 'BA' 5 1 )
+		               #( 'AC' 1 4 ) ).
+	expected rowNames: #( 'DB' 'CD' 'BA' 'AC' ).
+
+	sortedDF := dataFrame sortDescendingByRowNames.
+
+	self assert: sortedDF equals: expected
+]
+
+{ #category : #tests }
 DataFrameTest >> testToColumnApplyElementwise [
 
 	| expected |

@@ -2516,6 +2516,13 @@ DataFrame >> sortDescendingByAll: arrayOfColumnNames [
 	^ self
 ]
 
+{ #category : #sorting }
+DataFrame >> sortDescendingByRowNames [
+	"Sorts the rows of the data frame based on the row names in ascending order"
+
+	self sortByRowNamesUsing: [ :a :b | a >= b ]
+]
+
 { #category : #statistics }
 DataFrame >> stdev [
 	"Standard deviation is a measure of how dispersed the data is in relation to the average"
