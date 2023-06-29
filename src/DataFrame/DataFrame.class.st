@@ -2470,6 +2470,13 @@ DataFrame >> sortByAll: arrayOfColumnNames [
 ]
 
 { #category : #sorting }
+DataFrame >> sortByRowNames [
+	"Sorts the rows of the data frame based on the row names in ascending order"
+
+	self sortByRowNamesUsing: [ :a :b | a <= b ]
+]
+
+{ #category : #sorting }
 DataFrame >> sortByRowNamesUsing: aBlock [
 	"Sorts the rows of the data frame based on the row names using the given comparison block"
 

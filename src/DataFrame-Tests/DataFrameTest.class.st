@@ -5158,6 +5158,29 @@ DataFrameTest >> testSortByAll [
 ]
 
 { #category : #tests }
+DataFrameTest >> testSortByRowNames [
+
+	| dataFrame expected sortedDF |
+	dataFrame := DataFrame withRows:
+		             #( #( 'CD' 3 2 ) 
+							 #( 'AC' 1 4 ) 
+							 #( 'DB' 2 4 )
+		                #( 'BA' 5 1 ) ).
+	dataFrame rowNames: #( 'CD' 'AC' 'DB' 'BA' ).
+
+	expected := DataFrame withRows:
+		            #( #( 'AC' 1 4 ) 
+							#( 'BA' 5 1 ) 
+							#( 'CD' 3 2 )
+		               #( 'DB' 2 4 ) ).
+	expected rowNames: #( 'AC' 'BA' 'CD' 'DB' ).
+
+	sortedDF := dataFrame sortByRowNames.
+
+	self assert: sortedDF equals: expected
+]
+
+{ #category : #tests }
 DataFrameTest >> testSortByRowNamesUsing [
 	"sorts by second letter of row name"
 
