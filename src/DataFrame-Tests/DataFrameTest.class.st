@@ -471,6 +471,62 @@ DataFrameTest >> testAsDataFrameEmptyColumns [
 ]
 
 { #category : #tests }
+DataFrameTest >> testAsDataFrameWithColumnNames [
+
+	| actual expected |
+	actual := #( #( 1 2 3 ) #( 4 5 6 ) #( 7 8 9 ) )
+		          asDataFrameWithColumnNames: #( a b c ).
+	expected := DataFrame
+		            withRows: #( #( 1 2 3 ) #( 4 5 6 ) #( 7 8 9 ) )
+		            columnNames: #( a b c ).
+
+	self assert: actual equals: expected
+]
+
+{ #category : #tests }
+DataFrameTest >> testAsDataFrameWithColumnNamesWithRowNames [
+
+	| actual expected |
+	actual := #( #( 1 2 3 ) #( 4 5 6 ) #( 7 8 9 ) )
+		          asDataFrameWithColumnNames: #( a b c )
+		          withRowNames: #( d e f ).
+	expected := DataFrame
+		            withRows: #( #( 1 2 3 ) #( 4 5 6 ) #( 7 8 9 ) )
+		            rowNames: #( d e f )
+		            columnNames: #( a b c ).
+
+	self assert: actual equals: expected
+]
+
+{ #category : #tests }
+DataFrameTest >> testAsDataFrameWithRowNames [
+
+	| actual expected |
+	actual := #( #( 1 2 3 ) #( 4 5 6 ) #( 7 8 9 ) )
+		          asDataFrameWithRowNames: #( a b c ).
+	expected := DataFrame
+		            withRows: #( #( 1 2 3 ) #( 4 5 6 ) #( 7 8 9 ) )
+		            rowNames: #( a b c ).
+
+	self assert: actual equals: expected
+]
+
+{ #category : #tests }
+DataFrameTest >> testAsDataFrameWithRowNamesWithColumnNames [
+
+	| actual expected |
+	actual := #( #( 1 2 3 ) #( 4 5 6 ) #( 7 8 9 ) )
+		          asDataFrameWithRowNames: #( a b c )
+		          withColumnNames: #( d e f ).
+	expected := DataFrame
+		            withRows: #( #( 1 2 3 ) #( 4 5 6 ) #( 7 8 9 ) )
+		            rowNames: #( a b c )
+		            columnNames: #( d e f ).
+
+	self assert: actual equals: expected
+]
+
+{ #category : #tests }
 DataFrameTest >> testAsDataFrameWithUnevenRowElements [
 
 	| actual expected |

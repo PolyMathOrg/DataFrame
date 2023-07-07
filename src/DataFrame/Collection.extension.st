@@ -31,6 +31,32 @@ Collection >> asDataFrame [
 	^ dataFrame
 ]
 
+{ #category : #'*DataFrame' }
+Collection >> asDataFrameWithColumnNames: arrayOfColumnNames [
+
+	^ self asDataFrame columnNames: arrayOfColumnNames
+]
+
+{ #category : #'*DataFrame' }
+Collection >> asDataFrameWithColumnNames: arrayOfColumnNames withRowNames: arrayOfRowNames [
+
+	^ (self asDataFrame columnNames: arrayOfColumnNames) rowNames:
+		  arrayOfRowNames
+]
+
+{ #category : #'*DataFrame' }
+Collection >> asDataFrameWithRowNames: arrayOfRowNames [
+
+	^ self asDataFrame rowNames: arrayOfRowNames
+]
+
+{ #category : #'*DataFrame' }
+Collection >> asDataFrameWithRowNames: arrayOfRowNames withColumnNames: arrayOfColumnNames [
+
+	^ (self asDataFrame rowNames: arrayOfRowNames) columnNames:
+		  arrayOfColumnNames
+]
+
 { #category : #'*DataFrame-Core-Base' }
 Collection >> asDataSeries [
 
