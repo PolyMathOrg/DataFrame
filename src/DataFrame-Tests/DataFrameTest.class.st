@@ -5158,6 +5158,54 @@ DataFrameTest >> testSortByAll [
 ]
 
 { #category : #tests }
+DataFrameTest >> testSortByRowNames [
+
+	| dataFrame expected sortedDF |
+	dataFrame := DataFrame withRows:
+		             #( #( 'CD' 3 2 ) 
+							 #( 'AC' 1 4 ) 
+							 #( 'DB' 2 4 )
+		                #( 'BA' 5 1 ) ).
+	dataFrame rowNames: #( 'CD' 'AC' 'DB' 'BA' ).
+
+	expected := DataFrame withRows:
+		            #( #( 'AC' 1 4 ) 
+							#( 'BA' 5 1 ) 
+							#( 'CD' 3 2 )
+		               #( 'DB' 2 4 ) ).
+	expected rowNames: #( 'AC' 'BA' 'CD' 'DB' ).
+
+	sortedDF := dataFrame sortByRowNames.
+
+	self assert: sortedDF equals: expected
+]
+
+{ #category : #tests }
+DataFrameTest >> testSortByRowNamesUsing [
+	"sorts by second letter of row name"
+
+	| dataFrame expected sortedDF |
+	dataFrame := DataFrame withRows:
+		             #( #( 'CD' 3 2 ) 
+							 #( 'AC' 1 4 ) 
+							 #( 'DB' 2 4 )
+		                #( 'BA' 5 1 ) ).
+	dataFrame rowNames: #( 'CD' 'AC' 'DB' 'BA' ).
+
+	expected := DataFrame withRows:
+		            #( #( 'BA' 5 1 ) 
+							#( 'DB' 2 4 ) 
+							#( 'AC' 1 4 )
+		               #( 'CD' 3 2 ) ).
+	expected rowNames: #( 'BA' 'DB' 'AC' 'CD' ).
+
+	sortedDF := dataFrame sortByRowNamesUsing: [ :name1 :name2 |
+		            name1 second <= name2 second ].
+
+	self assert: sortedDF equals: expected
+]
+
+{ #category : #tests }
 DataFrameTest >> testSortByUsing [
 	"Sort by second letter of city name"
 	| actual expected |
@@ -5222,6 +5270,29 @@ DataFrameTest >> testSortDescendingByAll [
 
 
 	self assert: actual equals: expected
+]
+
+{ #category : #tests }
+DataFrameTest >> testSortDescendingByRowNames [
+
+	| dataFrame expected sortedDF |
+	dataFrame := DataFrame withRows:
+		             #( #( 'CD' 3 2 ) 
+							 #( 'AC' 1 4 ) 
+							 #( 'DB' 2 4 )
+		                #( 'BA' 5 1 ) ).
+	dataFrame rowNames: #( 'CD' 'AC' 'DB' 'BA' ).
+
+	expected := DataFrame withRows:
+		            #( #( 'DB' 2 4 ) 
+							#( 'CD' 3 2 ) 
+							#( 'BA' 5 1 )
+		               #( 'AC' 1 4 ) ).
+	expected rowNames: #( 'DB' 'CD' 'BA' 'AC' ).
+
+	sortedDF := dataFrame sortDescendingByRowNames.
+
+	self assert: sortedDF equals: expected
 ]
 
 { #category : #tests }

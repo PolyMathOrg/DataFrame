@@ -2470,6 +2470,29 @@ DataFrame >> sortByAll: arrayOfColumnNames [
 ]
 
 { #category : #sorting }
+DataFrame >> sortByRowNames [
+	"Sorts the rows of the data frame based on the row names in ascending order"
+
+	self sortByRowNamesUsing: [ :a :b | a <= b ]
+]
+
+{ #category : #sorting }
+DataFrame >> sortByRowNamesUsing: aBlock [
+	"Sorts the rows of the data frame based on the row names using the given comparison block"
+
+	| sortedKeys newContents |
+	sortedKeys := self rowNames sorted: aBlock.
+
+	newContents := DataFrameInternal new: self dimensions.
+
+	sortedKeys withIndexDo: [ :key :i |
+		newContents rowAt: i put: (self row: key) asArray ].
+
+	contents := newContents.
+	self rowNames: sortedKeys
+]
+
+{ #category : #sorting }
 DataFrame >> sortDescendingBy: columnName [
 	"Rearranges the rows of the data frame in descending order of the values in the column named columnName"
 
@@ -2491,6 +2514,13 @@ DataFrame >> sortDescendingByAll: arrayOfColumnNames [
 	arrayOfColumnNames reverseDo: [ :columnName |
 		self sortBy: columnName using: [ :a :b | a >= b ] ].
 	^ self
+]
+
+{ #category : #sorting }
+DataFrame >> sortDescendingByRowNames [
+	"Sorts the rows of the data frame based on the row names in descending order"
+
+	self sortByRowNamesUsing: [ :a :b | a >= b ]
 ]
 
 { #category : #statistics }
