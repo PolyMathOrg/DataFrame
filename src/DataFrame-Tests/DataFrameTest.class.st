@@ -1969,7 +1969,7 @@ DataFrameTest >> testIncludes [
 	self deny: (df includes: dataSeries2)
 ]
 
-{ #category : #'find-select' }
+{ #category : #'tests - find/select' }
 DataFrameTest >> testIncludesAll [
 
 	| dataSeries1 dataSeries2 |
