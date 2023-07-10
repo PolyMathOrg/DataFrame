@@ -1988,7 +1988,7 @@ DataFrameTest >> testIncludesAll [
 				 dataSeries2 })
 ]
 
-{ #category : #'find-select' }
+{ #category : #'tests - find/select' }
 DataFrameTest >> testIncludesAny [
 
 	| dataSeries1 dataSeries2 |
