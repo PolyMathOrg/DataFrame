@@ -1952,7 +1952,7 @@ DataFrameTest >> testHasNilsByColumn [
 	self assert: df hasNilsByColumn equals: expected
 ]
 
-{ #category : #'find-select' }
+{ #category : #'tests - find/select' }
 DataFrameTest >> testIncludes [
 
 	| dataSeries1 dataSeries2 |
