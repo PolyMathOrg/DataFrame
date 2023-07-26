@@ -1436,10 +1436,11 @@ DataFrame >> inspectionItems: aBuilder [
 			 sortFunction: #yourself ascending;
 			 beNotExpandable;
 			 yourself).
-
-	table addColumn: (SpStringTableColumn
-			 title: ''
-			 evaluated: [ :rowWithName | rowWithName at: 1 ]).
+	self rowNames = (1 to: self numberOfRows) asOrderedCollection
+		ifFalse: [
+			table addColumn: (SpStringTableColumn
+					 title: ''
+					 evaluated: [ :rowWithName | rowWithName at: 1 ]) ].
 
 	self columnNames doWithIndex: [ :headerName :columnIndex |
 		table addColumn: (SpStringTableColumn
