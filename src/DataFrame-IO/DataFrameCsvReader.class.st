@@ -149,6 +149,23 @@ DataFrameCsvReader >> readFromString: aString withSeparator: aSeparator [
 ]
 
 { #category : #reading }
+DataFrameCsvReader >> readFromString: aCSVString withSeparator: aSeparator skip: nRows [
+	"Read data frame from aCSVString skipping nRows from its header"
+
+	| reader df |
+
+	reader := NeoCSVReader on: aCSVString readStream.
+	reader separator: aSeparator.
+	nRows timesRepeat: [ reader skipHeader ].
+
+	self readColumnNamesWith: reader.
+	self readRowsWith: reader.
+	reader close.
+	df := self createDataFrame.
+	^ df
+]
+
+{ #category : #reading }
 DataFrameCsvReader >> readFromString: aString withSeparator: aSeparator withHeader: hasHeader [
 	"Read data frame from aString"
 
