@@ -11,20 +11,24 @@ DataFrame is a tabular data structure for data analysis in [Pharo](https://pharo
 To install the latest stable version of DataFrame (`pre-v3`), go to the Playground (`Ctrl+OW`) in your Pharo image and execute the following Metacello script (select it and press Do-it button or `Ctrl+D`):
 
 ```st
-Metacello new
-  baseline: 'DataFrame';
-  repository: 'github://PolyMathOrg/DataFrame:pre-v3/src';
-  load.
+EpMonitor disableDuring: [ 
+    Metacello new
+      baseline: 'DataFrame';
+      repository: 'github://PolyMathOrg/DataFrame:pre-v3/src';
+      load ].
 ```
 
 Use this script if you want the latest version of DataFrame:
 
 ```st
-Metacello new
-  baseline: 'DataFrame';
-  repository: 'github://PolyMathOrg/DataFrame/src';
-  load.
+EpMonitor disableDuring: [ 
+    Metacello new
+      baseline: 'DataFrame';
+      repository: 'github://PolyMathOrg/DataFrame/src';
+      load ].
 ```
+
+_Note:_ `EpMonitor` serves to deactive [Epicea](https://github.com/pharo-open-documentation/pharo-wiki/blob/3cfb4ebc19821d607bec35c34ee928b4e06822ee/General/TweakingBigImages.md#disable-epicea), a Pharo code recovering mechanism, during the installation of DataFrame.
 
 ## How to depend on it?
 
