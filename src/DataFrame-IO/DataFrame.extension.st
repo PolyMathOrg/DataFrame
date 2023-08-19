@@ -46,6 +46,18 @@ DataFrame class >> readFromCsv: aFileReference withSeparator: aSeparator [
 ]
 
 { #category : #'*DataFrame-IO' }
+DataFrame class >> readFromCsv: aFileReference withSeparator: aCharacter skip: anInteger [ 
+
+	| df reader |
+
+	reader := DataFrameCsvReader new.
+	df := reader readFromString: aFileReference withSeparator: aCharacter skip: anInteger.
+	df calculateDataTypes.
+	^ df
+
+]
+
+{ #category : #'*DataFrame-IO' }
 DataFrame class >> readFromCsvWithRowNames: aFileReference [
 	| reader |
 	reader := DataFrameCsvReader new.

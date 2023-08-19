@@ -100,6 +100,49 @@ DataFrameCsvReaderTest >> testReadCsvWithSeparatorTab [
 ]
 
 { #category : #tests }
+DataFrameCsvReaderTest >> testReadCsvWithSeparatorTabSkip1 [
+
+	| doubleHeaderString controlDataFrame dataFrameWithoutFirstLine |
+
+	doubleHeaderString := 'a description header
+' , TestCsvStrings tabCsvString.
+	dataFrameWithoutFirstLine := DataFrame readFromCsv: doubleHeaderString withSeparator: Character tab skip: 1.
+
+	controlDataFrame := DataFrame 
+		withRows: #( 
+			#('1:10 am' '2.4' 'true' 'rain')
+			#('1:30 am' '0.5' 'true' 'rain') 
+			#('1:50 am' '-1.2' 'true' 'snow') 
+			#('2:10 am' '-2.3' 'false' '-') 
+			#('2:30 am' '3.2' 'true' 'rain' ))
+		columnNames: #(nil temperature precipitation type ).
+
+	self assert: controlDataFrame equals: dataFrameWithoutFirstLine
+]
+
+{ #category : #tests }
+DataFrameCsvReaderTest >> testReadCsvWithSeparatorTabSkipN [
+
+	| doubleHeaderString controlDataFrame dataFrameWithoutTwoFirstLines |
+
+	doubleHeaderString := 'a description header
+another description header
+' , TestCsvStrings tabCsvString.
+	dataFrameWithoutTwoFirstLines := DataFrame readFromCsv: doubleHeaderString withSeparator: Character tab skip: 2.
+
+	controlDataFrame := DataFrame 
+		withRows: #( 
+			#('1:10 am' '2.4' 'true' 'rain')
+			#('1:30 am' '0.5' 'true' 'rain') 
+			#('1:50 am' '-1.2' 'true' 'snow') 
+			#('2:10 am' '-2.3' 'false' '-') 
+			#('2:30 am' '3.2' 'true' 'rain' ))
+		columnNames: #(nil temperature precipitation type ).
+
+	self assert: controlDataFrame equals: dataFrameWithoutTwoFirstLines
+]
+
+{ #category : #tests }
 DataFrameCsvReaderTest >> testReadFromString [
 
 	| actualDataFrame |
