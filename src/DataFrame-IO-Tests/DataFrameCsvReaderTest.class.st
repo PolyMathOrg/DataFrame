@@ -102,13 +102,13 @@ DataFrameCsvReaderTest >> testReadCsvWithSeparatorTab [
 { #category : #tests }
 DataFrameCsvReaderTest >> testReadCsvWithSeparatorTabSkip1 [
 
-	| doubleHeaderString actualDataFrame dataFrameWithoutFirstLine |
+	| doubleHeaderString controlDataFrame dataFrameWithoutFirstLine |
 
 	doubleHeaderString := 'a description header
 ' , TestCsvStrings tabCsvString.
-	actualDataFrame := DataFrame readFromCsv: doubleHeaderString withSeparator: Character tab skip: 1.
+	dataFrameWithoutFirstLine := DataFrame readFromCsv: doubleHeaderString withSeparator: Character tab skip: 1.
 
-	dataFrameWithoutFirstLine := DataFrame 
+	controlDataFrame := DataFrame 
 		withRows: #( 
 			#('1:10 am' '2.4' 'true' 'rain')
 			#('1:30 am' '0.5' 'true' 'rain') 
@@ -117,20 +117,20 @@ DataFrameCsvReaderTest >> testReadCsvWithSeparatorTabSkip1 [
 			#('2:30 am' '3.2' 'true' 'rain' ))
 		columnNames: #(nil temperature precipitation type ).
 
-	self assert: actualDataFrame equals: dataFrameWithoutFirstLine
+	self assert: controlDataFrame equals: dataFrameWithoutFirstLine
 ]
 
 { #category : #tests }
 DataFrameCsvReaderTest >> testReadCsvWithSeparatorTabSkipN [
 
-	| doubleHeaderString actualDataFrame dataFrameWithoutFirstLine |
+	| doubleHeaderString controlDataFrame dataFrameWithoutTwoFirstLines |
 
 	doubleHeaderString := 'a description header
 another description header
 ' , TestCsvStrings tabCsvString.
-	actualDataFrame := DataFrame readFromCsv: doubleHeaderString withSeparator: Character tab skip: 2.
+	dataFrameWithoutTwoFirstLines := DataFrame readFromCsv: doubleHeaderString withSeparator: Character tab skip: 2.
 
-	dataFrameWithoutFirstLine := DataFrame 
+	controlDataFrame := DataFrame 
 		withRows: #( 
 			#('1:10 am' '2.4' 'true' 'rain')
 			#('1:30 am' '0.5' 'true' 'rain') 
@@ -139,7 +139,7 @@ another description header
 			#('2:30 am' '3.2' 'true' 'rain' ))
 		columnNames: #(nil temperature precipitation type ).
 
-	self assert: actualDataFrame equals: dataFrameWithoutFirstLine
+	self assert: controlDataFrame equals: dataFrameWithoutTwoFirstLines
 ]
 
 { #category : #tests }
