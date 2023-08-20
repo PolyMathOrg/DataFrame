@@ -38,6 +38,19 @@ DataFrame class >> readFromCsv: aFileReference [
 ]
 
 { #category : #'*DataFrame-IO' }
+DataFrame class >> readFromCsv: aFileReference withColumnNames: anArrayOfColumnNames separator: aSeparator [
+
+	| dataFrame |
+
+	dataFrame := DataFrameCsvReader new
+		separator: aSeparator;
+		columnNames: anArrayOfColumnNames;
+		readFrom: aFileReference.
+	dataFrame calculateDataTypes.
+	^ dataFrame.
+]
+
+{ #category : #'*DataFrame-IO' }
 DataFrame class >> readFromCsv: aFileReference withSeparator: aSeparator [
 	| reader |
 	reader := DataFrameCsvReader new.

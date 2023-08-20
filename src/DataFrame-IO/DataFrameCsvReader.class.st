@@ -43,6 +43,13 @@ Class {
 }
 
 { #category : #reading }
+DataFrameCsvReader >> columnNames: aCollectionOfString [
+	"Set the receiver' s column names"
+	
+	columnNames := aCollectionOfString
+]
+
+{ #category : #reading }
 DataFrameCsvReader >> createDataFrame [
 	| df |
 	df := DataFrame
@@ -91,7 +98,9 @@ DataFrameCsvReader >> initialize [
 
 { #category : #reading }
 DataFrameCsvReader >> readColumnNamesWith: aReader [
-	columnNames := aReader readHeader.
+	"Set the receiver's column names if they were not manually set"
+
+	columnNames ifNil: [ columnNames := aReader readHeader ].
 
 	self includeRowNames ifTrue: [
 		columnNames := columnNames copyWithoutFirst ]
