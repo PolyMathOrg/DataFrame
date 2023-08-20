@@ -79,6 +79,28 @@ DataFrameCsvReaderTest >> testReadCsv [
 ]
 
 { #category : #tests }
+DataFrameCsvReaderTest >> testReadCsvWithColumnNamesWithSeparator [
+
+	| controlDataFrame customColumnNames |
+	
+	customColumnNames := #('Col1' 'Col2' 'Col3' 'Col4').
+
+	controlDataFrame := DataFrame 
+		readFromCsv: tabCsvFile 
+		withColumnNames: customColumnNames
+		separator: Character tab.
+
+	self 
+		assertCollection: controlDataFrame columnNames 
+		equals: customColumnNames asOrderedCollection.
+		
+	"The original header is counted as a normal row now"
+	self 
+		assert: controlDataFrame size 
+		equals: 6.
+]
+
+{ #category : #tests }
 DataFrameCsvReaderTest >> testReadCsvWithRowNames [
 	| actualDataFrame |
 	actualDataFrame := DataFrame readFromCsvWithRowNames: commaCsvFile.
