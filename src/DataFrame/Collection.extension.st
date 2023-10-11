@@ -8,6 +8,7 @@ Collection >> ** arg [
 
 { #category : #'*DataFrame' }
 Collection >> asDataFrame [
+	"Answer a DataFrame whose elements are the elements of the receiver."
 
 	| numberOfRows numberOfColumns dataFrame |
 	numberOfRows := self size.
@@ -29,6 +30,36 @@ Collection >> asDataFrame [
 			put: (dataFrame columnAt: colIndex) calculateDataType ].
 
 	^ dataFrame
+]
+
+{ #category : #'*DataFrame' }
+Collection >> asDataFrameWithColumnNames: arrayOfColumnNames [
+	"Answer a DataFrame whose elements are the elements of the receiver and column names are the contents of the collection arrayOfColumnNames."
+
+	^ self asDataFrame columnNames: arrayOfColumnNames
+]
+
+{ #category : #'*DataFrame' }
+Collection >> asDataFrameWithColumnNames: arrayOfColumnNames withRowNames: arrayOfRowNames [
+	"Answer a DataFrame whose elements are the elements of the receiver, column names are the contents of the collection arrayOfColumnNames and row names are the contents of the collection arrayOfRowNames."
+
+	^ (self asDataFrame columnNames: arrayOfColumnNames) rowNames:
+		  arrayOfRowNames
+]
+
+{ #category : #'*DataFrame' }
+Collection >> asDataFrameWithRowNames: arrayOfRowNames [
+	"Answer a DataFrame whose elements are the elements of the receiver and row names are the contents of the collection arrayOfRowNames."
+
+	^ self asDataFrame rowNames: arrayOfRowNames
+]
+
+{ #category : #'*DataFrame' }
+Collection >> asDataFrameWithRowNames: arrayOfRowNames withColumnNames: arrayOfColumnNames [
+	"Answer a DataFrame whose elements are the elements of the receiver, row names are the contents of the collection arrayOfRowNames and column names are the contents of the collection arrayOfColumnNames."
+
+	^ (self asDataFrame rowNames: arrayOfRowNames) columnNames:
+		  arrayOfColumnNames
 ]
 
 { #category : #'*DataFrame-Core-Base' }
