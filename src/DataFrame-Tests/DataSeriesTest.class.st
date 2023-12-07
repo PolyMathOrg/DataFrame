@@ -2295,8 +2295,8 @@ DataSeriesTest >> testStatsSummary [
 	| expected actual |
 
 	expected := DataSeries
-		withKeys: #(Min '1st Qu.' Median Average '3rd Qu.' Max)
-		values: { 3 . 7 . 9 . (115 / 11) . 15 . 20 }
+		withKeys: #(Count Average Stdev Min '25%' '50%' '75%' Max)
+		values: { 11 . series values average . series values stdev . 3 . 7 . 9 .  15 . 20 }
 		name: series name.
 
 	actual := series summary.
