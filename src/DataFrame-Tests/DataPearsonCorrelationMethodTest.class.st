@@ -1,10 +1,12 @@
 Class {
-	#name : #DataPearsonCorrelationMethodTest,
-	#superclass : #TestCase,
-	#category : #'DataFrame-Tests-Math'
+	#name : 'DataPearsonCorrelationMethodTest',
+	#superclass : 'TestCase',
+	#category : 'DataFrame-Tests-Math',
+	#package : 'DataFrame-Tests',
+	#tag : 'Math'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 DataPearsonCorrelationMethodTest >> testBetweenAnd [
 	| age income correlation |
 

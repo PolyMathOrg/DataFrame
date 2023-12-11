@@ -1,13 +1,15 @@
 Class {
-	#name : #DataFrameStatsTest,
-	#superclass : #TestCase,
+	#name : 'DataFrameStatsTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'df'
 	],
-	#category : #'DataFrame-Tests-Core'
+	#category : 'DataFrame-Tests-Core',
+	#package : 'DataFrame-Tests',
+	#tag : 'Core'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 DataFrameStatsTest >> setUp [
 
 	super setUp.
@@ -19,7 +21,7 @@ DataFrameStatsTest >> setUp [
 	df columnNames: #( sepalLength sepalWidth petalLength petalWidth )
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 DataFrameStatsTest >> testAverage [
 
 	| expected actual |
@@ -32,7 +34,7 @@ DataFrameStatsTest >> testAverage [
 	self assert: actual closeTo: expected
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 DataFrameStatsTest >> testAverageWithNils [
 
 	| expected actual |
@@ -49,7 +51,7 @@ DataFrameStatsTest >> testAverageWithNils [
 	self assert: actual closeTo: expected
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 DataFrameStatsTest >> testCorrelationMatrix [
 
 	| expectedCorrelationMatrix actualCorrelationMatrix |
@@ -66,7 +68,7 @@ DataFrameStatsTest >> testCorrelationMatrix [
 		1 to: actualCorrelationMatrix numberOfRows do: [ :i | self assert: (actualCorrelationMatrix at: i at: j) closeTo: (expectedCorrelationMatrix at: i at: j) ] ]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 DataFrameStatsTest >> testCorrelationMatrixWithNils [
 
 	| expectedCorrelationMatrix actualCorrelationMatrix |
@@ -86,7 +88,7 @@ DataFrameStatsTest >> testCorrelationMatrixWithNils [
 		1 to: actualCorrelationMatrix numberOfRows do: [ :i | self assert: (actualCorrelationMatrix at: i at: j) closeTo: (expectedCorrelationMatrix at: i at: j) ] ]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 DataFrameStatsTest >> testFirstQuartile [
 
 	| expected actual |
@@ -99,7 +101,7 @@ DataFrameStatsTest >> testFirstQuartile [
 	self assert: actual equals: expected
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 DataFrameStatsTest >> testInterquartileRange [
 
 	| expected actual |
@@ -112,7 +114,7 @@ DataFrameStatsTest >> testInterquartileRange [
 	self assert: actual closeTo: expected
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 DataFrameStatsTest >> testMax [
 
 	| expected actual |
@@ -125,7 +127,7 @@ DataFrameStatsTest >> testMax [
 	self assert: actual equals: expected
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 DataFrameStatsTest >> testMedian [
 
 	| expected actual |
@@ -138,7 +140,7 @@ DataFrameStatsTest >> testMedian [
 	self assert: actual equals: expected
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 DataFrameStatsTest >> testMin [
 
 	| expected actual |
@@ -151,7 +153,7 @@ DataFrameStatsTest >> testMin [
 	self assert: actual equals: expected
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 DataFrameStatsTest >> testMode [
 
 	| expected actual |
@@ -164,7 +166,7 @@ DataFrameStatsTest >> testMode [
 	self assert: actual equals: expected
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 DataFrameStatsTest >> testRange [
 
 	| expected actual |
@@ -177,7 +179,7 @@ DataFrameStatsTest >> testRange [
 	self assert: actual closeTo: expected
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 DataFrameStatsTest >> testStdev [
 
 	| expected actual |
@@ -191,7 +193,7 @@ DataFrameStatsTest >> testStdev [
 	self assert: actual closeTo: expected
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 DataFrameStatsTest >> testThirdQuartile [
 
 	| expected actual |
@@ -204,7 +206,7 @@ DataFrameStatsTest >> testThirdQuartile [
 	self assert: actual equals: expected
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 DataFrameStatsTest >> testVariance [
 
 	| expected actual |

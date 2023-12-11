@@ -1,10 +1,12 @@
 Class {
-	#name : #DataPearsonCorrelationMethod,
-	#superclass : #DataCorrelationMethod,
-	#category : #'DataFrame-Math'
+	#name : 'DataPearsonCorrelationMethod',
+	#superclass : 'DataCorrelationMethod',
+	#category : 'DataFrame-Math',
+	#package : 'DataFrame',
+	#tag : 'Math'
 }
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 DataPearsonCorrelationMethod class >> between: x and: y [
 	"Calcualte the Pearson correlation coefficient between two data series"
 
