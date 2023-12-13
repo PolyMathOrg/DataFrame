@@ -852,6 +852,13 @@ DataFrame >> columns: anArrayOfColumnNames put: anArrayOfArrays [
 ]
 
 { #category : 'accessing' }
+DataFrame >> columnsAllBut: aCollectionOfColumnNames [
+	"Returns a <Collection> of except those present in aCollectionOfColumnNames"
+
+	^ self columns: (self columnNames copyWithoutAll: aCollectionOfColumnNames)
+]
+
+{ #category : 'accessing' }
 DataFrame >> columnsAt: anArrayOfNumbers [
 	"Returns a collection of columns whose column indices are present in the array anArrayOfNumbers"
 
@@ -2439,6 +2446,12 @@ DataFrame >> shuffleWithSeed: aNumber [
 	" Fix the random seed with aNumber to ensure reproducibility "
 
 	^ self shuffleBy: (Random new seed: aNumber)
+]
+
+{ #category : 'accessing' }
+DataFrame >> shuffled [
+
+	self shuffleBy: Random new
 ]
 
 { #category : 'accessing' }

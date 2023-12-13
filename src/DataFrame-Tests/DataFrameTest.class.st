@@ -923,6 +923,19 @@ DataFrameTest >> testColumns [
 ]
 
 { #category : 'tests' }
+DataFrameTest >> testColumnsAllBut [
+
+	| expectedDataFrame |
+	expectedDataFrame := DataFrame withRows: #( #( 'Barcelona' 1.609 ) #( 'Dubai' 2.789 ) #( 'London' 8.788 ) ).
+	expectedDataFrame rowNames: #( 'A' 'B' 'C' ).
+	expectedDataFrame columnNames: #( 'City' 'Population').
+
+	self 
+		assert: (df columnsAllBut: #(BeenThere)) 
+		equals: expectedDataFrame
+]
+
+{ #category : 'tests' }
 DataFrameTest >> testColumnsAt [
 
 	| columnNumbers actualDataFrame expectedDataFrame |
@@ -5171,22 +5184,24 @@ DataFrameTest >> testShuffledWithSeed [
 
 	| expected |
 	
-	"df = A Barcelona B Dubai C London"
 	expected := DataFrame withRows: #(
 		('Barcelona' 1.609 true)
    		('London' 8.788 false)
 		('Dubai' 2.789 true)).
+	expected rowNames: #( 'A' 'C' 'B').
+	expected columnNames: #( 'City' 'Population' 'BeenThere' ).
 
 	self assert: (df shuffleWithSeed: 1) equals: expected.
-		
-	self assert: (df shuffleWithSeed: 2) equals: expected.
 	
 	expected := DataFrame withRows: #(
-   		('London' 8.788 false)
-		('Barcelona' 1.609 true)		
-		('Dubai' 2.789 true)).
+		('Dubai' 2.789 true)	
+		('Barcelona' 1.609 true)
+   		('London' 8.788 false) ).
+	expected rowNames: #('B' 'A' 'C').
+	expected columnNames: #( 'City' 'Population' 'BeenThere' ).	
+	self assert: (df shuffleWithSeed: 2) equals: expected.
 	
-	self assert: (df shuffleWithSeed: 3) equals: expected.
+
 ]
 
 { #category : 'tests' }
