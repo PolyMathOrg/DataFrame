@@ -5,7 +5,7 @@ Class {
 		'df',
 		'series'
 	],
-	#category : #'DataFrame-Tests-Core'
+	#category : 'DataFrame-Tests-Core'
 }
 
 { #category : #running }

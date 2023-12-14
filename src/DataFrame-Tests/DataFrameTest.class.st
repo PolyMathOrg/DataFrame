@@ -7,6 +7,62 @@ Class {
 	#category : #'DataFrame-Tests-Core'
 }
 
+{ #category : #private }
+DataFrameTest >> expectedShuffledDataFrameWithSeedOne [
+	"In theory, shuffling an array with a fixed random seed should produce the same result across different versions of Pharo and the same implementation of the random number generator. The purpose of using a fixed seed is to make the random number generation deterministic, meaning that given the same seed, the sequence of random numbers generated will be the same every time.
+	There is a difference in the RNG used in Pharo 12, which uses the primitive 231, and the previous Pharo versions, which used a native implementation in privateNextSeed.
+	The change was introduced in this commit: https://github.com/pharo-project/pharo/commit/bf22496dbd0996ee470c9f85a7cc076e01dff57f
+	So we answer different data frames as the result ordering changes because of this implementation change"
+
+	| expected |
+	expected := SystemVersion current major >= 12
+		ifTrue: [ 
+			(DataFrame withRows: #(
+				('Barcelona' 1.609 true)
+		   		('London' 8.788 false)
+				('Dubai' 2.789 true))
+					rowNames: #( 'A' 'C' 'B'))
+					yourself  ]
+		ifFalse: [ 
+			(DataFrame withRows: #(
+				('Dubai' 2.789 true)
+		   		('London' 8.788 false)
+				('Barcelona' 1.609 true))
+					rowNames: #('B' 'C' 'A'))
+					yourself ].
+	expected columnNames: #( 'City' 'Population' 'BeenThere' ).
+	^ expected 
+
+]
+
+{ #category : #private }
+DataFrameTest >> expectedShuffledDataFrameWithSeedTwo [
+	"In theory, shuffling an array with a fixed random seed should produce the same result across different versions of Pharo and the same implementation of the random number generator. The purpose of using a fixed seed is to make the random number generation deterministic, meaning that given the same seed, the sequence of random numbers generated will be the same every time.
+	There is a difference in the RNG used in Pharo 12, which uses the primitive 231, and the previous Pharo versions, which used a native implementation in privateNextSeed.
+	The change was introduced in this commit: https://github.com/pharo-project/pharo/commit/bf22496dbd0996ee470c9f85a7cc076e01dff57f
+	So we answer different data frames as the result ordering changes because of this implementation change"
+
+	| expected |
+	expected := SystemVersion current major >= 12
+		ifTrue: [ 
+			(DataFrame withRows: #(
+				('Dubai' 2.789 true)	
+				('Barcelona' 1.609 true)
+  		 		('London' 8.788 false) )
+					rowNames: #('B' 'A' 'C'))
+					yourself  ]
+		ifFalse: [ 
+			(DataFrame withRows: #(
+		   		('London' 8.788 false)			
+				('Barcelona' 1.609 true)
+				('Dubai' 2.789 true))
+					rowNames: #('C' 'A' 'B'))
+					yourself ].
+	expected columnNames: #( 'City' 'Population' 'BeenThere' ).
+	^ expected 
+
+]
+
 { #category : #running }
 DataFrameTest >> setUp [
 
@@ -918,6 +974,19 @@ DataFrameTest >> testColumns [
 		                      (df columnAt: 3) } asArray.
 
 	self assert: df columns equals: expectedCollection
+]
+
+{ #category : #tests }
+DataFrameTest >> testColumnsAllBut [
+
+	| expectedDataFrame |
+	expectedDataFrame := DataFrame withRows: #( #( 'Barcelona' 1.609 ) #( 'Dubai' 2.789 ) #( 'London' 8.788 ) ).
+	expectedDataFrame rowNames: #( 'A' 'B' 'C' ).
+	expectedDataFrame columnNames: #( 'City' 'Population').
+
+	self 
+		assert: (df columnsAllBut: #(BeenThere)) 
+		equals: expectedDataFrame
 ]
 
 { #category : #tests }
@@ -5162,6 +5231,20 @@ DataFrameTest >> testSelectEmptyDataFrame [
 		[ :row | (row at: #Population) > 10 ].
 
 	self assert: actual equals: expected
+]
+
+{ #category : #tests }
+DataFrameTest >> testShuffledWithSeed [
+
+	| expected |
+	
+	expected := self expectedShuffledDataFrameWithSeedOne.
+	self assert: (df shuffleWithSeed: 1) equals: expected.
+	
+	expected := self expectedShuffledDataFrameWithSeedTwo.
+	self assert: (df shuffleWithSeed: 2) equals: expected.
+	
+
 ]
 
 { #category : #tests }
