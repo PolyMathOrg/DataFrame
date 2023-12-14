@@ -1057,18 +1057,22 @@ DataSeries >> sum [
 
 { #category : 'statistics' }
 DataSeries >> summary [
-	"A data series is returned which is a statistical summary of the data series. With keys as different statistical measures and values as the values returned when those statistical measures are applied on the data series."
+	"A data series is returned which is a statistical summary of the data series. 
+	With keys as different statistical measures and values as the values returned
+	when those statistical measures are applied on the data series."
 	
 	| summary |
 	summary := self species new.
 	summary name: self name.
 
 	summary
-		at: 'Min' put: self min;
-		at: '1st Qu.' put: self firstQuartile;
-		at: 'Median' put: self median;
+		at: 'Count' put: self size;
 		at: 'Average' put: self average;
-		at: '3rd Qu.' put: self thirdQuartile;
+		at: 'Stdev' put: self stdev;
+		at: 'Min' put: self min;
+		at: '25%' put: self firstQuartile;
+		at: '50%' put: self median;
+		at: '75%' put: self thirdQuartile;
 		at: 'Max' put: self max.
 
 	^ summary

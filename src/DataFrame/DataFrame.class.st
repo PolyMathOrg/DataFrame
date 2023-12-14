@@ -2577,7 +2577,20 @@ DataFrame >> stdev [
 	^ self applyToAllColumns: #stdev
 ]
 
-{ #category : 'accessing' }
+{ #category : #statistics }
+DataFrame >> summary [
+	| summaryFrame |
+	summaryFrame := nil.
+	self columnNames do: [ :column |
+		((self dataTypeOfColumn: column) inheritsFrom: Number)
+			ifTrue: [ 
+				summaryFrame
+					ifNil: [ summaryFrame := (self column: column) summary asDataFrame ]
+					ifNotNil: [ summaryFrame addColumn: (self column: column) summary ] ] ].
+	^ summaryFrame
+]
+
+{ #category : #accessing }
 DataFrame >> tail [
 	"Returns the last 5 rows of a DataFrame"
 	
