@@ -1,16 +1,14 @@
 Class {
-	#name : 'DataFrameHeadTailTest',
-	#superclass : 'TestCase',
+	#name : #DataFrameHeadTailTest,
+	#superclass : #TestCase,
 	#instVars : [
 		'df',
 		'series'
 	],
-	#category : 'DataFrame-Tests-Core',
-	#package : 'DataFrame-Tests',
-	#tag : 'Core'
+	#category : 'DataFrame-Tests-Core'
 }
 
-{ #category : 'running' }
+{ #category : #running }
 DataFrameHeadTailTest >> setUp [
 
 	super setUp.
@@ -23,7 +21,7 @@ DataFrameHeadTailTest >> setUp [
 	series := df column: #sepalLength
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 DataFrameHeadTailTest >> testDataFrameHead [
 
 	| actual expected |
@@ -42,7 +40,7 @@ DataFrameHeadTailTest >> testDataFrameHead [
 	self assert: actual equals: expected
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 DataFrameHeadTailTest >> testDataFrameHeadN [
 
 	| actual expected |
@@ -59,7 +57,7 @@ DataFrameHeadTailTest >> testDataFrameHeadN [
 	self assert: actual equals: expected
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 DataFrameHeadTailTest >> testDataFrameTail [
 
 	| actual expected rows |
@@ -81,7 +79,7 @@ DataFrameHeadTailTest >> testDataFrameTail [
 	self assert: actual equals: expected
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 DataFrameHeadTailTest >> testDataFrameTailN [
 
 	| actual expected rows |
@@ -101,7 +99,7 @@ DataFrameHeadTailTest >> testDataFrameTailN [
 	self assert: actual equals: expected
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 DataFrameHeadTailTest >> testDefaultHeadTailSize [
 
 	self assert: df defaultHeadTailSize equals: 5

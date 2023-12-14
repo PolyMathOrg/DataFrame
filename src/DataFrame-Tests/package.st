@@ -1,1 +1,1 @@
-Package { #name : 'DataFrame-Tests' }
+Package { #name : #'DataFrame-Tests' }

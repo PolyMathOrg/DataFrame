@@ -1,15 +1,13 @@
 Class {
-	#name : 'DataFrameAggrGroupTest',
-	#superclass : 'TestCase',
+	#name : #DataFrameAggrGroupTest,
+	#superclass : #TestCase,
 	#instVars : [
 		'df'
 	],
-	#category : 'DataFrame-Tests-Core',
-	#package : 'DataFrame-Tests',
-	#tag : 'Core'
+	#category : 'DataFrame-Tests-Core'
 }
 
-{ #category : 'running' }
+{ #category : #running }
 DataFrameAggrGroupTest >> setUp [
 
 	super setUp.
@@ -21,7 +19,7 @@ DataFrameAggrGroupTest >> setUp [
 	df columnNames: #( total_bill tip sex smoker day time size )
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 DataFrameAggrGroupTest >> testGroupByAggregateArrayMultipleUsingAsSelector [
 	| expected actual |
 
@@ -44,7 +42,7 @@ DataFrameAggrGroupTest >> testGroupByAggregateArrayMultipleUsingAsSelector [
 	self assert: actual equals: expected
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 DataFrameAggrGroupTest >> testGroupByAggregateArrayUsingAsBlock [
 	| expected actual |
 
@@ -60,7 +58,7 @@ DataFrameAggrGroupTest >> testGroupByAggregateArrayUsingAsBlock [
 	self assert: actual equals: expected
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 DataFrameAggrGroupTest >> testGroupByAggregateArrayUsingAsNoSuchAggregateColumnError [
 	self
 		should: [
@@ -69,7 +67,7 @@ DataFrameAggrGroupTest >> testGroupByAggregateArrayUsingAsNoSuchAggregateColumnE
 		raise: Error
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 DataFrameAggrGroupTest >> testGroupByAggregateArrayUsingAsNoSuchGroupColumnError [
 	self
 		should: [
@@ -78,7 +76,7 @@ DataFrameAggrGroupTest >> testGroupByAggregateArrayUsingAsNoSuchGroupColumnError
 		raise: Error
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 DataFrameAggrGroupTest >> testGroupByAggregateArrayUsingAsSameColumnError [
 	self
 		should: [
@@ -87,7 +85,7 @@ DataFrameAggrGroupTest >> testGroupByAggregateArrayUsingAsSameColumnError [
 		raise: Error
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 DataFrameAggrGroupTest >> testGroupByAggregateArrayUsingAsSelector [
 	| expected actual |
 
@@ -103,7 +101,7 @@ DataFrameAggrGroupTest >> testGroupByAggregateArrayUsingAsSelector [
 	self assert: actual equals: expected
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 DataFrameAggrGroupTest >> testGroupByAggregateArrayUsingBlock [
 	| expected actual |
 
@@ -119,7 +117,7 @@ DataFrameAggrGroupTest >> testGroupByAggregateArrayUsingBlock [
 	self assert: actual equals: expected
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 DataFrameAggrGroupTest >> testGroupByAggregateArrayUsingSelector [
 	| expected actual |
 
@@ -135,7 +133,7 @@ DataFrameAggrGroupTest >> testGroupByAggregateArrayUsingSelector [
 	self assert: actual equals: expected
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 DataFrameAggrGroupTest >> testGroupByAggregateUsingAsBlock [
 	| expected actual |
 
@@ -153,7 +151,7 @@ DataFrameAggrGroupTest >> testGroupByAggregateUsingAsBlock [
 	self assert: actual equals: expected
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 DataFrameAggrGroupTest >> testGroupByAggregateUsingAsNoSuchAggregateColumnError [
 	self
 		should: [
@@ -164,7 +162,7 @@ DataFrameAggrGroupTest >> testGroupByAggregateUsingAsNoSuchAggregateColumnError 
 		raise: Error
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 DataFrameAggrGroupTest >> testGroupByAggregateUsingAsNoSuchGroupColumnError [
 	self
 		should: [
@@ -175,7 +173,7 @@ DataFrameAggrGroupTest >> testGroupByAggregateUsingAsNoSuchGroupColumnError [
 		raise: Error
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 DataFrameAggrGroupTest >> testGroupByAggregateUsingAsSameColumnError [
 	self
 		should: [
@@ -186,7 +184,7 @@ DataFrameAggrGroupTest >> testGroupByAggregateUsingAsSameColumnError [
 		raise: Error
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 DataFrameAggrGroupTest >> testGroupByAggregateUsingAsSelector [
 	| expected actual |
 
@@ -204,7 +202,7 @@ DataFrameAggrGroupTest >> testGroupByAggregateUsingAsSelector [
 	self assert: actual equals: expected
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 DataFrameAggrGroupTest >> testGroupByAggregateUsingBlock [
 	| expected actual |
 
@@ -221,7 +219,7 @@ DataFrameAggrGroupTest >> testGroupByAggregateUsingBlock [
 	self assert: actual equals: expected
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 DataFrameAggrGroupTest >> testGroupByAggregateUsingNoSuchAggregateColumnError [
 	self
 		should: [
@@ -231,7 +229,7 @@ DataFrameAggrGroupTest >> testGroupByAggregateUsingNoSuchAggregateColumnError [
 		raise: Error
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 DataFrameAggrGroupTest >> testGroupByAggregateUsingNoSuchGroupColumnError [
 	self
 		should: [
@@ -241,7 +239,7 @@ DataFrameAggrGroupTest >> testGroupByAggregateUsingNoSuchGroupColumnError [
 		raise: Error
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 DataFrameAggrGroupTest >> testGroupByAggregateUsingSameColumnError [
 	self
 		should: [
@@ -251,7 +249,7 @@ DataFrameAggrGroupTest >> testGroupByAggregateUsingSameColumnError [
 		raise: Error
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 DataFrameAggrGroupTest >> testGroupByAggregateUsingSelector [
 	| expected actual |
 
