@@ -93,3 +93,30 @@ DataFrameCsvWriterTest >> testWriteToCsvWithSeparatorTab [
 	expected := TestCsvStrings tabQuoteCsvString.
 	self assertCollection: actual lines equals: expected lines
 ]
+
+{ #category : #tests }
+DataFrameCsvWriterTest >> testWriteToCsvWithoutColumnNames [
+	| actual expected |
+	dataFrame writeToCsv: commaQuoteCsvFile withColumnNames: false.
+	actual := self readFile: commaQuoteCsvFile.
+	expected := TestCsvStrings commaQuoteCsvStringWithoutColumnNames.
+	self assert: actual lines equals: expected lines
+]
+
+{ #category : #tests }
+DataFrameCsvWriterTest >> testWriteToCsvWithoutRowNames [
+	| actual expected |
+	dataFrame writeToCsv: commaQuoteCsvFile withRowNames: false.
+	actual := self readFile: commaQuoteCsvFile.
+	expected := TestCsvStrings commaQuoteCsvStringWithoutRowNames.
+	self assert: actual lines equals: expected lines
+]
+
+{ #category : #tests }
+DataFrameCsvWriterTest >> testWriteToCsvWithoutRowNamesWithoutColumnNames [
+	| actual expected |
+	dataFrame writeToCsv: commaQuoteCsvFile withColumnNames: false withRowNames: false.
+	actual := self readFile: commaQuoteCsvFile.
+	expected := TestCsvStrings commaQuoteCsvStringWithoutRowNamesWithoutColumnNames.
+	self assert: actual lines equals: expected lines
+]

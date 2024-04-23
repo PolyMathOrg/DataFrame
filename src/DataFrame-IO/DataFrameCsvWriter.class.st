@@ -5,10 +5,29 @@ Class {
 		'separator',
 		'lineEndConvention',
 		'fieldWriter',
-		'rowNameEnabled'
+		'rowNameEnabled',
+		'columnNameEnabled'
 	],
 	#category : #'DataFrame-IO-Core'
 }
+
+{ #category : #accessing }
+DataFrameCsvWriter >> columnNameEnabled [
+
+	^ columnNameEnabled
+]
+
+{ #category : #accessing }
+DataFrameCsvWriter >> columnNameEnabled: aBoolean [
+
+	columnNameEnabled := aBoolean = true
+]
+
+{ #category : #accessing }
+DataFrameCsvWriter >> defaultColumnIndexEnabled [
+
+	^ true
+]
 
 { #category : #'accessing - field writers' }
 DataFrameCsvWriter >> defaultFieldWriter [
@@ -37,9 +56,21 @@ DataFrameCsvWriter >> defaultSeparator [
 ]
 
 { #category : #'enable/disable' }
+DataFrameCsvWriter >> disableColumnName [
+
+	self columnNameEnabled: false
+]
+
+{ #category : #'enable/disable' }
 DataFrameCsvWriter >> disableRowName [
 
 	self rowNameEnabled: false
+]
+
+{ #category : #'enable/disable' }
+DataFrameCsvWriter >> enableColumnName [
+
+	self columnNameEnabled: true
 ]
 
 { #category : #'enable/disable' }
@@ -67,7 +98,8 @@ DataFrameCsvWriter >> initialize [
 	separator := self defaultSeparator.
 	lineEndConvention := self defaultLineEndConvention.
 	fieldWriter := self defaultFieldWriter.
-	rowNameEnabled := self defaultRowIndexEnabled
+	rowNameEnabled := self defaultRowIndexEnabled.
+	columnNameEnabled := self defaultColumnIndexEnabled
 ]
 
 { #category : #accessing }
@@ -156,16 +188,15 @@ DataFrameCsvWriter >> useRawFieldWriter [
 
 { #category : #writing }
 DataFrameCsvWriter >> write: aDataFrame to: aFileReference [
-
 	| stream writer |
 	stream := aFileReference writeStream.
-
 	writer := NeoCSVWriter on: stream.
 	fieldWriter ifNotNil: [ writer fieldWriter: fieldWriter ].
 	writer separator: self separator.
 	writer lineEndConvention: self lineEndConvention.
 
-	self rowNameEnabled ifTrue: [
+	self columnNameEnabled ifTrue: [
+		self rowNameEnabled ifTrue: [
 		writer
 			writeField: '';
 			writeSeparator ].
@@ -178,7 +209,17 @@ DataFrameCsvWriter >> write: aDataFrame to: aFileReference [
 					writeField: row name;
 					writeSeparator;
 					nextPut: row ] ]
-		ifFalse: [ aDataFrame do: [ :row | writer nextPut: row ] ].
+		ifFalse: [ aDataFrame do: [ :row | writer nextPut: row ] ]]
 
-	writer close
+	ifFalse: [
+		self rowNameEnabled ifTrue: [
+			aDataFrame do: [ :row |
+				writer
+					writeField: row name;
+					writeSeparator;
+					nextPut: row ] ]
+		ifFalse: [ aDataFrame do: [ :row | writer nextPut: row ] ] ].
+
+	writer close.
+
 ]
