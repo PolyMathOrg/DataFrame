@@ -1,6 +1,6 @@
-Extension { #name : 'Array' }
+Extension { #name : #Array }
 
-{ #category : '*DataFrame' }
+{ #category : #'*DataFrame' }
 Array >> calculateDataType [
 
 	| types |
@@ -18,7 +18,7 @@ Array >> calculateDataType [
 	^ UndefinedObject
 ]
 
-{ #category : '*DataFrame' }
+{ #category : #'*DataFrame' }
 Array >> leastCommonSuperclassOf: firstClass and: secondClass [
 "Determines the closest element of class hierarchy which is the common ancestor of two given classes"
 
@@ -40,7 +40,7 @@ Array >> leastCommonSuperclassOf: firstClass and: secondClass [
 	^ Object
 ]
 
-{ #category : '*DataFrame' }
+{ #category : #'*DataFrame' }
 Array >> sortIfPossible [
 	"Sort if possible"
 	
