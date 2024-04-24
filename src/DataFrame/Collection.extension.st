@@ -1,12 +1,12 @@
-Extension { #name : 'Collection' }
+Extension { #name : #Collection }
 
-{ #category : '*DataFrame-Core-Base' }
+{ #category : #'*DataFrame-Core-Base' }
 Collection >> ** arg [
 
 	^ self raisedTo: arg
 ]
 
-{ #category : '*DataFrame' }
+{ #category : #'*DataFrame' }
 Collection >> asDataFrame [
 
 	| numberOfRows numberOfColumns dataFrame |
@@ -31,26 +31,26 @@ Collection >> asDataFrame [
 	^ dataFrame
 ]
 
-{ #category : '*DataFrame-Core-Base' }
+{ #category : #'*DataFrame-Core-Base' }
 Collection >> asDataSeries [
 
 	^ DataSeries newFrom: self
 ]
 
-{ #category : '*DataFrame-Core-Base' }
+{ #category : #'*DataFrame-Core-Base' }
 Collection >> closeTo: aCollection [
 
 	^ (self - aCollection) inject: true into: [ :accum :each |
 		accum and: (each closeTo: 0) ]
 ]
 
-{ #category : '*DataFrame-Core-Base' }
+{ #category : #'*DataFrame-Core-Base' }
 Collection >> variance [
 
 	^ self stdev squared
 ]
 
-{ #category : '*DataFrame' }
+{ #category : #'*DataFrame' }
 Collection >> withSeries: aDataSeries collect: twoArgBlock [
 	"Collect and return the result of evaluating twoArgBlock with corresponding elements from this collection and aDataSeries."
 	| result |
