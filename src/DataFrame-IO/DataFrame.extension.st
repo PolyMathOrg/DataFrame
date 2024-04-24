@@ -110,9 +110,39 @@ DataFrame >> writeTo: aLocation using: aDataFrameWriter [
 
 { #category : #'*DataFrame-IO' }
 DataFrame >> writeToCsv: aFileReference [
-	| writer |
-	writer := DataFrameCsvWriter new.
-	self writeTo: aFileReference using: writer
+
+	self
+		writeToCsv: aFileReference
+		withColumnNames: true
+		withRowNames: true
+]
+
+{ #category : #'*DataFrame-IO' }
+DataFrame >> writeToCsv: aFileReference withColumnNames: enableColumnNames [
+
+	self
+		writeToCsv: aFileReference
+		withColumnNames: enableColumnNames
+		withRowNames: true
+]
+
+{ #category : #'*DataFrame-IO' }
+DataFrame >> writeToCsv: aFileReference withColumnNames: enableColumnNames withRowNames: enableRowNames [
+    | writer |
+    writer := DataFrameCsvWriter new.
+    enableColumnNames ifFalse: [ writer disableColumnName ].
+    enableRowNames ifFalse: [ writer disableRowName ].
+    self writeTo: aFileReference using: writer.
+
+]
+
+{ #category : #'*DataFrame-IO' }
+DataFrame >> writeToCsv: aFileReference withRowNames: enableRowNames [
+
+	self
+		writeToCsv: aFileReference
+		withColumnNames: true
+		withRowNames: enableRowNames
 ]
 
 { #category : #'*DataFrame-IO' }
