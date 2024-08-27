@@ -1,14 +1,16 @@
 Class {
-	#name : #DataSeries,
-	#superclass : #OrderedDictionary,
+	#name : 'DataSeries',
+	#superclass : 'OrderedDictionary',
 	#instVars : [
 		'name',
 		'forcedIsNumerical'
 	],
-	#category : 'DataFrame-Core'
+	#category : 'DataFrame-Core',
+	#package : 'DataFrame',
+	#tag : 'Core'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 DataSeries class >> newFrom: aCollection [
 
 	aCollection ifEmpty: [ ^ self new ].
@@ -21,7 +23,7 @@ DataSeries class >> newFrom: aCollection [
 			   ifFalse: [ aCollection withIndexCollect: [ :each :i | i -> each ] ])
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 DataSeries class >> newFromKeys: keys andValues: values [
 
 	| dict |
@@ -31,31 +33,31 @@ DataSeries class >> newFromKeys: keys andValues: values [
 	^ dict
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 DataSeries class >> withKeys: keys values: values [
 	^ self newFromKeys: keys andValues: values
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 DataSeries class >> withKeys: keys values: values name: aName [
 	^ (self withKeys: keys values: values) name: aName; yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 DataSeries class >> withValues: values [
 	| keys |
 	keys := (1 to: values size) asArray.
 	^ self withKeys: keys values: values
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 DataSeries class >> withValues: values name: aName [
 	| keys |
 	keys := (1 to: values size) asArray.
 	^ (self withKeys: keys values: values) name: aName; yourself
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 DataSeries >> < arg [
 	"Element-wise comparision between two DataSeries.
 	 Does not consider keys for comparision."
@@ -63,7 +65,7 @@ DataSeries >> < arg [
 	^ arg adaptToCollection: self andSend: #<
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 DataSeries >> <= arg [
 	"Element-wise comparision between two DataSeries.
 	 Does not consider keys for comparision."
@@ -71,7 +73,7 @@ DataSeries >> <= arg [
 	^ arg adaptToCollection: self andSend: #<=
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 DataSeries >> = anObject [
 	(super = anObject)
 		ifFalse: [ ^ false ].
@@ -81,7 +83,7 @@ DataSeries >> = anObject [
 		and: [ anObject keys = self keys ]
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 DataSeries >> > arg [
 	"Element-wise comparision between two DataSeries.
 	 Does not consider keys for comparision."
@@ -89,7 +91,7 @@ DataSeries >> > arg [
 	^ arg adaptToCollection: self andSend: #>
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 DataSeries >> >= arg [
 	"Element-wise comparision between two DataSeries.
 	 Does not consider keys for comparision."
@@ -97,7 +99,7 @@ DataSeries >> >= arg [
 	^ arg adaptToCollection: self andSend: #>=
 ]
 
-{ #category : #adapting }
+{ #category : 'adapting' }
 DataSeries >> adaptToCollection: rcvr andSend: selector [
 	"If I am involved in arithmetic with another Collection, return a Collection of
 	the results of each element combined with the scalar in that expression."
@@ -111,7 +113,7 @@ DataSeries >> adaptToCollection: rcvr andSend: selector [
 			  ifFalse: [ rcvrElement perform: selector with: myElement ] ]
 ]
 
-{ #category : #statistics }
+{ #category : 'statistics' }
 DataSeries >> argmax [
 	"Returns the key which corresponds to the maximum value of the dataseries"
 
@@ -122,7 +124,7 @@ DataSeries >> argmax [
 	^ self keyAtValue: self max
 ]
 
-{ #category : #statistics }
+{ #category : 'statistics' }
 DataSeries >> argmin [
 	"Returns the key which corresponds to the minimum value of the dataseries"
 
@@ -133,7 +135,7 @@ DataSeries >> argmin [
 	^ self keyAtValue: self min
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 DataSeries >> asDataFrame [
 	"Converts a data series to a data frame with 1 column. The values in the column of the data frame are the values of the data series. The row names of this data frame are the keys of the data series. The column name of the data frame is same as the name of the data series"
 	
@@ -143,7 +145,7 @@ DataSeries >> asDataFrame [
 		columnNames: { self name }
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DataSeries >> at: aKey transform: aBlock [
 	"Evaluate aBlock on the value at aKey and replace that value with the result. Signal an exception if aKey was not found"
 
@@ -155,7 +157,7 @@ DataSeries >> at: aKey transform: aBlock [
 		ifAbsent: [ self errorKeyNotFound: aKey ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DataSeries >> at: aKey transform: aBlock ifAbsent: exceptionBlock [
 	"Evaluate aBlock on the value at aKey and replace that value with the result. Evaluate exceptionBlock if aKey was not found"
 	| oldValue |
@@ -166,14 +168,14 @@ DataSeries >> at: aKey transform: aBlock ifAbsent: exceptionBlock [
 	self at: aKey put: (aBlock value: oldValue)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DataSeries >> atAll: aCollectionOfIndexes [
 	"Returns a data series of only those elements of the receiver whose indices are present in the collection aCollectionOfIndexes"
 	
 	^ self withIndexSelect: [ :each :index | aCollectionOfIndexes includes: index ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DataSeries >> atIndex: aNumber [
 	"Answer the element of the receiver at index aNumber"
 
@@ -184,14 +186,14 @@ DataSeries >> atIndex: aNumber [
 	^ self at: (self keys at: aNumber)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DataSeries >> atIndex: aNumber put: aValue [
 	"Replace the element of the receiver at index aNumber with the value aValue"
 
 	^ self at: (self keys at: aNumber) put: aValue
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DataSeries >> atIndex: aNumber transform: aBlock [
 	"Evaluate aBlock on the value at aNumber and replace that value with the result"
 
@@ -208,7 +210,7 @@ DataSeries >> atIndex: aNumber transform: aBlock [
 	self at: key transform: aBlock
 ]
 
-{ #category : #statistics }
+{ #category : 'statistics' }
 DataSeries >> average [
 	"Returns the average without including nils"
 
@@ -217,7 +219,7 @@ DataSeries >> average [
 	^ self removeNils values average
 ]
 
-{ #category : #'data-types' }
+{ #category : 'data-types' }
 DataSeries >> calculateDataType [
 	"Returns the data type of the data series"
 
@@ -232,12 +234,12 @@ DataSeries >> calculateDataType [
 	^ self values calculateDataType
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 DataSeries >> closeTo: anObject [
 	^ self closeTo: anObject precision: self defaultPrecision
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 DataSeries >> closeTo: anObject precision: aPrecision [
 	self == anObject
 		ifTrue: [^ true].
@@ -258,7 +260,7 @@ DataSeries >> closeTo: anObject precision: aPrecision [
 		ifNone: [ true ]
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 DataSeries >> collect: aBlock [
 	"Applies aBlock to every element"
 
@@ -268,14 +270,14 @@ DataSeries >> collect: aBlock [
 	^ result
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 DataSeries >> collectWithNotNils: aBlock [
 	"Applies aBlock to every non-nil element"
 
 	^ self collect: [ :each | each ifNotNil: [ aBlock value: each ] ]
 ]
 
-{ #category : #'math functions' }
+{ #category : 'math functions' }
 DataSeries >> correlationWith: otherSeries [
 	"Calculate the Pearson correlation coefficient between self and the other series"
 
@@ -288,7 +290,7 @@ DataSeries >> correlationWith: otherSeries [
 		  using: DataPearsonCorrelationMethod
 ]
 
-{ #category : #'math functions' }
+{ #category : 'math functions' }
 DataSeries >> correlationWith: otherSeries using: aCorrelationCoefficient [
 	"Calculate the correlation coefficient between self and the other series using the given method"
 
@@ -299,7 +301,7 @@ DataSeries >> correlationWith: otherSeries using: aCorrelationCoefficient [
 	^ aCorrelationCoefficient between: self and: otherSeries
 ]
 
-{ #category : #statistics }
+{ #category : 'statistics' }
 DataSeries >> countNils [
 	"Returns the number of nil values in the data series"
 
@@ -310,7 +312,7 @@ DataSeries >> countNils [
 	^ self count: [ :each | each isNil ]
 ]
 
-{ #category : #statistics }
+{ #category : 'statistics' }
 DataSeries >> countNonNils [
 	"Returns the number of non-nil values in the data series"
 
@@ -321,7 +323,7 @@ DataSeries >> countNonNils [
 	^ self count: [ :each | each isNotNil ]
 ]
 
-{ #category : #statistics }
+{ #category : 'statistics' }
 DataSeries >> crossTabulateWith: aSeries [
 	"A DataFrame is returned which is useful in quantitatively analyzing the relationship of values in one data series with the values in another data series"
 
@@ -342,7 +344,7 @@ DataSeries >> crossTabulateWith: aSeries [
 	^ df
 ]
 
-{ #category : #statistics }
+{ #category : 'statistics' }
 DataSeries >> cumulativeSum [
 	"Calculate the cumulative sum of a data series and return a new data series with keys as self keys and values as cumulative sum"
 
@@ -358,22 +360,22 @@ DataSeries >> cumulativeSum [
 		  sum ]
 ]
 
-{ #category : #defaults }
+{ #category : 'defaults' }
 DataSeries >> defaultHeadTailSize [
 	^ 5
 ]
 
-{ #category : #defaults }
+{ #category : 'defaults' }
 DataSeries >> defaultName [
 	^ '(no name)'
 ]
 
-{ #category : #defaults }
+{ #category : 'defaults' }
 DataSeries >> defaultPrecision [
 	^ 0.0001
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DataSeries >> eighth [
 	"Answer the eighth element of the receiver.
 	Raise an error if there are not enough elements."
@@ -383,7 +385,7 @@ DataSeries >> eighth [
 	^ self atIndex: 8
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 DataSeries >> encodeOneHot [
 	"Encode the values of the DataSeries into one-hot vectors."
 
@@ -408,18 +410,18 @@ DataSeries >> encodeOneHot [
 	^ DataSeries withKeys: self keys values: oneHotValues name: self name
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 DataSeries >> errorKeyNotFound: aKey [
 
 	KeyNotFound signalFor: aKey
 ]
 
-{ #category : #errors }
+{ #category : 'errors' }
 DataSeries >> errorKeysMismatch [
 	Error signal: 'Keys of two series do not match'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DataSeries >> fifth [
 	"Answer the fifth element of the receiver.
 	Raise an error if there are not enough elements."
@@ -429,7 +431,7 @@ DataSeries >> fifth [
 	^ self atIndex: 5
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DataSeries >> first [
 	"Answer the first element of the receiver.
 	Raise an error if there are not enough elements."
@@ -439,7 +441,7 @@ DataSeries >> first [
 	^ self atIndex: 1
 ]
 
-{ #category : #statistics }
+{ #category : 'statistics' }
 DataSeries >> firstQuartile [
 	"25% of the values in a set are smaller than or equal to the first Quartile of that set"
 
@@ -448,7 +450,7 @@ DataSeries >> firstQuartile [
 	^ self quartile: 1
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DataSeries >> fourth [
 	"Answer the fourth element of the receiver.
 	Raise an error if there are not enough elements."
@@ -458,7 +460,7 @@ DataSeries >> fourth [
 	^ self atIndex: 4
 ]
 
-{ #category : #statistics }
+{ #category : 'statistics' }
 DataSeries >> fourthQuartile [
 	"Fourth Quartile is the maximum value in a set of values"
 
@@ -467,13 +469,13 @@ DataSeries >> fourthQuartile [
 	^ self quartile: 4
 ]
 
-{ #category : #grouping }
+{ #category : 'grouping' }
 DataSeries >> groupBy: otherSeries aggregateUsing: aBlock [
 	"Group my values by the unique values of otherSeries, aggregate them using aBlock. Use my name by default"
 	^ self groupBy: otherSeries aggregateUsing: aBlock as: self name
 ]
 
-{ #category : #grouping }
+{ #category : 'grouping' }
 DataSeries >> groupBy: otherSeries aggregateUsing: aBlock as: aNewName [
 	"Group my values by the unique values of otherSeries, aggregate them using aBlock, and answer a new DataSeries with unique values of otherSeries as keys, aggregated values of myself as values, and aNewName as name"
 
@@ -493,13 +495,13 @@ DataSeries >> groupBy: otherSeries aggregateUsing: aBlock as: aNewName [
 		  name: aNewName
 ]
 
-{ #category : #grouping }
+{ #category : 'grouping' }
 DataSeries >> groupByBins: bins [
 
 	^ self groupByBins: bins labelled: (1 to: bins size - 1)
 ]
 
-{ #category : #grouping }
+{ #category : 'grouping' }
 DataSeries >> groupByBins: bins labelled: aCollection [
 	"I receive two parameters:
 	- A collection of bins that will determine intervals to group the values
@@ -516,13 +518,13 @@ DataSeries >> groupByBins: bins labelled: aCollection [
 	^ self collect: [ :each | labelledIntervals keyAtValue: (labelledIntervals values detect: [ :asso | each between: asso key and: asso value ]) ]
 ]
 
-{ #category : #grouping }
+{ #category : 'grouping' }
 DataSeries >> groupByUniqueValuesAndAggregateUsing: aBlock [
 	"Group my values by their unique values and aggregate them using aBlock. Use my name by default"
 	^ self groupByUniqueValuesAndAggregateUsing: aBlock as: self name
 ]
 
-{ #category : #grouping }
+{ #category : 'grouping' }
 DataSeries >> groupByUniqueValuesAndAggregateUsing: aBlock as: aNewName [
 	"Group my values by unique values, aggregate them using aBlock, and answer a new DataSeries with theunique values as keys, aggregated values of myself as values, and aNewName as name"
 
@@ -538,7 +540,7 @@ DataSeries >> groupByUniqueValuesAndAggregateUsing: aBlock as: aNewName [
 		  name: aNewName
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 DataSeries >> hasNil [
 	"return true if data series has at least one nil value"
 
@@ -553,7 +555,7 @@ DataSeries >> hasNil [
 	^ self includes: nil
 ]
 
-{ #category : #slicing }
+{ #category : 'slicing' }
 DataSeries >> head [
 	"Returns a data series with first 5 elements of the receiver"
 
@@ -564,7 +566,7 @@ DataSeries >> head [
 	^ self head: self defaultHeadTailSize
 ]
 
-{ #category : #slicing }
+{ #category : 'slicing' }
 DataSeries >> head: aNumber [
 	"Returns a data series with first aNumber elements of the receiver"
 
@@ -578,20 +580,20 @@ DataSeries >> head: aNumber [
 		  name: self name
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 DataSeries >> initialize [
 	super initialize.
 	name := self defaultName
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 DataSeries >> initialize: aCapacity [
 	"Make sure that initialize is called and the default name is set"
 	self initialize.
 	^ super initialize: aCapacity
 ]
 
-{ #category : #statistics }
+{ #category : 'statistics' }
 DataSeries >> interquartileRange [
 	"The Inter Quartile Range is the difference between the third Quartile and the first Quartile"
 
@@ -600,7 +602,7 @@ DataSeries >> interquartileRange [
 	^ self thirdQuartile - self firstQuartile
 ]
 
-{ #category : #'categorical-numerical' }
+{ #category : 'categorical-numerical' }
 DataSeries >> isCategorical [
 	"Returns true if atleast one value of the data series is non numerical and returns false otherwise"
 
@@ -613,7 +615,7 @@ DataSeries >> isCategorical [
 	^ self isNumerical not
 ]
 
-{ #category : #'categorical-numerical' }
+{ #category : 'categorical-numerical' }
 DataSeries >> isNumerical [
 	"Returns true if all values of the data series are numerical values and returns false otherwise"
 
@@ -628,12 +630,12 @@ DataSeries >> isNumerical [
 			  each isNumber ] ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 DataSeries >> isSequenceable [
 	^ true
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 DataSeries >> keys: anArrayOfKeys [
 	| keys |
 	keys := anArrayOfKeys asArray deepCopy.
@@ -641,7 +643,7 @@ DataSeries >> keys: anArrayOfKeys [
 	orderedKeys := keys
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DataSeries >> last [
 	"Answer the last element of the receiver.
 	Raise an error if there are not enough elements."
@@ -651,7 +653,7 @@ DataSeries >> last [
 	^ self atIndex: self size
 ]
 
-{ #category : #'math functions' }
+{ #category : 'math functions' }
 DataSeries >> log: base [
 	"Returns a data series containing the logarithm of each value in the receiver using the specified base."
 
@@ -662,21 +664,21 @@ DataSeries >> log: base [
 	^ self collect: [ :each | each log: base ]
 ]
 
-{ #category : #'categorical-numerical' }
+{ #category : 'categorical-numerical' }
 DataSeries >> makeCategorical [
 	"Converts a data series to a categorical data series"
 	
 	forcedIsNumerical := false
 ]
 
-{ #category : #'categorical-numerical' }
+{ #category : 'categorical-numerical' }
 DataSeries >> makeNumerical [
 	"Converts a data series to a numerical data series"
 
 	forcedIsNumerical := true
 ]
 
-{ #category : #statistics }
+{ #category : 'statistics' }
 DataSeries >> max [
 	"Returns the maximum value of the dataseries without including nils"
 
@@ -685,7 +687,7 @@ DataSeries >> max [
 	^ self removeNils values max
 ]
 
-{ #category : #statistics }
+{ #category : 'statistics' }
 DataSeries >> median [
 	"Returns the median without including nils"
 
@@ -694,7 +696,7 @@ DataSeries >> median [
 	^ self removeNils values median
 ]
 
-{ #category : #statistics }
+{ #category : 'statistics' }
 DataSeries >> min [
 	"Returns the minimum value of the dataseries without including nils"
 
@@ -703,7 +705,7 @@ DataSeries >> min [
 	^ self removeNils values min
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DataSeries >> mode [
 	"The mode of a set of values is the value that appears most often. "
 
@@ -716,21 +718,21 @@ DataSeries >> mode [
 	^ valueCounts keyAtValue: valueCounts max
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DataSeries >> name [
 	"Answer the name of the receiver"
 	
 	^ name
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DataSeries >> name: anObject [
 	"Set the name of the receiver to anObject"
 	
 	name := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DataSeries >> ninth [
 	"Answer the ninth element of the receiver.
 	Raise an error if there are not enough elements."
@@ -740,7 +742,7 @@ DataSeries >> ninth [
 	^ self atIndex: 9
 ]
 
-{ #category : #statistics }
+{ #category : 'statistics' }
 DataSeries >> quantile: aNumber [
 	"A quantile determines how many values in a distribution are above or below a certain limit.
 Eg: if the parameter aNumber is 85, a value from the data series is returned which is greater than or equal to 85% of the values in the data series"
@@ -756,7 +758,7 @@ Eg: if the parameter aNumber is 85, a value from the data series is returned whi
 	^ sortedSeries atIndex: index
 ]
 
-{ #category : #statistics }
+{ #category : 'statistics' }
 DataSeries >> quartile: aNumber [
 	"Quartiles are three values that split sorted data into four parts, each with an equal number of observations.
 Eg: if the parameter aNumber is 3, the Third Quartile of the data series is returned"
@@ -766,7 +768,7 @@ Eg: if the parameter aNumber is 3, the Third Quartile of the data series is retu
 	^ self quantile: 25 * aNumber
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 DataSeries >> reject: aBlock [
 	| result |
 	result := super reject: aBlock.
@@ -774,21 +776,21 @@ DataSeries >> reject: aBlock [
 	^ result
 ]
 
-{ #category : #removing }
+{ #category : 'removing' }
 DataSeries >> removeAt: aKey [
 	"Removes element from the data series with key aKey"
 
 	^ self removeKey: aKey
 ]
 
-{ #category : #removing }
+{ #category : 'removing' }
 DataSeries >> removeAtIndex: aNumber [
 	"Removes element from the data series with index aNumber"
 
 	^ self removeAt: (self keys at: aNumber)
 ]
 
-{ #category : #removing }
+{ #category : 'removing' }
 DataSeries >> removeDuplicates [
 	"Answer the unique values of the receiver by removing duplicates"
 
@@ -799,7 +801,7 @@ DataSeries >> removeDuplicates [
 	^ self asSet asArray
 ]
 
-{ #category : #removing }
+{ #category : 'removing' }
 DataSeries >> removeNils [
 	"Removes elements with nil values from the data series"
 
@@ -814,7 +816,7 @@ DataSeries >> removeNils [
 	self removeKeys: keysWithNilValues
 ]
 
-{ #category : #replacing }
+{ #category : 'replacing' }
 DataSeries >> replaceNilsWith: anObject [
 	"Replaces nils inplace with anObject"
 
@@ -826,7 +828,7 @@ DataSeries >> replaceNilsWith: anObject [
 		ele ifNil: [ self atIndex: index put: anObject ] ]
 ]
 
-{ #category : #replacing }
+{ #category : 'replacing' }
 DataSeries >> replaceNilsWithAverage [
 	"Replaces nils inplace with average"
 
@@ -839,7 +841,7 @@ DataSeries >> replaceNilsWithAverage [
 	self replaceNilsWith: mean
 ]
 
-{ #category : #replacing }
+{ #category : 'replacing' }
 DataSeries >> replaceNilsWithMedian [
 	"Replaces nils inplace with median"
 
@@ -852,7 +854,7 @@ DataSeries >> replaceNilsWithMedian [
 	self replaceNilsWith: median
 ]
 
-{ #category : #replacing }
+{ #category : 'replacing' }
 DataSeries >> replaceNilsWithMode [
 	"Replaces nils inplace with mode"
 
@@ -865,7 +867,7 @@ DataSeries >> replaceNilsWithMode [
 	self replaceNilsWith: mode
 ]
 
-{ #category : #replacing }
+{ #category : 'replacing' }
 DataSeries >> replaceNilsWithPreviousValue [
 	"Replaces nils inplace with previous non-nil value"
 
@@ -879,7 +881,7 @@ DataSeries >> replaceNilsWithPreviousValue [
 		value := self atIndex: index ]
 ]
 
-{ #category : #replacing }
+{ #category : 'replacing' }
 DataSeries >> replaceNilsWithZeros [
 	"Replaces nils inplace with zero"
 
@@ -890,7 +892,7 @@ DataSeries >> replaceNilsWithZeros [
 	self replaceNilsWith: 0
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DataSeries >> second [
 	"Answer the second element of the receiver.
 	Raise an error if there are not enough elements."
@@ -900,7 +902,7 @@ DataSeries >> second [
 	^ self atIndex: 2
 ]
 
-{ #category : #statistics }
+{ #category : 'statistics' }
 DataSeries >> secondQuartile [
 	"50% of the values in a set are smaller than or equal to the second Quartile of that set. It is also known as the median"
 
@@ -909,7 +911,7 @@ DataSeries >> secondQuartile [
 	^ self quartile: 2
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 DataSeries >> select: aBlock [
 	| result |
 	result := super select: aBlock.
@@ -917,7 +919,7 @@ DataSeries >> select: aBlock [
 	^ result
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DataSeries >> seventh [
 	"Answer the seventh element of the receiver.
 	Raise an error if there are not enough elements."
@@ -927,7 +929,7 @@ DataSeries >> seventh [
 	^ self atIndex: 7
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DataSeries >> sixth [
 	"Answer the sixth element of the receiver.
 	Raise an error if there are not enough elements."
@@ -937,7 +939,7 @@ DataSeries >> sixth [
 	^ self atIndex: 6
 ]
 
-{ #category : #sorting }
+{ #category : 'sorting' }
 DataSeries >> sort [
 	"Arranges a data series in ascending order of its values"
 
@@ -948,7 +950,7 @@ DataSeries >> sort [
 	self sort: [ :a :b | a <= b ]
 ]
 
-{ #category : #sorting }
+{ #category : 'sorting' }
 DataSeries >> sort: aBlock [
 	"Arranges a data series by applying aBlock on its values"
 
@@ -964,7 +966,7 @@ DataSeries >> sort: aBlock [
 	self sortAssociations: associationBlock
 ]
 
-{ #category : #sorting }
+{ #category : 'sorting' }
 DataSeries >> sortAssociations: aBlock [
 	| sortedAssociations |
 	sortedAssociations := self associations sort: aBlock.
@@ -972,7 +974,7 @@ DataSeries >> sortAssociations: aBlock [
 	self addAll: sortedAssociations
 ]
 
-{ #category : #sorting }
+{ #category : 'sorting' }
 DataSeries >> sortDescending [
 	"Arranges a data series in descending order of its values"
 
@@ -983,7 +985,7 @@ DataSeries >> sortDescending [
 	self sort: [ :a :b | a > b ]
 ]
 
-{ #category : #sorting }
+{ #category : 'sorting' }
 DataSeries >> sorted [
 	"Returns a sorted copy of the data series without rearranging the original data series"
 
@@ -994,7 +996,7 @@ DataSeries >> sorted [
 	^ self sorted: [ :a :b | a <= b ]
 ]
 
-{ #category : #sorting }
+{ #category : 'sorting' }
 DataSeries >> sorted: aBlock [
 	"Returns a copy of the data series after applying aBlock without rearranging the original data series"
 
@@ -1010,14 +1012,14 @@ DataSeries >> sorted: aBlock [
 	^ self sortedAssociations: associationBlock
 ]
 
-{ #category : #sorting }
+{ #category : 'sorting' }
 DataSeries >> sortedAssociations: aBlock [
 	| sortedAssociations |
 	sortedAssociations := self associations sort: aBlock.
 	^ sortedAssociations asDataSeries name: self name; yourself
 ]
 
-{ #category : #sorting }
+{ #category : 'sorting' }
 DataSeries >> sortedDescending [
 	"Returns a sorted copy of the data series in descending order without rearranging the original data series"
 
@@ -1028,7 +1030,7 @@ DataSeries >> sortedDescending [
 	^ self sorted: [ :a :b | a > b ]
 ]
 
-{ #category : #statistics }
+{ #category : 'statistics' }
 DataSeries >> stdev [
 	"Returns the standard deviation of the dataseries without including nils"
 
@@ -1037,7 +1039,7 @@ DataSeries >> stdev [
 	^ self removeNils values stdev
 ]
 
-{ #category : #transformation }
+{ #category : 'transformation' }
 DataSeries >> sum [
 	"Return the sum of the values over the requested axis. Nil values are excluded."
 
@@ -1053,7 +1055,7 @@ DataSeries >> sum [
 	^ result
 ]
 
-{ #category : #statistics }
+{ #category : 'statistics' }
 DataSeries >> summary [
 	"A data series is returned which is a statistical summary of the data series. 
 	With keys as different statistical measures and values as the values returned
@@ -1076,7 +1078,7 @@ DataSeries >> summary [
 	^ summary
 ]
 
-{ #category : #slicing }
+{ #category : 'slicing' }
 DataSeries >> tail [
 	"Returns a data series with last 5 elements of the receiver"
 
@@ -1087,7 +1089,7 @@ DataSeries >> tail [
 	^ self tail: self defaultHeadTailSize
 ]
 
-{ #category : #slicing }
+{ #category : 'slicing' }
 DataSeries >> tail: aNumber [
 	"Returns a data series with last aNumber elements of the receiver"
 
@@ -1103,7 +1105,7 @@ DataSeries >> tail: aNumber [
 		  name: self name
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DataSeries >> third [
 	"Answer the third element of the receiver.
 	Raise an error if there are not enough elements."
@@ -1113,7 +1115,7 @@ DataSeries >> third [
 	^ self atIndex: 3
 ]
 
-{ #category : #statistics }
+{ #category : 'statistics' }
 DataSeries >> thirdQuartile [
 	"75% of the values in a set are smaller than or equal to the third Quartile of that set"
 
@@ -1122,7 +1124,7 @@ DataSeries >> thirdQuartile [
 	^ self quartile: 3
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DataSeries >> uniqueValues [
 
 	self
@@ -1133,7 +1135,7 @@ DataSeries >> uniqueValues [
 	^ self removeDuplicates
 ]
 
-{ #category : #statistics }
+{ #category : 'statistics' }
 DataSeries >> valueCounts [
 	"Calculates the frequency of each value in the data series and returns a data series in descending order of frequencies"
 
@@ -1142,7 +1144,7 @@ DataSeries >> valueCounts [
 	^ (self groupByUniqueValuesAndAggregateUsing: #size) sortDescending
 ]
 
-{ #category : #statistics }
+{ #category : 'statistics' }
 DataSeries >> valueFrequencies [
 	"Calculates the relative frequency of values in the data series. Relative frequency is the ratio of the number of times a value occurs in a set to the total number of values in the set"
 
@@ -1155,7 +1157,7 @@ DataSeries >> valueFrequencies [
 	^ freq
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 DataSeries >> with: aCollection collect: twoArgBlock [
 	"Collect and return the result of evaluating twoArgBlock with corresponding elements from this series and aCollection."
 	| result |
@@ -1172,7 +1174,7 @@ DataSeries >> with: aCollection collect: twoArgBlock [
 	^ result
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 DataSeries >> withIndexCollect: aBlock [
 	| result |
 	result := self species newFrom:
@@ -1182,13 +1184,13 @@ DataSeries >> withIndexCollect: aBlock [
 	^ result
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 DataSeries >> withIndexDetect: aBlock [
 
 	^ self withIndexDetect: aBlock ifNone: [ NotFound signal ]
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 DataSeries >> withIndexDetect: aBlock ifNone: exceptionBlock [
 
 	| selectedIndex |
@@ -1200,17 +1202,17 @@ DataSeries >> withIndexDetect: aBlock ifNone: exceptionBlock [
 	^ self atIndex: selectedIndex
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 DataSeries >> withIndexDo: aBlock [
 	self keys withIndexDo: [ :each :i | aBlock value: (self at: each) value: i ]
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 DataSeries >> withIndexReject: aBlock [
 	^ self withIndexSelect: [ :each :i | (aBlock value: each value: i) not ]
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 DataSeries >> withIndexSelect: aBlock [
 	| selectedIndices |
 
@@ -1223,7 +1225,7 @@ DataSeries >> withIndexSelect: aBlock [
 		name: self name
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 DataSeries >> withKeyCollect: aBlock [
 	| result |
 	result := self species newFrom:
@@ -1233,13 +1235,13 @@ DataSeries >> withKeyCollect: aBlock [
 	^ result
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 DataSeries >> withKeyDetect: aBlock [
 
 	^ self withKeyDetect: aBlock ifNone: [ NotFound signal ]
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 DataSeries >> withKeyDetect: aBlock ifNone: exceptionBlock [
 
 	| selectedKey |
@@ -1251,17 +1253,17 @@ DataSeries >> withKeyDetect: aBlock ifNone: exceptionBlock [
 	^ self at: selectedKey
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 DataSeries >> withKeyDo: aBlock [
 	self keysDo: [ :each | aBlock value: (self at: each) value: each ]
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 DataSeries >> withKeyReject: aBlock [
 	^ self withKeySelect: [ :each :key | (aBlock value: each value: key) not ]
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 DataSeries >> withKeySelect: aBlock [
 	| selectedKeys |
 
@@ -1274,7 +1276,7 @@ DataSeries >> withKeySelect: aBlock [
 		name: self name
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 DataSeries >> withSeries: otherDataSeries collect: twoArgBlock [
 	"Collect and return the result of evaluating twoArgBlock with corresponding elements from this series and otherDataSeries."
 	| result |
@@ -1292,7 +1294,7 @@ DataSeries >> withSeries: otherDataSeries collect: twoArgBlock [
 	^ result
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 DataSeries >> withoutNils [
 	"Returns a copy of the data series without the nil values"
 
@@ -1303,7 +1305,7 @@ DataSeries >> withoutNils [
 	^ self reject: #isNil
 ]
 
-{ #category : #statistics }
+{ #category : 'statistics' }
 DataSeries >> zerothQuartile [
 	"Zeroth Quartile is the minimum value in a set of values"
 

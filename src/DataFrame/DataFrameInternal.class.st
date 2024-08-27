@@ -2,15 +2,17 @@
 I am  the internal representation of a DataFrame. I store the data very efficiently and allow you to access it very quickly. 
 "
 Class {
-	#name : #DataFrameInternal,
-	#superclass : #SequenceableCollection,
+	#name : 'DataFrameInternal',
+	#superclass : 'SequenceableCollection',
 	#instVars : [
 		'contents'
 	],
-	#category : #'DataFrame-Core'
+	#category : 'DataFrame-Core',
+	#package : 'DataFrame',
+	#tag : 'Core'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 DataFrameInternal class >> fromArray2D: anArray2D [
 
 	| dfInternal |
@@ -25,13 +27,13 @@ DataFrameInternal class >> fromArray2D: anArray2D [
 	^ dfInternal
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 DataFrameInternal class >> new: aPoint [
 
 	^ self new initialize: aPoint
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 DataFrameInternal class >> withColumns: anArrayOfArrays [
 
 	| numberOfRows numberOfColumns dfInternal |
@@ -51,7 +53,7 @@ DataFrameInternal class >> withColumns: anArrayOfArrays [
 	^ dfInternal
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 DataFrameInternal class >> withRows: anArrayOfArrays [
 
 	| numberOfRows numberOfColumns dfInternal |
@@ -71,7 +73,7 @@ DataFrameInternal class >> withRows: anArrayOfArrays [
 	^ dfInternal
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 DataFrameInternal >> = other [
 
 	((other class == self class)
@@ -86,7 +88,7 @@ DataFrameInternal >> = other [
 	^ true
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 DataFrameInternal >> addColumn: anArray atPosition: aNumber [
 
 	| rows cols newContents |
@@ -118,7 +120,7 @@ DataFrameInternal >> addColumn: anArray atPosition: aNumber [
 	contents := newContents
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 DataFrameInternal >> addRow: anArray atPosition: aNumber [
 
 	| rows cols newContents |
@@ -150,12 +152,12 @@ DataFrameInternal >> addRow: anArray atPosition: aNumber [
 	contents := newContents
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 DataFrameInternal >> asArray2D [
 	^ contents
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 DataFrameInternal >> asArrayOfColumns [
 	"Converts DataFrameInternal to the array of columns"
 
@@ -164,7 +166,7 @@ DataFrameInternal >> asArrayOfColumns [
 			self at: i at: j ] ]
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 DataFrameInternal >> asArrayOfRows [
 	"Converts DataFrameInternal to the array of rows"
 
@@ -173,33 +175,33 @@ DataFrameInternal >> asArrayOfRows [
 			self at: i at: j ] ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DataFrameInternal >> at: rowIndex at: columnIndex [
 
 	^ contents at: rowIndex at: columnIndex
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DataFrameInternal >> at: rowIndex at: columnIndex put: value [
 
 	^ contents at: rowIndex at: columnIndex put: value
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 DataFrameInternal >> collect: aBlock [
 
 	^ self class fromArray2D:
 		(contents collect: aBlock)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DataFrameInternal >> columnAt: aNumber [
 
 	^ (1 to: self numberOfRows) collect: [ :i |
 		self at: i at: aNumber ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DataFrameInternal >> columnAt: aNumber put: anArray [
 "Sets all the values of a given column equal to the values in array. It is assumed that array is of the same size as every column (number of rows). This should be tested in DataFrame"
 
@@ -207,7 +209,7 @@ DataFrameInternal >> columnAt: aNumber put: anArray [
 		self at: i at: aNumber put: (anArray at: i) ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DataFrameInternal >> columnsAt: anArrayOfNumbers [
 
 	| dfInternal numberOfRows numberOfColumns |
@@ -223,50 +225,50 @@ DataFrameInternal >> columnsAt: anArrayOfNumbers [
 	^ dfInternal
 ]
 
-{ #category : #copying }
+{ #category : 'copying' }
 DataFrameInternal >> deepCopy [
 
 	^ self class fromArray2D: contents
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 DataFrameInternal >> do: aBlock [
 
 	^ contents do: aBlock
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 DataFrameInternal >> initialize [
 
 	super initialize.
 	contents := Array2D new
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 DataFrameInternal >> initialize: aPoint [
 
 	contents := Array2D rows: aPoint x columns: aPoint y
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DataFrameInternal >> numberOfColumns [
 
 	^ contents numberOfColumns ifNil: [ 0 ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DataFrameInternal >> numberOfRows [
 
 	^ contents numberOfRows ifNil: [ 0 ]
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 DataFrameInternal >> printOn: aStream [
 
 	contents printOn: aStream
 ]
 
-{ #category : #removing }
+{ #category : 'removing' }
 DataFrameInternal >> removeColumnAt: columnNumber [
 
 	| newContents |
@@ -286,7 +288,7 @@ DataFrameInternal >> removeColumnAt: columnNumber [
 	contents := newContents
 ]
 
-{ #category : #removing }
+{ #category : 'removing' }
 DataFrameInternal >> removeColumnsOfRowElementsSatisfying: aBlock onRow: rowNumber [
 	"Executes aBlock for all elements in specified rowNumber and deletes the column
 	 which satisfied condition given in aBlock."
@@ -311,7 +313,7 @@ DataFrameInternal >> removeColumnsOfRowElementsSatisfying: aBlock onRow: rowNumb
 	contents := newContents
 ]
 
-{ #category : #removing }
+{ #category : 'removing' }
 DataFrameInternal >> removeRowAt: rowNumber [
 
 	| newContents |
@@ -331,7 +333,7 @@ DataFrameInternal >> removeRowAt: rowNumber [
 	contents := newContents
 ]
 
-{ #category : #removing }
+{ #category : 'removing' }
 DataFrameInternal >> removeRowsWhereElementsInColumnAt: columnNumber satisfy: aBlock [
 	"Removes all rows having a nil value at the column columnNumber"
 
@@ -354,7 +356,7 @@ DataFrameInternal >> removeRowsWhereElementsInColumnAt: columnNumber satisfy: aB
 	contents := newContents
 ]
 
-{ #category : #filling }
+{ #category : 'filling' }
 DataFrameInternal >> replaceMissingValuesStrings: aSet [
 	"Replaces dataframeinternal values with nil if they are a part of aSet"
 
@@ -365,14 +367,14 @@ DataFrameInternal >> replaceMissingValuesStrings: aSet [
 			 ] ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DataFrameInternal >> rowAt: aNumber [
 
 	^ (1 to: self numberOfColumns) collect: [ :j |
 		self at: aNumber at: j ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DataFrameInternal >> rowAt: aNumber put: anArray [
 "Sets all the values of a given row equal to the values in array. It is assumed that array is of the same size as every row (number of columns). This should be tested in DataFrame"
 
@@ -380,7 +382,7 @@ DataFrameInternal >> rowAt: aNumber put: anArray [
 		self at: aNumber at: j put: (anArray at: j) ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DataFrameInternal >> rowsAt: anArrayOfNumbers [
 
 	| dfInternal numberOfRows numberOfColumns |
@@ -396,21 +398,21 @@ DataFrameInternal >> rowsAt: anArrayOfNumbers [
 	^ dfInternal
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DataFrameInternal >> size [
 	"Answer how many elements the receiver contains."
 
 	^ contents size
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 DataFrameInternal >> withIndicesCollect: aBlock [
 
 	^ self class fromArray2D:
 		(contents withIndicesCollect: aBlock)
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 DataFrameInternal >> withIndicesDo: aBlock [
 
 	^ contents withIndicesDo: aBlock
