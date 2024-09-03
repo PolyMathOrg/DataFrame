@@ -1,8 +1,7 @@
 Class {
 	#name : 'DataFrameSqliteWriter',
-	#superclass : 'DataFrameWriter',
+	#superclass : 'DataFrameAbstractSqliteWriter',
 	#instVars : [
-		'tableName',
 		'columnNames'
 	],
 	#category : 'DataFrame-IO-Sqlite',
@@ -46,32 +45,6 @@ DataFrameSqliteWriter >> getColumnNamesFor: aDataFrame [
 		self error:
 			'Column count mismatch (Writer columns <=> DataFrame columns)' ].
 	^ columnNames
-]
-
-{ #category : 'helpers' }
-DataFrameSqliteWriter >> insertQueryForColumns: aSequence [
-	""
-	^ String streamContents: [ :strm |
-		strm
-			nextPutAll: 'INSERT INTO ';
-			nextPutAll: tableName;
-			nextPut: $(;
-			nextPutAll: (',' join: aSequence);
-			nextPutAll: ')VALUES('.
-		aSequence do: [ :ignore | strm nextPut: $? ] separatedBy: [ strm nextPut: $, ].
-		strm nextPut: $) ]
-]
-
-{ #category : 'accessing' }
-DataFrameSqliteWriter >> tableName [
-
-	^ tableName
-]
-
-{ #category : 'accessing' }
-DataFrameSqliteWriter >> tableName: anObject [
-
-	tableName := anObject
 ]
 
 { #category : 'writing' }

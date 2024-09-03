@@ -15,6 +15,16 @@ DataFrame >> writeToSqlite: aSqlite3Connection tableName: aString [
 ]
 
 { #category : '*DataFrame-IO-Sqlite' }
+DataFrame >> writeToSqlite: aSqlite3Connection tableName: aString columnMappings: aCollection [
+
+	| writer |
+	writer := DataFrameSqliteColumnMappingWriter 
+		          writeToTable: aString
+		          columnMappings: aCollection.
+	self writeTo: aSqlite3Connection using: writer
+]
+
+{ #category : '*DataFrame-IO-Sqlite' }
 DataFrame >> writeToSqlite: aSqlite3Connection tableName: aString columnNames: aCollection [
 
 	| writer |
