@@ -144,6 +144,19 @@ df writeToSqlite: conn tableName: 'table'.
 ```st
 df writeToSqlite: conn tableName: 'table' columnNames: #('col1' 'col2' 'col3').
 ```
+#### Mapping (selecting / renaming dataframe columns):
+Let's assume:
+- CREATE TABLE tbl (a,b,c)
+- DataFrame with columns (a,x,c,d)
+- We want to write:
+  - a to a
+  - x to b
+  - c to c
+  - ignore d
+- NB: no mention of column d, order is irrelevant
+```st
+df writeToSqlite: conn tableName: 'table' columnMappings: { #c. #x -> #b. #a }.
+```
 
 ## Documentation and Literature
 
