@@ -995,22 +995,6 @@ DataFrame >> crossTabulate: colName1 with: colName2 [
 	^ col1 crossTabulateWith: col2
 ]
 
-{ #category : 'copying' }
-DataFrame >> dataPreProcessingEncodeWith: anEncoder [
-	"This method is here to speed up pharo-ai/data-preprocessing algos without coupling both projects."
-
-	| copy cache |
-	copy := self copy.
-	cache := IdentityDictionary new.
-	self columns doWithIndex: [ :dataSerie :columnIndex |
-		| category |
-		category := cache at: columnIndex ifAbsentPut: [ ((anEncoder categories at: columnIndex) collectWithIndex: [ :elem :index | elem -> index ]) asDictionary ].
-		dataSerie doWithIndex: [ :element :rowIndex |
-			copy at: rowIndex at: columnIndex put: (category at: element ifAbsent: [ AIMissingCategory signalFor: element ]) ] ].
-
-	^ copy
-]
-
 { #category : 'data-types' }
 DataFrame >> dataTypeOfColumn: aColumnName [
 	"Given a column name of the DataFrame, it returns the data type of that column"
