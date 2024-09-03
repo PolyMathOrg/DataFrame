@@ -29,28 +29,29 @@ DataFrameSqliteColumnMappingWriter >> columnMappings: anObject [
 	columnMappings := anObject
 ]
 
+{ #category : 'helpers' }
+DataFrameSqliteColumnMappingWriter >> fieldIndicesFor: aDataFrame [
+	"gather indices of columns in dataframe (to avoid lookup by field name later, in loop)"
+
+	^ columnMappings collect: [ :m |
+		  | sourceName |
+		  sourceName := m isAssociation
+			                ifTrue: [ m key ]
+			                ifFalse: [ m ].
+		  aDataFrame columnNames indexOf: sourceName ]
+]
+
 { #category : 'writing' }
 DataFrameSqliteColumnMappingWriter >> write: aDataFrame to: aSqliteConnection [
 
-	| fieldIndices args dfCols tblCols stmt nCols |
-	nCols := columnMappings size.
-	dfCols := aDataFrame columnNames.
-	fieldIndices := columnMappings collect: [ :m |
-		                dfCols indexOf: (m isAssociation
-				                 ifTrue: [ m key ]
-				                 ifFalse: [ m ]) ].
-	tblCols := columnMappings collect: [ :m | m value ].
+	| fieldIndices args stmt |
+	fieldIndices := self fieldIndicesFor: aDataFrame.
 	args := Array new: fieldIndices size.
+	stmt := aSqliteConnection prepare: (self insertQueryForColumns:
+			         (columnMappings collect: [ :m | m value ])).
 
-	stmt := aSqliteConnection prepare:
-		        (self insertQueryForColumns: tblCols).
-
-	aDataFrame do: [ :r |
-		| row |
-		row := r asArray.
-		1 to: nCols do: [ :i |
-			| rowVal |
-			rowVal := row at: (fieldIndices at: i).
-			args at: i put: rowVal ].
+	1 to: aDataFrame dimensions x do: [ :rowIndex |
+		fieldIndices withIndexDo: [ :srcCol :dstCol |
+			args at: dstCol put: (aDataFrame contents at: rowIndex at: srcCol) ].
 		stmt execute: args ]
 ]
