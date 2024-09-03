@@ -28,7 +28,7 @@ EpMonitor disableDuring: [
       load ].
 ```
 
-If you'd be interested in (basic, read-only for now) SQLite support, use `load: 'sqlite'` at the end:
+If you'd be interested in SQLite support, use `load: 'sqlite'` at the end:
 
 ```st
 EpMonitor disableDuring: [
@@ -130,10 +130,19 @@ weather transposed.
 | **2** | true | true | false | true | true |
 | **3** | snow | rain | -     | rain | snow |
 
-### Load data from SQLite query:
+### SQLite examples
+*Following examples expect valid/connected SQLite connection in a variable `conn`*
+#### Load data from SQLite query:
 ```st
-"If you have a connection ready in conn"
 df := DataFrame readFromSqliteCursor: (conn execute: 'SELECT * FROM table').
+```
+#### Write data to SQLite table (DataFrame column names <=> table column names):
+```st
+df writeToSqlite: conn tableName: 'table'.
+```
+#### Write to differently named colums (provide names for ALL DataFrame columns!)
+```st
+df writeToSqlite: conn tableName: 'table' columnNames: #('col1' 'col2' 'col3').
 ```
 
 ## Documentation and Literature
