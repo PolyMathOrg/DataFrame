@@ -18,7 +18,7 @@ DataFrame >> writeToSqlite: aSqlite3Connection tableName: aString [
 DataFrame >> writeToSqlite: aSqlite3Connection tableName: aString columnMappings: aCollection [
 
 	| writer |
-	writer := DataFrameSqliteColumnMappingWriter 
+	writer := DataFrameSqliteWriter 
 		          writeToTable: aString
 		          columnMappings: aCollection.
 	self writeTo: aSqlite3Connection using: writer
@@ -30,6 +30,6 @@ DataFrame >> writeToSqlite: aSqlite3Connection tableName: aString columnNames: a
 	| writer |
 	writer := DataFrameSqliteWriter
 		          writeToTable: aString
-		          columnNames: aCollection.
+		          columnMappings: aCollection.
 	self writeTo: aSqlite3Connection using: writer
 ]
