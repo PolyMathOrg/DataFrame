@@ -11,7 +11,7 @@ DataFrame is a tabular data structure for data analysis in [Pharo](https://pharo
 To install the latest stable version of DataFrame (`pre-v3`), go to the Playground (`Ctrl+OW`) in your Pharo image and execute the following Metacello script (select it and press Do-it button or `Ctrl+D`):
 
 ```st
-EpMonitor disableDuring: [ 
+EpMonitor disableDuring: [
     Metacello new
       baseline: 'DataFrame';
       repository: 'github://PolyMathOrg/DataFrame:pre-v3/src';
@@ -21,11 +21,21 @@ EpMonitor disableDuring: [
 Use this script if you want the latest version of DataFrame:
 
 ```st
-EpMonitor disableDuring: [ 
+EpMonitor disableDuring: [
     Metacello new
       baseline: 'DataFrame';
       repository: 'github://PolyMathOrg/DataFrame/src';
       load ].
+```
+
+If you'd be interested in SQLite support, use `load: 'sqlite'` at the end:
+
+```st
+EpMonitor disableDuring: [
+    Metacello new
+      baseline: 'DataFrame';
+      repository: 'github://PolyMathOrg/DataFrame/src';
+      load: 'sqlite' ].
 ```
 
 _Note:_ `EpMonitor` serves to deactive [Epicea](https://github.com/pharo-open-documentation/pharo-wiki/blob/3cfb4ebc19821d607bec35c34ee928b4e06822ee/General/TweakingBigImages.md#disable-epicea), a Pharo code recovering mechanism, during the installation of DataFrame.
@@ -52,7 +62,7 @@ A data frame is like a database inside a variable. It is an object which can be 
 
 In this section I show a very simple example of creating and manipulating a little data frame. For more advanced examples, please check the [DataFrame Booklet](#dataframe-booklet).
 
-### Creating a data frame 
+### Creating a data frame
 
 ```Smalltalk
 weather := DataFrame withRows: #(
@@ -119,6 +129,34 @@ weather transposed.
 | **1** | 2.4  | 0.5  | -2.3  | 3.2  | -1.2 |
 | **2** | true | true | false | true | true |
 | **3** | snow | rain | -     | rain | snow |
+
+### SQLite examples
+*Following examples expect valid/connected SQLite connection in a variable `conn`*
+#### Load data from SQLite query:
+```st
+df := DataFrame readFromSqliteCursor: (conn execute: 'SELECT * FROM table').
+```
+#### Write data to SQLite table (DataFrame column names <=> table column names):
+```st
+df writeToSqlite: conn tableName: 'table'.
+```
+#### Write to differently named colums (provide names for ALL DataFrame columns!)
+```st
+df writeToSqlite: conn tableName: 'table' columnNames: #('col1' 'col2' 'col3').
+```
+#### Mapping (selecting / renaming dataframe columns):
+Let's assume:
+- CREATE TABLE tbl (a,b,c)
+- DataFrame with columns (a,x,c,d)
+- We want to write:
+  - a to a
+  - x to b
+  - c to c
+  - ignore d
+- NB: no mention of column d, order is irrelevant
+```st
+df writeToSqlite: conn tableName: 'table' columnMappings: { #c. #x -> #b. #a }.
+```
 
 ## Documentation and Literature
 
